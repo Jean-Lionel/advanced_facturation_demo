@@ -19,7 +19,7 @@
             
             <button onclick="print()" class="noprint">Imprimmer</button>
 
-            <a href="{{ route('ventes.index') }}">Retourner</a>
+            <a href="{{ route('ventes.index') }}">Retour</a>
         </div>
      
          <div class="header-facture">
@@ -86,9 +86,6 @@
                     <th> PU*</th>
                     <th>PV-HTVA*</th>
                 </tr>
-
-                
-
             </thead>
 
             <tbody>

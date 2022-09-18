@@ -22,7 +22,6 @@ class OrderController extends Controller
 
         foreach ($orders as $value) {
             $product = unserialize($value->products);
-
             dump($product->all());
             
         }
@@ -57,10 +56,9 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-      //  dd($order);
+      
 
-
-        return view('cart.facture',compact('order'));
+        return view('cart.facture_model_prothem',compact('order'));
     }
 
     /**

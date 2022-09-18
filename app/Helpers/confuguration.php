@@ -1,0 +1,15 @@
+<?php
+
+define('RAISON_ENTREPRISE','PROTHEM-USINE');
+define('RAISON_ENTREPRISE_HEADER','PROTHEM-USINE');
+define('BASE_NIF','4 000 004 806');
+define('BASE_RC','64503');
+define('BASE_TELELEPHONE','+257 22 22 07 80 / +257 22 24 46 10');
+define('BASE_BP','176');
+define('BASE_COMMUNE','MUKAZA');
+define('BASE_QUARTIER','Rohero II');
+define('BASE_SECTEUR','INDUSTRIEL');
+define('BASE_CENTRE_FISCAL','DGC');
+define('BASE_AVENUE','BLV DE L\'UPRONA, N° 97');
+
+?>

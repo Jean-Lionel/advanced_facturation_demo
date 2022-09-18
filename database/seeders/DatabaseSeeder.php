@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Stocke;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,6 +20,10 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Category::factory(10)->create();
         // \App\Models\Product::factory(10)->create();
 
+        Stocke::create([
+            'name' => 'STOCK PRINCIPAL', 
+            'description' => 'STOCK PRINCIPAL DE BASE'
+        ]);
         \App\Models\Role::create(['name' => 'ADMINISTRATEUR']);
         \App\Models\Role::create(['name' => 'CONTROLLEUR']);
         \App\Models\Role::create(['name' => 'COMPTABLE']);
