@@ -4,16 +4,38 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>FACTURE  {{ RAISON_ENTREPRISE }}</title>
-	  <link rel="stylesheet" href="{{ asset('css/prothem.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/print.min.css') }}">
+
+	<script src="{{ asset('js/print.min.js') }}"></script>
+	<link rel="stylesheet" href="{{ asset('css/prothem.css') }}">
+
+	<style>
+		@media print {
+
+			.noprint {
+				display: none;
+			}
+
+		}
+
+	</style>	
 </head>
 <body>
+
+	<div class="noprint header-element">
+
+		<button onclick="print()" class="noprint">Imprimmer</button>
+
+		<a href="{{ route('ventes.index') }}">Retour</a>
+	</div>
+
 
 	<div class="main-content">
 		{{-- Entete --}}
 		<header class="header-facture">
 			<div>
-			<h3>LOGO DE	</h3>
-			<h3>L'ENTREPRISE</h3>
+				<h3>LOGO DE	</h3>
+				<h3>L'ENTREPRISE</h3>
 			</div>
 			<div style="width: 80%;">
 				<h3>{{ RAISON_ENTREPRISE }} Siège Social : Gisozi-Mwaro</h3>
@@ -50,11 +72,10 @@
 				<div class="right-border">
 				</div>
 				<div>
-					<h5>Facture N° 8 du {{date('d m Y')}} </h5>
+					<h5>FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }} </h5>
 					<p>Centre Fiscal : <b>DGC</b></p>
 					<p>Secteur d'activité : <b>INDUSTRIEL</b></p>
 					<p>Forme juridique : <b>SA</b></p>
-					
 				</div>
 				
 			</div>
@@ -65,7 +86,7 @@
 		<article class="identification_b">
 			<div>
 				<h5>B. Client</h5>
-				<p>Nom et Prénom ou Raison Socail : <b>........x...</b></p>
+				<p>Nom et Prénom ou Raison Socail : <b>{{  collect(json_decode($order->client))->get('name') ?? "" }}</b></p>
 				<p>Résident à : <b>Gihosha</b></p>
 				<p>Assujeti à la TVA : OUI        NON</p>
 				<h5>Doit pour ce qui suit : </h5>
@@ -87,47 +108,65 @@
 				</thead>
 				<tbody>
 
-                @foreach([45,45,14,2,524,2] as $key=> $product)
 
-                <tr>
-                    <td>{{ $key +1 }}</td>
-                    <td>{{ $key +1 }}</td>
-                    <td>{{ $key +1 }}</td>
-                    <td>{{ $key +1 }}</td>
-                    <td>{{ $key +1 }}</td>
-                    <td>{{ $key +1 }}</td>
-                </tr>
+					@foreach(unserialize($order->products) as $key=> $product)
 
-                @endforeach
-                <tr>
-                    <td colspan="3">PVT HTVA </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="3">TVA ( 18 %)</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="3">TOTAL TVAC</td>
-                    <td></td>
-				</tbody>
-			</table>
-			<h4>Mention Obligatoire</h4>
-			<h4>NB: Les non assujettis à la TVA ne remplissent pas les deuc dernières lignes</h4>
-		</article>
+					<tr>
+						<td>{{ $key +1 }}</td>
+						<td> {{ $product['name'] }}</td>
+						<td> {{ $product['quantite'] }}</td>
+						<td> {{ getPrice($product['price'] ) }}</td>
+						<td> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
+					</tr>
 
-		<footer>
-			<div>
-				<h4>Confirming Oder</h4>
-				<h4>Head of Commercial</h4>
-				<h4>Tanguy HICUBURUNDI</h4>
-			</div>
-			<div class="aling-right">
-				<h4>Confirming Full Payment</h4>
-				<h4>Head of Finance ai</h4>
-				<h4>Eric KAPARAYE</h4>
-			</div>
-		</footer>
-	</div>
-</body>
-</html>
+					@endforeach
+
+
+					<tr>
+						<td colspan="3">PVT HTVA </td>
+						<td></td>
+					</tr>
+					<tr>
+						<td colspan="3">TVA ( 18 %)</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td colspan="3">TOTAL TVAC</td>
+						<td></td>
+					</tbody>
+				</table>
+				<h4>Mention Obligatoire</h4>
+				<h4>NB: Les non assujettis à la TVA ne remplissent pas les deuc dernières lignes</h4>
+			</article>
+
+			<footer>
+				<div>
+					<h4>Confirming Oder</h4>
+					<h4>Head of Commercial</h4>
+					<h4>Tanguy HICUBURUNDI</h4>
+				</div>
+				<div class="aling-right">
+					<h4>Confirming Full Payment</h4>
+					<h4>Head of Finance ai</h4>
+					<h4>Eric KAPARAYE</h4>
+				</div>
+			</footer>
+		</div>
+
+
+		<script>
+			function print(){
+
+				printJS({
+					printable: "printJS-form",
+					type: 'html',
+					css : {{ asset('css/facture.css') }}
+
+				}
+				);
+			}
+
+
+		</script>
+	</body>
+	</html>

@@ -1,6 +1,7 @@
 <?php
 
 define('RAISON_ENTREPRISE','PROTHEM-USINE');
+define('BASE_FIRST_LETTER','P');
 define('RAISON_ENTREPRISE_HEADER','PROTHEM-USINE');
 define('BASE_NIF','4 000 004 806');
 define('BASE_RC','64503');
@@ -11,5 +12,7 @@ define('BASE_QUARTIER','Rohero II');
 define('BASE_SECTEUR','INDUSTRIEL');
 define('BASE_CENTRE_FISCAL','DGC');
 define('BASE_AVENUE','BLV DE L\'UPRONA, N° 97');
+define('BASE_TVA',18);
+define('BASE_UNITE_EMBALLAGE',50);
 
 ?>

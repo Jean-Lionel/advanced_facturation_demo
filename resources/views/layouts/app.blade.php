@@ -25,7 +25,7 @@
 
   <div class="wrapper d-flex align-items-stretch">
    <nav id="sidebar" class="active">
-    <h1><a href="" class="logo">J.</a></h1>
+    <h1><a href="" class="logo">{{ BASE_FIRST_LETTER }}</a></h1>
     <ul class="list-unstyled components mb-5">
 
       @can('is-vente')

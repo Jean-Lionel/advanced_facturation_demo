@@ -35,6 +35,8 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	Route::get('update_price', 'CartController@update_product_price')->name('update_price');
 
+	Route::get('update_emballage', 'CartController@update_emballage')->name('update_emballage');
+
 	Route::get('update_quantite', 'CartController@update_quantite')->name('update_quantite');
 	Route::get('rapport', 'StockeController@rapport')->name('rapport');
 

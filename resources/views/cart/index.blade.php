@@ -1,17 +1,12 @@
 @extends('layouts.app')
-
 @section('content')
-
 <div class="px-4 px-lg-0">
   <!-- For demo purpose -->
-
   <!-- End -->
-
   <div class="pb-5">
     <div class="container">
       <div class="row">
         <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
-
           <!-- Shopping cart table -->
           <div class="table-responsive">
             <table class="table">
@@ -24,16 +19,15 @@
                     <div class="p-2 px-3 text-uppercase">MARGE DES PRIX ( #FBU)</div>
                   </th>
                   <th scope="col" class="border-0 bg-light">
-
                     <div class="p-2 px-3">
                       PRIX UNITAIRE
                     </div>
-
-
-
                   </th>
                   <th scope="col" class="border-0 bg-light">
                     <div class="py-2 text-uppercase">PRIX</div>
+                  </th>
+                  <th scope="col" class="border-0 bg-light">
+                    <div class="py-2 text-uppercase">CONDITIONEMENT</div>
                   </th>
                   <th scope="col" class="border-0 bg-light">
                     <div class="py-2 text-uppercase">QUANTITE</div>
@@ -44,23 +38,17 @@
                 </tr>
               </thead>
               <tbody>
-
-
                 @foreach (Cart::content() as $product)
                 {{-- expr --}}
-
                 <tr>
                   <th scope="row" class="border-0">
                     {{$product->name}}
                   </th>
 
                    <th scope="row" class="border-0">
-                    {{getPrice($product->model->price_min) . ' - '. getPrice($product->model->price_max)}} 
-                     
+                    {{getPrice($product->model->price_min) . ' - '. getPrice($product->model->price_max)}}   
                   </th>
-
                   <th>
-
                     <input type="number" class="price_input" data-product="{{ $product->rowId }}" value="{{ $product->price }}" class="form-control">
 
                   </th>
@@ -68,6 +56,11 @@
                   <th>
                     <span id="{{ $product->rowId }}">{{ getPrice($product->subtotal())  }}</span>
                   </th>
+
+                  <td >
+                  <input type="text" class="embalage" data-product="{{ $product->rowId }}" style="width:50px;" value="{{$product->options['embalage']}}"/>
+                  <b>Kg/Sac</b>
+                 </td>
 
                   <td class="border-0 align-middle">
 
@@ -79,6 +72,7 @@
                      @endfor
                    </select>
                  </td>
+                 
                  <td class="border-0 align-middle">
 
                    <form action="{{ route('cart.destroy',$product->rowId) }}" method="post">
@@ -97,33 +91,19 @@
          <!-- End -->
        </div>
      </div>
-
      <div class="row py-5 p-4 bg-white rounded shadow-sm">
       <div class="col-lg-6">
         <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">INFORMATION DU CLIENT</div>
         <div class="p-1">
-
-
-
-
-
          <form action="{{ route('payement') }}" method="post">
           @csrf
-
           @method('post')
-
           <div class="form-group">
             <input required="" type="text" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
-
-
-        
          </div>
-
          <div class="form-group">
            <input type="text" name="telephone" placeholder="Entrer le numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
          </div>
-
-
           <div class="form-group">
             <label for="type_paiement">MODE DE PAIEMENT</label>
            <select required="" class="form-control" name="type_paiement" id="">
@@ -132,18 +112,8 @@
              <option value="DETTE">DETTE</option>
            </select>
          </div>
-
          <button type="submit" class="btn btn-dark rounded-pill py-2 btn-block">Valider</button>
        </form>
-
-
-
-
-
-
-
-
-
         {{--  <div class="input-group mb-4 border rounded-pill p-2">
           <input type="text" placeholder="Apply coupon" aria-describedby="button-addon3" class="form-control border-0">
           <div class="input-group-append border-0">
@@ -152,19 +122,14 @@
         </div> --}}
       </div>
       <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Instructions pour le client</div>
-
-
     </div>
     <div class="col-lg-6">
       <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Déscription  </div>
       <div class="p-4">
-
         <ul class="list-unstyled mb-4">
           <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">PHTVA </strong>
-
             <strong id="prix_hors_tva">{{getPrice(Cart::subtotal())}}</strong>
           </li>
-
           <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">TVA</strong><strong>{{ getPrice(Cart::tax()) }}</strong></li>
           <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
             <h5 class="font-weight-bold">
@@ -174,9 +139,6 @@
             </h5>
           </li>
         </ul>
-
-        
-
       </div>
     </div>
   </div>
@@ -194,14 +156,37 @@
 
   let price_input = $('.price_input');
   let quantite_select = $('.quantite_select');
+  let embalage = $('.embalage');
+
+   embalage.on('blur', function(){
+    let product_id = this.getAttribute('data-product');
+    let embalage = this.value;
+    $.ajax(
+    {
+      url : '{{ route('update_emballage') }}',
+      method : 'get',
+      data : {product_id , embalage}
+    }
+
+    ).done(function(data){
+
+      $("#"+data.rowId).html(data.cart)
+
+      $("#prix_hors_tva").html(data.prix_hors_tva);
+      $("#total_montant").html(data.total_montant);
+      console.log(data)
+    })
+    .catch(function(error){
+      console.log(error)
+    })
+
+  });
+
 
   price_input.on('blur', function(){
-
     let product_id = this.getAttribute('data-product');
     let price = this.value;
-
     $.ajax(
-
     {
       url : '{{ route('update_price') }}',
       method : 'get',

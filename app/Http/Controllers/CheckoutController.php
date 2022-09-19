@@ -95,7 +95,7 @@ class CheckoutController extends Controller
         }
 
 
-    return view('cart.facture', compact('order'));
+    return view('cart.facture_model_prothem', compact('order'));
 
 
     }

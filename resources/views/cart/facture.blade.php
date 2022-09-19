@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="{{ asset('css/facture.css') }}">
 </head>
 <body>
-
-
-
     <div class="main-content" id="printJS-form">
         <div class="noprint header-element">
             
@@ -28,14 +25,8 @@
          </div>
 
          <div class="fac_title">FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }}</div>
-
-
-  
-
      <main>
         <h5 style="margin-left: 4pc;">A. Indentification du vendeur</h5>
-
-
     </main>
 
     <section>

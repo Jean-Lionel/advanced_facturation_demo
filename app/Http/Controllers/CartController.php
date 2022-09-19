@@ -36,9 +36,6 @@ class CartController extends Controller
         $total = Cart::subtotal();
 
         $cart = Cart::update($rowId, ['price' => $price]);
-
-
-
         return response()->json( [
             'rowId' =>  $cart->rowId,
             'cart' => $cart->subtotal,
@@ -46,9 +43,25 @@ class CartController extends Controller
              'total_montant' => getPrice(Cart::total()) 
 
         ]);
+        //return  Cart::update($rowId, ['price' => $price]);
+    }    
+    public function update_emballage(){
+        $rowId = \Request::get('product_id');
+        $unite_emballage = \Request::get('embalage');
+        $total = Cart::subtotal();
+
+        $cart = Cart::update($rowId, ['options' => [
+            'embalage' => $unite_emballage
+        ]]);
+
        
+        return response()->json( [
+            'rowId' =>  $cart->rowId,
+            'cart' => $cart->subtotal,
+            'prix_hors_tva' => $total ,
+             'total_montant' => getPrice(Cart::total()) 
 
-
+        ]);
         //return  Cart::update($rowId, ['price' => $price]);
     }
     /**
@@ -67,10 +80,11 @@ class CartController extends Controller
         if($diplucata->count()){
             return redirect()->route('ventes.index')->with('success', 'Le produit existe déjà ');
         }
-
         $product = Product::where('id',$request->id)->firstOrFail();
-
-        Cart::add($product->id, $product->name, 1, $product->price)->associate('App\Models\Product');
+        Cart::add($product->id, $product->name, 1, $product->price,
+            [
+                'embalage' => BASE_UNITE_EMBALLAGE
+            ])->associate('App\Models\Product');
 
         return redirect()->route('ventes.index')->with('success', 'Le produit a été bien ajouter');
     }
@@ -107,14 +121,10 @@ class CartController extends Controller
 
         if($validate->fails()){
            Session::flash('error', 'Les donneés ne sont pas correctes');
-
            return response()->json(['error','error']);
-
        }
-
        Cart::update($data['rowId'], $data['qty']);
        Session::flash('success', 'La quatite a été bien mise à jour');
-
        return response()->json(['success','réussi']);
    }
 
@@ -127,14 +137,10 @@ class CartController extends Controller
      */
     public function update(Request $request, $rowId)
     {
-        
-
         return response()->json(['success','resussi']);
-
     }
 
     public function update_quantite(){
-
         // rowId, 
         $rowId = \Request::get('rowId');
         $quatite = \Request::get('qty');
@@ -144,8 +150,6 @@ class CartController extends Controller
         // 'rowId' =>  $cart->rowId,
         //     'cart' => $cart->subtotal,
         //     'prix_hors_tva' => $total 
-
-     
 
         return response()->json( [
             'rowId' => $cart->rowId,
@@ -164,8 +168,6 @@ class CartController extends Controller
      */
     public function destroy($rowId)
     {
-
-
 
         Cart::remove($rowId);
 

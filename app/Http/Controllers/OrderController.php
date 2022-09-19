@@ -56,8 +56,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-      
-
+        
         return view('cart.facture_model_prothem',compact('order'));
     }
 
