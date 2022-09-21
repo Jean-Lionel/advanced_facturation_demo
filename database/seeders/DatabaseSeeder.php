@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Stocke;
+use App\Models\RoleUser;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,6 +24,11 @@ class DatabaseSeeder extends Seeder
         Stocke::create([
             'name' => 'STOCK PRINCIPAL', 
             'description' => 'STOCK PRINCIPAL DE BASE'
+        ]);
+
+        RoleUser::create([
+            'role_id' => 1,
+            'user_id' => 1
         ]);
         \App\Models\Role::create(['name' => 'ADMINISTRATEUR']);
         \App\Models\Role::create(['name' => 'CONTROLLEUR']);

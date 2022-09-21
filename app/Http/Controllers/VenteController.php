@@ -24,7 +24,6 @@ public function index()
 
     $search = \Request::get('search'); 
      
-
     $products = Product::where('quantite','>',1)
     ->where(function($query) use ($search){
         $query->where('name','like','%'.$search.'%')

@@ -38,7 +38,9 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach (Cart::content() as $product)
+                @foreach ($paniers as $product)
+
+
                 {{-- expr --}}
                 <tr>
                   <th scope="row" class="border-0">
@@ -231,17 +233,11 @@
     })
 
   })
-
-
-
-
   // var selects = document.querySelectorAll("#qty")
 
   // Array.from(selects).forEach( function(element, index) {
 
   //   element.addEventListener('change',function(){
-
-
 
   //     var token = $('meta[name="csrf-token"]').attr('content');
 
