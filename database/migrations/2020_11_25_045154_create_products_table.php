@@ -19,8 +19,8 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('marque')->nullable();
             $table->string('unite_mesure')->nullable();
-            $table->float('quantite')->nullable();
-            $table->float('quantite_alert')->nullable();
+            $table->double('quantite',62,2)->nullable();
+            $table->double('quantite_alert',62,2)->nullable();
             $table->double('price',62,2)->nullable();
             $table->double('price_max',62,2)->nullable();
             $table->double('price_min',62,2)->nullable();
