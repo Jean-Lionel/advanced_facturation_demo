@@ -31,7 +31,6 @@ class CheckoutController extends Controller
         $request->validate([
             'name' => 'required|min:1',
             'type_paiement' => 'required'
-
         ]);
 
         if (Cart::count() <= 0) {
@@ -57,12 +56,19 @@ class CheckoutController extends Controller
 
             ]);
 
+            $cartInfo = $this->extractCart();
+
+            $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
+
+            
             $order = Order::create([
                 'amount' => Cart::total(),
+                'total_quantity' => Cart::count(),
+                'total_sacs' => $nombre_sac,
                 'tax' => Cart::tax(),
                 'type_paiement' => $request->type_paiement,
                 'amount_tax' => Cart::subtotal(),
-                'products'=> serialize($this->extractCart()),
+                'products'=> serialize($cartInfo),
                 'client'=> $client->toJson(),
 
             ]);
@@ -141,6 +147,7 @@ class CheckoutController extends Controller
                 'unite_mesure' => $item->model->unite_mesure,
                 'date_expiration' => $item->model->date_expiration,
                 'order_id' => $order_id,
+                'embalage' => $item->embalage
 
             ]);
 
@@ -168,10 +175,9 @@ class CheckoutController extends Controller
                 'rowId' => $item->rowId,
                 'price' => $item->price,
                 'quantite' => $item->qty,
-                
+                'nombre_sac' => ($item->qty / $item->options['embalage'] ?? 1 ),
+                'embalage' => $item->options['embalage'],
             ];
-
-          
         }
 
         return $products;

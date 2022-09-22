@@ -119,7 +119,7 @@
 					<tr>
 						<td>{{ $key +1 }}</td>
 						<td> {{ $product['name'] }}</td>
-						<td></td>
+						<td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td>
 						<td class="adroite"> {{ $product['quantite'] }}</td>
 						<td class="adroite"> {{ getPrice($product['price'] ) }}</td>
 						<td class="adroite"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
@@ -137,7 +137,12 @@
 						<td class="adroite"><b>{{ getPrice($order->tax) }}</b></td>
 					</tr>
 					<tr>
-						<td colspan="5">TOTAL TVAC</td>
+						<td colspan="2"><b>TOTAL TVAC</b></td>
+						<td class="adroite"><b>{{ $order->total_sacs}}</b></td>
+						<td class="adroite"><b>{{ $order->total_quantity}}</b></td>
+						
+						<td></td>
+						
 						<td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
 					</tbody>
 				</table>

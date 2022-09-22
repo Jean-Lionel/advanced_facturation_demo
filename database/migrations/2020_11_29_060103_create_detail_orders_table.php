@@ -19,6 +19,7 @@ class CreateDetailOrdersTable extends Migration
             $table->double('quantite' ,62,2);
             $table->double('quantite_stock', 62,2);
             $table->double('price_unitaire',62,2);
+            $table->double('embalage',62,2)->nullable();
             $table->string('code_product')->nullable();
             $table->string('name')->nullable();
             $table->string('unite_mesure')->nullable();
