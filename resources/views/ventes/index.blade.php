@@ -1,13 +1,9 @@
 @extends('layouts.app')
-
 @section('content')
 
 <div>
 	<div class="row">
-
-
 		<div class="col-md-6 d-flex justify-content-between">
-
 			<h4 class="text-center">
 				Liste des produits
 			</h4>
@@ -41,24 +37,18 @@
 				<td>
 					{{ $value->name}}
 				</td>
-
 				<td>{{ $value->price }}</td>
 				<td>{{ $value->quantite }}</td>
 				<td>{{ $value->date_expiration }}</td>
 				<td class="d-flex justify-content-around">
-					
 					<form action="{{ route('panier.store') }}" method="post">
 						@csrf
-
 						<input type="hidden" name="id" value="{{$value->id}}">
-
 						<button  type="submit" class="btn btn-sm btn-primary">+ Ajouter aux pannier</button>
 					</form>
 				</td>
 			</tr>
 			@endforeach
-
-
 		</tbody>
 	</table>
 	
@@ -70,36 +60,27 @@
 
 @if (Cart::content()->count() > 0)
 {{-- expr --}}
-
 <div>
 	<ul class="list-group">
-
 		<div class="row">
-
 			@foreach (Cart::content() as $product)
 			{{-- expr --}}
 			<div class="col-md-4">
 				<li class="list-group-item m-2 d-flex justify-content-between align-items-center">
 					{{ $product->name }}
 					<span class="badge badge-primary badge-pill">{{getPrice( $product->model->price) }}</span>
-
 					<form action="{{ route('cart.destroy',$product->rowId) }}" method="post">
                      @csrf
                      @method('DELETE')
                      <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                    </form>
-
 				</li>
 			</div>
 			@endforeach
-
-
 		</div>
 	</ul> 
 </div>
 @endif
-
-
 
 @endsection
 

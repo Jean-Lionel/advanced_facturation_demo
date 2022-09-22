@@ -57,7 +57,9 @@
 
 		<div class="form-group">
 			<label for="price_min">PRIX MINIMAL</label>
-			<input type="number" class="form-control {{$errors->has('price_min') ? 'is-invalid' : 'is-valid' }}" id="price_min" name="price_min" value="{{ old('price_min') ?? $product->price_min?? ' ' }}">
+			<input type="number"
+			step="any"
+			 class="form-control {{$errors->has('price_min') ?  'is-valid' : 'is-invalid'  }}" id="price_min" name="price_min" value="{{ old('price_min') ?? $product->price_min?? ' ' }}">
 
 			{!! $errors->first('price_min', '<small class="help-block invalid-feedback">:message</small>') !!}
 		</div>
@@ -69,7 +71,10 @@
 
 		<div class="form-group">
 			<label for="price_max">PRIX MAX</label>
-			<input type="number" class="form-control {{$errors->has('price_max') ? 'is-invalid' : 'is-valid' }}" id="price_max" name="price_max" value="{{ old('price_max') ?? $product->price_max?? ' ' }}">
+			<input type="number"
+			step="any"
+
+			 class="form-control {{$errors->has('price_max') ? 'is-invalid' : 'is-valid' }}" id="price_max" name="price_max" value="{{ old('price_max') ?? $product->price_max?? ' ' }}">
 
 			{!! $errors->first('price_max', '<small class="help-block invalid-feedback">:message</small>') !!}
 		</div>
@@ -80,7 +85,7 @@
 
 		<div class="form-group">
 			<label for="quantite_alert">QUANTITE MINIMUM</label>
-			<input type="number" class="form-control {{$errors->has('quantite_alert') ? 'is-invalid' : 'is-valid' }}" id="quantite_alert" name="quantite_alert" value="{{ old('quantite_alert') ?? $product->quantite_alert?? ' ' }}">
+			<input type="number" step="any" class="form-control {{$errors->has('quantite_alert') ? 'is-invalid' : 'is-valid' }}" id="quantite_alert" name="quantite_alert" value="{{ old('quantite_alert') ?? $product->quantite_alert?? ' ' }}">
 
 			{!! $errors->first('quantite_alert', '<small class="help-block invalid-feedback">:message</small>') !!}
 		</div>
@@ -95,7 +100,7 @@
 		
 		<div class="form-group">
 			<label for="price">PRIX UNITAIRE</label>
-			<input type="number" class="form-control {{$errors->has('price') ? 'is-invalid' : 'is-valid' }}" id="price" name="price" value="{{ old('price') ?? $product->price?? ' ' }}">
+			<input type="number" step="any" class="form-control {{$errors->has('price') ? 'is-invalid' : 'is-valid' }}" id="price" name="price" value="{{ old('price') ?? $product->price?? ' ' }}">
 
 			{!! $errors->first('price', '<small class="help-block invalid-feedback">:message</small>') !!}
 
@@ -144,7 +149,7 @@
 		
 		<div class="form-group">
 			<label for="quantite">QUANTITE</label>
-			<input type="number" class="form-control {{$errors->has('quantite') ? 'is-invalid' : 'is-valid' }}" id="quantite" name="quantite" value="{{ old('quantite') ?? $product->quantite?? ' ' }}">
+			<input type="number" step="any" class="form-control {{$errors->has('quantite') ? 'is-invalid' : 'is-valid' }}" id="quantite" name="quantite" value="{{ old('quantite') ?? $product->quantite?? ' ' }}">
 
 			{!! $errors->first('quantite', '<small class="help-block invalid-feedback">:message</small>') !!}
 

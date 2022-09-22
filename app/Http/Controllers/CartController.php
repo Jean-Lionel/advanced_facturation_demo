@@ -23,6 +23,11 @@ class CartController extends Controller
         return view('cart.index', compact('paniers'));
     }
 
+    public function vente(){
+
+        return view('cart.vente');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

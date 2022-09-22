@@ -81,7 +81,7 @@
   <!-- Page Content  -->
   <div id="content" class="p-0 p-md-6">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0">
       <div class="container-fluid">
 
         {{-- <button type="button" id="sidebarCollapse" class="btn btn-primary">
@@ -98,6 +98,9 @@
            
           <ul class="nav navbar-nav ml-auto">
             <li><h5 class="mr-4">{{ Auth::user()->name }}</h5></li>
+            <li>
+              <a href="{{ route('panier.vente') }}">Test</a>
+            </li>
             <li class="nav-item">
 
               <a href="{{ route('panier.index') }}" class="btn btn-primary">

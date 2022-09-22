@@ -42,7 +42,10 @@ Route::group(['middleware' => ['auth']], function () {
 
 //Cart ROUTE
 	Route::post('panier/ajouter','CartController@store')->name('panier.store');
+
 	Route::get('panier/index','CartController@index')->name('panier.index');
+	Route::get('panier/vente','CartController@vente')->name('panier.vente');
+
 	Route::delete('panier/{id}', 'CartController@destroy')->name('cart.destroy');
 	Route::post('update_panier', 'CartController@updatePanier')->name('cart.update_panier');
 	Route::get('journal', 'StockeController@journal')->name('stockes.journal');

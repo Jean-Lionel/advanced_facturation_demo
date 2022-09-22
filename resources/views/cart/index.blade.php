@@ -6,14 +6,14 @@
   <div class="pb-5">
     <div class="container">
       <div class="row">
-        <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+        <div class="col-lg-12 p-1 bg-white rounded shadow-sm mb-1">
           <!-- Shopping cart table -->
           <div class="table-responsive">
-            <table class="table">
+            <table class="table table-sm">
               <thead>
                 <tr>
                   <th scope="col" class="border-0 bg-light">
-                    <div class="p-2 px-3 text-uppercase">Product</div>
+                    <div class="p-2 px-3 text-uppercase">Produit</div>
                   </th>
                   <th scope="col" class="border-0 bg-light">
                     <div class="p-2 px-3 text-uppercase">MARGE DES PRIX ( #FBU)</div>
@@ -23,23 +23,24 @@
                       PRIX UNITAIRE
                     </div>
                   </th>
-                  <th scope="col" class="border-0 bg-light">
-                    <div class="py-2 text-uppercase">PRIX</div>
-                  </th>
+                  
                   <th scope="col" class="border-0 bg-light">
                     <div class="py-2 text-uppercase">CONDITIONEMENT</div>
                   </th>
                   <th scope="col" class="border-0 bg-light">
                     <div class="py-2 text-uppercase">QUANTITE</div>
                   </th>
+
                   <th scope="col" class="border-0 bg-light">
-                    <div class="py-2 text-uppercase">SUPPRIMMER</div>
+                    <div class="py-2 text-uppercase">PRIX</div>
+                  </th>
+                  <th scope="col" class="border-0 bg-light">
+                    <div class="py-2 text-uppercase">Action</div>
                   </th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($paniers as $product)
-
 
                 {{-- expr --}}
                 <tr>
@@ -55,10 +56,6 @@
 
                   </th>
 
-                  <th>
-                    <span id="{{ $product->rowId }}">{{ getPrice($product->subtotal())  }}</span>
-                  </th>
-
                   <td >
                   <input type="text" class="embalage" data-product="{{ $product->rowId }}" style="width:50px;" value="{{$product->options['embalage']}}"/>
                   <b>Kg/Sac</b>
@@ -66,14 +63,16 @@
 
                   <td class="border-0 align-middle">
 
-                   <select name="qty" id="qty" class="quantite quantite_select" data-id="{{ $product->rowId }}" class="custom-select">
-                     @for ($i = 1; $i <=$product->model->quantite ; $i++)
+                    <input type="number" 
+                    value="{{$product->qty}}"
 
-                     {{-- expr --}}
-                     <option value="{{ $i }}" {{ ($i == $product->qty) ? 'selected':'' }}>{{ $i }}</option>
-                     @endfor
-                   </select>
+                    data-id="{{ $product->rowId }}" class="quantite quantite_select" min="1" max="{{$product->model->quantite }}" >
+
                  </td>
+
+                 <th>
+                    <span id="{{ $product->rowId }}">{{ getPrice($product->subtotal())  }}</span>
+                  </th>
                  
                  <td class="border-0 align-middle">
 
@@ -84,6 +83,8 @@
                    </form>
 
                  </td>
+
+                 
                </tr>
                @endforeach
 
@@ -143,6 +144,10 @@
         </ul>
       </div>
     </div>
+  </div>
+
+  <div>
+    <h1 style="font-family: barcode;">Je suis un Millionaire</h1>
   </div>
 
 </div>
