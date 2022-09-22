@@ -94,19 +94,25 @@
          <!-- End -->
        </div>
      </div>
-     <div class="row py-5 p-4 bg-white rounded shadow-sm">
+     <div class="row py-2 p-1 bg-white rounded shadow-sm">
       <div class="col-lg-6">
-        <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">INFORMATION DU CLIENT</div>
+        <div class="bg-light rounded-pill px-1 py-1 text-uppercase font-weight-bold">INFORMATION DU CLIENT</div>
         <div class="p-1">
          <form action="{{ route('payement') }}" method="post">
           @csrf
           @method('post')
-          <div class="form-group">
+          <div class="row">
+            <div class="form-group col-md-5">
             <input required="" type="text" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
+           </div>
+
+           <div class="form-group col-md-6">
+           <input type="text" name="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
          </div>
-         <div class="form-group">
-           <input type="text" name="telephone" placeholder="Entrer le numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
-         </div>
+
+
+          </div>
+         
           <div class="form-group">
             <label for="type_paiement">MODE DE PAIEMENT</label>
            <select required="" class="form-control" name="type_paiement" id="">
@@ -124,20 +130,25 @@
           </div>
         </div> --}}
       </div>
-      <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Instructions pour le client</div>
+      <div class="bg-light rounded-pill px-1 py-1 text-uppercase font-weight-bold">Instructions pour le client</div>
     </div>
     <div class="col-lg-6">
-      <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Déscription  </div>
-      <div class="p-4">
-        <ul class="list-unstyled mb-4">
-          <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">PHTVA </strong>
-            <strong id="prix_hors_tva">{{getPrice(Cart::subtotal())}}</strong>
+      <div class="bg-light rounded-pill px-1 py-1 text-uppercase font-weight-bold">Déscription  </div>
+      <div class="p-2">
+        <ul class="list-unstyled mb-2">
+          <li class="d-flex justify-content-between py-2 border-bottom"><strong class="text-muted">PHTVA </strong>
+            <h5 id="prix_hors_tva" class="font-weight-bold">
+              <span>{{getPrice(Cart::subtotal())}}</span>
+            </h5>
           </li>
-          <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">TVA</strong><strong>{{ getPrice(Cart::tax()) }}</strong></li>
-          <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
+          <li class="d-flex justify-content-between py-2 border-bottom"><strong class="text-muted">TVA</strong>
+            <h5 class="font-weight-bold">
+          {{ getPrice(Cart::tax()) }}
+        </h5></li>
+          <li class="d-flex justify-content-between py-2 border-bottom"><strong class="text-muted">Total</strong>
             <h5 class="font-weight-bold">
 
-              <span id="total_montant">{{ getPrice(Cart::total()) }}</spna>
+              <b id="total_montant">{{ getPrice(Cart::total()) }}</b>
 
             </h5>
           </li>
@@ -146,9 +157,7 @@
     </div>
   </div>
 
-  <div>
-    <h1 style="font-family: barcode;">Je suis un Millionaire</h1>
-  </div>
+ 
 
 </div>
 </div>

@@ -16,8 +16,8 @@ class CreateDetailOrdersTable extends Migration
         Schema::create('detail_orders', function (Blueprint $table) {
             $table->id();
             $table->integer('product_id');
-            $table->float('quantite');
-            $table->float('quantite_stock');
+            $table->double('quantite' ,62,2);
+            $table->double('quantite_stock', 62,2);
             $table->double('price_unitaire',62,2);
             $table->string('code_product')->nullable();
             $table->string('name')->nullable();

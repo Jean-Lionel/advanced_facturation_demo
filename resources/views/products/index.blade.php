@@ -26,8 +26,9 @@
 				<th scope="col">#</th>
 				<th scope="col">CODE</th>
 				<th scope="col"> @sortablelink('name','Designation') </th>
-				<th scope="col">@sortablelink('price','Prix')  </th>
+				<th scope="col">@sortablelink('price','P U')  </th>
 				<th scope="col">@sortablelink('quantite','Qté')</th>
+				<th scope="col">@sortablelink('unite_mesure','Unite')</th>
 				<th scope="col">@sortablelink('quantite_alert','Alert')</th>
 				
 				<th scope="col">Category</th>
@@ -53,6 +54,10 @@
 
 					{{ $value->quantite }}
 
+				</td>
+
+				<td>
+					{{$value->unite_mesure}}
 				</td>
 
 				<td>
