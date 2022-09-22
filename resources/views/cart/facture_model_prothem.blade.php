@@ -11,12 +11,17 @@
 
 	<style>
 		@media print {
-
 			.noprint {
 				display: none;
 			}
-
 		}
+
+		.adroite{
+			text-align:right !important;
+			padding-right: 15px;	
+		}
+
+
 
 	</style>	
 </head>
@@ -114,25 +119,26 @@
 					<tr>
 						<td>{{ $key +1 }}</td>
 						<td> {{ $product['name'] }}</td>
-						<td> {{ $product['quantite'] }}</td>
-						<td> {{ getPrice($product['price'] ) }}</td>
-						<td> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
+						<td></td>
+						<td class="adroite"> {{ $product['quantite'] }}</td>
+						<td class="adroite"> {{ getPrice($product['price'] ) }}</td>
+						<td class="adroite"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
 					</tr>
 
 					@endforeach
 
 
 					<tr>
-						<td colspan="3">PVT HTVA </td>
-						<td></td>
+						<td colspan="5">PVT HTVA </td>
+						<td class="adroite"><b>{{ getPrice($order->amount_tax) }}</b></td>
 					</tr>
 					<tr>
-						<td colspan="3">TVA ( 18 %)</td>
-						<td></td>
+						<td colspan="5">TVA ( 18 %)</td>
+						<td class="adroite"><b>{{ getPrice($order->tax) }}</b></td>
 					</tr>
 					<tr>
-						<td colspan="3">TOTAL TVAC</td>
-						<td></td>
+						<td colspan="5">TOTAL TVAC</td>
+						<td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
 					</tbody>
 				</table>
 				<h4>Mention Obligatoire</h4>
@@ -156,6 +162,7 @@
 
 		<script>
 			function print(){
+
 
 				printJS({
 					printable: "printJS-form",
