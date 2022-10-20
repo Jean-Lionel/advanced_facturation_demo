@@ -11,13 +11,16 @@ class SendInvoiceToOBR extends Controller
     private string $baseUrl = 'http://41.79.226.28:8345/ebms_api/';
 
     public function __construct(){
-        dump($this->checkTin("4000235731"));
+        // 4002060640
+        dump($this->checkTin("4000202020"));
         dd("je suis");
     }
 
 
     public function checkTin(string $tp_TIN){
         $token = $this->getToken();
+        // Enlevement des espaces
+        $tp_TIN = trim($tp_TIN);
         $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'checkTIN/',[
             'tp_TIN' => $tp_TIN
         ]);
