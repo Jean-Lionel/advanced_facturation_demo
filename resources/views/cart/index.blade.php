@@ -112,7 +112,7 @@
 
          </div>
          <div class="form-group">
-          <input type="text" name="addresse_client" placeholder="Addresse du client" aria-describedby="button-addon3" class="form-control border-2">
+          <input type="text" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
         </div>
 
         <input type="hidden" value="CACHE" name="type_paiement" >

@@ -17,7 +17,7 @@ class Order extends Model
 
 
     protected $fillable = ['amount',
-'products','user_id','tax','amount_tax','client','type_paiement', 'total_quantity', 'total_sacs'];
+'products','user_id','tax','amount_tax','client','type_paiement', 'total_quantity', 'total_sacs', 'addresse_client'];
 
  public $sortable = ['amount',
 'products','user_id','tax','amount_tax','client','type_paiement'];
