@@ -18,13 +18,13 @@ class CreateOrdersTable extends Migration
 
             $table->double('amount',60,2);
             $table->double('tax',60,2);
-
             $table->double('total_quantity',60,2);
             $table->double('total_sacs',60,2);
             $table->double('amount_tax',60,2);
             $table->string('type_paiement');
             $table->text('products');
             $table->text('client')->nullable();
+            $table->text('addresse_client')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('client_id')->nullable();
             $table->timestamps();

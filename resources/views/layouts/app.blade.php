@@ -98,9 +98,7 @@
            
           <ul class="nav navbar-nav ml-auto">
             <li><h5 class="mr-4">{{ Auth::user()->name }}</h5></li>
-            <li>
-              <a href="{{ route('panier.vente') }}">Test</a>
-            </li>
+           
             <li class="nav-item">
 
               <a href="{{ route('panier.index') }}" class="btn btn-primary">

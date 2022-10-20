@@ -48,7 +48,7 @@
                     {{$product->name}}
                   </th>
 
-                   <th scope="row" class="border-0">
+                  <th scope="row" class="border-0">
                     {{getPrice($product->model->price_min) . ' - '. getPrice($product->model->price_max)}}   
                   </th>
                   <th>
@@ -57,9 +57,9 @@
                   </th>
 
                   <td >
-                  <input type="text" class="embalage" data-product="{{ $product->rowId }}" style="width:50px;" value="{{$product->options['embalage']}}"/>
-                  <b>Kg/Sac</b>
-                 </td>
+                    <input type="text" class="embalage" data-product="{{ $product->rowId }}" style="width:50px;" value="{{$product->options['embalage']}}"/>
+                    <b>Kg/Sac</b>
+                  </td>
 
                   <td class="border-0 align-middle">
 
@@ -68,13 +68,13 @@
 
                     data-id="{{ $product->rowId }}" class="quantite quantite_select" min="1" max="{{$product->model->quantite }}" >
 
-                 </td>
+                  </td>
 
-                 <th>
+                  <th>
                     <span id="{{ $product->rowId }}">{{ getPrice($product->subtotal())  }}</span>
                   </th>
-                 
-                 <td class="border-0 align-middle">
+
+                  <td class="border-0 align-middle">
 
                    <form action="{{ route('cart.destroy',$product->rowId) }}" method="post">
                      @csrf
@@ -103,24 +103,28 @@
           @method('post')
           <div class="row">
             <div class="form-group col-md-5">
-            <input required="" type="text" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
+              <input required="" type="text" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
+            </div>
+
+            <div class="form-group col-md-6">
+             <input type="text" name="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
            </div>
 
-           <div class="form-group col-md-6">
-           <input type="text" name="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
          </div>
+         <div class="form-group">
+          <input type="text" name="addresse_client" placeholder="Addresse du client" aria-describedby="button-addon3" class="form-control border-2">
+        </div>
 
+        <input type="hidden" value="CACHE" name="type_paiement" >
 
-          </div>
-         
-          <div class="form-group">
+        {{--   <div class="form-group">
             <label for="type_paiement">MODE DE PAIEMENT</label>
            <select required="" class="form-control" name="type_paiement" id="">
              <option value="">Choisissez ...</option>
              <option value="CACHE">EN CACHE</option>
              <option value="DETTE">DETTE</option>
            </select>
-         </div>
+         </div> --}}
          <button type="submit" class="btn btn-dark rounded-pill py-2 btn-block">Valider</button>
        </form>
         {{--  <div class="input-group mb-4 border rounded-pill p-2">
@@ -143,23 +147,23 @@
           </li>
           <li class="d-flex justify-content-between py-2 border-bottom"><strong class="text-muted">TVA</strong>
             <h5 class="font-weight-bold">
-          {{ getPrice(Cart::tax()) }}
-        </h5></li>
-          <li class="d-flex justify-content-between py-2 border-bottom"><strong class="text-muted">Total</strong>
-            <h5 class="font-weight-bold">
+              {{ getPrice(Cart::tax()) }}
+            </h5></li>
+            <li class="d-flex justify-content-between py-2 border-bottom"><strong class="text-muted">Total</strong>
+              <h5 class="font-weight-bold">
 
-              <b id="total_montant">{{ getPrice(Cart::total()) }}</b>
+                <b id="total_montant">{{ getPrice(Cart::total()) }}</b>
 
-            </h5>
-          </li>
-        </ul>
+              </h5>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
+
+
+
   </div>
-
- 
-
-</div>
 </div>
 </div>
 
@@ -174,7 +178,7 @@
   let quantite_select = $('.quantite_select');
   let embalage = $('.embalage');
 
-   embalage.on('blur', function(){
+  embalage.on('blur', function(){
     let product_id = this.getAttribute('data-product');
     let embalage = this.value;
     $.ajax(

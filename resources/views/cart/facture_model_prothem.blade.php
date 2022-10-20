@@ -20,21 +20,14 @@
 			text-align:right !important;
 			padding-right: 15px;	
 		}
-
-
-
 	</style>	
 </head>
 <body>
 
 	<div class="noprint header-element">
-
 		<button onclick="print()" class="noprint">Imprimmer</button>
-
 		<a href="{{ route('ventes.index') }}">Retour</a>
 	</div>
-
-
 	<div class="main-content">
 		{{-- Entete --}}
 		<header class="header-facture">
@@ -92,7 +85,7 @@
 			<div>
 				<h5>B. Client</h5>
 				<p>Nom et Prénom ou Raison Socail : <b>{{  collect(json_decode($order->client))->get('name') ?? "" }}</b></p>
-				<p>Résident à : <b>Gihosha</b></p>
+				<p>Résident à : <b>{{ $order->addresse_client }}</b></p>
 				<p>Assujeti à la TVA : OUI        NON</p>
 				<h5>Doit pour ce qui suit : </h5>
 			</div>

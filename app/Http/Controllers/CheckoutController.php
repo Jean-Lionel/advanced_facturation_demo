@@ -30,7 +30,7 @@ class CheckoutController extends Controller
 
         $request->validate([
             'name' => 'required|min:1',
-            'type_paiement' => 'required'
+           
         ]);
 
         if (Cart::count() <= 0) {
@@ -52,7 +52,7 @@ class CheckoutController extends Controller
             $client =  Client::create([
                 'name' => $request->name,
                 'telephone' => $request->telephone ?? "0000",
-                'description' => $request->description ?? ""
+                'description' => $request->addresse_client ?? "",
 
             ]);
 
@@ -70,6 +70,7 @@ class CheckoutController extends Controller
                 'amount_tax' => Cart::subtotal(),
                 'products'=> serialize($cartInfo),
                 'client'=> $client->toJson(),
+                'addresse_client'=> $request->addresse_client,
 
             ]);
 
