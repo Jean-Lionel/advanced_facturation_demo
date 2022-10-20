@@ -11,7 +11,7 @@
         "php": "^7.4|^8.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.5",
         "hardevine/shoppingcart": "^2.9",
         "inertiajs/inertia-laravel": "^0.2.4",
         "kyslik/column-sortable": "^6.4",
