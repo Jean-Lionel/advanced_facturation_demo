@@ -11,7 +11,7 @@ class SendInvoiceToOBR extends Controller
     private string $baseUrl = 'http://41.79.226.28:8345/ebms_api/';
 
     public function __construct(){
-        dump($this->checkTin("4000235782"));
+        dump($this->checkTin("4000235731"));
         dd("je suis");
     }
 
@@ -23,7 +23,18 @@ class SendInvoiceToOBR extends Controller
         ]);
         $response = json_decode($req->body());
 
-        return $response;
+        if( $response->success){
+            // Nom du contribuable 
+            return [
+                'success' => true,
+                'tp_TIN' => $response->result->taxpayer[0]->tp_name
+            ];
+        }
+
+        return  [
+            'success' => false,
+            'msg' => $response->msg
+        ];
     }
 
 
