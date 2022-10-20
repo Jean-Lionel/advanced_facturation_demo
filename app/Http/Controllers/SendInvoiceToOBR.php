@@ -12,7 +12,7 @@ class SendInvoiceToOBR extends Controller
 
     public function __construct(){
         // 4002060640
-        dump($this->checkTin("4000202020"));
+        dump($this->addInvoice());
         dd("je suis");
     }
 
@@ -43,31 +43,66 @@ class SendInvoiceToOBR extends Controller
 
     public function addInvoice(){
 
-        $invoince = [
-            'invoice_number' => '',
-            'invoice_date' => '',
-            'tp_type' => '2',
-            'tp_name' => 'DUKORE TECK',
-            'tp_TIN' => 'DUKORE TECK',
-            'tp_trade_number' => 'DUKORE TECK',
-            'tp_postal_number' => 'DUKORE TECK',
-            'tp_phone_number' => 'DUKORE TECK',
-            'tp_phone_number' => 'DUKORE TECK',
-            'tp_address_commune' => 'DUKORE TECK',
-            'tp_address_quartier' => 'DUKORE TECK',
-            'tp_address_avenue' => 'DUKORE TECK',
-            'tp_address_number' => 'DUKORE TECK',
-            'vat_taxpayer' => 'DUKORE TECK',
-            'ct_taxpayer' => 'DUKORE TECK',
-            'tl_taxpayer' => 'DUKORE TECK',
-            'tp_fiscal_center' => 'DUKORE TECK',
-            'tp_activity_sector' => 'DUKORE TECK',
-            'tp_legal_form' => 'DUKORE TECK',
-            'invoince_item' => 'DUKORE'
-        ];
-        $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'addInvoice/',[
-            'invoice_signature' => $invoice_signature
-        ]);
+        $invoince =[
+                "invoice_number" => "0001/2021",
+                "invoice_date" => "2021-12-06 00:00:00",
+                "tp_type" => "1",
+                "tp_name" => "NDIKUMANA JEAN MARIE",
+                "tp_TIN" => "4000773244",
+                "tp_trade_number" => "3333",
+                "tp_postal_number" => "3256",
+                "tp_phone_number" => "79959590",
+                "tp_address_commune" => "BUJUMBURA",
+                "tp_address_quartier" => "GIKUNGU",
+                "tp_address_avenue" => "MUYINGA",*
+                "tp_address_number" => "",
+                "vat_taxpayer" => "1",
+                "ct_taxpayer" => "0",
+                "tl_taxpayer" => "0",
+                "tp_fiscal_center" => "DGC",
+                "tp_activity_sector" => "SERVICE MARCHAND",
+                "tp_legal_form" => "suprl",
+                "payment_type" => "banque",
+                "customer_name" => "NGARUKIYINTWARI WAKA",
+                "customer_TIN" => "4000202020",
+                "customer_address" => "KIRUNDO",
+                "vat_customer_payer" => "1",
+                "invoice_type" => "FN",
+                "cancelled_invoice_ref" => "",
+                "invoice_signature" => "111333555444",
+                "invoice_signature_date" => "2021-12-06 00:00:00",
+                "invoice_items" => [
+                    [
+                        "item_designation" => "10",
+                        "item_quantity" => "10",
+                                                "item_price" => "500",
+                        "item_ct" => "0",
+                        "item_tl" => "0",
+                        "item_price_nvat" => "5000",
+                        "vat" => "18",
+                        "item_price_wvat" => "5900",
+                        "item_total_amount" => "5900",
+
+                    ],
+                    [
+                        "item_designation" => "45",
+                        "item_quantity" => "10",
+                        "item_price" => "200",
+                        "item_ct" => "0",
+                        "item_tl" => "0",
+                        "item_price_nvat" => "90000",
+                        "vat" => "18",
+                        "item_price_wvat" => "106200",
+                        "item_total_amount" => "106200",
+
+                    ]
+                ]
+            ];
+
+
+        $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'addInvoice/',$invoince);
+
+        return $req->body();
     }
 
     // Get Invoince 
