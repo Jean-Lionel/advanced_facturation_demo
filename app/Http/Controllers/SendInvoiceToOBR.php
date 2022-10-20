@@ -11,14 +11,46 @@ class SendInvoiceToOBR extends Controller
     private string $baseUrl = 'http://41.79.226.28:8345/ebms_api/';
 
     public function __construct(){
-        dump($this->getInvoice("45258555555555555555"));
+        dump($this->checkTin("4000235782"));
         dd("je suis");
+    }
+
+
+    public function checkTin(string $tp_TIN){
+        $token = $this->getToken();
+        $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'checkTIN/',[
+            'tp_TIN' => $tp_TIN
+        ]);
+        $response = json_decode($req->body());
+
+        return $response;
     }
 
 
     public function addInvoice(){
 
-        
+        $invoince = [
+            'invoice_number' => '',
+            'invoice_date' => '',
+            'tp_type' => '2',
+            'tp_name' => 'DUKORE TECK',
+            'tp_TIN' => 'DUKORE TECK',
+            'tp_trade_number' => 'DUKORE TECK',
+            'tp_postal_number' => 'DUKORE TECK',
+            'tp_phone_number' => 'DUKORE TECK',
+            'tp_phone_number' => 'DUKORE TECK',
+            'tp_address_commune' => 'DUKORE TECK',
+            'tp_address_quartier' => 'DUKORE TECK',
+            'tp_address_avenue' => 'DUKORE TECK',
+            'tp_address_number' => 'DUKORE TECK',
+            'vat_taxpayer' => 'DUKORE TECK',
+            'ct_taxpayer' => 'DUKORE TECK',
+            'tl_taxpayer' => 'DUKORE TECK',
+            'tp_fiscal_center' => 'DUKORE TECK',
+            'tp_activity_sector' => 'DUKORE TECK',
+            'tp_legal_form' => 'DUKORE TECK',
+            'invoince_item' => 'DUKORE'
+        ];
         $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'addInvoice/',[
             'invoice_signature' => $invoice_signature
         ]);
