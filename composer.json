@@ -49,7 +49,10 @@
             "Database\\Seeders\\": "database/seeders/"
         },
 
-        "files": ["app/Helpers/helpers.php", "app/Helpers/confuguration.php"]
+        "files": [
+            "app/Helpers/helpers.php",
+            "app/Helpers/confuguration.php"
+     ]
     },
     "autoload-dev": {
         "psr-4": {

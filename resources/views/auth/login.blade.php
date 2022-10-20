@@ -1,8 +1,5 @@
 <x-guest-layout>
     <x-jet-authentication-card>
-
-        
-
         <x-jet-validation-errors class="mb-4" />
 
         @if (session('status'))
