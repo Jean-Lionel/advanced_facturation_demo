@@ -11,15 +11,32 @@ class SendInvoiceToOBR extends Controller
     private string $baseUrl = 'http://41.79.226.28:8345/ebms_api/';
 
     public function __construct(){
+        dump($this->getInvoice("45258555555555555555"));
+        dd("je suis");
+    }
+
+
+    public function addInvoice(){
+
+        
+        $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'addInvoice/',[
+            'invoice_signature' => $invoice_signature
+        ]);
+    }
+
+    // Get Invoince 
+
+    public function getInvoice($invoice_signature){
 
         $token = $this->getToken();
-        
         $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'getInvoice/',[
-            'invoice_signature' => ''
+            'invoice_signature' => $invoice_signature
         ]);
+        $response = json_decode($req->body());
+        $success = $response->success;
+        $message = $response->msg;
 
-        dump($req->body());
-        dd("je suis");
+        return $message;
     }
 
     // Generation du TOken
