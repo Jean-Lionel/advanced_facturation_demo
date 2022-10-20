@@ -28,9 +28,15 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
-
         return view('clients.create');
+    }
+
+    public function getClient($id){
+        $client = Client::find($id);
+
+        return response()->json( [
+            'client' => $client
+        ]);
     }
 
     /**
@@ -104,8 +110,6 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
-
         $client->delete();
     }
 }

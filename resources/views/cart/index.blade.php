@@ -101,8 +101,8 @@
          <form action="{{ route('payement') }}" method="post">
           <div class="d-flex justify-content-between">
             <p>
-              <input type="text" placeholder="Numero du client">
-              <button>Rechercher</button>
+              <input type="text" id="clientNumber" placeholder="Numero du client">
+              <button onclick="searchClient()" class="btn-sm btn-info">Rechercher</button>
             </p>
             <p > 
               <input type="checkbox" style="cursor:pointer" name="vat_customer_payer" id="vat_customer_payer">
@@ -271,6 +271,23 @@
     })
 
   })
+
+  function searchClient(){
+    const client_id = $("#clientNumber").val();
+
+    $.ajax({
+      url : "{{ asset('getClient') }}/" + client_id,
+      method : 'get'
+    }).done(function(data){
+      
+      console.log(data)
+    }).catch(function(error){
+      console.log(error)
+    })
+  }
+
+
+
   // var selects = document.querySelectorAll("#qty")
 
   // Array.from(selects).forEach( function(element, index) {
