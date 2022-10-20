@@ -99,6 +99,17 @@
         <div class="bg-light rounded-pill px-1 py-1 text-uppercase font-weight-bold">INFORMATION DU CLIENT</div>
         <div class="p-1">
          <form action="{{ route('payement') }}" method="post">
+          <div class="d-flex justify-content-between">
+            <p>
+              <input type="text" placeholder="Numero du client">
+              <button>Rechercher</button>
+            </p>
+            <p > 
+              <input type="checkbox" style="cursor:pointer" name="vat_customer_payer" id="vat_customer_payer">
+              <label for="vat_customer_payer" style="cursor:pointer">Client est assujetti à la TVA</label>
+            </p>
+          </div>
+          
           @csrf
           @method('post')
           <div class="row">
@@ -118,6 +129,8 @@
           <div class="form-group col-md-6">
             <input type="text" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
           </div>
+
+          
 
         </div>
         
