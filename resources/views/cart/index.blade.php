@@ -102,7 +102,7 @@
           @csrf
           @method('post')
           <div class="row">
-            <div class="form-group col-md-5">
+            <div class="form-group col-md-6">
               <input required="" type="text" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
             </div>
 
@@ -111,9 +111,16 @@
            </div>
 
          </div>
-         <div class="form-group">
-          <input type="text" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
+         <div class="row">
+           <div class="form-group col-md-6">
+            <input type="text" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="form-control border-2">
+          </div>
+          <div class="form-group col-md-6">
+            <input type="text" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
+          </div>
+
         </div>
+        
 
         <input type="hidden" value="CACHE" name="type_paiement" >
 
