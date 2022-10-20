@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Vente;
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Http\Controllers\SendInvoiceToOBR;
 
 class VenteController extends Controller
 {
@@ -20,7 +21,7 @@ category_id
 public function index()
 {
 
-
+   $x = new SendInvoiceToOBR();
 
     $search = \Request::get('search'); 
      
