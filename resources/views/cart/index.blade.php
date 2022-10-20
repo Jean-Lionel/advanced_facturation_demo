@@ -114,20 +114,20 @@
           @method('post')
           <div class="row">
             <div class="form-group col-md-6">
-              <input required="" type="text" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
+              <input required="" type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
             </div>
 
             <div class="form-group col-md-6">
-             <input type="text" name="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
+             <input type="text" name="telephone" id="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
            </div>
 
          </div>
          <div class="row">
            <div class="form-group col-md-6">
-            <input type="text" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="form-control border-2">
+            <input type="text" id="customer_TIN" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="form-control border-2">
           </div>
           <div class="form-group col-md-6">
-            <input type="text" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
+            <input type="text" id="addresse_client" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
           </div>
 
           
@@ -273,14 +273,21 @@
   })
 
   function searchClient(){
+     window.event.preventDefault();
+    
     const client_id = $("#clientNumber").val();
-
     $.ajax({
       url : "{{ asset('getClient') }}/" + client_id,
       method : 'get'
     }).done(function(data){
-      
-      console.log(data)
+      const client = data.client;
+
+      $("#name").val(client.name)
+      $("#telephone").val(client.telephone)
+      $("#addresse_client").val(client.addresse)
+      $("#customer_TIN").val(client.customer_TIN)
+      $("#vat_customer_payer").val(client.vat_customer_payer)
+
     }).catch(function(error){
       console.log(error)
     })
