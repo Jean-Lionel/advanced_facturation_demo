@@ -27,12 +27,9 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
      
-
         $request->validate([
             'name' => 'required|min:1',
-           
         ]);
-
         if (Cart::count() <= 0) {
             Session::flash('error', 'Votre panier est vide.');
             return redirect()->route('products.index');
@@ -48,19 +45,17 @@ class CheckoutController extends Controller
             DB::beginTransaction();
 
             $this->stockUpdated();
-
             $client =  Client::create([
                 'name' => $request->name,
                 'telephone' => $request->telephone ?? "0000",
-                'description' => $request->addresse_client ?? "",
-
-            ]);
-
+                'description' =>  "",
+                'addresse' => $request->addresse_client ?? "",
+                'customer_TIN' => $request->customer_TIN ?? "",
+                'vat_customer_payer' => $request->vat_customer_payer ?? "",
+                ]);
             $cartInfo = $this->extractCart();
 
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
-
-            
             $order = Order::create([
                 'amount' => Cart::total(),
                 'total_quantity' => Cart::count(),
