@@ -4,8 +4,6 @@
 
 <div>
 	<div class="row">
-
-
 		<div class="col-md-6 d-flex justify-content-between">
 			<a href="{{ route('clients.create') }}" 
 			class="btn btn-primary btn-sm">Ajouter</a>

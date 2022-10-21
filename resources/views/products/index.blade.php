@@ -3,9 +3,10 @@
 @section('content')
 
 <div>
+	<div class="d-flex justify-content-end">
+		<div><a href="{{ route('categories.index') }}"><span class="fa fa-paper-plane"></span> Category</a></div>
+	</div>
 	<div class="row">
-
-
 		<div class="col-md-6 d-flex justify-content-between">
 			<a href="{{ route('bon_entre') }}" 
 			class="btn btn-primary btn-sm">Les entres et les sorties</a>

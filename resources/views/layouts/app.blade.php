@@ -55,9 +55,6 @@
         <a href="{{ route('stockes.journal') }}"><span class="fa fa-calendar"></span> Journal</a>
       </li> 
 
-      <li>
-        <a href="{{ route('categories.index') }}"><span class="fa fa-paper-plane"></span> Category</a>
-      </li>
 
       <li>
         <a href="{{ route('depenses.index') }}"><span class="fa fa-minus"></span> Depense</a>
