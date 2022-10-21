@@ -33,6 +33,7 @@ class CreateEntreprisesTable extends Migration
             $table->string('tp_activity_sector')->nullable();
             $table->string('tp_legal_form')->nullable();
             $table->string('payment_type')->nullable();
+            $table->foreignId('user_id');
             $table->timestamps();
             $table->softDeletes();
         });

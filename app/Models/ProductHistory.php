@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EntrepriseHistory extends Model
+class ProductHistory extends Model
 {
-    use HasFactory, SoftDeletes;
-    protected $guarded = [];
+    use HasFactory;
 }

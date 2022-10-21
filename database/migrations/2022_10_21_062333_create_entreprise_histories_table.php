@@ -16,6 +16,7 @@ class CreateEntrepriseHistoriesTable extends Migration
         Schema::create('entreprise_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('entreprise_id');
+            $table->foreignId('user_id');
             $table->string('tp_name');
             $table->string('tp_type');
             $table->string('tp_TIN');
