@@ -13,9 +13,10 @@
 				<th>Article</th>
 				<th>Unité</th>
 				<th>St.Initial</th>
-				<th>Entrées</th>
-				<th>Sorties</th>
+				<th>Action</th>
+				<th>Qte</th>
 				<th>St.Théoriq.</th>
+				<th>Date</th>
 			</tr>
 		</thead>
 
@@ -25,15 +26,20 @@
 				{{-- expr --}}
 				@php
 				$article = json_decode($product->details);
+				$total = ($product->action == "VENTE") ? 
+				$article->quantite + $product->quantite :
+				$article->quantite - $product->quantite ;
+
 				@endphp
 				<tr>
 				<td>{{ ++$loop->index }}</td>
-				<td>@dump($article )</td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td>{{ $article->name}} </td>
+				<td>{{ $article->unite_mesure }}</td>
+				<td>{{ $article->quantite }}</td>
+				<td>{{ $product->action }}</td>
+				<td>{{ $product->quantite }}</td>
+				<td>{{ $total }}</td>
+				<td>{{ $product->created_at}}</td>
 			</tr>
 			@endforeach
 			
