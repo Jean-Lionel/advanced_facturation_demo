@@ -14,5 +14,4 @@ define('BASE_CENTRE_FISCAL','DGC');
 define('BASE_AVENUE','BLV DE L\'UPRONA, N° 97');
 define('BASE_TVA',18);
 define('BASE_UNITE_EMBALLAGE',50);
-
 ?>
