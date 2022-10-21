@@ -161,7 +161,9 @@
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/chart.js.2.9.4_Chart.min.js') }}"></script>
 
-<script src="{{ asset('js/main.js') }}"></script>
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('datatable/datatables.min.js') }}"></script>
+<script src="{{ asset('datatable/pdfmake.min.js') }}"></script>
 <script src="{{ asset('js/main.js') }}"></script>
 
  @livewireScripts
