@@ -26,7 +26,7 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-     
+
         $request->validate([
             'name' => 'required|min:1',
         ]);
@@ -37,7 +37,7 @@ class CheckoutController extends Controller
 
         if ($this->noLongerStock()) {
             Session::flash('error', 'Un produit de votre panier ne se trouve plus en stock.');
-            return response()->json(['success' => false], 400);
+            return redirect()->route('products.index');
         }
 
         try {
@@ -95,7 +95,6 @@ class CheckoutController extends Controller
             return back();
             
         }
-
 
     return view('cart.facture_model_prothem', compact('order'));
 

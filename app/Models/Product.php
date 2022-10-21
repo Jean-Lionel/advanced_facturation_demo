@@ -25,9 +25,6 @@ class Product extends MyModel
 // date_expiration
 // description
 // category_id
-
-
-
     protected $fillable = ['code_product','name','price','date_expiration','quantite','quantite_alert','category_id','unite_mesure','price_min','price_max','description','marque'];
 
     protected $sortable= ['code_product','name','price','date_expiration','quantite','quantite_alert','category_id','unite_mesure','price_min','price_max','description','marque'];
