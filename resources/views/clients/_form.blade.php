@@ -12,10 +12,10 @@
 
 			<div class="col-md-12">
 				<div class="form-group">
-					<label for="first_name">NOM</label>
-					<input type="text" class="form-control {{$errors->has('first_name') ? 'is-invalid' : 'is-valid' }}" id="first_name" name="first_name" value="{{ old('first_name') ?? $client->first_name?? ' ' }}">
+					<label for="name">NOM</label>
+					<input type="text" class="form-control {{$errors->has('name') ? 'is-invalid' : 'is-valid' }}" id="name" name="name" value="{{ old('name') ?? $client->name?? ' ' }}">
 
-					{!! $errors->first('first_name', '<small class="help-block invalid-feedback">:message</small>') !!}
+					{!! $errors->first('name', '<small class="help-block invalid-feedback">:message</small>') !!}
 
 				</div>
 			</div>

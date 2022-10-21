@@ -50,7 +50,7 @@ class ClientController extends Controller
         //
 
         $request->validate([
-            'first_name' => 'required', 
+            'name' => 'required', 
         ]);
 
         Client::create($request->all());
