@@ -31,6 +31,17 @@ class Product extends MyModel
     protected $fillable = ['code_product','name','price','date_expiration','quantite','quantite_alert','category_id','unite_mesure','price_min','price_max','description','marque'];
 
     protected $sortable= ['code_product','name','price','date_expiration','quantite','quantite_alert','category_id','unite_mesure','price_min','price_max','description','marque'];
+
+    public static function boot(){
+        parent::boot();
+
+        self::creating(function($model){
+            $model->user_id = auth()->user()->id;
+        });
+        self::updating(function($model){
+            $model->user_id = auth()->user()->id;
+        });
+    }
     
     public function category()
     {
