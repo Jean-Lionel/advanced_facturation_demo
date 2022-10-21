@@ -32,7 +32,6 @@ class SendInvoiceToOBR extends Controller
                 'tp_TIN' => $response->result->taxpayer[0]->tp_name
             ];
         }
-
         return  [
             'success' => false,
             'msg' => $response->msg
