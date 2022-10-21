@@ -135,59 +135,33 @@
 				@endforeach
 			</select>
 			{!! $errors->first('category_id', '<small class="help-block invalid-feedback">:message</small>') !!}
-
 		</div>
-		
-
 	</div>
-
 	<div class="col-md-3">
-		
 		<div class="form-group">
 			<label for="quantite">QUANTITE</label>
 			<input type="text" step="any" class="form-control {{$errors->has('quantite') ? 'is-invalid' : 'is-valid' }}" id="quantite" name="quantite" value="{{ old('quantite') ?? $product->quantite?? ' ' }}">
-
 			{!! $errors->first('quantite', '<small class="help-block invalid-feedback">:message</small>') !!}
-
 		</div>
-		
-
 	</div>
 	<div class="col-md-3">
-		
 		<div class="form-group">
 			<label for="description">Spécification techinque</label>
-			
 			<textarea name="description" class="form-control {{ $errors->has('description') ? 'is-invalid' :'' }}" cols="30" >{{ old('description') ?? $product->description ?? "" }}</textarea>
-
 			{!! $errors->first('description', '<small class="help-block invalid-feedback">:message</small>') !!}
-
 		</div>
-		
-
 	</div>
-
-	
 	<div class="col-md-3">
-		
 		<div class="form-group">
 			<label for=""></label>
 			<input type="submit" value="{{ $btnMessage ?? 'Enregitrer' }}" class="form-control btn-primary">
 		</div>
-
 	</div>
-
 	<div class="col-md-3">
-		
 		<div class="form-group">
 			<label for=""></label>
 			<input type="reset" value="Annuler" class="form-control btn-warning">
 		</div>
-
 	</div>
-
-
-
-
 </div>
 

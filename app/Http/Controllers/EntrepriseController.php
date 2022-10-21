@@ -16,6 +16,9 @@ class EntrepriseController extends Controller
     public function index()
     {
         //
+        $entreprises = Entreprise::latest()->get();
+
+        return $this->render('entreprises.index', compact('entreprises'));
     }
 
     /**

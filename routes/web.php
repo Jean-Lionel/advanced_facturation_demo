@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EntrepriseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('categories', CategoryController::class);
 	Route::resource('ventes', VenteController::class);
 	Route::resource('orders', OrderController::class);
+	Route::resource('entreprises', EntrepriseController::class);
 	Route::resource('depenses', DepenseController::class);
 	Route::resource('users', UserController::class);
 	Route::resource('services', ServiceController::class);
