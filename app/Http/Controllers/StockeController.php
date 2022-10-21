@@ -122,8 +122,8 @@ class StockeController extends Controller
     }
     public function fiche_stock(){
         
-        
-        return view('journals.fiche_stock');
+        $follow_products = FollowProduct::all();
+        return view('journals.fiche_stock', compact('follow_products'));
     }
 
     public function journal_history(){

@@ -20,15 +20,23 @@
 		</thead>
 
 		<tbody>
-			<tr>
-				<td></td>
-				<td></td>
+
+			@foreach ($follow_products as $product)
+				{{-- expr --}}
+				@php
+				$article = json_decode($product->details);
+				@endphp
+				<tr>
+				<td>{{ ++$loop->index }}</td>
+				<td>@dump($article )</td>
 				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>
 			</tr>
+			@endforeach
+			
 			
 		</tbody>
 	</table>
