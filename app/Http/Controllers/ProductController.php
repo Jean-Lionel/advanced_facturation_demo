@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\FollowProduct;
 use App\Models\Product;
-
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\FollowProduct;
+use App\Models\ProductHistory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
@@ -20,9 +20,6 @@ class ProductController extends Controller
 
     public function __construct(){
         //$this->authorize('is-admin');
-
-
-
        // dd(Gate::allows('is-vente'));
     }
     public function index()
@@ -139,8 +136,10 @@ class ProductController extends Controller
         'quantite_alert' => 'numeric|min:2',
 
         ]);
+        $p = $product->toArray();
 
-         $product->update($request->all());
+        ProductHistory::create($p);
+        $product->update($request->all());
 
          return $this->index();
     }

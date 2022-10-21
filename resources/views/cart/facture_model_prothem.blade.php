@@ -165,7 +165,7 @@
 				printJS({
 					printable: "printJS-form",
 					type: 'html',
-					css : {{ asset('css/facture.css') }}
+					css : {{"". asset('css/facture.css')."" }}
 
 				}
 				);
