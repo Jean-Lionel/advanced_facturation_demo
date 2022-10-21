@@ -19,8 +19,7 @@ class ProductController extends Controller
      */
 
     public function __construct(){
-        //$this->authorize('is-admin');
-       // dd(Gate::allows('is-vente'));
+      
     }
     public function index()
     {
@@ -119,11 +118,6 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //'',''
-
-
-       // $this->authorize('update', $product);
-
          $request->validate([
         'name' => 'required|max:255',
         'price' => 'required|numeric|min:0',
@@ -137,7 +131,6 @@ class ProductController extends Controller
 
         ]);
         $p = $product->toArray();
-
         ProductHistory::create($p);
         $product->update($request->all());
 
@@ -164,15 +157,10 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
     public function add_view(Product $product){
-
-
         return view('products.add',compact('product'));
 
     }
-
-
     public function add_quantite_stock(Request $request){
 
         $request->validate([
@@ -183,19 +171,14 @@ class ProductController extends Controller
         try {
             DB::beginTransaction();
               $product = Product::where('id', $request->product_id)->firstOrFail();
-
               $product->quantite += abs($request->quantite); 
-
                FollowProduct::create([
                 'quantite' => $request->quantite,
                 'details' => $product->toJson(),
                 'action' => 'ENTRE',
                 'product_id' => $product->id,
                ]);
-
                $product->save();
-
-
             DB::commit();
             
         } catch (\Exception $e) {
