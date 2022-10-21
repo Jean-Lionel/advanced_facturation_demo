@@ -22,28 +22,27 @@
 		<thead>
 			<tr>
 				<th scope="col">#</th>
+				<th scope="col">NUMERO</th>
 				<th scope="col">NOM</th>
-
 				<th scope="col">TELEPHONE</th>
-			
+				<th scope="col">NIF</th>
 				<th scope="col">Action</th>
 			</tr>
 		</thead>
 		<tbody>
 
 			@foreach ($clients as $value)
-			{{-- expr 
-
-
-
-description  --}}
+			{{-- expr description  --}}
 			<tr>
+				<td>{{ ++$loop->index }}</td>
 				<td>{{ $value->id }}</td>
 				<td>
 					{{ $value->name}}
 				</td>
-		
 				<td>{{ $value->telephone }}</td>
+				<td>
+					{{ $value->customer_TIN}}
+				</td>
 
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
