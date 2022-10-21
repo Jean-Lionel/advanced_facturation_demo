@@ -116,12 +116,14 @@ class StockeController extends Controller
 
 
     public function journal(){
+        
         $orders =  Order::sortable()->latest()->paginate(10);
-        $products = Product::latest()->paginate(20);
+        return view('journals.index', compact('orders'));
+    }
 
-        return view('journals.index', compact('orders','products'));
-
-
+    public function journal_history(){
+         $products = Product::latest()->paginate(20);
+         return view('journals.history', compact('products'));
     }
 
     public function rapport(){

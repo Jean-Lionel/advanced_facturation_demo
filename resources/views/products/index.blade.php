@@ -5,14 +5,15 @@
 <div>
 	<div class="d-flex justify-content-around">
 		<div>
-			
         <a href="{{ route('products.create') }}"><span class="fa fa-seedling"></span> Entre</a>
-      
 		</div>
 		<div><a href="{{ route('categories.index') }}"><span class="fa fa-paper-plane"></span> Category</a></div>
 
 		<div>
-			<a href=""> Historique des Entres en stock</a>
+			<a href="{{ route('journal_history') }}"> 
+				<span class="fa fa-file-archive"></span>
+				<span>Historique des Entres en stock</span>
+			</a>
 		</div>
 	</div>
 	<hr>

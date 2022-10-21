@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	Route::get('update_price', 'CartController@update_product_price')->name('update_price');
 
+
 	Route::get('update_emballage', 'CartController@update_emballage')->name('update_emballage');
 
 	Route::get('update_quantite', 'CartController@update_quantite')->name('update_quantite');
@@ -50,6 +51,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::delete('panier/{id}', 'CartController@destroy')->name('cart.destroy');
 	Route::post('update_panier', 'CartController@updatePanier')->name('cart.update_panier');
 	Route::get('journal', 'StockeController@journal')->name('stockes.journal');
+	Route::get('journal_history', 'StockeController@journal_history')->name('journal_history');
+
 	Route::get('/vider', function(){
 		Cart::destroy();
 	});
