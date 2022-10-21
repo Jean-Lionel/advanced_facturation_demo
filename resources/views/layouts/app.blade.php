@@ -53,6 +53,10 @@
       <li>
         <a href="{{ route('depenses.index') }}"><span class="fa fa-minus"></span> Depense</a>
       </li>
+      <li>
+        <a href="{{ route('entreprises.index') }}">
+          <span class="fa fa-building"></span> Entreprise</a>
+      </li>
 
        <li>
         <a href="{{ route('users.index') }}"><span class="fa fa-user"></span> Utilisateur</a>
