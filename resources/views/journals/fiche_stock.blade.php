@@ -5,7 +5,8 @@
 @section('content')
 
 <div>
-	<table>
+	<div class="info"></div>
+	<table id="fiche_stock" style="width:100%">
 		<thead>
 			<tr>     
 				<th>Code</th>
@@ -19,9 +20,37 @@
 		</thead>
 
 		<tbody>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
 			
 		</tbody>
 	</table>
 </div>
+
+@stop
+
+@section('javascript')
+
+<script>
+	$(document).ready( function () {
+    $('#fiche_stock').dataTable({
+			dom: 'Bfrtip',
+			buttons: [
+			'copy', 'csv', 'excel', 'pdf', 'print',
+			], 
+			pagingType: "full_numbers",
+			scrollX: true,
+	});
+      
+    
+} );
+</script>
 
 @stop
