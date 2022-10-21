@@ -8,9 +8,7 @@
 			<div class="col-md-12">
 				<h5 class="text-left">Client</h5>
 			</div>
-			{{
-				
-			}}
+	
 
 			<div class="col-md-12">
 				<div class="form-group">
