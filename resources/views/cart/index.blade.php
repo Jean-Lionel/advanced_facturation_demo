@@ -18,6 +18,11 @@
                   <th scope="col" class="border-0 bg-light">
                     <div class="p-2 px-3 text-uppercase">MARGE DES PRIX ( #FBU)</div>
                   </th>
+
+                   <th scope="col" class="border-0 bg-light">
+                    <div class="p-2 px-3 text-uppercase">Quantité</div>
+                  </th>
+
                   <th scope="col" class="border-0 bg-light">
                     <div class="p-2 px-3">
                       PRIX UNITAIRE
@@ -50,6 +55,9 @@
 
                   <th scope="row" class="border-0">
                     {{getPrice($product->model->price_min) . ' - '. getPrice($product->model->price_max)}}   
+                  </th>
+                  <th>
+                    {{ $product->model->quantite }}
                   </th>
                   <th>
                     <input type="number" class="price_input" data-product="{{ $product->rowId }}" value="{{ $product->price }}" class="form-control">
