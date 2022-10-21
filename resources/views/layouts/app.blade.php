@@ -6,14 +6,11 @@
  <meta name="csrf-token" content="{{ csrf_token() }}">
  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{{--  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-
- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> --}}
-
- <link rel="stylesheet" href="{{ asset('/css/css/all.css')  }}">
-   @livewireStyles
+ <link rel="stylesheet" href="{{ asset('css/css/all.css')  }}">
  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
+ <link rel="stylesheet" href="{{ asset('datatable/css/datatables.min.css') }}">
+ <link rel="stylesheet" href="{{ asset('datatable/css/jquery.dataTables.min.css') }}">
+  @livewireStyles
  <style>
    body{
      font-family: Arial, Helvetica,"Times New Roman", sans-serif;
@@ -39,11 +36,7 @@
       {{-- <li>
         <a href="{{ route('services.index') }}"><span class="fa fa-cubes"></span> Service</a>
       </li> --}}
-
       @endcan
-
-      
-
       @can('is-admin')
       <li>
         <a href="{{ route('products.index') }}"><span class="fa fa-sticky-note"></span> Stock</a>
@@ -163,20 +156,15 @@
 
 </div>
 </div>
-
-
-
 <script src="{{ asset('js/jquery-3.5.min.js') }}"></script>
 <script src="{{ asset('js/popper.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/chart.js.2.9.4_Chart.min.js') }}"></script>
 
-
+<script src="{{ asset('js/main.js') }}"></script>
 <script src="{{ asset('js/main.js') }}"></script>
 
  @livewireScripts
-
-
 
 @yield('javascript')
 
