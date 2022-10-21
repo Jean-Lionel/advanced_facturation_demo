@@ -16,8 +16,6 @@ class SendInvoiceToOBR extends Controller
         dump($this->addInvoice());
         dd("je suis");
     }
-
-
     public function checkTin(string $tp_TIN){
         $token = $this->getToken();
         // Enlevement des espaces
@@ -101,16 +99,13 @@ class SendInvoiceToOBR extends Controller
         ];
 
         $token = $this->getToken();
-
         $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'addInvoice/',$invoince);
-
         return $req->body();
     }
 
     // Get Invoince 
 
     public function getInvoice($invoice_signature){
-
         $token = $this->getToken();
         $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'getInvoice/',[
             'invoice_signature' => $invoice_signature
@@ -135,7 +130,7 @@ class SendInvoiceToOBR extends Controller
         $token = "";
         if($success ){
           $token = $response->result->token; 
-      }
+        }
 
       return $token;
   }

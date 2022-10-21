@@ -9,7 +9,7 @@
 		<h4 class="text-center">Mouvement de stock</h4>
 	</div>
 	<div class="info"></div>
-	<table id="fiche_stock" style="width:100%">
+	<table id="fiche_stock" class="display compact" style="width:100%">
 		<thead>
 			<tr>     
 				<th>Code</th>
