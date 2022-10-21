@@ -34,14 +34,15 @@
         <a href="{{ route('ventes.index') }}"><span class="fa fa-shopping-cart"></span> Vente</a>
       </li>
       <li>
-        <a href="{{ route('services.index') }}"><span class="fa fa-cubes"></span> Service</a>
+        <a href="{{ route('clients.index') }}"><span class="fa fa-users"></span> Client</a>
       </li>
+      {{-- <li>
+        <a href="{{ route('services.index') }}"><span class="fa fa-cubes"></span> Service</a>
+      </li> --}}
 
       @endcan
 
-      <li class="active">
-        <a href="{{ route('products.create') }}"><span class="fa fa-seedling"></span> Entre</a>
-      </li>
+      
 
       @can('is-admin')
       <li>

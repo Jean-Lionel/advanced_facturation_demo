@@ -3,7 +3,12 @@
 @section('content')
 
 <div>
-	<div class="d-flex justify-content-end">
+	<div class="d-flex justify-content-end d-gap-3">
+		<div>
+			
+        <a href="{{ route('products.create') }}"><span class="fa fa-seedling"></span> Entre</a>
+      
+		</div>
 		<div><a href="{{ route('categories.index') }}"><span class="fa fa-paper-plane"></span> Category</a></div>
 	</div>
 	<div class="row">
