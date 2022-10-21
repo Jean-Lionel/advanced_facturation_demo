@@ -3,14 +3,19 @@
 @section('content')
 
 <div>
-	<div class="d-flex justify-content-end d-gap-3">
+	<div class="d-flex justify-content-around">
 		<div>
 			
         <a href="{{ route('products.create') }}"><span class="fa fa-seedling"></span> Entre</a>
       
 		</div>
 		<div><a href="{{ route('categories.index') }}"><span class="fa fa-paper-plane"></span> Category</a></div>
+
+		<div>
+			<a href=""> Historique des Entres en stock</a>
+		</div>
 	</div>
+	<hr>
 	<div class="row">
 		<div class="col-md-6 d-flex justify-content-between">
 			<a href="{{ route('bon_entre') }}" 
