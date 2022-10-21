@@ -67,8 +67,6 @@
 				
 			</div>
 			<div class="aling-right partie-droite">
-				<div class="right-border">
-				</div>
 				<div>
 					<h5>FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }} </h5>
 					<p>Centre Fiscal : <b>DGC</b></p>
