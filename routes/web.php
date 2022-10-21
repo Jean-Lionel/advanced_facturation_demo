@@ -52,6 +52,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('update_panier', 'CartController@updatePanier')->name('cart.update_panier');
 	Route::get('journal', 'StockeController@journal')->name('stockes.journal');
 	Route::get('journal_history', 'StockeController@journal_history')->name('journal_history');
+	Route::get('fiche_stock', 'StockeController@fiche_stock')->name('fiche_stock');
 
 	Route::get('/vider', function(){
 		Cart::destroy();

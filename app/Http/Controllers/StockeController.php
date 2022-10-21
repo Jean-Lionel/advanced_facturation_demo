@@ -120,6 +120,11 @@ class StockeController extends Controller
         $orders =  Order::sortable()->latest()->paginate(10);
         return view('journals.index', compact('orders'));
     }
+    public function fiche_stock(){
+        
+        
+        return view('journals.fiche_stock');
+    }
 
     public function journal_history(){
          $products = Product::latest()->paginate(20);
