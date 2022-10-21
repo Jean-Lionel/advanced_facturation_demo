@@ -25,7 +25,7 @@
 <body>
 
 	<div class="noprint header-element">
-		<button onclick="print()" class="noprint">Imprimmer</button>
+		<button onclick="print()" class="noprint">Imprimer</button>
 		<a href="{{ route('ventes.index') }}">Retour</a>
 	</div>
 	<div class="main-content">
