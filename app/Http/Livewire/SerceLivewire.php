@@ -12,9 +12,7 @@ class SerceLivewire extends Component
 	public $quantite;
 	public $description;
 	public $identification;
-	
-
-
+    
     public function render()
     {
     	$services = Service::latest()->paginate();
