@@ -3,7 +3,7 @@
     <div >
         <h4 class="text-center">Enregistrement de l'entreprise</h4>
 
-        <form action="" class="row m-3">
+        <form action="" class="row m-3" wire:submit.prevent="saveEntreprise">
             <div class="col-md-12">
                 @if($errors->any())
                 {!! implode('', $errors->all('<span class="text text-danger">:message</span>')) !!}

@@ -31,4 +31,29 @@ class EntrepriseComponent extends Component
     {
         return view('livewire.entreprise.entreprise-component');
     }
+
+    protected $rules = [
+        "tp_name" => "required",
+        "tp_type" => "required",
+        "tp_TIN" => "required",
+        "tp_trade_number" => "required",
+        "tp_postal_number" => "required",
+        "tp_phone_number" => "required",
+        "tp_address_privonce" => "required",
+        "tp_address_quartier" => "required",
+        "tp_address_avenue" => "required",
+        "tp_address_rue" => "required",
+        "tp_address_number" => "required",
+        "vat_taxpayer" => "required",
+        "ct_taxpayer" => "required",
+        "tl_taxpayer" => "required",
+        "tp_fiscal_center" => "required",
+        "tp_activity_sector" => "required",
+        "tp_legal_form" => "required",
+        "payment_type" => "required",
+    ];
+
+    public function saveEntreprise(){
+        $this->validate();
+    }
 }
