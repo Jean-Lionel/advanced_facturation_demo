@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Entreprise;
 
 use Livewire\Component;
+use App\Models\Entreprise;
 
 class EntrepriseComponent extends Component
 {
@@ -75,7 +76,8 @@ class EntrepriseComponent extends Component
             "tp_legal_form" => $this->tp_legal_form,
             "payment_type" => $this->payment_type
         ];
-        dd( $data);
+
+        Entreprise::create($data);
 
 
     }
