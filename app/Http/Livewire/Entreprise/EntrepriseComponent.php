@@ -74,7 +74,8 @@ class EntrepriseComponent extends Component
             "tp_fiscal_center" => $this->tp_fiscal_center,
             "tp_activity_sector" => $this->tp_activity_sector,
             "tp_legal_form" => $this->tp_legal_form,
-            "payment_type" => $this->payment_type
+            "payment_type" => $this->payment_type,
+            "user_id" => auth()->user()->id
         ];
 
         Entreprise::create($data);
