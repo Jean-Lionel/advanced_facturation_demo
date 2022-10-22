@@ -14,6 +14,7 @@ class EntrepriseComponent extends Component
     public $tp_postal_number = "";
     public $tp_phone_number = "";
     public $tp_address_privonce = "";
+    public $tp_address_commune = "";
     public $tp_address_quartier = "";
     public $tp_address_avenue = "";
     public $tp_address_rue = "";
