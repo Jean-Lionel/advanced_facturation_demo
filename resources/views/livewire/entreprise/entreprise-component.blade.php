@@ -13,9 +13,7 @@
                <label for="">Nom et prénom  ou Nom commercial</label>
                <input class="form-control   form-control-sm" wire:model="tp_name" 
                placeholder="" />
-               @error("tp_name")
-               <span class="text-danger">{{$message}}</span>
-               @enderror
+              
            </div>
 
            <div class="form-group col-md-4">
@@ -25,16 +23,12 @@
                    <option value="1">personne physique </option>
                    <option value="2">personne morale</option>
                </select>
-               @error("tp_type")
-               <span class="text-danger">{{$message}}</span>
-               @enderror
+               
            </div>
            <div class="form-group col-md-4">
                <label for="">NIF du contribuable</label>
                <input class="form-control  form-control-sm" wire:model="tp_TIN" />
-               @error("tp_TIN")
-               <span class="text-danger">{{$message}}</span>
-               @enderror
+              
            </div>
            <div class="from-group col-md-4">
                <label for="">Le numéro du registre de commerce du contribuable</label>
