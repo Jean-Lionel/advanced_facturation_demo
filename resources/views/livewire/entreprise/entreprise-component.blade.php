@@ -2,8 +2,8 @@
     {{-- If you look to others for fulfillment, you will never truly be fulfilled. --}}
     <h1>Entre prise X</h1>
 
-    <div class="row">
-        <form action="">
+    <div >
+        <form action="" class="row m-3">
             <input class="form-control  col-md-4 form-control-sm" wire:model="tp_name" placeholder="" />
          <input class="form-control  col-md-4 form-control-sm" wire:model="tp_type" />
          <input class="form-control  col-md-4 form-control-sm" wire:model="tp_TIN" />
