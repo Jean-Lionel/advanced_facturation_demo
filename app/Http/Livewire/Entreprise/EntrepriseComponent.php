@@ -55,5 +55,27 @@ class EntrepriseComponent extends Component
 
     public function saveEntreprise(){
         $this->validate();
+        $data = [
+            "tp_name" => $this->tp_name,
+            "tp_type" => $this->tp_type,
+            "tp_TIN" => $this->tp_TIN,
+            "tp_trade_number" => $this->tp_trade_number,
+            "tp_postal_number" => $this->tp_postal_number,
+            "tp_phone_number" => $this->tp_phone_number,
+            "tp_address_privonce" => $this->tp_address_privonce,
+            "tp_address_quartier" => $this->tp_address_quartier,
+            "tp_address_avenue" => $this->tp_address_avenue,
+            "tp_address_rue" => $this->tp_address_rue,
+            "tp_address_number" => $this->tp_address_number,
+            "vat_taxpayer" => $this->vat_taxpayer,
+            "ct_taxpayer" => $this->ct_taxpayer,
+            "tl_taxpayer" => $this->tl_taxpayer,
+            "tp_fiscal_center" => $this->tp_fiscal_center,
+            "tp_activity_sector" => $this->tp_activity_sector,
+            "tp_legal_form" => $this->tp_legal_form,
+            "payment_type" => $this->payment_type
+        ];
+
+
     }
 }
