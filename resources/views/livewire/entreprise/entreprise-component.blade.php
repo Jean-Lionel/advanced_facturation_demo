@@ -77,25 +77,44 @@
            <div class="from-group col-md-4 ">
             <input type="checkbox" id="vat_taxpayer" class="form-control-sm" wire:model="vat_taxpayer" />
                <label for="vat_taxpayer">Assujetti à la TVA</label>
-               
            </div>
         
          <div class="from-group col-md-4">
             <input type="checkbox" id="ct_taxpayer" class="form-control-sm" wire:model="ct_taxpayer" />
              <label for="ct_taxpayer">Assujetti à la taxe de consommation</label>
-             
          </div> 
+         <div class="form-group col-md-4">
+              <input type="checkbox" id="tl_taxpayer" class="form-control-sm" wire:model="tl_taxpayer" />
+              <label for="tl_taxpayer">Assujetti au prélèvement forfaitaire libératoire</label>
+         </div>
+         <div class="form-group col-md-4">
+             <label for="">Le centre fiscal du contribuable</label>
+             <input type="text"  class="form-control form-control-sm" wire:model="tp_fiscal_center"  >
+         </div>
+         <div class="form-group col-md-4">
+             <label for="">Le secteur d’activité du contribuable</label>
+             <input class="form-control  form-control-sm" wire:model="tp_activity_sector" />
+         </div>
+         <div class="form-group col-md-4">
+             <label for="">La forme juridique du contribuable</label>
+             <input class="form-control  form-control-sm" wire:model="tp_legal_form" />
+         </div>
+         <div class="form-group col-md-4">
+             <label for="">Type de paiement de la facture</label>
+             <select name="" id="" class="form-control  form-control-sm" wire:model="payment_type">
+                 <option value=""></option>
+                 <option value="1">En espèce</option>
+                 <option value="2">Banque</option>
+             </select>
+         </div>
 
-     </form>
-
-
-   
-   <input class="form-control  form-control-sm" wire:model="ct_taxpayer" />
-   <input class="form-control  form-control-sm" wire:model="tl_taxpayer" />
-   <input class="form-control  form-control-sm" wire:model="tp_fiscal_center" />
-   <input class="form-control  form-control-sm" wire:model="tp_activity_sector" />
-   <input class="form-control  form-control-sm" wire:model="tp_legal_form" />
-   <input class="form-control  form-control-sm" wire:model="payment_type" />
+         <div class="form-group col-md-4">
+             <label for="description">Déscription</label>
+             <textarea name="" id="description" class="form-control  form-control-sm"></textarea>
+         </div>
+         <div class="form-group col-md-4">
+             <input type="submit" class="btn btn-sm btn-primary btn-block mt-3" value="Enregistrer" >
+         </div>
 </form>
 </div>
 </div>
