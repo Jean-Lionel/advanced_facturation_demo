@@ -11,7 +11,7 @@
             </div>
             <div class="form-group col-md-4">
                <label for="">Nom et prénom  ou Nom commercial</label>
-               <input class="form-control   form-control-sm" wire:model="tp_name" 
+               <input type="text" class="form-control   form-control-sm" wire:model="tp_name" 
                placeholder="" />
               
            </div>
@@ -27,54 +27,54 @@
            </div>
            <div class="form-group col-md-4">
                <label for="">NIF du contribuable</label>
-               <input class="form-control  form-control-sm" wire:model="tp_TIN" />
+               <input type="text" class="form-control  form-control-sm" wire:model="tp_TIN" />
               
            </div>
            <div class="from-group col-md-4">
                <label for="">Le numéro du registre de commerce du contribuable</label>
-               <input class="form-control   form-control-sm" wire:model="tp_trade_number" />
+               <input type="text" class="form-control   form-control-sm" wire:model="tp_trade_number" />
            </div>
            <div class="from-group col-md-4">
                <label for="">Boite postale du contribuable</label>
-               <input class="form-control  form-control-sm" wire:model="tp_postal_number" />
+               <input type="text" class="form-control  form-control-sm" wire:model="tp_postal_number" />
            </div>
 
            <div class="from-group col-md-4">
                <label for="">Numéro de téléphone du contribuable</label>
-               <input class="form-control  form-control-sm" wire:model="tp_phone_number" />
+               <input type="text" class="form-control  form-control-sm" wire:model="tp_phone_number" />
            </div>
 
            <div class="from-group col-md-4">
                <label for="">Adresse du contribuable : Province</label>
-               <input class="form-control  form-control-sm" wire:model="tp_address_privonce" />
+               <input type="text" class="form-control  form-control-sm" wire:model="tp_address_privonce" />
            </div>
            <div class="from-group col-md-4">
                <label for="">Adresse du contribuable : commune</label>
-               <input class="form-control  form-control-sm" wire:model="tp_address_commune" />
+               <input type="text" class="form-control  form-control-sm" wire:model="tp_address_commune" />
            </div>
            <div class="from-group col-md-4">
                <label for="">Adresse du contribuable : quartier </label>
-               <input class="form-control  form-control-sm" wire:model="tp_address_quartier" />
+               <input type="text" class="form-control  form-control-sm" wire:model="tp_address_quartier" />
            </div>
            <div class="from-group col-md-4">
                <label for="">Adresse du contribuable : Avenue </label>
-               <input class="form-control  form-control-sm" wire:model="tp_address_avenue" />
+               <input type="text" class="form-control  form-control-sm" wire:model="tp_address_avenue" />
            </div>
            <div class="from-group col-md-4">
                <label for="">Adresse du contribuable : Rue </label>
-               <input class="form-control  form-control-sm" wire:model="tp_address_rue" />
+               <input type="text" class="form-control  form-control-sm" wire:model="tp_address_rue" />
            </div>
            <div class="from-group col-md-4">
                <label for="">Adresse du contribuable : Numéro </label>
-               <input class="form-control  form-control-sm" wire:model="tp_address_number" />
+               <input t class="form-control  form-control-sm" wire:model="tp_address_number" />
            </div>
            <div class="from-group col-md-4 ">
-            <input type="checkbox" id="vat_taxpayer" class="form-control-sm" wire:model="vat_taxpayer" />
+            <input  type="checkbox" id="vat_taxpayer" class="form-control-sm" wire:model="vat_taxpayer" />
                <label for="vat_taxpayer">Assujetti à la TVA</label>
            </div>
         
          <div class="from-group col-md-4">
-            <input type="checkbox" id="ct_taxpayer" class="form-control-sm" wire:model="ct_taxpayer" />
+            <input  type="checkbox" id="ct_taxpayer" class="form-control-sm" wire:model="ct_taxpayer" />
              <label for="ct_taxpayer">Assujetti à la taxe de consommation</label>
          </div> 
          <div class="form-group col-md-4">
@@ -83,15 +83,15 @@
          </div>
          <div class="form-group col-md-4">
              <label for="">Le centre fiscal du contribuable</label>
-             <input type="text"  class="form-control form-control-sm" wire:model="tp_fiscal_center"  >
+             <input type="text" type="text"  class="form-control form-control-sm" wire:model="tp_fiscal_center"  >
          </div>
          <div class="form-group col-md-4">
              <label for="">Le secteur d’activité du contribuable</label>
-             <input class="form-control  form-control-sm" wire:model="tp_activity_sector" />
+             <input type="text" class="form-control  form-control-sm" wire:model="tp_activity_sector" />
          </div>
          <div class="form-group col-md-4">
              <label for="">La forme juridique du contribuable</label>
-             <input class="form-control  form-control-sm" wire:model="tp_legal_form" />
+             <input type="text" class="form-control  form-control-sm" wire:model="tp_legal_form" />
          </div>
          <div class="form-group col-md-4">
              <label for="">Type de paiement de la facture</label>
