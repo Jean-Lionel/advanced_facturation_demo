@@ -1,10 +1,11 @@
 <div>
     {{-- If you look to others for fulfillment, you will never truly be fulfilled. --}}
-    <h1>Entre prise X</h1>
-
     <div >
+        <h4 class="text-center">Enregistrement de l'entreprise</h4>
         <form action="" class="row m-3">
-            <input class="form-control  col-md-4 form-control-sm" wire:model="tp_name" placeholder="" />
+            <label for="">Nom et prénom  ou Nom commercial</label>
+            <input class="form-control  col-md-4 form-control-sm" wire:model="tp_name" 
+            placeholder="Nom et prénom  OU nom commercial " />
          <input class="form-control  col-md-4 form-control-sm" wire:model="tp_type" />
          <input class="form-control  col-md-4 form-control-sm" wire:model="tp_TIN" />
          <input class="form-control  col-md-4 form-control-sm" wire:model="tp_trade_number" />
