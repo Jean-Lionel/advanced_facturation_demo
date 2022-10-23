@@ -30,7 +30,10 @@ class EntrepriseComponent extends Component
 
     public function render()
     {
-        return view('livewire.entreprise.entreprise-component');
+        $entreprises = Entreprise::all();
+        return view('livewire.entreprise.entreprise-component', [
+            'entreprises' => $entreprises
+        ]);
     }
 
     protected $rules = [
