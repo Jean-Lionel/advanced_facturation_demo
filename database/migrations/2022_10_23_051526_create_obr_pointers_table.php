@@ -15,7 +15,11 @@ class CreateObrPointersTable extends Migration
     {
         Schema::create('obr_pointers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("order_id");
+            $table->string("invoice_signature");
+            $table->string("status");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
