@@ -21,7 +21,8 @@ category_id
 public function index()
 {
 
-  // $x = new SendInvoiceToOBR();
+
+    $x = new SendInvoiceToOBR();
 
     $search = \Request::get('search'); 
      

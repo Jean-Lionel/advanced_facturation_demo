@@ -13,7 +13,7 @@ class SendInvoiceToOBR extends Controller
     public function __construct(){
         // 4002060640
         //dump($this->checkTin("4000235731"));
-        dump($this->addInvoice());
+        dump($this->getToken());
         dd("je suis");
     }
     public function checkTin(string $tp_TIN){
@@ -117,8 +117,11 @@ class SendInvoiceToOBR extends Controller
     }
 
     // Generation du TOken
-    public function getToken(string $username ='ws400206064000267',string $password ='69l_Gy6H') 
+    public function getToken() 
     {
+         $username = env('OBR_USERNAME');
+         $password = env('OBR_PASSWORD');
+
         $req =  Http::acceptJson()->post($this->baseUrl.'login/', [
             'username' => $username,
             'password' => $password
