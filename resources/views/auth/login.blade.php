@@ -8,7 +8,9 @@
         </div>
         @endif
 
-        <form method="POST" action="{{ route('login') }}">
+    
+        <form method="POST" action="{{ route('login') }}" 
+        style="background: url({{ asset('img/log.jpeg') }});">
             @csrf
 
             <div>
