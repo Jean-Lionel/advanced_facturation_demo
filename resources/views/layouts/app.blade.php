@@ -15,6 +15,10 @@
    body{
      font-family: Arial, Helvetica,"Times New Roman", sans-serif;
    }
+
+   #sidebar{
+      background: #009a41;
+   }
  </style>
 
 </head>
