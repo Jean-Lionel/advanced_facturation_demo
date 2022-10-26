@@ -15,7 +15,9 @@ class AddIsSendedToObrToOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             //
-            $table->string('is_sended_to_obr')->nullable();
+            $table->string('envoye_obr')->nullable();
+            $table->string('envoye_par')->nullable();
+            $table->string('envoye_time')->nullable();
         });
     }
 
@@ -28,7 +30,9 @@ class AddIsSendedToObrToOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             //
-            $table->dropColumn('is_sended_to_obr');
+            $table->dropColumn('envoye_obr');
+            $table->dropColumn('envoye_par');
+            $table->dropColumn('envoye_time');
         });
     }
 }
