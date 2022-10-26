@@ -1,4 +1,5 @@
-<x-guest-layout>
+
+<x-guest-layout >
     <x-jet-authentication-card>
         <x-jet-validation-errors class="mb-4" />
 
@@ -8,9 +9,11 @@
         </div>
         @endif
 
+        <div style="display: flex;justify-content:center;">
+            <img src="{{ asset('img/log.jpeg') }}" style="width:150px;"  alt="">
+        </div>
     
-        <form method="POST" action="{{ route('login') }}" 
-        style="background: url({{ asset('img/log.jpeg') }});">
+        <form method="POST" action="{{ route('login') }}" >
             @csrf
 
             <div>
@@ -38,3 +41,5 @@
         </form>
     </x-jet-authentication-card>
 </x-guest-layout>
+
+
