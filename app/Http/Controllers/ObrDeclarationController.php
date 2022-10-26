@@ -40,6 +40,10 @@ class ObrDeclarationController extends Controller
         $invoice_number = str_pad($oder->id, 6, "0", STR_PAD_LEFT);
         $invoice_signature = "4002060640/". env('OBR_USERNAME') ."/20211206000000/".$invoice_number;
 
+
+        $invoinces_items = [];
+
+
         $invoince =[
             "invoice_number" => $invoice_number,
             "invoice_date" => "2021-12-06 00:00:00",

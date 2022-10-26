@@ -53,4 +53,9 @@ class Order extends Model
 	{
 		return json_decode($v);
 	}
+	//products
+	public function getProductsAttribute($v)
+	{
+		return unserialize($v);
+	}
 }

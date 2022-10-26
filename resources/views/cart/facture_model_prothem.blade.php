@@ -105,7 +105,7 @@
 				<tbody>
 
 
-					@foreach(unserialize($order->products) as $key=> $product)
+					@foreach($order->products as $key=> $product)
 
 					<tr>
 						<td>{{ $key +1 }}</td>

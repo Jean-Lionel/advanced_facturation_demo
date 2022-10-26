@@ -10,6 +10,7 @@
 				<th>Client</th>
 				<th>Montant</th>
 				<th>Tax</th>
+				<td>Product</td>
 				<td>Date</td>
 				<th>
 					Action
@@ -25,6 +26,7 @@
 					<td>{{ $order->client->name }}</td>
 					<td>{{ $order->amount }}</td>
 					<td>{{ $order->tax }}</td>
+					<td>@dump( $order->products)</td>
 					<td>{{ $order->created_at }}</td>
 					<td>
 						<button onclick="sendInvoice({{$order->id}})">Envoyer</button>
