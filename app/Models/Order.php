@@ -49,8 +49,8 @@ class Order extends Model
 		return $this->belongsTo(PaiementDette::class , 'id','order_id');
 	}
 
-	// public function client()
-	// {
-	// 	return $this->belongsTo('App\Model\Client','');
-	// }
+	public function getClientAttribute($v)
+	{
+		return json_decode($v);
+	}
 }

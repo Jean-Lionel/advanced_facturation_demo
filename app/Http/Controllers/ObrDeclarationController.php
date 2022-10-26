@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\ObrDeclaration;
 use App\Http\Requests\StoreObrDeclarationRequest;
 use App\Http\Requests\UpdateObrDeclarationRequest;
@@ -16,6 +17,10 @@ class ObrDeclarationController extends Controller
     public function index()
     {
         //
+        $orders = Order::all();
+        return view('obr_declarations.index', [
+            'orders' => $orders
+        ]);
     }
 
     /**

@@ -28,7 +28,7 @@ class AddIsSendedToObrToOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             //
-            $table->dropColumn('is_sended_to_obr')
+            $table->dropColumn('is_sended_to_obr');
         });
     }
 }
