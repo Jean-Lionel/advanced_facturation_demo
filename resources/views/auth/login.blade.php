@@ -1,4 +1,9 @@
 
+<style>
+    body {
+        background: red !important;
+    }
+</style>
 <x-guest-layout >
     <x-jet-authentication-card>
         <x-jet-validation-errors class="mb-4" />
