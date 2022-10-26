@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/', 'VenteController@index');
 	Route::get('product/create', 'ProductController@create')->name('product.create');
 	Route::resource('obr_declarations', ObrDeclarationController::class);
+	Route::get('sendInvoinceToObr/{invoince_id?}','ObrDeclarationController@sendInvoinceToObr' );
 	Route::resource('stockes', StockeController::class);
 	Route::resource('products', ProductController::class);
 	Route::resource('clients', ClientController::class);
