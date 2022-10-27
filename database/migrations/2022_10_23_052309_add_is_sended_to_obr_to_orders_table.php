@@ -19,6 +19,7 @@ class AddIsSendedToObrToOrdersTable extends Migration
             $table->string('envoye_par')->nullable();
             $table->string('envoye_time')->nullable();
             $table->string('invoice_signature')->nullable();
+            $table->date('date_facturation')->nullable();
         });
     }
 
@@ -35,6 +36,7 @@ class AddIsSendedToObrToOrdersTable extends Migration
             $table->dropColumn('envoye_par');
             $table->dropColumn('envoye_time');
             $table->dropColumn('invoice_signature');
+            $table->dropColumn('date_facturation');
         });
     }
 }
