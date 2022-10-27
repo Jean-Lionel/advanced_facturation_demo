@@ -70,6 +70,8 @@
            </tbody>
        </table>
    </div>
+
+   @if(!$entreprises)
    <div >
     <h4 class="text-center">Enregistrement de l'entreprise</h4>
 
@@ -181,4 +183,6 @@
 </div>
 </form>
 </div>
+
+@endif
 </div>
