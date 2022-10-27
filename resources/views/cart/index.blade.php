@@ -174,7 +174,7 @@
             </h5>
           </li>
           <li class="d-flex justify-content-between py-2 border-bottom"><strong class="text-muted">TVA</strong>
-            <h5 class="font-weight-bold">
+            <h5 id="prix_hors_tax" class="font-weight-bold">
               {{ getPrice(Cart::tax()) }}
             </h5></li>
             <li class="d-flex justify-content-between py-2 border-bottom"><strong class="text-muted">Total</strong>
@@ -222,6 +222,7 @@
 
       $("#prix_hors_tva").html(data.prix_hors_tva);
       $("#total_montant").html(data.total_montant);
+      $("#prix_hors_tax").html(data.prix_hors_tax);
       console.log(data)
     })
     .catch(function(error){
@@ -247,6 +248,7 @@
 
       $("#prix_hors_tva").html(data.prix_hors_tva);
       $("#total_montant").html(data.total_montant);
+      $("#prix_hors_tax").html(data.prix_hors_tax);
       console.log(data)
     })
     .catch(function(error){

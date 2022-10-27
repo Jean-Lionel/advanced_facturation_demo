@@ -44,8 +44,9 @@ class CartController extends Controller
         return response()->json( [
             'rowId' =>  $cart->rowId,
             'cart' => $cart->subtotal,
-            'prix_hors_tva' => $total ,
-             'total_montant' => getPrice(Cart::total()) 
+            'prix_hors_tva' => getPrice($total) ,
+            'total_montant' => getPrice(Cart::total()),
+            'prix_hors_tax' => getPrice(Cart::tax())
 
         ]);
         //return  Cart::update($rowId, ['price' => $price]);
@@ -59,12 +60,12 @@ class CartController extends Controller
             'embalage' => $unite_emballage
         ]]);
 
-       
         return response()->json( [
             'rowId' =>  $cart->rowId,
             'cart' => $cart->subtotal,
-            'prix_hors_tva' => $total ,
-             'total_montant' => getPrice(Cart::total()) 
+            'prix_hors_tva' => getPrice($total) ,
+            'total_montant' => getPrice(Cart::total()),
+            'prix_hors_tax' => getPrice(Cart::tax())
 
         ]);
         //return  Cart::update($rowId, ['price' => $price]);
@@ -160,7 +161,8 @@ class CartController extends Controller
             'rowId' => $cart->rowId,
             'cart' => $cart->subtotal(),
             'prix_hors_tva' => getPrice(Cart::subtotal()),
-            'total_montant' => getPrice(Cart::total()) 
+            'total_montant' => getPrice(Cart::total()) ,
+            'prix_hors_tax' => getPrice(Cart::tax())
 
         ]);
     }

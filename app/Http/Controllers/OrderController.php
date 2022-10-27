@@ -21,8 +21,7 @@ class OrderController extends Controller
         // dump($orders[]);
 
         foreach ($orders as $value) {
-            $product = unserialize($value->products);
-            dump($product->all());
+            $product = $value->products;
             
         }
     }

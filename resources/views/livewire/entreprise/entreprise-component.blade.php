@@ -1,17 +1,51 @@
 <div>
     {{-- If you look to others for fulfillment, you will never truly be fulfilled. --}}
-
     <div>
-
         <table>
             <thead>
-
+                <tr>
+                    <th> TP_NAME </th>
+                    <th> TP_TYPE </th>
+                    <th> TP_TIN </th>
+                    <th> TP_TRADE_NUMBER </th>
+                    <th> TP_POSTAL_NUMBER </th>
+                    <th> TP_PHONE_NUMBER </th>
+                    <th> TP_ADDRESS_PRIVONCE </th>
+                    <th> TP_ADDRESS_QUARTIER </th>
+                    <th> TP_ADDRESS_AVENUE </th>
+                    <th> TP_ADDRESS_RUE </th>
+                    <th> TP_ADDRESS_NUMBER </th>
+                    <th> VAT_TAXPAYER </th>
+                    <th> CT_TAXPAYER </th>
+                    <th> TL_TAXPAYER </th>
+                    <th> TP_FISCAL_CENTER </th>
+                    <th> TP_ACTIVITY_SECTOR </th>
+                    <th> TP_LEGAL_FORM </th>
+                    <th> PAYMENT_TYPE </th>
+                </tr>
             </thead>
             <tbody>
                @foreach ($entreprises as $element)
                {{-- expr --}}
                <tr>
-                   <td>{{ $element }}</td>
+                    <td> {{ $element->tp_name }} </td>
+                    <td> {{ $element->tp_type }} </td>
+                    <td> {{ $element->tp_TIN }} </td>
+                    <td> {{ $element->tp_trade_number }} </td>
+                    <td> {{ $element->tp_postal_number }} </td>
+                    <td> {{ $element->tp_phone_number }} </td>
+                    <td> {{ $element->tp_address_privonce }} </td>
+                    <td> {{ $element->tp_address_quartier }} </td>
+                    <td> {{ $element->tp_address_avenue }} </td>
+                    <td> {{ $element->tp_address_rue }} </td>
+                    <td> {{ $element->tp_address_number }} </td>
+                    <td> {{ $element->vat_taxpayer }} </td>
+                    <td> {{ $element->ct_taxpayer }} </td>
+                    <td> {{ $element->tl_taxpayer }} </td>
+                    <td> {{ $element->tp_fiscal_center }} </td>
+                    <td> {{ $element->tp_activity_sector }} </td>
+                    <td> {{ $element->tp_legal_form }} </td>
+                    <td> {{ $element->payment_type }} </td>
                </tr>
                @endforeach
            </tbody>
