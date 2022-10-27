@@ -43,7 +43,7 @@
 
 					<td>
 						<ul class="">
-							@foreach(unserialize($order->products) as $product)
+							@foreach($order->products as $product)
 							<li>{{ $product['name'] }} | Qte : {{ $product['quantite'] }} | 
 							PRIX : {{ getPrice($product['price'] )}}</li>
 							@endforeach
