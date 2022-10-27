@@ -26,7 +26,24 @@
 					<td>{{ $order->client->name }}</td>
 					<td>{{ $order->amount }}</td>
 					<td>{{ $order->tax }}</td>
-					<td>@dump( $order->products)</td>
+					<td>
+						<ul>
+							<li  class="d-flex justify-content-between">
+								<b>Désignation</b>
+								<b>qté</b>
+								<b>Prix</b>
+							</li>
+							@foreach ($order->products as $element)
+								{{-- expr --}}
+							<li class="d-flex justify-content-between">
+								<span>{{ $element['name'] }}</span>
+								<span>{{ $element['quantite'] }}</span>
+								<span>{{ $element['price'] }}</span>
+							</li>
+								
+							@endforeach
+						</ul>
+					</td>
 					<td>{{ $order->created_at }}</td>
 					<td>
 						<button onclick="sendInvoice({{$order->id}})">Envoyer</button>
