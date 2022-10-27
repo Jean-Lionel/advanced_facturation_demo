@@ -116,6 +116,11 @@
               <input type="checkbox" style="cursor:pointer" name="vat_customer_payer" id="vat_customer_payer">
               <label for="vat_customer_payer" style="cursor:pointer">Client est assujetti à la TVA</label>
             </p>
+
+          </div>
+          <div>
+            <label for="">Date de Facturation</label>
+            <input type="date" id="date_facturation" name="date_facturation">
           </div>
           
           @csrf
@@ -274,6 +279,7 @@
 
       $("#prix_hors_tva").html(data.prix_hors_tva);
       $("#total_montant").html(data.total_montant);
+      $("#prix_hors_tax").html(data.prix_hors_tax);
 
       console.log(data)
     }).catch(function(error){

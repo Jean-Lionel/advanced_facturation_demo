@@ -28,7 +28,6 @@ class ObrDeclarationController extends Controller
         $obr = new SendInvoiceToOBR();
         $oder = Order::find($invoince_id);
         $invoince = $this->generateInvoince($oder);
-
         $response = $obr->addInvoice($invoince);
 
         return $response;

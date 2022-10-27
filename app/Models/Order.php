@@ -17,10 +17,10 @@ class Order extends Model
 
 
     protected $fillable = ['amount',
-'products','user_id','tax','amount_tax','client','type_paiement', 'total_quantity', 'total_sacs', 'addresse_client'];
+'products','user_id','tax','amount_tax','client','type_paiement', 'total_quantity', 'total_sacs', 'addresse_client', 'date_facturation'];
 
  public $sortable = ['amount',
-'products','user_id','tax','amount_tax','client','type_paiement'];
+'products','user_id','tax','amount_tax','client','type_paiement', 'date_facturation'];
 
 	public static function boot(){
 

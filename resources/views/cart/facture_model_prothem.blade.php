@@ -82,7 +82,10 @@
 		<article class="identification_b">
 			<div>
 				<h5>B. Client</h5>
-				<p>Nom et Prénom ou Raison Socail : <b>{{  collect(json_decode($order->client))->get('name') ?? "" }}</b></p>
+				<p>Nom et Prénom ou Raison Socail : <b>
+					
+					{{$order->client->name}}
+				</b></p>
 				<p>Résident à : <b>{{ $order->addresse_client }}</b></p>
 				<p>Assujeti à la TVA : OUI        NON</p>
 				<h5>Doit pour ce qui suit : </h5>
@@ -143,7 +146,7 @@
 
 			<footer>
 				<div>
-					<h4>Confirming Oder</h4>
+					<h4>Confirming Order</h4>
 					<h4>Head of Commercial</h4>
 					<h4>Tanguy HICUBURUNDI</h4>
 				</div>

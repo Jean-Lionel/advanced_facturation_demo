@@ -29,6 +29,7 @@ class CheckoutController extends Controller
 
         $request->validate([
             'name' => 'required|min:1',
+            'date_facturation' => 'required',
         ]);
         if (Cart::count() <= 0) {
             Session::flash('error', 'Votre panier est vide.');
@@ -66,6 +67,7 @@ class CheckoutController extends Controller
                 'products'=> serialize($cartInfo),
                 'client'=> $client->toJson(),
                 'addresse_client'=> $request->addresse_client,
+                'date_facturation'=> $request->date_facturation,
 
             ]);
 
