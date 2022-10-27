@@ -3,6 +3,7 @@
 @section('content')
 
 <div>
+	<h5>Facture en attente</h5>
 	<table class="table table-bordered tab-content table-sm">
 		<thead>
 			<tr>
