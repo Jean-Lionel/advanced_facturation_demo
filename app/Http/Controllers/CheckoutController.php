@@ -164,7 +164,8 @@ class CheckoutController extends Controller
 
         $products = [];
         foreach (Cart::content() as $item) {
-            // dump($item);
+            $v = ($item->price * $item->qty) * $item->taxRate /100;
+            $prix_hors_tva =  ($item->price * $item->qty);
 
             $products[] = [
                 'id' => $item->id,
@@ -174,6 +175,12 @@ class CheckoutController extends Controller
                 'quantite' => $item->qty,
                 'nombre_sac' => ($item->qty / $item->options['embalage'] ?? 1 ),
                 'embalage' => $item->options['embalage'],
+                'item_ct' => 0,
+                'item_tl' => 0 ,
+                'item_price_nvat' => $prix_hors_tva,
+                'vat' => $v,
+                'item_price_wvat' => ($v + $prix_hors_tva),
+                'item_total_amount' => ($v + $prix_hors_tva)
             ];
         }
 

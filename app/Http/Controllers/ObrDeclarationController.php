@@ -56,12 +56,12 @@ class ObrDeclarationController extends Controller
                     "item_designation" => $product['name'],
                     "item_quantity" => $product['quantite'],
                     "item_price" => $product['price'],
-                    "item_ct" => "0",
-                    "item_tl" => "0",
-                    "item_price_nvat" => ($product['price'] * $product['quantite'] ),
-                    "vat" => "18",
-                    "item_price_wvat" => "5900",
-                    "item_total_amount" => "5900"
+                    "item_ct" => $product['item_ct'],
+                    "item_tl" => $product['item_tl'],
+                    "item_price_nvat" => $product['item_price_nvat'],
+                    "vat" => $product['vat'],
+                    "item_price_wvat" => $product['item_price_wvat'],
+                    "item_total_amount" => $product['item_total_amount']
                 ];
         }
 
