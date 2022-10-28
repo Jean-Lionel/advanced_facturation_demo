@@ -49,6 +49,22 @@ class ObrDeclarationController extends Controller
         ."/". $date_facturation."/".$invoice_number;
         $invoinces_items = [];
 
+        foreach ($order->products as $key => $product) {
+            // code...
+
+                $invoinces_items[] = [
+                    "item_designation" => $product['name'],
+                    "item_quantity" => $product['quantite'],
+                    "item_price" => $product['price'],
+                    "item_ct" => "0",
+                    "item_tl" => "0",
+                    "item_price_nvat" => ($product['price'] * $product['quantite'] ),
+                    "vat" => "18",
+                    "item_price_wvat" => "5900",
+                    "item_total_amount" => "5900"
+                ];
+        }
+
 
         $invoince =[
             "invoice_number" => $invoice_number,
@@ -68,42 +84,18 @@ class ObrDeclarationController extends Controller
             "tl_taxpayer" => $company->tl_taxpayer,
             "tp_fiscal_center" => $company->tp_fiscal_center,
             "tp_activity_sector" => $company->tp_activity_sector,
-            "tp_legal_form" => "suprl",
-            "payment_type" => "1",
-            "customer_name" => "NGARUKIYINTWARI WAKA",
-            "customer_TIN" => "4000202020",
-            "customer_address" => "KIRUNDO",
-            "vat_customer_payer" => "1",
+            "tp_legal_form" => $company->tp_legal_form,
+            "payment_type" => $company->payment_type,
+            "customer_name" =>  $oder->client?->name,
+            "customer_TIN" => $oder->client?->customer_TIN,
+            "customer_address" => $oder->client?->addresse,
+            "vat_customer_payer" => $oder->client?->vat_customer_payer,
             "invoice_type" => "FN",
             "cancelled_invoice_ref" => "",//yyyyMMddHHmmss
             "invoice_signature" => $invoice_signature ,
-            "invoice_signature_date" => "2021-12-06 00:00:00",
-            "invoice_items" => [
-                [
-                    "item_designation" => "10",
-                    "item_quantity" => "10",
-                    "item_price" => "500",
-                    "item_ct" => "0",
-                    "item_tl" => "0",
-                    "item_price_nvat" => "5000",
-                    "vat" => "18",
-                    "item_price_wvat" => "5900",
-                    "item_total_amount" => "5900",
-
-                ],
-                [
-                    "item_designation" => "45",
-                    "item_quantity" => "10",
-                    "item_price" => "200",
-                    "item_ct" => "0",
-                    "item_tl" => "0",
-                    "item_price_nvat" => "90000",
-                    "vat" => "18",
-                    "item_price_wvat" => "106200",
-                    "item_total_amount" => "106200",
-
-                ]
-            ]
+            "invoice_signature_date" => $invoice_date,
+            "invoice_items" =>  $invoinces_items
+           
         ];
 
         return   $invoince;
