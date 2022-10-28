@@ -27,20 +27,20 @@ class ObrDeclarationController extends Controller
     public function sendInvoinceToObr($invoince_id){
 
         $obr = new SendInvoiceToOBR();
-        $oder = Order::find($invoince_id);
-        $invoince = $this->generateInvoince($oder);
+        $order = Order::find($invoince_id);
+        $invoince = $this->generateInvoince($order);
         $response = $obr->addInvoice($invoince);
 
         return $response;
 
     }
 
-    private function generateInvoince($oder){
+    private function generateInvoince($order){
 
-        $invoice_number = str_pad($oder->id, 6, "0", STR_PAD_LEFT);
+        $invoice_number = str_pad($order->id, 6, "0", STR_PAD_LEFT);
         $company = Entreprise::latest()->first();
 
-        $d = date_create($oder->date_facturation);
+        $d = date_create($order->date_facturation);
 
         $date_facturation = date_format($d, 'YmdHis');
         $invoice_date = date_format($d, 'Y-m-d H:i:s');
@@ -56,12 +56,12 @@ class ObrDeclarationController extends Controller
                     "item_designation" => $product['name'],
                     "item_quantity" => $product['quantite'],
                     "item_price" => $product['price'],
-                    "item_ct" => $product['item_ct'],
-                    "item_tl" => $product['item_tl'],
-                    "item_price_nvat" => $product['item_price_nvat'],
-                    "vat" => $product['vat'],
-                    "item_price_wvat" => $product['item_price_wvat'],
-                    "item_total_amount" => $product['item_total_amount']
+                    "item_ct" => $product['item_ct'] ?? 0,
+                    "item_tl" => $product['item_tl'] ?? 0,
+                    "item_price_nvat" => $product['item_price_nvat'] ?? 0,
+                    "vat" => $product['vat'] ?? 0,
+                    "item_price_wvat" => $product['item_price_wvat'] ?? 0,
+                    "item_total_amount" => $product['item_total_amount'] ?? 0
                 ];
         }
 
@@ -86,10 +86,10 @@ class ObrDeclarationController extends Controller
             "tp_activity_sector" => $company->tp_activity_sector,
             "tp_legal_form" => $company->tp_legal_form,
             "payment_type" => $company->payment_type,
-            "customer_name" =>  $oder->client?->name,
-            "customer_TIN" => $oder->client?->customer_TIN,
-            "customer_address" => $oder->client?->addresse,
-            "vat_customer_payer" => $oder->client?->vat_customer_payer,
+            "customer_name" =>  $order->client?->name,
+            "customer_TIN" => $order->client?->customer_TIN,
+            "customer_address" => $order->client?->addresse,
+            "vat_customer_payer" => $order->client?->vat_customer_payer,
             "invoice_type" => "FN",
             "cancelled_invoice_ref" => "",//yyyyMMddHHmmss
             "invoice_signature" => $invoice_signature ,
