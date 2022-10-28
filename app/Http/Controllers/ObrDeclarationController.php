@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Entreprise;
 use App\Models\ObrDeclaration;
 use App\Http\Requests\StoreObrDeclarationRequest;
 use App\Http\Requests\UpdateObrDeclarationRequest;
@@ -37,31 +38,36 @@ class ObrDeclarationController extends Controller
     private function generateInvoince($oder){
 
         $invoice_number = str_pad($oder->id, 6, "0", STR_PAD_LEFT);
-        
+        $company = Entreprise::latest()->first();
 
-        $invoice_signature = "4002060640/". env('OBR_USERNAME') ."/20211206000000/".$invoice_number;
+        $d = date_create($oder->date_facturation);
 
+        $date_facturation = date_format($d, 'YmdHis');
+        $invoice_date = date_format($d, 'Y-m-d H:i:s');
+
+        $invoice_signature = $company->tp_TIN. env('OBR_USERNAME') 
+        ."/". $date_facturation."/".$invoice_number;
         $invoinces_items = [];
 
 
         $invoince =[
             "invoice_number" => $invoice_number,
-            "invoice_date" => "2021-12-06 00:00:00",
-            "tp_type" => "1",
-            "tp_name" => "NDIKUMANA JEAN MARIE",
-            "tp_TIN" => "4002060640",
-            "tp_trade_number" => "3333",
-            "tp_postal_number" => "3256",
-            "tp_phone_number" => "79959590",
-            "tp_address_commune" => "BUJUMBURA",
-            "tp_address_quartier" => "GIKUNGU",
-            "tp_address_avenue" => "MUYINGA",
-            "tp_address_number" => "",
-            "vat_taxpayer" => "1",
-            "ct_taxpayer" => "0",
-            "tl_taxpayer" => "0",
-            "tp_fiscal_center" => "DGC",
-            "tp_activity_sector" => "SERVICE MARCHAND",
+            "invoice_date" => $invoice_date,
+            "tp_type" => $company->tp_type,
+            "tp_name" => $company->tp_name,
+            "tp_TIN" => $company->tp_TIN,
+            "tp_trade_number" => $company->tp_trade_number,
+            "tp_postal_number" => $company->tp_postal_number,
+            "tp_phone_number" => $company->tp_phone_number,
+            "tp_address_commune" => $company->tp_address_commune,
+            "tp_address_quartier" => $company->tp_address_quartier,
+            "tp_address_avenue" => $company->tp_address_avenue,
+            "tp_address_number" => $company->tp_address_number,
+            "vat_taxpayer" => $company->vat_taxpayer,
+            "ct_taxpayer" => $company->ct_taxpayer,
+            "tl_taxpayer" => $company->tl_taxpayer,
+            "tp_fiscal_center" => $company->tp_fiscal_center,
+            "tp_activity_sector" => $company->tp_activity_sector,
             "tp_legal_form" => "suprl",
             "payment_type" => "1",
             "customer_name" => "NGARUKIYINTWARI WAKA",

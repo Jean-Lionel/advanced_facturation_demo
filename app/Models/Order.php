@@ -27,18 +27,8 @@ class Order extends Model
 		parent::boot();
 		
 		self::creating(function($model){
-
 			$model->user_id = Auth::user()->id ?? 1;
-
-			// dd($model);
 		});
-
-		// self::deleting(function($model){
-
-		// 	$model->details->delete();
-		// });
-
-
 	}
 
 	public function details(){
