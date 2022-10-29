@@ -143,11 +143,7 @@
             <input type="text" id="addresse_client" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
           </div>
 
-          
-
         </div>
-        
-
         <input type="hidden" value="CACHE" name="type_paiement" >
 
         {{--   <div class="form-group">
