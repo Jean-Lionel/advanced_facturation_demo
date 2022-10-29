@@ -68,6 +68,7 @@ class CheckoutController extends Controller
                 'client'=> $client->toJson(),
                 'addresse_client'=> $request->addresse_client,
                 'date_facturation'=> $request->date_facturation,
+                'is_cancelled' => 0,
 
             ]);
 

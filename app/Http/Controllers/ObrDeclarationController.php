@@ -67,15 +67,13 @@ class ObrDeclarationController extends Controller
                 ];
         }
 
-      //  dump($company->tp_TIN,$company->tp_name );
 
-     
         $invoince =[
             "invoice_number" => $invoice_number,
             "invoice_date" => $invoice_date,
             "tp_type" => $company->tp_type,
-            "tp_name" => "PROTHEM-USINE",
-            "tp_TIN" => "4000004806",
+            "tp_name" => $company->tp_name,
+            "tp_TIN" => $company->tp_TIN,
             "tp_trade_number" => $company->tp_trade_number,
             "tp_postal_number" => $company->tp_postal_number,
             "tp_phone_number" => $company->tp_phone_number,
