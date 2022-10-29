@@ -28,15 +28,27 @@ class ObrDeclarationController extends Controller
 
         $obr = new SendInvoiceToOBR();
         $order = Order::find($invoince_id);
-        $invoince = $this->generateInvoince($order);
-        $response = $obr->addInvoice($invoince);
+        
+        
 
+        //DON'T Reapet your self but i did
+
+        $company = Entreprise::latest()->first();
+        $invoice_number =str_pad($order->id, 6, "0", STR_PAD_LEFT);
+        $invoice_signature = $company->tp_TIN."/". env('OBR_USERNAME') 
+        ."/". $date_facturation."/".$invoice_number;
+
+        $invoince = $this->generateInvoince($order, $company, $invoice_number, $invoice_signature);
+        $response = $obr->addInvoice($invoince);
         if($response->success){
 
         }
 
         if($response->msg == "Une facture avec le même numéro existe déjà."){
-
+            $order->envoye_obr = true;
+            $envoye_par = auth()->user()->id;
+            $envoye_time = now();
+            $invoice_signature = $invoice_signature;
             $order->save();
         }
 
@@ -44,18 +56,13 @@ class ObrDeclarationController extends Controller
 
     }
 
-    private function generateInvoince($order){
-
-        $invoice_number =str_pad($order->id, 6, "0", STR_PAD_LEFT);
-        $company = Entreprise::latest()->first();
+    private function generateInvoince($order, $company, $invoice_number, $invoice_signature){
 
         $d = date_create($order->date_facturation);
-
+        
         $date_facturation = date_format($d, 'YmdHis');
         $invoice_date = date_format($d, 'Y-m-d H:i:s');
 
-        $invoice_signature = $company->tp_TIN."/". env('OBR_USERNAME') 
-        ."/". $date_facturation."/".$invoice_number;
         $invoinces_items = [];
 
         foreach ($order->products as $key => $product) {
