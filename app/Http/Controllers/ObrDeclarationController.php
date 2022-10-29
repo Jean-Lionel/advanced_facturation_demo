@@ -37,7 +37,7 @@ class ObrDeclarationController extends Controller
 
     private function generateInvoince($order){
 
-        $invoice_number = str_pad($order->id, 6, "0", STR_PAD_LEFT);
+        $invoice_number ="lion". str_pad($order->id, 6, "0", STR_PAD_LEFT);
         $company = Entreprise::latest()->first();
 
     
