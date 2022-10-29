@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\SendInvoiceToOBR;
+
 define('RAISON_ENTREPRISE','PROTHEM-USINE');
 define('BASE_FIRST_LETTER','P');
 define('RAISON_ENTREPRISE_HEADER','PROTHEM-USINE');
@@ -14,4 +16,6 @@ define('BASE_CENTRE_FISCAL','DGC');
 define('BASE_AVENUE','BLV DE L\'UPRONA, N° 97');
 define('BASE_TVA',18);
 define('BASE_UNITE_EMBALLAGE',50);
+
+
 ?>

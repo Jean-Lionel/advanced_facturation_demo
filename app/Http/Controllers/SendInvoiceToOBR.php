@@ -12,7 +12,7 @@ class SendInvoiceToOBR extends Controller
 
     public function __construct(){
         // 4002060640
-        //dump($this->checkTin("4000235731"));
+      // dump($this->checkTin("4000004806"));
         
     }
     public function checkTin(string $tp_TIN){
