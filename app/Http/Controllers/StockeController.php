@@ -115,7 +115,7 @@ class StockeController extends Controller
     {
         // code...
         $orders = Order::where('is_cancelled','=',1)->get();
-        return view('journal.canceledInvoince', compact('orders'));
+        return view('journals.canceledInvoince', compact('orders'));
     }
 
     public function cancelFactures($order_id){
