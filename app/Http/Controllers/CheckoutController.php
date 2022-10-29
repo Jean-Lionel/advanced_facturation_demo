@@ -31,22 +31,16 @@ class CheckoutController extends Controller
         $validate = 
             [
             'name' => 'required|min:1',
-            'date_facturation' => 'required',
-            
+            'date_facturation' => 'required',  
         ];
-        
-
         if ($request->customer_TIN) {
             // code...
             $obr = new SendInvoiceToOBR();
-
             $response = $obr->checkTin($request->customer_TIN);
-
             if(!$response->success){
                 Session::flash('error', $response->msg);
                 return redirect()->route('panier.index');
             }
-           
         }
 
         $request->validate($validate);
@@ -54,16 +48,12 @@ class CheckoutController extends Controller
             Session::flash('error', 'Votre panier est vide.');
             return redirect()->route('panier.index');
         }
-
         if ($this->noLongerStock()) {
             Session::flash('error', 'Un produit de votre panier ne se trouve plus en stock.');
             return redirect()->route('panier.index');
         }
-
         try {
-
             DB::beginTransaction();
-
             $this->stockUpdated();
             $client =  Client::create([
                 'name' => $request->name,
@@ -90,9 +80,7 @@ class CheckoutController extends Controller
                 'is_cancelled' => 0,
 
             ]);
-
             $this->storeTodetailOder($order->id);
-
             if($request->type_paiement == 'DETTE'){
                 //Enregistre les infos dans les dettes
                 PaiementDette::create([
@@ -100,35 +88,26 @@ class CheckoutController extends Controller
                     'montant_restant' =>Cart::total() ,
                     'order_id' =>   $order->id ,
                     'status' => 'NON PAYE'
-
                 ]);
             }
-
              Cart::destroy();
-
             DB::commit();
             
         } catch (\Exception $e) {
 
             DB::rollBack();
-
             Session::flash('error', $e->getMessage());
-
             return back();
             
         }
 
     return view('cart.facture_model_prothem', compact('order'));
-
-
     }
 
     public function thankyou()
     {
         return Session::has('success') ? view('checkout.thankYou') : redirect()->route('products.index');
     }
-
-
 
     private function noLongerStock()
     {

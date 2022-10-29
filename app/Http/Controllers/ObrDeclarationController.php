@@ -31,16 +31,23 @@ class ObrDeclarationController extends Controller
         $invoince = $this->generateInvoince($order);
         $response = $obr->addInvoice($invoince);
 
+        if($response->success){
+
+        }
+
+        if($response->msg == "Une facture avec le même numéro existe déjà."){
+
+            $order->save();
+        }
+
         return $response;
 
     }
 
     private function generateInvoince($order){
 
-        $invoice_number ="lion". str_pad($order->id, 6, "0", STR_PAD_LEFT);
+        $invoice_number =str_pad($order->id, 6, "0", STR_PAD_LEFT);
         $company = Entreprise::latest()->first();
-
-    
 
         $d = date_create($order->date_facturation);
 
@@ -67,6 +74,17 @@ class ObrDeclarationController extends Controller
                 ];
         }
 
+        //Check A valide customer_TIN
+        $customer_TIN ="";
+        if ($order->client?->customer_TIN) {
+            // code...
+            $obr = new SendInvoiceToOBR();
+            $response = $obr->checkTin($request->customer_TIN);
+            if($response->success){
+                $customer_TI = $order->client?->customer_TIN;
+            }
+        }
+
 
         $invoince =[
             "invoice_number" => $invoice_number,
@@ -89,7 +107,7 @@ class ObrDeclarationController extends Controller
             "tp_legal_form" => $company->tp_legal_form,
             "payment_type" => $company->payment_type,
             "customer_name" =>  $order->client?->name,
-            "customer_TIN" => "",
+            "customer_TIN" => $customer_TIN,
             "customer_address" => $order->client?->addresse,
             "vat_customer_payer" => $order->client?->vat_customer_payer,
             "invoice_type" => "FN",

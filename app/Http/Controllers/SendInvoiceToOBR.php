@@ -31,7 +31,7 @@ class SendInvoiceToOBR extends Controller
 
         $token = $this->getToken();
         $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'addInvoice/',$invoince);
-        return $req->body();
+        return json_decode($req->body());
     }
 
     // Get Invoince 
