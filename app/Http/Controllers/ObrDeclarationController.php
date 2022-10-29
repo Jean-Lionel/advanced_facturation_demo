@@ -19,17 +19,15 @@ class ObrDeclarationController extends Controller
     public function index()
     {
         //
-        $orders = Order::all();
+        $orders = Order::where('envoye_obr', '<>', 1)->latest()->paginate();
         return view('obr_declarations.index', [
             'orders' => $orders
         ]);
     }
 
     public function sendInvoinceToObr($invoince_id){
-
         $obr = new SendInvoiceToOBR();
         $order = Order::find($invoince_id);
-        
         //DON'T Reapet your self but i did
 
         $company = Entreprise::latest()->first();
@@ -71,10 +69,10 @@ class ObrDeclarationController extends Controller
                 'status' => true,
             ]); 
          }
-         
+
      }
 
-     
+
 
      return $response;
 
