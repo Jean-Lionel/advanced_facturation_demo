@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Client;
-use App\Models\DetailOrder;
-use App\Models\FollowProduct;
 use App\Models\Order;
-use App\Models\PaiementDette;
+use App\Models\Client;
 use App\Models\Product;
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\DetailOrder;
 use Illuminate\Http\Request;
+use App\Models\FollowProduct;
+use App\Models\PaiementDette;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Http\Controllers\SendInvoiceToOBR;
 
 
 class CheckoutController extends Controller
@@ -27,18 +28,36 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
+        $validate = 
+            [
             'name' => 'required|min:1',
             'date_facturation' => 'required',
-        ]);
+            
+        ];
+        
+
+        if ($request->customer_TIN) {
+            // code...
+            $obr = new SendInvoiceToOBR();
+
+            $response = $obr->checkTin($request->customer_TIN);
+
+            if(!$response->success){
+                Session::flash('error', $response->msg);
+                return redirect()->route('panier.index');
+            }
+           
+        }
+
+        $request->validate($validate);
         if (Cart::count() <= 0) {
             Session::flash('error', 'Votre panier est vide.');
-            return redirect()->route('products.index');
+            return redirect()->route('panier.index');
         }
 
         if ($this->noLongerStock()) {
             Session::flash('error', 'Un produit de votre panier ne se trouve plus en stock.');
-            return redirect()->route('products.index');
+            return redirect()->route('panier.index');
         }
 
         try {

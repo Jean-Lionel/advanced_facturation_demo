@@ -22,19 +22,8 @@ class SendInvoiceToOBR extends Controller
         $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'checkTIN/',[
             'tp_TIN' => $tp_TIN
         ]);
-        $response = json_decode($req->body());
 
-        if( $response->success){
-            // Nom du contribuable 
-            return [
-                'success' => true,
-                'tp_TIN' => $response->result->taxpayer[0]->tp_name
-            ];
-        }
-        return  [
-            'success' => false,
-            'msg' => $response->msg
-        ];
+        return json_decode($req->body());
     }
 
 
