@@ -14,10 +14,9 @@ class Order extends Model
     use HasFactory;
     use SoftDeletes;
     use Sortable;
-
-
+    
     protected $fillable = ['amount',
-'products','user_id','tax','amount_tax','client','type_paiement', 'total_quantity', 'total_sacs', 'addresse_client', 'date_facturation'];
+'products','user_id','tax','amount_tax','client','type_paiement', 'total_quantity', 'total_sacs', 'addresse_client', 'date_facturation', 'is_cancelled'];
 
  public $sortable = ['amount',
 'products','user_id','tax','amount_tax','client','type_paiement', 'date_facturation'];

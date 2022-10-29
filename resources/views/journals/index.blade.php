@@ -12,11 +12,12 @@
 			<form action="" class="form-group row">
 				<div class="col-sm-6">
 					<label for="">TYPE DE PAIMENENT</label>
-					
 				</div>
 				<div class="col-sm-6">
 					<a class="btn btn-secondary" href="{{ route('paimenet_dette') }}"> Paiment des dettes</a>
-					
+				</div>
+				<div class="col-sm-6">
+					<a class="btn btn-secondary" href="{{ route('canceledInvoince') }}"> Facture Annuler avant la séclaration</a>
 				</div>
 				
 			</form>
@@ -58,7 +59,7 @@
 						<a href="{{ route('orders.show', $order) }}" class="btn btn-sm btn-success mr-2" title="imprimer"> <i class="fa fa-print" ></i></a> 
 						
 
-						<form action="{{ route('orders.destroy', $order) }}" method="post">
+						<form action="{{ route('cancelFactures', $order) }}" method="post">
 							@method("DELETE")
 							@csrf
 							<button type="submit" onclick="return confirm('êtez-vous sûr d\'annuler la facture?')" class="btn btn-danger btn-sm" title="Supprimer"> <i class="fa fa-minus" ></i> </button>

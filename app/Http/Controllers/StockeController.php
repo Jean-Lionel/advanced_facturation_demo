@@ -107,21 +107,31 @@ class StockeController extends Controller
      */
     public function destroy(Stocke $stocke)
     {
-        //
-
         $stocke->delete();
+        return back();
+    }
 
+    public function canceledInvoince()
+    {
+        // code...
+        $orders = Order::where('is_cancelled','=',1)->get();
+        return view('journal.canceledInvoince', compact('orders'));
+    }
+
+    public function cancelFactures($order_id){
+        $order = Order::find($order_id);
+        $order->is_cancelled = 1; 
+
+        $order->save();
         return back();
     }
 
 
     public function journal(){
-        
-        $orders =  Order::sortable()->latest()->paginate(10);
+        $orders =  Order::where('is_cancelled','=','0')->sortable()->latest()->paginate(10);
         return view('journals.index', compact('orders'));
     }
     public function fiche_stock(){
-        
         $follow_products = FollowProduct::latest()->get();
         return view('journals.fiche_stock', compact('follow_products'));
     }

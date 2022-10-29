@@ -55,6 +55,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::delete('panier/{id}', 'CartController@destroy')->name('cart.destroy');
 	Route::post('update_panier', 'CartController@updatePanier')->name('cart.update_panier');
 	Route::get('journal', 'StockeController@journal')->name('stockes.journal');
+	Route::get('canceledInvoince', 'StockeController@canceledInvoince')->name('stockes.journal');
+	Route::delete('cancelFactures/{order_id}', 'StockeController@cancelFactures')->name('cancelFactures');
+
 	Route::get('journal_history', 'StockeController@journal_history')->name('journal_history');
 	Route::get('fiche_stock', 'StockeController@fiche_stock')->name('fiche_stock');
 
