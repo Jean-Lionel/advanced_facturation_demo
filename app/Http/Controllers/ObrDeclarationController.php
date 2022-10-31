@@ -26,6 +26,14 @@ class ObrDeclarationController extends Controller
         ]);
     }
 
+    public function hostory(){
+        $orders = Order::whereNotNull('invoice_signature')->latest()->get();
+        
+        return view('obr_declarations.history', [
+            'orders' => $orders
+        ]);
+    }
+
     public function sendInvoinceToObr($invoince_id){
         $obr = new SendInvoiceToOBR();
         $order = Order::find($invoince_id);
