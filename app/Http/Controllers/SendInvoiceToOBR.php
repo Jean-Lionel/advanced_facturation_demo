@@ -34,6 +34,10 @@ class SendInvoiceToOBR extends Controller
         return json_decode($req->body());
     }
 
+    public function cancelInvoince($invoince_signature){
+
+    }
+
     // Get Invoince 
 
     public function getInvoice($invoice_signature){

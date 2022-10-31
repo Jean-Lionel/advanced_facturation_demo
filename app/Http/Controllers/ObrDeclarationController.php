@@ -19,7 +19,8 @@ class ObrDeclarationController extends Controller
     public function index()
     {
         //
-        $orders = Order::where('envoye_obr', '<>', 1)->latest()->paginate();
+        $orders = Order::whereNull('invoice_signature')->latest()->get();
+        
         return view('obr_declarations.index', [
             'orders' => $orders
         ]);
