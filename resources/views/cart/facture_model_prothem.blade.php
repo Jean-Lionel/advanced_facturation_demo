@@ -20,6 +20,10 @@
 			text-align:right !important;
 			padding-right: 15px;	
 		}
+		.img_logo{
+			width: 100px;
+			height: 100px;
+		}
 	</style>	
 </head>
 <body>
@@ -32,8 +36,9 @@
 		{{-- Entete --}}
 		<header class="header-facture">
 			<div>
-				<h3>LOGO DE	</h3>
-				<h3>L'ENTREPRISE</h3>
+				<div >
+					<img class="img_logo" src="{{asset('img/logo.jpg')}}" alt="">
+				</div>
 			</div>
 			<div style="width: 80%;">
 				<h3>{{ RAISON_ENTREPRISE }} Siège Social : Gisozi-Mwaro</h3>

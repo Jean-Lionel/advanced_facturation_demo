@@ -71,7 +71,7 @@
        </table>
    </div>
 
-   @if(!$entreprises)
+   @if($entreprises->count() < 1)
    <div >
     <h4 class="text-center">Enregistrement de l'entreprise</h4>
 
