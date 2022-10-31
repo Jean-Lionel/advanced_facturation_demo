@@ -42,7 +42,18 @@ class ObrDeclarationController extends Controller
         ."/". $date_facturation."/".$invoice_number;
 
         $invoince = $this->generateInvoince($order, $company, $invoice_number, $invoice_signature,$date_facturation );
-        $response = $obr->addInvoice($invoince);
+
+
+        $response = null;
+        try {
+            $response = $obr->addInvoice($invoince);
+        } catch (\Exception $e) {
+            return response()->json( [
+                'success' => false,
+                'msg' => "Vérifier que votre ordinateur est connecté"
+            ]);
+        }
+         
         if($response->success){
             $order->envoye_obr = true;
             $order->envoye_par = auth()->user()->id;

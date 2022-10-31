@@ -13,7 +13,7 @@ class SendInvoiceToOBR extends Controller
     public function __construct(){
         // 4002060640
       // dump($this->checkTin("4000004806"));
-        
+
     }
     public function checkTin(string $tp_TIN){
         $token = $this->getToken();
@@ -55,21 +55,26 @@ class SendInvoiceToOBR extends Controller
     // Generation du TOken
     public function getToken() 
     {
-         $username = env('OBR_USERNAME');
-         $password = env('OBR_PASSWORD');
+       $username = env('OBR_USERNAME');
+       $password = env('OBR_PASSWORD');
 
-        $req =  Http::acceptJson()->post($this->baseUrl.'login/', [
-            'username' => $username,
-            'password' => $password
-        ]);
-        $response = json_decode($req->body());
-        $success = $response->success;
-        $message = $response->msg;
-        $token = "";
-        if($success ){
-          $token = $response->result->token; 
-        }
+           try {
+                $req =  Http::acceptJson()->post($this->baseUrl.'login/', [
+                    'username' => $username,
+                    'password' => $password
+                ]);
+                $response = json_decode($req->body());
+                $success = $response->success;
+                $message = $response->msg;
+                $token = "";
+                if($success ){
+                  $token = $response->result->token; 
+              }
 
-      return $token;
-  }
+            return $token;
+
+          } catch (\Exception $e) {
+            throw new \Exception("Vérifier que votre ordinateur est connecté", 1);
+          }
+    }
 }
