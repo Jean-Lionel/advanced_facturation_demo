@@ -11,6 +11,7 @@ class SendInvoiceToOBR extends Controller
     private string $baseUrl = 'http://41.79.226.28:8345/ebms_api/';
 
     public function __construct(){
+       $this->getToken();
         // 4002060640
       // dump($this->checkTin("4000004806"));
 
@@ -21,6 +22,16 @@ class SendInvoiceToOBR extends Controller
         $tp_TIN = trim($tp_TIN);
         $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'checkTIN/',[
             'tp_TIN' => $tp_TIN
+        ]);
+
+        return json_decode($req->body());
+    }
+
+    public function cancelInvoice($invoice_signature){
+        $token = $this->getToken();
+        $invoice_signature = trim($invoice_signature);
+        $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'cancelInvoice/',[
+            'invoice_signature' => $invoice_signature
         ]);
 
         return json_decode($req->body());

@@ -20,12 +20,8 @@ category_id
      */
 public function index()
 {
-
-
-    //$x = new SendInvoiceToOBR();
-
+    $x = new SendInvoiceToOBR();
     $search = \Request::get('search'); 
-     
     $products = Product::where('quantite','>',1)
     ->where(function($query) use ($search){
         $query->where('name','like','%'.$search.'%')
@@ -33,8 +29,6 @@ public function index()
         ->orWhere('price','like', '%'.$search.'%')
         ->orWhere('unite_mesure','like', '%'.$search.'%');
     })->latest()->paginate(6);
-
-
     return view('ventes.index', compact('products','search'));
 }
 
