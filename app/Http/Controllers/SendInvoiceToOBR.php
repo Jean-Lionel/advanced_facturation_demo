@@ -11,10 +11,9 @@ class SendInvoiceToOBR extends Controller
     private string $baseUrl = 'http://41.79.226.28:8345/ebms_api/';
 
     public function __construct(){
-       $this->getToken();
+        //$this->getToken();
         // 4002060640
       // dump($this->checkTin("4000004806"));
-
     }
     public function checkTin(string $tp_TIN){
         $token = $this->getToken();

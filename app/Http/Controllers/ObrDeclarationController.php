@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Entreprise;
 use App\Models\ObrPointer;
+use Illuminate\Http\Request;
 use App\Models\ObrDeclaration;
 use App\Http\Requests\StoreObrDeclarationRequest;
 use App\Http\Requests\UpdateObrDeclarationRequest;
@@ -32,6 +33,21 @@ class ObrDeclarationController extends Controller
         return view('obr_declarations.history', [
             'orders' => $orders
         ]);
+    }
+
+    public function cancelInvoice(Request $request){
+        $obr = new SendInvoiceToOBR();
+
+        try {
+            $response = $obr->cancelInvoice($request->invoice_signature);
+            return $response;
+        } catch (\Exception $e) {
+            return response()->json( [
+                'success' => false,
+                'msg' => "Vérifier que votre ordinateur est connecté"
+            ]);
+        }
+        
     }
 
     public function sendInvoinceToObr($invoince_id){

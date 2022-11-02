@@ -25,6 +25,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('obr_declarations', ObrDeclarationController::class);
 	Route::get('obr_declarations_hostory', [\App\Http\Controllers\ObrDeclarationController::class, 'hostory'])->name('obr_declarations_hostory');
 	Route::get('sendInvoinceToObr/{invoince_id?}','ObrDeclarationController@sendInvoinceToObr' );
+
+	Route::post('cancelInvoice','ObrDeclarationController@cancelInvoice' );
 	Route::resource('stockes', StockeController::class);
 	Route::resource('products', ProductController::class);
 	Route::resource('clients', ClientController::class);
@@ -38,10 +40,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('paimenent_dette' , PaiementDetteController::class);
 	
 	Route::get('update_price', 'CartController@update_product_price')->name('update_price');
-
-
 	Route::get('update_emballage', 'CartController@update_emballage')->name('update_emballage');
-
 	Route::get('update_quantite', 'CartController@update_quantite')->name('update_quantite');
 	Route::get('rapport', 'StockeController@rapport')->name('rapport');
 
