@@ -182,8 +182,7 @@ class ObrDeclarationController extends Controller
         "invoice_items" =>  $invoinces_items
 
         ];
-        dd($invoince);
-
+       
         return   $invoince;
 
     }

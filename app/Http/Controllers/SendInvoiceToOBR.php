@@ -65,8 +65,9 @@ class SendInvoiceToOBR extends Controller
     // Generation du TOken
     public function getToken() 
     {
-       $username = env('OBR_USERNAME');
-       $password = env('OBR_PASSWORD');
+        // Default creditial for PROTHEM
+       $username = env('OBR_USERNAME', 'ws400000480600270');
+       $password = env('OBR_PASSWORD', '_B_/BGv0');
 
            try {
                 $req =  Http::acceptJson()->post($this->baseUrl.'login/', [
