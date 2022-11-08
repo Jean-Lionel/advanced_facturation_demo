@@ -20,9 +20,17 @@
 			text-align:right !important;
 			padding-right: 15px;	
 		}
+		.text-center{
+			text-align: center !important;
+			line-height: 4px;
+		}
 		.img_logo{
 			width: 100px;
 			height: 100px;
+		}
+		body{
+			margin: 0;
+			padding: 0;
 		}
 	</style>	
 </head>
@@ -161,6 +169,10 @@
 					<h4>Eric KAPARAYE</h4>
 				</div>
 			</footer>
+			<div>
+				<h4 class="text-center">MANAGING DIRECTOR</h4>
+				<h4 class="text-center">Fabien GAHUNGU</h4>
+			</div>
 		</div>
 
 
