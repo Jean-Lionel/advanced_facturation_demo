@@ -66,6 +66,8 @@ class ObrDeclarationController extends Controller
 
         $invoince = $this->generateInvoince($order, $company, $invoice_number, $invoice_signature,$date_facturation );
 
+        dd(
+        $invoince);
 
         $response = null;
         try {
@@ -144,7 +146,7 @@ class ObrDeclarationController extends Controller
     if ($order->client?->customer_TIN) {
             // code...
         $obr = new SendInvoiceToOBR();
-        $response = $obr->checkTin($request->customer_TIN);
+        $response = $obr->checkTin($order->client?->customer_TIN);
         if($response->success){
             $customer_TI = $order->client?->customer_TIN;
         }
