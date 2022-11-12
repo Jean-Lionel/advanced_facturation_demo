@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vente;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
 
@@ -20,16 +21,16 @@ category_id
      */
 public function index()
 {
-    $x = new SendInvoiceToOBR();
-    $search = \Request::get('search'); 
-    $products = Product::where('quantite','>',1)
-    ->where(function($query) use ($search){
-        $query->where('name','like','%'.$search.'%')
-        ->orWhere('code_product','like', '%'.$search.'%')
-        ->orWhere('price','like', '%'.$search.'%')
-        ->orWhere('unite_mesure','like', '%'.$search.'%');
-    })->latest()->paginate(6);
-    return view('ventes.index', compact('products','search'));
+
+  $search = \Request::get('search'); 
+  $products = Product::where('quantite','>',1)
+  ->where(function($query) use ($search){
+    $query->where('name','like','%'.$search.'%')
+    ->orWhere('code_product','like', '%'.$search.'%')
+    ->orWhere('price','like', '%'.$search.'%')
+    ->orWhere('unite_mesure','like', '%'.$search.'%');
+})->latest()->paginate(6);
+  return view('ventes.index', compact('products','search'));
 }
 
     /**

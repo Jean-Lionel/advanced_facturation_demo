@@ -19,7 +19,7 @@ class ObrDeclarationController extends Controller
      */
     public function index()
     {
-        //
+
         $orders = Order::whereNull('invoice_signature')->latest()->get();
         return view('obr_declarations.index', [
             'orders' => $orders
@@ -66,8 +66,7 @@ class ObrDeclarationController extends Controller
 
         $invoince = $this->generateInvoince($order, $company, $invoice_number, $invoice_signature,$date_facturation );
 
-        dd(
-        $invoince);
+       
 
         $response = null;
         try {
@@ -106,11 +105,7 @@ class ObrDeclarationController extends Controller
                 'status' => true,
             ]); 
            }
-
        }
-
-
-
        return $response;
 
    }
@@ -143,12 +138,12 @@ class ObrDeclarationController extends Controller
 
         //Check A valide customer_TIN
     $customer_TIN ="";
-    if ($order->client?->customer_TIN) {
+    if (isset($order->client->customer_TIN)) {
             // code...
         $obr = new SendInvoiceToOBR();
-        $response = $obr->checkTin($order->client?->customer_TIN);
+        $response = $obr->checkTin($order->client->customer_TIN);
         if($response->success){
-            $customer_TI = $order->client?->customer_TIN;
+            $customer_TI = $order->client->customer_TIN;
         }
     }
 
@@ -173,10 +168,10 @@ class ObrDeclarationController extends Controller
         "tp_activity_sector" => $company->tp_activity_sector,
         "tp_legal_form" => $company->tp_legal_form,
         "payment_type" => $company->payment_type,
-        "customer_name" =>  $order->client?->name,
+        "customer_name" =>  $order->client->name,
         "customer_TIN" => $customer_TIN,
-        "customer_address" => $order->client?->addresse,
-        "vat_customer_payer" => $order->client?->vat_customer_payer,
+        "customer_address" => $order->client->addresse,
+        "vat_customer_payer" => $order->client->vat_customer_payer,
         "invoice_type" => "FN",
         "cancelled_invoice_ref" => "",//yyyyMMddHHmmss
         "invoice_signature" => $invoice_signature ,

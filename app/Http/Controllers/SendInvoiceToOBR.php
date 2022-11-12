@@ -12,7 +12,7 @@ class SendInvoiceToOBR extends Controller
     private string $baseUrl = 'https://ebms.obr.gov.bi:8443/ebms_api/';
 
     public function __construct(){
-        //$this->getToken();
+         //var_dump($this->getToken());
         // 4002060640
       // dump($this->checkTin("4000004806"));
     }
@@ -67,26 +67,26 @@ class SendInvoiceToOBR extends Controller
     public function getToken() 
     {
         // Default creditial for PROTHEM
-       $username = env('OBR_USERNAME', 'ws400000480600270');
-       $password = env('OBR_PASSWORD', '_B_/BGv0');
+     $username = env('OBR_USERNAME', 'ws400000480600270');
+     $password = env('OBR_PASSWORD', '_B_/BGv0');
 
-           try {
-                $req =  Http::acceptJson()->post($this->baseUrl.'login/', [
-                    'username' => $username,
-                    'password' => $password
-                ]);
-                $response = json_decode($req->body());
-                $success = $response->success;
-                $message = $response->msg;
-                $token = "";
-                if($success ){
-                  $token = $response->result->token; 
-              }
+     try {
+        $req =  Http::acceptJson()->post($this->baseUrl.'login/', [
+            'username' => $username,
+            'password' => $password
+        ]);
+        $response = json_decode($req->body());
+        $success = $response->success;
+        $message = $response->msg;
+        $token = "";
+        if($success ){
+          $token = $response->result->token; 
+      }
 
-            return $token;
+      return $token;
 
-          } catch (\Exception $e) {
-            throw new \Exception("Vérifier que votre ordinateur est connecté", 1);
-          }
-    }
+  } catch (\Exception $e) {
+    throw new \Exception("Vérifier que votre ordinateur est connecté",12);
+}
+}
 }
