@@ -9,10 +9,16 @@ class SendInvoiceToOBR extends Controller
 {
     //
     //private string $baseUrl = 'http://41.79.226.28:8345/ebms_api/';
-    private string $baseUrl = 'https://ebms.obr.gov.bi:8443/ebms_api/';
+    private string $baseUrl = 'https://ebms.obr.gov.bi:9443/ebms_api/';
 
     public function __construct(){
-         //var_dump($this->getToken());
+     //     $username = env('OBR_USERNAME', 'ws400000480600270');
+     // $password = env('OBR_PASSWORD', '_B_/BGv0');
+     //     $req =  Http::acceptJson()->post($this->baseUrl.'login/', [
+     //        'username' => $username,
+     //        'password' => $password
+     //    ]);
+     //     dd($req->body());
         // 4002060640
       // dump($this->checkTin("4000004806"));
     }

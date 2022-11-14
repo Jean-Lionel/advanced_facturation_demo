@@ -22,6 +22,8 @@ category_id
 public function index()
 {
 
+   // $db = new SendInvoiceToOBR();
+
   $search = \Request::get('search'); 
   $products = Product::where('quantite','>',1)
   ->where(function($query) use ($search){

@@ -7,11 +7,25 @@ Veuillez utiliser les informations suivantes pour se connecter à notre système
 
 Les URL du système eBMS  à prendre en considération pendant les tests sont: 
 
-        - http://41.79.226.28:8345/ebms_api/login/
-        - http://41.79.226.28:8345/ebms_api/getInvoice/
-        - http://41.79.226.28:8345/ebms_api/addInvoice/
-        - http://41.79.226.28:8345/ebms_api/checkTIN/
-        - http://41.79.226.28:8345/ebms_api/cancelInvoice/
+       
+       - https://ebms.obr.gov.bi:9443/ebms_api/login/
+       - https://ebms.obr.gov.bi:9443/ebms_api/getInvoice/
+       - https://ebms.obr.gov.bi:9443/ebms_api/addInvoice/
+       - https://ebms.obr.gov.bi:9443/ebms_api/checkTIN/
+       - https://ebms.obr.gov.bi:9443/ebms_api/cancelInvoice/
+
+Le Serveur de production: 
+
+
+        Veuillez utiliser ces nouveaux lien vers le serveur de PRODUCTION:
+
+-        https://ebms.obr.gov.bi:8443/ebms_api/login/
+-        https://ebms.obr.gov.bi:8443/ebms_api/getInvoice/
+-        https://ebms.obr.gov.bi:8443/ebms_api/addInvoice/
+-        https://ebms.obr.gov.bi:8443/ebms_api/checkTIN/
+-        https://ebms.obr.gov.bi:8443/ebms_api/cancelInvoice/
+
+
 
 
 
@@ -22,7 +36,7 @@ Veuillez utiliser les informations suivantes pour se connecter à notre système
 
 1. PROTHEM-USINE:
  - nom d'utilisateur: ws400000480600270
-- mot de passe: _B/BGv0_
+- mot de passe: _B_/BGv0
 
 Les URL du système eBMS  à prendre en considération pendant les tests sont:
 

@@ -57,7 +57,7 @@ class ObrDeclarationController extends Controller
         $company = Entreprise::latest()->first();
         $invoice_number =str_pad($order->id, 6, "0", STR_PAD_LEFT);
 
-        $d = date_create($order->date_facturation);
+        $d = date_create($order->created_at);
 
         $date_facturation = date_format($d, 'YmdHis');
 
@@ -113,10 +113,10 @@ class ObrDeclarationController extends Controller
    private function generateInvoince($order, $company, $invoice_number, $invoice_signature,$date_facturation ){
 
      $d = date_create($order->created_at);
-     $invoice_signature_date = date_create($date_facturation);
+     $invoice_signature_date = date_create($order->created_at);
 
      $invoice_date = date_format($d, 'Y-m-d H:i:s');
-     $invoice_signature_date = date_format($invoice_signature_date, 'Y-m-d');
+     $invoice_signature_date = date_format($invoice_signature_date, 'Y-m-d H:i:s');
 
      $invoinces_items = [];
 
