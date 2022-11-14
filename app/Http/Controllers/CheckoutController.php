@@ -61,7 +61,7 @@ class CheckoutController extends Controller
                 'description' =>  "",
                 'addresse' => $request->addresse_client ?? "",
                 'customer_TIN' => $request->customer_TIN ?? "",
-                'vat_customer_payer' => $request->vat_customer_payer ?? "",
+                'vat_customer_payer' => $request->vat_customer_payer ? 1 : 0,
                 ]);
             $cartInfo = $this->extractCart();
 
