@@ -100,7 +100,7 @@
 					{{$order->client->name}}
 				</b></p>
 				<p>Résident à : <b>{{ $order->addresse_client }}</b></p>
-				<p>Assujeti à la TVA : OUI        NON</p>
+				<p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
 				<h5>Doit pour ce qui suit : </h5>
 			</div>
 		</article>

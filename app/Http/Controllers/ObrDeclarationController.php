@@ -53,20 +53,15 @@ class ObrDeclarationController extends Controller
         $obr = new SendInvoiceToOBR();
         $order = Order::find($invoince_id);
         //DON'T Reapet your self but i did
-
         $company = Entreprise::latest()->first();
         $invoice_number =str_pad($order->id, 6, "0", STR_PAD_LEFT);
-
         $d = date_create($order->created_at);
-
         $date_facturation = date_format($d, 'YmdHis');
 
         $invoice_signature = $company->tp_TIN."/". env('OBR_USERNAME') 
         ."/". $date_facturation."/".$invoice_number;
 
         $invoince = $this->generateInvoince($order, $company, $invoice_number, $invoice_signature,$date_facturation );
-
-       
 
         $response = null;
         try {

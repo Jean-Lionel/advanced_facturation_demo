@@ -66,6 +66,8 @@ class CheckoutController extends Controller
             $cartInfo = $this->extractCart();
 
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
+
+            $oder_signuture = ;
             $order = Order::create([
                 'amount' => Cart::total(),
                 'total_quantity' => Cart::count(),

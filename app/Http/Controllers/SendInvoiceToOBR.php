@@ -20,7 +20,7 @@ class SendInvoiceToOBR extends Controller
      //    ]);
      //     dd($req->body());
         // 4002060640
-      // dump($this->checkTin("4000004806"));
+     // dump($this->checkTin("4001183237"));
     }
     public function checkTin(string $tp_TIN){
         $token = $this->getToken();
