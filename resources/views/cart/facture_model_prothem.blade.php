@@ -101,6 +101,7 @@
 				</b></p>
 				<p>Résident à : <b>{{ $order->addresse_client }}</b></p>
 				<p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
+				<p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
 				<h5>Doit pour ce qui suit : </h5>
 			</div>
 		</article>
@@ -175,7 +176,7 @@
 			</div>
 			<div>
 				<hr>
-				<h4 class="text-center">SIGNATURE OBR : {{$order->invoice_signature}}</h4>
+				<h4 class="text-center"> {{$order->invoice_signature}}</h4>
 			</div>
 		</div>
 
