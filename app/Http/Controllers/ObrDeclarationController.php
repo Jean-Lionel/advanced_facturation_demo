@@ -28,7 +28,15 @@ class ObrDeclarationController extends Controller
     }
 
     public function hostory(){
-        $orders = Order::whereNotNull('invoice_signature')->latest()->get();
+        $orders = Order::whereNotNull('envoye_obr')->latest()->get();
+        
+        return view('obr_declarations.history', [
+            'orders' => $orders
+        ]);
+    }
+
+    public function obr_declarations_cancel(){
+         $orders = Order::whereNotNull('is_cancelled')->latest()->get();
         
         return view('obr_declarations.history', [
             'orders' => $orders
@@ -40,11 +48,16 @@ class ObrDeclarationController extends Controller
 
         try {
             $response = $obr->cancelInvoice($request->invoice_signature);
+
+            $order = Order::find($request->order_id);
+
+             $order->is_cancelled = true;
+             $order->save();
             return $response;
         } catch (\Exception $e) {
             return response()->json( [
                 'success' => false,
-                'msg' => "Vérifier que votre ordinateur est connecté"
+                'msg' => $e->getMessage()
             ]);
         }
         
