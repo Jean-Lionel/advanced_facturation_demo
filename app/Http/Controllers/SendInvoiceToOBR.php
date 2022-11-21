@@ -54,55 +54,61 @@ class SendInvoiceToOBR extends Controller
 
     public function cancelInvoince($invoince_signature){
 
-    }
+       $token = $this->getToken();
+       $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'cancelInvoice/',[
+        'invoice_signature' => $invoince_signature
+       ]);
+       return json_decode($req->body());
 
-    public static function getInvoinceSignature($invoince_id, $created_at){
-         $company = Entreprise::latest()->first();
-        $invoice_number =str_pad($invoince_id, 6, "0", STR_PAD_LEFT);
-        $d = date_create($created_at);
-        $date_facturation = date_format($d, 'YmdHis');
-        
-         $invoice_signature = $company->tp_TIN."/". OBR_USERNAME 
-        ."/". $date_facturation."/".$invoice_number;
+   }
 
-        return $invoice_signature;
+   public static function getInvoinceSignature($invoince_id, $created_at){
+       $company = Entreprise::latest()->first();
+       $invoice_number =str_pad($invoince_id, 6, "0", STR_PAD_LEFT);
+       $d = date_create($created_at);
+       $date_facturation = date_format($d, 'YmdHis');
 
-    }
+       $invoice_signature = $company->tp_TIN."/". OBR_USERNAME 
+       ."/". $date_facturation."/".$invoice_number;
+
+       return $invoice_signature;
+
+   }
 
     // Get Invoince 
 
-    public function getInvoice($invoice_signature){
-        $token = $this->getToken();
-        $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'getInvoice/',[
-            'invoice_signature' => $invoice_signature
-        ]);
-        $response = json_decode($req->body());
-        $success = $response->success;
-        $message = $response->msg;
+   public function getInvoice($invoice_signature){
+    $token = $this->getToken();
+    $req =  Http::withToken($token)->acceptJson()->post($this->baseUrl.'getInvoice/',[
+        'invoice_signature' => $invoice_signature
+    ]);
+    $response = json_decode($req->body());
+    $success = $response->success;
+    $message = $response->msg;
 
-        return $message;
-    }
+    return $message;
+}
 
     // Generation du TOken
-    public function getToken() 
-    {
-      
-     try {
-        $req =  Http::acceptJson()->post($this->baseUrl.'login/', [
-            'username' => OBR_USERNAME,
-            'password' => OBR_PASSWORD
-        ]);
-        $response = json_decode($req->body());
-        $success = $response->success;
-        $message = $response->msg;
-        $token = "";
-        if($success ){
-          $token = $response->result->token; 
-      }
+public function getToken() 
+{
 
-      return $token;
+   try {
+    $req =  Http::acceptJson()->post($this->baseUrl.'login/', [
+        'username' => OBR_USERNAME,
+        'password' => OBR_PASSWORD
+    ]);
+    $response = json_decode($req->body());
+    $success = $response->success;
+    $message = $response->msg;
+    $token = "";
+    if($success ){
+      $token = $response->result->token; 
+  }
 
-  } catch (\Exception $e) {
+  return $token;
+
+} catch (\Exception $e) {
     throw new \Exception("Vérifier que votre ordinateur est connecté",12);
 }
 }
