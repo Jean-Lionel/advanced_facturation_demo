@@ -173,6 +173,10 @@
 				<h4 class="text-center">MANAGING DIRECTOR</h4>
 				<h4 class="text-center">Fabien GAHUNGU</h4>
 			</div>
+			<div>
+				<hr>
+				<h4 class="text-center">SIGNATURE OBR : {{$order->invoice_signature}}</h4>
+			</div>
 		</div>
 
 

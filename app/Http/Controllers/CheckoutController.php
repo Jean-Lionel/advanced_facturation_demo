@@ -28,6 +28,8 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
 
+        
+
         $validate = 
             [
             'name' => 'required|min:1',
@@ -67,7 +69,7 @@ class CheckoutController extends Controller
 
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
 
-            $oder_signuture = ;
+            $oder_signuture = "";
             $order = Order::create([
                 'amount' => Cart::total(),
                 'total_quantity' => Cart::count(),
@@ -80,8 +82,12 @@ class CheckoutController extends Controller
                 'addresse_client'=> $request->addresse_client,
                 'date_facturation'=> $request->date_facturation,
                 'is_cancelled' => 0,
-
             ]);
+
+            $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
+
+            $order->invoice_signature = $signature;
+            $order->save();
             $this->storeTodetailOder($order->id);
             if($request->type_paiement == 'DETTE'){
                 //Enregistre les infos dans les dettes

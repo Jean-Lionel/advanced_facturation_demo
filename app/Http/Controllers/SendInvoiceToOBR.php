@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entreprise;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -55,6 +56,19 @@ class SendInvoiceToOBR extends Controller
 
     }
 
+    public static function getInvoinceSignature($invoince_id, $created_at){
+         $company = Entreprise::latest()->first();
+        $invoice_number =str_pad($invoince_id, 6, "0", STR_PAD_LEFT);
+        $d = date_create($created_at);
+        $date_facturation = date_format($d, 'YmdHis');
+        
+         $invoice_signature = $company->tp_TIN."/". OBR_USERNAME 
+        ."/". $date_facturation."/".$invoice_number;
+
+        return $invoice_signature;
+
+    }
+
     // Get Invoince 
 
     public function getInvoice($invoice_signature){
@@ -72,14 +86,11 @@ class SendInvoiceToOBR extends Controller
     // Generation du TOken
     public function getToken() 
     {
-        // Default creditial for PROTHEM
-     $username = env('OBR_USERNAME', 'ws400000480600270');
-     $password = env('OBR_PASSWORD', '_B_/BGv0');
-
+      
      try {
         $req =  Http::acceptJson()->post($this->baseUrl.'login/', [
-            'username' => $username,
-            'password' => $password
+            'username' => OBR_USERNAME,
+            'password' => OBR_PASSWORD
         ]);
         $response = json_decode($req->body());
         $success = $response->success;
