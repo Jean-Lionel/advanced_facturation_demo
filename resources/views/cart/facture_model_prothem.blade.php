@@ -112,7 +112,7 @@
 					<tr>
 						<th>#</th>
 						<th>Nature de l'article</th>
-						<th>Nbre de sacs</th>
+						{{-- <th>Nbre de sacs</th> --}}
 						<th>Qté en Kg</th>
 						<th>PU/ Kg</th>
 						<th>PV-HTVA</th>
@@ -126,7 +126,7 @@
 					<tr>
 						<td>{{ $key +1 }}</td>
 						<td> {{ $product['name'] }}</td>
-						<td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td>
+						{{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
 						<td class="adroite"> {{ $product['quantite'] }}</td>
 						<td class="adroite"> {{ getPrice($product['price'] ) }}</td>
 						<td class="adroite"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
@@ -136,19 +136,19 @@
 
 
 					<tr>
-						<td colspan="5">PVT HTVA </td>
+						<td colspan="4">PVT HTVA </td>
 						<td class="adroite"><b>{{ getPrice($order->amount_tax) }}</b></td>
 					</tr>
 					<tr>
-						<td colspan="5">TVA ( 18 %)</td>
+						<td colspan="4">TVA ( 18 %)</td>
 						<td class="adroite"><b>{{ getPrice($order->tax) }}</b></td>
 					</tr>
 					<tr>
-						<td colspan="2"><b>TOTAL TVAC</b></td>
-						<td class="adroite"><b>{{ $order->total_sacs}}</b></td>
-						<td class="adroite"><b>{{ $order->total_quantity}}</b></td>
+						<td colspan="4"><b>TOTAL TVAC</b></td>
+						{{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
+						<td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
 						
-						<td></td>
+						
 						
 						<td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
 					</tbody>
