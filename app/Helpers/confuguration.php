@@ -17,8 +17,12 @@ define('BASE_AVENUE','BLV DE L\'UPRONA, N° 97');
 define('BASE_TVA',18);
 define('BASE_UNITE_EMBALLAGE',50);
 
+// FOR TEST
 define('OBR_USERNAME', env('OBR_USERNAME', 'ws400000480600270'));
 define('OBR_PASSWORD', env('OBR_PASSWORD', '_B_/BGv0'));
+//=== FOR PRODUCTION ===
+// define('OBR_USERNAME', env('OBR_USERNAME', 'wsl400000480600187'));
+// define('OBR_PASSWORD', env('OBR_PASSWORD', 'T?v?w7}I'));
 
 
 ?>

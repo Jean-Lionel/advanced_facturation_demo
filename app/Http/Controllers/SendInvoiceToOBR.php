@@ -10,7 +10,8 @@ class SendInvoiceToOBR extends Controller
 {
     //
     //private string $baseUrl = 'http://41.79.226.28:8345/ebms_api/';
-    private string $baseUrl = 'https://ebms.obr.gov.bi:9443/ebms_api/';
+   //private string $baseUrl = 'https://ebms.obr.gov.bi:8443/ebms_api/';
+   private string $baseUrl = 'https://ebms.obr.gov.bi:9443/ebms_api/';
 
     public function __construct(){
      //     $username = env('OBR_USERNAME', 'ws400000480600270');
@@ -98,7 +99,9 @@ public function getToken()
         'username' => OBR_USERNAME,
         'password' => OBR_PASSWORD
     ]);
+    
     $response = json_decode($req->body());
+    
     $success = $response->success;
     $message = $response->msg;
     $token = "";
@@ -109,7 +112,7 @@ public function getToken()
   return $token;
 
 } catch (\Exception $e) {
-    throw new \Exception("Vérifier que votre ordinateur est connecté",12);
+    throw new \Exception($e->getMessage(), $e->getCode());
 }
 }
 }

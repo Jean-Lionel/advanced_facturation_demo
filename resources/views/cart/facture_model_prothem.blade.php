@@ -154,8 +154,8 @@
 						<td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
 					</tbody>
 				</table>
-				<h4>Mention Obligatoire</h4>
-				<h4>NB: Les non assujettis à la TVA ne remplissent pas les deuc dernières lignes</h4>
+				{{-- <h4>Mention Obligatoire</h4>
+				<h4>NB: Les non assujettis à la TVA ne remplissent pas les deuc dernières lignes</h4> --}}
 			</article>
 
 			<footer>

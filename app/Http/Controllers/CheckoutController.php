@@ -30,7 +30,6 @@ class CheckoutController extends Controller
      {
 
 
-
         $validate = 
         [
             'name' => 'required|min:1',
@@ -77,9 +76,9 @@ class CheckoutController extends Controller
                 'amount' => Cart::total(),
                 'total_quantity' => Cart::count(),
                 'total_sacs' => $nombre_sac,
-                'tax' => Cart::tax(),
+                'tax' => round(Cart::subtotal() * BASE_TVA / 100),
                 'type_paiement' => $request->type_paiement,
-                'amount_tax' => Cart::subtotal(),
+                'amount_tax' => round(Cart::subtotal()),
                 'products'=> serialize($cartInfo),
                 'client'=> $client->toJson(),
                 'addresse_client'=> $request->addresse_client,

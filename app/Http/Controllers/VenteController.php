@@ -22,6 +22,9 @@ category_id
 public function index()
 {
 
+// $obr = new SendInvoiceToOBR();
+
+// dd($obr->getToken());
 
   $search = \Request::get('search'); 
   $products = Product::where('quantite','>',1)

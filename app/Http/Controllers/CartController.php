@@ -39,7 +39,7 @@ class CartController extends Controller
         $price = \Request::get('price');
 
         $total = Cart::subtotal();
-
+       // dd($total );
         $cart = Cart::update($rowId, ['price' => $price]);
         return response()->json( [
             'rowId' =>  $cart->rowId,
