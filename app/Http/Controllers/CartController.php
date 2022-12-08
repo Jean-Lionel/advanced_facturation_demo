@@ -156,13 +156,14 @@ class CartController extends Controller
         // 'rowId' =>  $cart->rowId,
         //     'cart' => $cart->subtotal,
         //     'prix_hors_tva' => $total 
+        $tax = Cart::subtotal() * 18 / 100;
 
         return response()->json( [
             'rowId' => $cart->rowId,
             'cart' => $cart->subtotal(),
             'prix_hors_tva' => getPrice(Cart::subtotal()),
-            'total_montant' => getPrice(Cart::total()) ,
-            'prix_hors_tax' => getPrice(Cart::tax())
+            'total_montant' => getPrice(round($tax + Cart::subtotal())) ,
+            'prix_hors_tax' => getPrice(round($tax))
 
         ]);
     }

@@ -72,11 +72,12 @@ class CheckoutController extends Controller
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
 
             $oder_signuture = "";
+            $tax = round(Cart::subtotal() * BASE_TVA / 100);
             $order = Order::create([
-                'amount' => Cart::total(),
+                'amount' => round( $tax  + Cart::subtotal()),
                 'total_quantity' => Cart::count(),
                 'total_sacs' => $nombre_sac,
-                'tax' => round(Cart::subtotal() * BASE_TVA / 100),
+                'tax' => $tax,
                 'type_paiement' => $request->type_paiement,
                 'amount_tax' => round(Cart::subtotal()),
                 'products'=> serialize($cartInfo),
