@@ -11,11 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
@@ -28,12 +23,6 @@ class CartController extends Controller
         return view('cart.vente');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    
     public function update_product_price(){
         $rowId = \Request::get('product_id');
         $price = \Request::get('price');
@@ -50,7 +39,7 @@ class CartController extends Controller
 
         ]);
         //return  Cart::update($rowId, ['price' => $price]);
-    }    
+    }
     public function update_emballage(){
         $rowId = \Request::get('product_id');
         $unite_emballage = \Request::get('embalage');
@@ -70,19 +59,14 @@ class CartController extends Controller
         ]);
         //return  Cart::update($rowId, ['price' => $price]);
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
 
         $diplucata = Cart::search(function ($cartItem, $rowId) use ($request) {
             return $cartItem->id == $request->id;
         });
-        
+
         if($diplucata->count()){
             return redirect()->route('ventes.index')->with('success', 'Le produit existe déjà ');
         }
@@ -95,23 +79,12 @@ class CartController extends Controller
         return redirect()->route('ventes.index')->with('success', 'Le produit a été bien ajouter');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
@@ -134,20 +107,13 @@ class CartController extends Controller
        return response()->json(['success','réussi']);
    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $rowId)
     {
         return response()->json(['success','resussi']);
     }
 
     public function update_quantite(){
-        // rowId, 
+        // rowId,
         $rowId = \Request::get('rowId');
         $quatite = \Request::get('qty');
 
@@ -155,7 +121,7 @@ class CartController extends Controller
 
         // 'rowId' =>  $cart->rowId,
         //     'cart' => $cart->subtotal,
-        //     'prix_hors_tva' => $total 
+        //     'prix_hors_tva' => $total
         $tax = Cart::subtotal() * 18 / 100;
 
         return response()->json( [
@@ -183,5 +149,5 @@ class CartController extends Controller
     }
 
 
-    
+
 }

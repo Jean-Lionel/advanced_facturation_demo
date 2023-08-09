@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\ObrMouvementStock;
 use App\Models\Order;
 use App\Models\Client;
 use App\Models\Product;
@@ -20,20 +21,20 @@ use App\Http\Controllers\sendInvoinceToObr;
 class CheckoutController extends Controller
 {
 
-     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-     public function store(Request $request)
-     {
+    /**
+    * Store a newly created resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+    public function store(Request $request)
+    {
 
 
-        $validate = 
+        $validate =
         [
             'name' => 'required|min:1',
-            'date_facturation' => 'required',  
+            'date_facturation' => 'required',
         ];
         if ($request->customer_TIN) {
             // code...
@@ -42,13 +43,13 @@ class CheckoutController extends Controller
                 $response = $obr->checkTin($request->customer_TIN);
                 if(!$response->success){
                     Session::flash('error', $response->msg);
-                   // return redirect()->route('panier.index');
+                    // return redirect()->route('panier.index');
                 }
-                
+
             } catch (\Exception $e) {
-                
+
             }
-            
+
         }
 
         $request->validate($validate);
@@ -75,6 +76,17 @@ class CheckoutController extends Controller
             ]);
             $cartInfo = $this->extractCart();
 
+            foreach($cartInfo as $key => $item){
+                $product = Product::find($item['id']);
+
+                ObrMouvementStock::saveMouvement(
+                    $product,
+                    'SN',
+                    $item['price'],
+                    $item['quantite'],
+                );
+            }
+
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
 
             $oder_signuture = "";
@@ -97,9 +109,11 @@ class CheckoutController extends Controller
 
 
             $order->invoice_signature = $signature;
+
+
             $order->save();
             $this->storeTodetailOder($order->id);
-            // SEND INVOINCES TO OBR 
+            // SEND INVOINCES TO OBR
 
             if($request->type_paiement == 'DETTE'){
                 //Enregistre les infos dans les dettes
@@ -112,121 +126,121 @@ class CheckoutController extends Controller
             }
             Cart::destroy();
             DB::commit();
-            
+
         } catch (\Exception $e) {
 
             DB::rollBack();
             Session::flash('error', $e->getMessage());
             return back();
-            
+
         }
 
         if(isset($order->id)){
 
-           $obr = new ObrDeclarationController();
-           try{
-            $obr->sendInvoinceToObr($order->id);
-        }catch(\Exception $e){
-            
-           Session::flash('error', $e->getMessage());
-       }
-       
+            $obr = new ObrDeclarationController();
+            try{
+                $obr->sendInvoinceToObr($order->id);
+            }catch(\Exception $e){
 
-       return view('cart.facture_model_prothem', compact('order'));
-        }
-   }
+                Session::flash('error', $e->getMessage());
+            }
 
-   public function thankyou()
-   {
-    return Session::has('success') ? view('checkout.thankYou') : redirect()->route('products.index');
-}
 
-private function noLongerStock()
-{
-    foreach (Cart::content() as $item) {
-        $product = Product::find($item->model->id);
-
-        if ($item->qty > $product->quantite) {
-            return true;
+            return view('cart.facture_model_prothem', compact('order'));
         }
     }
-    return false;
-}
 
-private function stockUpdated()
-{
-    foreach (Cart::content() as $item) {
-        $product = Product::find($item->model->id);
-        $product->update(['quantite' => $product->quantite - $item->qty]);
-    }
-}
-
-private function storeTodetailOder($order_id){
-    foreach (Cart::content() as $item) {
-
-        DetailOrder::create([
-
-            'product_id' => $item->model->id,
-            'quantite' => $item->qty,
-            'quantite_stock'=> $item->model->quantite,
-            'price_unitaire' => $item->price,
-            'code_product' => $item->model->code_product,
-            'name' => $item->name,
-            'unite_mesure' => $item->model->unite_mesure,
-            'date_expiration' => $item->model->date_expiration,
-            'order_id' => $order_id,
-            'embalage' => $item->embalage
-
-        ]);
-
-
-        FollowProduct::create([
-            'quantite' => $item->qty,
-            'details' => $item->model->toJson(),
-            'action' => 'VENTE',
-            'product_id' => $item->model->id,
-        ]);
-
-    }
-}
-
-
-private function extractCart(){
-
-    $products = [];
-    foreach (Cart::content() as $item) {
-        $v = ($item->price * $item->qty) * $item->taxRate /100;
-        $prix_hors_tva =  ($item->price * $item->qty);
-
-        $products[] = [
-            'id' => $item->id,
-            'name' => $item->name,
-            'rowId' => $item->rowId,
-            'price' => $item->price,
-            'quantite' => $item->qty,
-            'nombre_sac' => ($item->qty / $item->options['embalage'] ?? 1 ),
-            'embalage' => $item->options['embalage'],
-            'item_ct' => 0,
-            'item_tl' => 0 ,
-            'item_price_nvat' => $prix_hors_tva,
-            'vat' => $v,
-            'item_price_wvat' => ($v + $prix_hors_tva),
-            'item_total_amount' => ($v + $prix_hors_tva)
-        ];
+    public function thankyou()
+    {
+        return Session::has('success') ? view('checkout.thankYou') : redirect()->route('products.index');
     }
 
-    return $products;
-}
+    private function noLongerStock()
+    {
+        foreach (Cart::content() as $item) {
+            $product = Product::find($item->model->id);
 
-public function paimenetDette(){
+            if ($item->qty > $product->quantite) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-    $dettes = PaiementDette::sortable()->where('status','=','NON PAYE')
-    ->orWhere('montant_restant','>',0)
-    ->paginate();
+    private function stockUpdated()
+    {
+        foreach (Cart::content() as $item) {
+            $product = Product::find($item->model->id);
+            $product->update(['quantite' => $product->quantite - $item->qty]);
+        }
+    }
 
-    $totalDette = PaiementDette::all()->where('montant_restant','>',0)->sum('montant_restant');
+    private function storeTodetailOder($order_id){
+        foreach (Cart::content() as $item) {
+
+            DetailOrder::create([
+
+                'product_id' => $item->model->id,
+                'quantite' => $item->qty,
+                'quantite_stock'=> $item->model->quantite,
+                'price_unitaire' => $item->price,
+                'code_product' => $item->model->code_product,
+                'name' => $item->name,
+                'unite_mesure' => $item->model->unite_mesure,
+                'date_expiration' => $item->model->date_expiration,
+                'order_id' => $order_id,
+                'embalage' => $item->embalage
+
+            ]);
 
 
-    return view('checkout.paimenet_dette', compact('dettes','totalDette'));
-}
+            FollowProduct::create([
+                'quantite' => $item->qty,
+                'details' => $item->model->toJson(),
+                'action' => 'VENTE',
+                'product_id' => $item->model->id,
+            ]);
+
+        }
+    }
+
+
+    private function extractCart(){
+
+        $products = [];
+        foreach (Cart::content() as $item) {
+            $v = ($item->price * $item->qty) * $item->taxRate /100;
+            $prix_hors_tva =  ($item->price * $item->qty);
+
+            $products[] = [
+                'id' => $item->id,
+                'name' => $item->name,
+                'rowId' => $item->rowId,
+                'price' => $item->price,
+                'quantite' => $item->qty,
+                'nombre_sac' => ($item->qty / $item->options['embalage'] ?? 1 ),
+                'embalage' => $item->options['embalage'],
+                'item_ct' => 0,
+                'item_tl' => 0 ,
+                'item_price_nvat' => $prix_hors_tva,
+                'vat' => $v,
+                'item_price_wvat' => ($v + $prix_hors_tva),
+                'item_total_amount' => ($v + $prix_hors_tva)
+            ];
+        }
+
+        return $products;
+    }
+
+    public function paimenetDette(){
+
+        $dettes = PaiementDette::sortable()->where('status','=','NON PAYE')
+        ->orWhere('montant_restant','>',0)
+        ->paginate();
+
+        $totalDette = PaiementDette::all()->where('montant_restant','>',0)->sum('montant_restant');
+
+
+        return view('checkout.paimenet_dette', compact('dettes','totalDette'));
+    }
 }
