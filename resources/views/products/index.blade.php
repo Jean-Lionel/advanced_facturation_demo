@@ -7,6 +7,9 @@
 		<div>
         <a href="{{ route('products.create') }}"><span class="fa fa-seedling"></span> Entre</a>
 		</div>
+		<div>
+        <a href="{{ route('retour_produit') }}"><span class="fa fa-undo"></span> Retour des marchandises</a>
+		</div>
 		<div><a href="{{ route('categories.index') }}"><span class="fa fa-paper-plane"></span> Category</a></div>
 
 		<div>

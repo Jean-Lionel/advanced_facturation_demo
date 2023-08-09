@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\ObrStockController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -44,22 +45,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('update_emballage', 'CartController@update_emballage')->name('update_emballage');
     Route::get('update_quantite', 'CartController@update_quantite')->name('update_quantite');
     Route::get('rapport', 'StockeController@rapport')->name('rapport');
-
     //Cart ROUTE
     Route::post('panier/ajouter', 'CartController@store')->name('panier.store');
-
     Route::get('panier/index', 'CartController@index')->name('panier.index');
     Route::get('panier/vente', 'CartController@vente')->name('panier.vente');
-
     Route::get('getClient/{id}', 'ClientController@getClient')->name('getClient');
-
     Route::delete('panier/{id}', 'CartController@destroy')->name('cart.destroy');
     Route::post('update_panier', 'CartController@updatePanier')->name('cart.update_panier');
     Route::get('journal', 'StockeController@journal')->name('stockes.journal');
     Route::get('canceledInvoince', 'StockeController@canceledInvoince')->name('stockes.journal');
     Route::delete('cancelFactures/{order_id}', 'StockeController@cancelFactures')->name('cancelFactures');
     Route::get('canceledInvoince', 'StockeController@canceledInvoince')->name('canceledInvoince');
-
     Route::get('journal_history', 'StockeController@journal_history')->name('journal_history');
     Route::get('fiche_stock', 'StockeController@fiche_stock')->name('fiche_stock');
 
@@ -73,4 +69,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('bon_entre', 'StockeController@bonEntre')->name('bon_entre');
     Route::get('movement_stock/{item_id}', 'ProductController@movement_stock')->name('movement_stock');
     Route::get('paimenet_dette', 'CheckoutController@paimenetDette')->name('paimenet_dette');
+
+    Route::get('retour_produit', [ObrStockController::class, 'retour_produit'])->name('retour_produit');
 });
