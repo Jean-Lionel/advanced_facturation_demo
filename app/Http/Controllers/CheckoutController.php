@@ -76,16 +76,6 @@ class CheckoutController extends Controller
             ]);
             $cartInfo = $this->extractCart();
 
-            foreach($cartInfo as $key => $item){
-                $product = Product::find($item['id']);
-
-                ObrMouvementStock::saveMouvement(
-                    $product,
-                    'SN',
-                    $item['price'],
-                    $item['quantite'],
-                );
-            }
 
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
 
@@ -109,6 +99,19 @@ class CheckoutController extends Controller
 
 
             $order->invoice_signature = $signature;
+            foreach ($cartInfo as $key => $item) {
+                $product = Product::find($item['id']);
+
+                ObrMouvementStock::saveMouvement(
+                    $product,
+                    'SN',
+                    $item['price'],
+                    $item['quantite'],
+                    NULL,
+                    $signature
+                );
+            }
+
 
 
             $order->save();
