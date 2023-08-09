@@ -5,7 +5,7 @@
 		<h4 class="text-center">Mouvement du Produit # {{ $item_id }} </h4>
 	</div>
 	<div class="info"></div>
-	<table id="fiche_stock" class="display compact table-sm table-responsive" >
+	<table  id="fiche_stock" class="table display compact table-sm table-responsive" >
 		<thead>
 			<tr>
                 <th>Désignation </th>
