@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ObrMouvementStock;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class ProductController extends Controller
      */
 
     public function __construct(){
-      
+
     }
     public function index()
     {
@@ -150,15 +151,11 @@ class ProductController extends Controller
         return $this->index();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
 
     public function add_view(Product $product){
-        return view('products.add',compact('product'));
+        $mouvements = ObrMouvementStock::getMouvouments();
+
+        return view('products.add',compact('product', 'mouvements'));
 
     }
     public function add_quantite_stock(Request $request){
@@ -171,7 +168,7 @@ class ProductController extends Controller
         try {
             DB::beginTransaction();
               $product = Product::where('id', $request->product_id)->firstOrFail();
-              $product->quantite += abs($request->quantite); 
+              $product->quantite += abs($request->quantite);
                FollowProduct::create([
                 'quantite' => $request->quantite,
                 'details' => $product->toJson(),
@@ -180,11 +177,11 @@ class ProductController extends Controller
                ]);
                $product->save();
             DB::commit();
-            
+
         } catch (\Exception $e) {
 
             DB::rollback();
-            
+
         }
 
         return $this->index();

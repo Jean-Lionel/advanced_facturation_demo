@@ -7,28 +7,50 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
 *
-« EN » : Entrée Normales
-- « ER » : Entrée Retour
-marchandises
-- « EI » : Entrée Inventaire
-- « EAJ » : Entrées Ajustement
-- « ET » : Entrées Transfert
-- « EAU » : Entrées Autres
-- « SN » : Sorties Normales
-- « SP » : Sorties Perte
-- « SV » : Sorties Vol
-- « SD » : Sorties Désuétude
-- « SC » : Sorties Casse
-- « SAJ » : Sorties Ajustement
-- « ST » : Sorties Transfert
-- « SAU » : Sorties Autres
+* « EN » : Entrée Normales
+* « ER » : Entrée Retour marchandises
+* « EI » : Entrée Inventaire
+* « EAJ » : Entrées Ajustement
+* « ET » : Entrées Transfert
+* « EAU » : Entrées Autres
+* « SN » : Sorties Normales
+* « SP » : Sorties Perte
+* « SV » : Sorties Vol
+* « SD » : Sorties Désuétude
+* « SC » : Sorties Casse
+* « SAJ » : Sorties Ajustement
+* « ST » : Sorties Transfert
+* « SAU » : Sorties Autres
 */
 
 class ObrMouvementStock extends Model
 {
     use HasFactory;
 
-    public static function saveMovement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_date = now() , $item_movement_invoice_ref = null,$item_movement_description = null ){
+
+    public static function getMouvouments(){
+
+        return [
+            'EN' => 'Entrée Normales',
+            'ER' => 'Entrée Retour',
+            'EI' => 'Entrée Inventaire',
+            'EAJ' => 'Entrées Ajustement',
+            'ET' => 'Entrées Transfert',
+            'EAU' => 'Entrées Autres',
+            'SN' => 'Sorties Normales',
+            'SP' => 'Sorties Perte',
+            'SV' => 'Sorties Vol',
+            'SD' => 'Sorties Désuétude',
+            'SC' => 'Sorties Casse',
+            'SAJ' => 'Sorties Ajustement',
+            'ST' => 'Sorties Transfert',
+            'SAU' => 'Sorties Autres',
+        ];
+    }
+
+    public static function saveMovement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_date = null , $item_movement_invoice_ref = null,$item_movement_description = null ){
+
+        if(!$item_movement_date) $item_movement_date = now();
 
         self::create([
             'system_or_device_id' => OBR_USERNAME,
