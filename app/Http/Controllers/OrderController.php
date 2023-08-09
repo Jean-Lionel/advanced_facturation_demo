@@ -18,8 +18,6 @@ class OrderController extends Controller
     {
         $orders = Order::all();
 
-        // dump($orders[]);
-
         foreach ($orders as $value) {
             $product = $value->products;
             

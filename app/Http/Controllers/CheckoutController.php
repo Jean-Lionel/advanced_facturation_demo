@@ -38,11 +38,17 @@ class CheckoutController extends Controller
         if ($request->customer_TIN) {
             // code...
             $obr = new SendInvoiceToOBR();
-            $response = $obr->checkTin($request->customer_TIN);
-            if(!$response->success){
-                Session::flash('error', $response->msg);
-                return redirect()->route('panier.index');
+            try {
+                $response = $obr->checkTin($request->customer_TIN);
+                if(!$response->success){
+                    Session::flash('error', $response->msg);
+                   // return redirect()->route('panier.index');
+                }
+                
+            } catch (\Exception $e) {
+                
             }
+            
         }
 
         $request->validate($validate);

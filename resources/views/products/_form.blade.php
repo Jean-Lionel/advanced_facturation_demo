@@ -29,9 +29,6 @@
 
 	</div>
 
-
-
-
 	<div class="col-md-3">
 
 		<div class="form-group">
@@ -81,7 +78,7 @@
 	</div>
 
 	<div class="col-md-3">
-		
+
 		<div class="form-group">
 			<label for="price">PRIX UNITAIRE</label>
 			<input type="text" step="any" class="form-control {{$errors->has('price') ? 'is-invalid' : 'is-valid' }}" id="price" name="price" value="{{ old('price') ?? $product->price?? ' ' }}">
@@ -106,7 +103,7 @@
 
 
 	<div class="col-md-3">
-		
+
 		<div class="form-group">
 			<label for="date_expiration">DATE D'EXPIRATION</label>
 			<input type="date" class="form-control {{$errors->has('date_expiration') ? 'is-invalid' : 'is-valid' }}" id="date_expiration" name="date_expiration" value="{{ old('date_expiration') ?? $product->date_expiration?? ' ' }}">
@@ -114,21 +111,21 @@
 			{!! $errors->first('date_expiration', '<small class="help-block invalid-feedback">:message</small>') !!}
 
 		</div>
-		
+
 	</div>
 
 
 	<div class="col-md-3">
-		
+
 		<div class="form-group">
 			<label for="category_id">CATEGORIE</label>
 			<select name="category_id" id="" class="form-control {{$errors->has('category_id') ? 'is-invalid' : 'is-valid' }}">
 
 				<option value="{{ $product->category_id ??""  }}">
-					
+
 					{{ $product->category->title ?? "" }}
 				</option>
-				
+
 				@foreach ($categories as $element)
 				{{-- expr --}}
 				<option value="{{$element->id}}">{{$element->title}}</option>
@@ -140,7 +137,7 @@
 	<div class="col-md-3">
 		<div class="form-group">
 			<label for="quantite">QUANTITE</label>
-			<input type="text" step="any" class="form-control {{$errors->has('quantite') ? 'is-invalid' : 'is-valid' }}" id="quantite" name="quantite" value="{{ old('quantite') ?? $product->quantite?? ' ' }}">
+			<input type="text" step="any" class="form-control {{$errors->has('quantite') ? 'is-invalid' : 'is-valid' }}" id="quantite" name="quantite" value="0" disabled>
 			{!! $errors->first('quantite', '<small class="help-block invalid-feedback">:message</small>') !!}
 		</div>
 	</div>
