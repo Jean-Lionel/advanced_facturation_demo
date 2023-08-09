@@ -171,7 +171,7 @@ class ProductController extends Controller
             DB::beginTransaction();
               $product = Product::where('id', $request->product_id)->firstOrFail();
               $product->quantite += $request->quantite;
-              $product->montant = $request->montant;
+              $product->price = $request->montant;
 
                 ObrMouvementStock::saveMouvement(
                     $product,

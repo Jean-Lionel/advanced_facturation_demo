@@ -1,11 +1,11 @@
 @extends('layouts.app')
 @section('content')
-<div class="container-fluid table-responsive">
+<div class="container-fluid">
 	<div>
 		<h4 class="text-center">Mouvement du Produit # {{ $item_id }} </h4>
 	</div>
 	<div class="info"></div>
-	<table id="fiche_stock" class="table display compact table-sm table-responsive" style="width: auto;">
+	<table id="fiche_stock" class="display compact table-sm table-responsive" >
 		<thead>
 			<tr>
                 <th>Désignation </th>
@@ -19,7 +19,6 @@
                 <th>Date </th>
                 <th>Envoyé à OBR </th>
                 <th>Date d'envoie </th>
-
 			</tr>
 		</thead>
 
@@ -27,7 +26,7 @@
 
 			@foreach ($mouvements as $item)
             <tr>
-                <td>{{ $item->item_designation}} </td>
+                <td >{{ $item->item_designation}} </td>
                 <td>{{ $item->item_quantity}} </td>
                 <td>{{ $item->item_measurement_unit}} </td>
                 <td>{{ $item->item_purchase_or_sale_price}} </td>
@@ -41,8 +40,6 @@
 
             </tr>
 			@endforeach
-
-
 		</tbody>
 	</table>
 </div>
