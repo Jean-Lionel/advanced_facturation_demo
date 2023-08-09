@@ -177,8 +177,7 @@ class ProductController extends Controller
                     $product,
                     $request->mouvement,
                     $request->montant,
-                    $request->quantite,
-                    $request->date_mouvement,
+                    $request->quantite
                 );
                FollowProduct::create([
                 'quantite' => $request->quantite,

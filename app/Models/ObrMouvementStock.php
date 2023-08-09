@@ -29,7 +29,6 @@ class ObrMouvementStock extends Model
 
     protected $guarded = [];
     public static function getMouvouments(){
-
         return [
             'EN' => 'Entrée Normales',
             'ER' => 'Entrée Retour',
@@ -51,9 +50,9 @@ class ObrMouvementStock extends Model
     public function produit(){
         return $this->hasMany(Product::class, 'item_code');
     }
-    public static function saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_date = null , $item_movement_invoice_ref = null,$item_movement_description = null ){
+    public static function saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_invoice_ref = null,$item_movement_description = null ){
 
-        if(!$item_movement_date) $item_movement_date = now();
+         $item_movement_date = now();
 
         self::create([
             'system_or_device_id' => OBR_USERNAME,

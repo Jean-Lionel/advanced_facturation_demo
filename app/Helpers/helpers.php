@@ -7,6 +7,26 @@ function getPrice($price)
     return number_format($price, 2, ',', ' . ');
 }
 
+function getMouvement($key){
+    $t = [
+        'EN' => 'Entrée Normales',
+        'ER' => 'Entrée Retour',
+        'EI' => 'Entrée Inventaire',
+        'EAJ' => 'Entrées Ajustement',
+        'ET' => 'Entrées Transfert',
+        'EAU' => 'Entrées Autres',
+        'SN' => 'Sorties Normales',
+        'SP' => 'Sorties Perte',
+        'SV' => 'Sorties Vol',
+        'SD' => 'Sorties Désuétude',
+        'SC' => 'Sorties Casse',
+        'SAJ' => 'Sorties Ajustement',
+        'ST' => 'Sorties Transfert',
+        'SAU' => 'Sorties Autres',
+    ];
+
+    return  $t[$key];
+}
 
 //sendHttpRequest("https://ebms.obr.gov.bi:9443/ebms_api/AddStockMovement/");
 
