@@ -115,26 +115,36 @@ class ProductController extends Controller
     public function add_view(Product $product){
         $mouvements = ObrMouvementStock::getMouvouments();
         // $mouvements = unset('EN', $mouvements);
-        if (isset($mouvements['EN'])) {
-            unset($mouvements['EN']);
+        if (isset($mouvements['SN'])) {
+            unset($mouvements['SN']);
+            unset($mouvements['ER']);
         }
         return view('products.add',compact('product', 'mouvements'));
 
     }
     public function add_quantite_stock(Request $request){
 
-        $request->validate([
-            'quantite' => 'required|numeric|min:0',
+        $validator = [
+             'quantite' => 'required|numeric|min:0',
             'montant' => 'required|numeric|min:0',
             'mouvement' => 'required|min:2|max:2',
             'date_mouvement' => 'required|date',
-        ]);
-
+        ];
+        $request->validate($validator);
         try {
             DB::beginTransaction();
             $product = Product::where('id', $request->product_id)->firstOrFail();
-            $product->quantite += $request->quantite;
-            $product->price = $request->montant;
+
+            if(in_array($request->mouvement, ['EN' ,'ER','EI','EAJ', 'ET','EAU'])){
+                $product->quantite += $request->quantite;
+            }
+
+            if(in_array($request->mouvement, ['SN','SP','SV', 'SD',  'SC','SAJ','ST', 'SAU'])){
+                $product->quantite -= $request->quantite;
+                if ($product->quantite < 0) {
+                    throw new \Exception("La quantité du stocke ne doit pas être inférieur à ZERO ", 1);
+                }
+            }
 
             ObrMouvementStock::saveMouvement(
                 $product,
@@ -155,7 +165,8 @@ class ProductController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
+            session()->flash("error_message", $e->getMessage());
+            return back();
         }
 
         return $this->index();

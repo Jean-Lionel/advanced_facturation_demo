@@ -5,6 +5,14 @@
 <div >
     <div class="card">
         <div class="text-center card-title">{{ $product->name }}</div>
+        <div class="text-center card-title">Qté en stock : {{ $product->quantite }}</div>
+
+        @if(session('error_message') )
+        <div class="alert alert-danger" role="alert">
+
+            {{ session('error_message') }}
+        </div>
+        @endif
 
         <div class="card-body">
             <form action="{{ route('add_quantite_stock') }}" method="post">
@@ -44,13 +52,13 @@
                         <label for="description">Déscription</label>
                         <textarea name="description" id="" class="form-control form-control-sm"></textarea>
                     </div>
-                    <div class="col-md-3">
+                    {{-- <div class="col-md-3">
                         <label for="invoince_ref">Facture de référence</label>
-                        <input name="invoince_ref" class="form-control form-control-sm" type="text" value="{{ old('invoince_ref') }}"  placeholder="*">
+                        <input name="invoince_ref" class="form-control form-control-sm" type="text" value="{{ old('invoince_ref') }}"  placeholder="">
                         @error('invoince_ref')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
-                    </div>
+                    </div> --}}
                     <div class="pt-3 col-md-3 d-flex ">
                         <div class="pt-3 form-group">
                             <label for=""></label>
