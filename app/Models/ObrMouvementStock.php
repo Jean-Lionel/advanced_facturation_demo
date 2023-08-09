@@ -27,7 +27,7 @@ class ObrMouvementStock extends Model
 {
     use HasFactory;
 
-
+    protected $guarded = [];
     public static function getMouvouments(){
 
         return [
@@ -48,7 +48,7 @@ class ObrMouvementStock extends Model
         ];
     }
 
-    public static function saveMovement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_date = null , $item_movement_invoice_ref = null,$item_movement_description = null ){
+    public static function saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_date = null , $item_movement_invoice_ref = null,$item_movement_description = null ){
 
         if(!$item_movement_date) $item_movement_date = now();
 

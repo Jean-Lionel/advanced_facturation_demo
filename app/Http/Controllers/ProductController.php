@@ -161,27 +161,37 @@ class ProductController extends Controller
     public function add_quantite_stock(Request $request){
 
         $request->validate([
-            'quantite' => 'required|numeric|min:0'
-
+            'quantite' => 'required|numeric|min:0',
+            'montant' => 'required|numeric|min:0',
+            'mouvement' => 'required|min:2|max:2',
+            'date_mouvement' => 'required|date',
         ]);
 
         try {
             DB::beginTransaction();
               $product = Product::where('id', $request->product_id)->firstOrFail();
-              $product->quantite += abs($request->quantite);
+              $product->quantite += $request->quantite;
+              $product->montant = $request->montant;
+
+                ObrMouvementStock::saveMouvement(
+                    $product,
+                    $request->mouvement,
+                    $request->montant,
+                    $request->quantite,
+                    $request->date_mouvement,
+                );
                FollowProduct::create([
                 'quantite' => $request->quantite,
                 'details' => $product->toJson(),
-                'action' => 'ENTRE',
+                'action' => $request->mouvement,
                 'product_id' => $product->id,
                ]);
                $product->save();
             DB::commit();
 
         } catch (\Exception $e) {
-
             DB::rollback();
-
+            dd($e);
         }
 
         return $this->index();

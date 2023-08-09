@@ -14,24 +14,26 @@
 
 				<input type="hidden" name="product_id"  value="{{ $product->id }}">
 
+                <input type="date" name="date_mouvement" required value="{{ date('Y-m-d') }}">
 				<!-- Large input -->
 				<div class="row">
 					<div class="col-md-3">
 
                         <div class="form-group">
                             <label for="mouvement">Mouvement</label>
-                            <select name="" id="" class=" form-control form-control-sm">
+                            <select name="mouvement" id="" required class=" form-control form-control-sm">
                                 <option value=""></option>
                                 @foreach ($mouvements as $key => $value)
                                  <option value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
                             </select>
+{!! $errors->first('mouvement', '<small class="help-block invalid-feedback">:message</small>') !!}
                         </div>
 					</div>
 					<div class="col-md-3">
-                        <label for="quantite">Montant</label>
-						<input required="" name="quantite" class="form-control form-control-sm" type="number" value="{{ old('quantite') }}"  placeholder="Exemple : 4">
-						{!! $errors->first('quantite', '<small class="help-block invalid-feedback">:message</small>') !!}
+                        <label for="montant">Montant</label>
+						<input required="" name="montant" class="form-control form-control-sm" type="number" value="{{ old('montant') ?? $product->price }}"  placeholder="Montant en FBU">
+						{!! $errors->first('montant', '<small class="help-block invalid-feedback">:message</small>') !!}
 					</div>
 					<div class="col-md-3">
                         <label for="quantite">QUANTITE</label>
