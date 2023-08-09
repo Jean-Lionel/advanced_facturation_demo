@@ -49,11 +49,9 @@
 				<th scope="col">@sortablelink('quantite','Qté')</th>
 				<th scope="col">@sortablelink('unite_mesure','Unite')</th>
 				<th scope="col">@sortablelink('quantite_alert','Alert')</th>
-
 				<th scope="col">Category</th>
-				<th scope="col">Date d'expiration</th>
-
-				<th scope="col">Date d'entre</th>
+                <th>Mouvement</th>
+				<th scope="col">Date de Modification</th>
 				<th scope="col">Action</th>
 			</tr>
 		</thead>
@@ -87,8 +85,12 @@
 			   </td>
 
 				<td><b>{{ $value->category->title }}</b></td>
-				<td>{{ $value->date_expiration }}</td>
-				<td>{{ $value->created_at }}</td>
+               <td>
+                <a href="{{ route('movement_stock', $value->id) }}">
+                     {{ $value->item_movement_type() }}
+                </a>
+            </td>
+				<td>{{ $value->updated_at }}</td>
 				<td class="d-flex justify-content-around">
 
 					<a href="{{ route('add_view',$value) }}" class="mr-2 btn btn-info btn-sm">Mouvement</a>

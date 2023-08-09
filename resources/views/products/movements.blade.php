@@ -1,12 +1,11 @@
 @extends('layouts.app')
 
-{{-- Stocke Controller Journal --}}
 
 @section('content')
 
 <div>
 	<div>
-		<h4 class="text-center">Mouvement de stock</h4>
+		<h4 class="text-center">Mouvement du Produit # {{ $item_id }} </h4>
 	</div>
 	<div class="info"></div>
 	<table id="fiche_stock" class="display compact" style="width:100%">
@@ -25,25 +24,11 @@
 
 		<tbody>
 
-			@foreach ($follow_products as $product)
-				{{-- expr --}}
-				@php
-				$article = json_decode($product->details);
-				$total = ($product->action == "VENTE") ?
-				$article->quantite + $product->quantite :
-				$article->quantite - $product->quantite ;
+			@foreach ($mouvements as $item)
 
-				@endphp
-				<tr>
-				<td>{{ ++$loop->index }}</td>
-				<td>{{ $article->name}} </td>
-				<td>{{ $article->unite_mesure }}</td>
-				<td>{{ $article->quantite }}</td>
-				<td>{{ $product->action }}</td>
-				<td>{{ $product->quantite }}</td>
-				<td>{{ $total }}</td>
-				<td>{{ $product->created_at}}</td>
-			</tr>
+            <tr>
+
+            </tr>
 			@endforeach
 
 

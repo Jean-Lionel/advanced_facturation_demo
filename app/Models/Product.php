@@ -39,11 +39,20 @@ class Product extends MyModel
             $model->user_id = auth()->user()->id;
         });
     }
-    
+
+    public function lastMouvement(){
+        $mouvement = ObrMouvementStock::where('item_code', '=', $this->id)->latest()->first();
+        return  $mouvement ;
+    }
+    public function item_movement_type(){
+        $mouvement = ObrMouvementStock::where('item_code', '=', $this->id)->latest()->first();
+        return  $mouvement ? $mouvement->item_movement_type : "-";
+    }
+
     public function category()
     {
         return $this->belongsTo('App\Models\Category');
     }
 
-    
+
 }

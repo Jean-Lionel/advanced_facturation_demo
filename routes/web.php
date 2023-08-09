@@ -71,5 +71,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('add_quantite_stock', 'ProductController@add_quantite_stock')->name('add_quantite_stock');
     Route::get('add_view/{product}', 'ProductController@add_view')->name('add_view');
     Route::get('bon_entre', 'StockeController@bonEntre')->name('bon_entre');
+    Route::get('movement_stock/{item_id}', 'ProductController@movement_stock')->name('movement_stock');
     Route::get('paimenet_dette', 'CheckoutController@paimenetDette')->name('paimenet_dette');
 });

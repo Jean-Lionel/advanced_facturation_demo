@@ -22,6 +22,11 @@ class ProductController extends Controller
     public function __construct(){
 
     }
+
+    public function movement_stock($item_id){
+        $mouvements = ObrMouvementStock::where('item_code',$item_id)->get();
+        return view('products.movements', compact('mouvements', 'item_id'));
+    }
     public function index()
     {
 
@@ -138,12 +143,7 @@ class ProductController extends Controller
          return $this->index();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Product $product)
     {
         $product->delete();

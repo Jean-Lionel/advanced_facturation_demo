@@ -120,7 +120,7 @@ class StockeController extends Controller
 
     public function cancelFactures($order_id){
         $order = Order::find($order_id);
-        $order->is_cancelled = 1; 
+        $order->is_cancelled = 1;
 
         $order->save();
         return back();
@@ -160,7 +160,7 @@ class StockeController extends Controller
 
         $service_Date = Service::whereDate('created_at','=',$date_recherche)->sum('total');
 
-        //La somme total du montant en caisse 
+        //La somme total du montant en caisse
 
         // Tout les factures paye en cache
        // Tout les paiement des dettes - les depenses
@@ -183,7 +183,7 @@ class StockeController extends Controller
        // dd($depenses);
 
           $totalDette = PaiementDette::all()->where('montant_restant','>',0)->sum('montant_restant');
-        return view('journals.rapport', 
+        return view('journals.rapport',
             compact('venteJournaliere','date_recherche','labels','vente_date','montant_total', 'data','totalDette','service_Date'));
     }
 
