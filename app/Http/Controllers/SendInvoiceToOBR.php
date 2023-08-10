@@ -36,10 +36,9 @@ class SendInvoiceToOBR extends Controller
             ],
             $data
         );
-        dd($data);
+
         $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovement/', $data);
        // dd();
-
         return $req->body();
     }
     public function checkTin(string $tp_TIN)
