@@ -25,6 +25,13 @@
 				<span>Historique des Entres en stock</span>
 			</a>
 		</div>
+
+		<div>
+			<a href="{{ route('mouvement_stock') }}">
+				<span class="fa fa-file-archive"></span>
+				<span>Mouvement de stock</span>
+			</a>
+		</div>
 	</div>
 	<hr>
 	<div class="row">

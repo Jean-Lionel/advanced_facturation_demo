@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Depense;
 use App\Models\DetailPaimentDette;
 use App\Models\FollowProduct;
+use App\Models\ObrMouvementStock;
 use App\Models\Order;
 use App\Models\PaiementDette;
 use App\Models\Product;
@@ -14,17 +15,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class StockeController extends Controller
+class StockController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function mouvement_stock(){
+        $mouvements = ObrMouvementStock::latest()->get();
+        return view('stocks.mouvement_stock', compact('mouvements'));
+    }
+
     public function index()
     {
-        $stockes = Stocke::latest()->paginate(5);
-        return view('stockes/index', compact('stockes'));
+        $stocks = Stocke::latest()->paginate(5);
+        return view('stocks/index', compact('stocks'));
     }
 
     /**
@@ -35,7 +37,7 @@ class StockeController extends Controller
     public function create()
     {
 
-        return view('stockes.create');
+        return view('stocks.create');
         //
     }
 
@@ -78,7 +80,7 @@ class StockeController extends Controller
      */
     public function edit(Stocke $stocke)
     {
-        return view('stockes.edit', compact('stocke'));
+        return view('stocks.edit', compact('stocke'));
     }
 
     /**

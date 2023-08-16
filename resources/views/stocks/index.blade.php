@@ -33,7 +33,7 @@
 		</thead>
 		<tbody>
 
-			@foreach ($stockes as $value)
+			@foreach ($stocks as $value)
 			{{-- expr --}}
 			<tr>
 				<td>{{ $value->id }}</td>

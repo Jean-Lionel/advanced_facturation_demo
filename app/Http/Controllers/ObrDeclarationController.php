@@ -198,6 +198,8 @@ class ObrDeclarationController extends Controller
 
         ];
 
+       // dd($invoince);
+
         return $invoince;
 
     }

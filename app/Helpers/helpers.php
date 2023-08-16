@@ -7,8 +7,7 @@ function getPrice($price)
     return number_format($price, 2, ',', ' . ');
 }
 
-function getMouvement($key){
-    $t = [
+define('MOUVEMENT_STOCK', [
         'EN' => 'Entrée Normales',
         'ER' => 'Entrée Retour',
         'EI' => 'Entrée Inventaire',
@@ -23,9 +22,10 @@ function getMouvement($key){
         'SAJ' => 'Sorties Ajustement',
         'ST' => 'Sorties Transfert',
         'SAU' => 'Sorties Autres',
-    ];
+    ]);
 
-    return  $t[$key];
+function getMouvement($key){
+    return  MOUVEMENT_STOCK[$key];
 }
 
 //sendHttpRequest("https://ebms.obr.gov.bi:9443/ebms_api/AddStockMovement/");

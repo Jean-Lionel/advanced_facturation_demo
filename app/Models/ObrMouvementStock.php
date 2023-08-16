@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\ObrSendInvoince;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -70,6 +71,7 @@ class ObrMouvementStock extends Model
             'user_id' => auth()->user()->id,
         ]);
 
+        ObrSendInvoince::dispatch();
 
     }
 }
