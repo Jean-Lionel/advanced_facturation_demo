@@ -19,8 +19,13 @@ define('BASE_TVA', 18);
 define('BASE_UNITE_EMBALLAGE', 50);
 
 // // FOR TEST PROTHEM
-define('OBR_USERNAME', env('OBR_USERNAME', 'ws400000480600270'));
-define('OBR_PASSWORD', env('OBR_PASSWORD', '_B_/BGv0'));
+// define('OBR_USERNAME', env('OBR_USERNAME', 'ws400000480600270'));
+// define('OBR_PASSWORD', env('OBR_PASSWORD', '_B_/BGv0'));
+
+// Production Prothem
+
+define('OBR_USERNAME', env('OBR_USERNAME', 'wsl400000480600187'));
+define('OBR_PASSWORD', env('OBR_PASSWORD', 'T?v?w7}I'));
 
 // FOR TEST BST SOLUTION
 // define('OBR_USERNAME', env('OBR_USERNAME', 'ws400199682800460'));

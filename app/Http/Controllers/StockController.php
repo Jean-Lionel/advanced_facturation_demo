@@ -19,7 +19,18 @@ class StockController extends Controller
 {
 
     public function mouvement_stock(){
-        $mouvements = ObrMouvementStock::latest()->get();
+        $start_at = \Request::get('start_at');
+        $end_at = \Request::get('end_at');
+        $mouvement = \Request::get('mouvement');
+
+        $mouvements = ObrMouvementStock::where(function ($query) use ($start_at, $end_at, $mouvement) {
+            if($start_at and $end_at){
+                $query->whereBetween('item_movement_date', [$start_at, $end_at]);
+            }
+            if($mouvement){
+                $query->where('item_movement_type', $mouvement );
+            }
+        })->latest()->get();
         return view('stocks.mouvement_stock', compact('mouvements'));
     }
 
