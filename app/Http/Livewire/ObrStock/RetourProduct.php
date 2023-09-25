@@ -57,7 +57,7 @@ class RetourProduct extends Component
             }
             $produit->quantite += $qte;
             $produit->save();
-            ObrMouvementStock::saveMouvement( $produit, 'ER', $item['price'], $qte, $description, $this->order->invoice_signature);
+            ObrMouvementStock::saveMouvement( $produit, 'ER', $item['price'], $qte, $description, $this->order->id);
             $this->filterProducts();
             DB::commit();
         } catch (\Throwable $e) {
