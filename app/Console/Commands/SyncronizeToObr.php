@@ -67,6 +67,7 @@ class SyncronizeToObr extends Command
                     $movement->is_send_to_obr = 1;
                     $movement->is_sent_at = now();
                     $movement->save();
+<<<<<<< HEAD
                     Log::channel('obr_log')->info( "SUCCESS => " . $movement->id . " " . $repo->msg);
                      ObrStockLog::create([
                         'movement_id' => $movement->id,
@@ -76,12 +77,19 @@ class SyncronizeToObr extends Command
                     ]);
                 } else {
                    $log = ObrStockLog::create([
+=======
+                } else {
+                    ObrStockLog::create([
+>>>>>>> 1c5fc9a52be826c20b97ec7df30365f9f23af570
                         'movement_id' => $movement->id,
                         'success' => $repo->success,
                         'msg' => $repo->msg,
                         'result' => json_encode($repo->result),
                     ]);
+<<<<<<< HEAD
                     Log::channel('obr_log')->error($log);
+=======
+>>>>>>> 1c5fc9a52be826c20b97ec7df30365f9f23af570
                 }
             } catch (\Throwable $th) {
                 Log::channel('obr_log')->error($th->getMessage());
@@ -91,6 +99,9 @@ class SyncronizeToObr extends Command
 
             return 0;
         }
+<<<<<<< HEAD
         return 0;
+=======
+>>>>>>> 1c5fc9a52be826c20b97ec7df30365f9f23af570
     }
 }
