@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Depense;
 use App\Models\DetailPaimentDette;
 use App\Models\FollowProduct;
+use App\Models\ObrMouvementStock;
 use App\Models\Order;
 use App\Models\PaiementDette;
 use App\Models\Product;
@@ -14,17 +15,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class StockeController extends Controller
+class StockController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function mouvement_stock(){
+        $start_at = \Request::get('start_at');
+        $end_at = \Request::get('end_at');
+        $mouvement = \Request::get('mouvement');
+
+        $mouvements = ObrMouvementStock::where(function ($query) use ($start_at, $end_at, $mouvement) {
+            if($start_at and $end_at){
+                $query->whereBetween('item_movement_date', [$start_at, $end_at]);
+            }
+            if($mouvement){
+                $query->where('item_movement_type', $mouvement );
+            }
+        })->latest()->get();
+        return view('stocks.mouvement_stock', compact('mouvements'));
+    }
+
     public function index()
     {
-        $stockes = Stocke::latest()->paginate(5);
-        return view('stockes/index', compact('stockes'));
+        $stocks = Stocke::latest()->paginate(5);
+        return view('stocks/index', compact('stocks'));
     }
 
     /**
@@ -35,7 +48,7 @@ class StockeController extends Controller
     public function create()
     {
 
-        return view('stockes.create');
+        return view('stocks.create');
         //
     }
 
@@ -78,7 +91,7 @@ class StockeController extends Controller
      */
     public function edit(Stocke $stocke)
     {
-        return view('stockes.edit', compact('stocke'));
+        return view('stocks.edit', compact('stocke'));
     }
 
     /**
@@ -120,7 +133,7 @@ class StockeController extends Controller
 
     public function cancelFactures($order_id){
         $order = Order::find($order_id);
-        $order->is_cancelled = 1; 
+        $order->is_cancelled = 1;
 
         $order->save();
         return back();
@@ -160,7 +173,7 @@ class StockeController extends Controller
 
         $service_Date = Service::whereDate('created_at','=',$date_recherche)->sum('total');
 
-        //La somme total du montant en caisse 
+        //La somme total du montant en caisse
 
         // Tout les factures paye en cache
        // Tout les paiement des dettes - les depenses
@@ -183,7 +196,7 @@ class StockeController extends Controller
        // dd($depenses);
 
           $totalDette = PaiementDette::all()->where('montant_restant','>',0)->sum('montant_restant');
-        return view('journals.rapport', 
+        return view('journals.rapport',
             compact('venteJournaliere','date_recherche','labels','vente_date','montant_total', 'data','totalDette','service_Date'));
     }
 

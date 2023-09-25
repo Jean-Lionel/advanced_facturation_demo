@@ -6,7 +6,7 @@
 		<div class="card-body">
 
 			<div class="col-md-12">
-				<h5 class="text-left">Nouveau stocke</h5>
+				<h5 class="text-left">Nouveau stock</h5>
 			</div>
 
 			<div class="col-md-12">
@@ -21,7 +21,7 @@
 			<div class="col-md-12">
 				<div class="form-group">
 					<label for="description">Description</label>
-					
+
 
 					<textarea class="form-control"  row="15" {{$errors->has('description') ? 'is-invalid' : 'is-valid'}} name="description">{{ old('description') ?? $stocke->description?? ' ' }}
 					</textarea>

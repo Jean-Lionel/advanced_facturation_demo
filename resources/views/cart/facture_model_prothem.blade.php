@@ -50,7 +50,7 @@
 			</div>
 			<div style="width: 80%;">
 				<h3>{{ RAISON_ENTREPRISE }} Siège Social : Gisozi-Mwaro</h3>
-				<h3>Bureau de liaison: Rohero II, Boulevard de l'UPRONA N°97, </h3>
+				<h3>Bureau de liaison: Kiriri , Avenue Martin Luther King N°29, </h3>
 				<h3>
 					B.P.176 Bujumbura, BURUNDI,
 				</h3>

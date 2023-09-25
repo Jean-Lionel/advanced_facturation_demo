@@ -7,6 +7,9 @@
 		<div>
         <a href="{{ route('products.create') }}"><span class="fa fa-seedling"></span> Entre</a>
 		</div>
+		<div>
+        <a href="{{ route('retour_produit') }}"><span class="fa fa-undo"></span> Retour des marchandises</a>
+		</div>
 		<div><a href="{{ route('categories.index') }}"><span class="fa fa-paper-plane"></span> Category</a></div>
 
 		<div>
@@ -17,16 +20,23 @@
 		</div>
 
 		<div>
-			<a href="{{ route('journal_history') }}"> 
+			<a href="{{ route('journal_history') }}">
 				<span class="fa fa-file-archive"></span>
 				<span>Historique des Entres en stock</span>
+			</a>
+		</div>
+
+		<div>
+			<a href="{{ route('mouvement_stock') }}">
+				<span class="fa fa-file-archive"></span>
+				<span>Mouvement de stock</span>
 			</a>
 		</div>
 	</div>
 	<hr>
 	<div class="row">
 		<div class="col-md-6 d-flex justify-content-between">
-			<a href="{{ route('bon_entre') }}" 
+			<a href="{{ route('bon_entre') }}"
 			class="btn btn-primary btn-sm">Les entres et les sorties</a>
 			<h4 class="text-center">
 				Liste des produits
@@ -38,7 +48,7 @@
 			</form>
 		</div>
 	</div>
-	
+
 	<table class="table table-sm">
 		<thead>
 			<tr>
@@ -49,11 +59,9 @@
 				<th scope="col">@sortablelink('quantite','Qté')</th>
 				<th scope="col">@sortablelink('unite_mesure','Unite')</th>
 				<th scope="col">@sortablelink('quantite_alert','Alert')</th>
-				
 				<th scope="col">Category</th>
-				<th scope="col">Date d'expiration</th>
-				
-				<th scope="col">Date d'entre</th>
+                <th>Mouvement</th>
+				<th scope="col">Date de Modification</th>
 				<th scope="col">Action</th>
 			</tr>
 		</thead>
@@ -82,19 +90,23 @@
 				<td>
 					@if ($value->quantite <= $value->quantite_alert)
 					{{-- expr --}}
-					<i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"></i> 
+					<i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"></i>
 				    @endif
 			   </td>
 
 				<td><b>{{ $value->category->title }}</b></td>
-				<td>{{ $value->date_expiration }}</td>
-				<td>{{ $value->created_at }}</td>
+               <td>
+                <a href="{{ route('movement_stock', $value->id) }}">
+                     {{ $value->item_movement_type() }}
+                </a>
+            </td>
+				<td>{{ $value->updated_at }}</td>
 				<td class="d-flex justify-content-around">
-					<a href="{{ route('products.edit', $value) }}" class="btn btn-outline-info btn-sm mr-2">Modifier</a>
-					<a href="{{ route('add_view',$value) }}" class="btn btn-info btn-sm mr-2">Ajouter</a>
 
+					<a href="{{ route('add_view',$value) }}" class="mr-2 btn btn-info btn-sm">Mouvement</a>
+                    <a href="{{ route('products.edit', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
 
-					<a href="{{ route('products.show', $value) }}" class="btn btn-outline-warning btn-sm mr-2">Afficher</a>
+					<a href="{{ route('products.show', $value) }}" class="mr-2 btn btn-outline-warning btn-sm">Afficher</a>
 					<form class="form-delete" action="{{ route('products.destroy' , $value) }}" style="display: inline;" method="POST">
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}

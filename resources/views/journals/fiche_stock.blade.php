@@ -11,7 +11,7 @@
 	<div class="info"></div>
 	<table id="fiche_stock" class="display compact" style="width:100%">
 		<thead>
-			<tr>     
+			<tr>
 				<th>Code</th>
 				<th>Article</th>
 				<th>Unité</th>
@@ -29,7 +29,7 @@
 				{{-- expr --}}
 				@php
 				$article = json_decode($product->details);
-				$total = ($product->action == "VENTE") ? 
+				$total = ($product->action == "VENTE") ?
 				$article->quantite + $product->quantite :
 				$article->quantite - $product->quantite ;
 
@@ -45,8 +45,8 @@
 				<td>{{ $product->created_at}}</td>
 			</tr>
 			@endforeach
-			
-			
+
+
 		</tbody>
 	</table>
 </div>
@@ -61,12 +61,12 @@
 			dom: 'Bfrtip',
 			buttons: [
 			'copy', 'csv', 'excel', 'pdf', 'print',
-			], 
+			],
 			pagingType: "full_numbers",
 			scrollX: true,
 	});
-      
-    
+
+
 } );
 </script>
 
