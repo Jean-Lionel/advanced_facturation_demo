@@ -29,8 +29,6 @@ class CheckoutController extends Controller
     */
     public function store(Request $request)
     {
-
-
         $validate =
         [
             'name' => 'required|min:1',
@@ -45,11 +43,9 @@ class CheckoutController extends Controller
                     Session::flash('error', $response->msg);
                     // return redirect()->route('panier.index');
                 }
-
             } catch (\Exception $e) {
 
             }
-
         }
 
         $request->validate($validate);
@@ -75,10 +71,7 @@ class CheckoutController extends Controller
                 'vat_customer_payer' => $request->vat_customer_payer ? 1 : 0,
             ]);
             $cartInfo = $this->extractCart();
-
-
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
-
             $oder_signuture = "";
             $tax = round(Cart::subtotal() * BASE_TVA / 100);
             $order = Order::create([
@@ -94,25 +87,19 @@ class CheckoutController extends Controller
                 'date_facturation'=> $request->date_facturation,
                 'is_cancelled' => 0,
             ]);
-
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
-
-
             $order->invoice_signature = $signature;
             foreach ($cartInfo as $key => $item) {
                 $product = Product::find($item['id']);
-
                 ObrMouvementStock::saveMouvement(
                     $product,
                     'SN',
                     $item['price'],
                     $item['quantite'],
                     NULL,
-                    $signature
+                    $signature,
                 );
             }
-
-
 
             $order->save();
             $this->storeTodetailOder($order->id);

@@ -7,22 +7,22 @@ function getPrice($price)
     return number_format($price, 2, ',', ' . ');
 }
 
-define('MOUVEMENT_STOCK', [
-        'EN' => 'Entrée Normales',
-        'ER' => 'Entrée Retour',
-        'EI' => 'Entrée Inventaire',
-        'EAJ' => 'Entrées Ajustement',
-        'ET' => 'Entrées Transfert',
-        'EAU' => 'Entrées Autres',
-        'SN' => 'Sorties Normales',
-        'SP' => 'Sorties Perte',
-        'SV' => 'Sorties Vol',
-        'SD' => 'Sorties Désuétude',
-        'SC' => 'Sorties Casse',
-        'SAJ' => 'Sorties Ajustement',
-        'ST' => 'Sorties Transfert',
-        'SAU' => 'Sorties Autres',
-    ]);
+const MOUVEMENT_STOCK = [
+    'EN' => 'Entrée Normales',
+    'ER' => 'Entrée Retour',
+    'EI' => 'Entrée Inventaire',
+    'EAJ' => 'Entrées Ajustement',
+    'ET' => 'Entrées Transfert',
+    'EAU' => 'Entrées Autres',
+    'SN' => 'Sorties Normales',
+    'SP' => 'Sorties Perte',
+    'SV' => 'Sorties Vol',
+    'SD' => 'Sorties Désuétude',
+    'SC' => 'Sorties Casse',
+    'SAJ' => 'Sorties Ajustement',
+    'ST' => 'Sorties Transfert',
+    'SAU' => 'Sorties Autres',
+];
 
 function getMouvement($key){
     return  MOUVEMENT_STOCK[$key];

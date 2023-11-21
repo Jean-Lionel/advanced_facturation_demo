@@ -127,7 +127,7 @@ class ProductController extends Controller
         $validator = [
              'quantite' => 'required|numeric|min:0',
             'montant' => 'required|numeric|min:0',
-            'mouvement' => 'required|min:2|max:2',
+            'mouvement' => 'required|min:2|max:5',
             'date_mouvement' => 'required|date',
         ];
         $request->validate($validator);

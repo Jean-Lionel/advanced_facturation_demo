@@ -34,7 +34,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('obr_declarations', ObrDeclarationController::class);
     Route::get('obr_declarations_hostory', [\App\Http\Controllers\ObrDeclarationController::class, 'hostory'])->name('obr_declarations_hostory');
     Route::get('sendInvoinceToObr/{invoince_id?}', 'ObrDeclarationController@sendInvoinceToObr');
-
     Route::post('cancelInvoice', 'ObrDeclarationController@cancelInvoice');
     Route::get('obr_declarations_cancel', 'ObrDeclarationController@obr_declarations_cancel')->name('obr_declarations_cancel');
     Route::resource('stockes', StockController::class);

@@ -27,18 +27,11 @@ class RetourProduct extends Component
     private function filterProducts(){
         $this->produitsRetournes = \App\Models\RetourProduit::where('order_id', $this->order->id)->get()->map->product_id;
         $this->listProducts = $this->order->products;
-        // foreach ($this->order->products as $key => $value) {
-        //    if(!in_array($value['id'], $this->produitsRetournes->toArray() )){
-        //         $this->listProducts[] = $value;
-        //    }
-        // }
 
     }
 
     public function saveQuantite($key, $item){
-
         try {
-
             # code...
             DB::beginTransaction();
             $qte = $this->listQuantite[$key] ?? 0;
@@ -57,7 +50,7 @@ class RetourProduct extends Component
             }
             $produit->quantite += $qte;
             $produit->save();
-            ObrMouvementStock::saveMouvement( $produit, 'ER', $item['price'], $qte, $description, $this->order->id);
+            ObrMouvementStock::saveMouvement( $produit, 'ER', $item['price'], $qte, $description, $this->order->invoice_signature);
             $this->filterProducts();
             DB::commit();
         } catch (\Throwable $e) {

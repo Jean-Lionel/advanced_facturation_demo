@@ -14,6 +14,7 @@
         </div>
         @endif
 
+
         <div class="card-body">
             <form action="{{ route('add_quantite_stock') }}" method="post">
 

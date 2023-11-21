@@ -51,12 +51,14 @@ class SyncronizeToObr extends Command
     public function handle()
     {
         $today = Carbon::now();
-        $thirtyDaysAgo = $today->subDays(100);
+        $thirtyDaysAgo = $today->subDays(2);
         $records = ObrStockLog::whereDate('created_at', '>', $thirtyDaysAgo)->get()->map->movement_id;
         $items = ObrMouvementStock::whereDate('created_at', '>', $thirtyDaysAgo)
             ->whereNotIn('id', $records)
             ->where('is_send_to_obr', '0')
             ->take(20)->get();
+
+       // dump(ObrMouvementStock::all());
 
         foreach ($items as $key => $movement) {
             # code...
