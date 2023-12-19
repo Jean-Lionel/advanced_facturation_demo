@@ -1,69 +1,7 @@
-Bonjour, 
-Veuillez utiliser les informations suivantes pour se connecter à notre système eBMS en tant que:
-
-1. DUKORE TECH: 
-  ☐ nom d'utilisateur: ws400206064000267 @done (23-02-22 07:31)
-- mot de passe:69l_Gy6H 
-
-
-Les URL du système eBMS  à prendre en considération pendant les tests sont: 
-
-       
-       - https://ebms.obr.gov.bi:9443/ebms_api/login/
-       - https://ebms.obr.gov.bi:9443/ebms_api/getInvoice/
-       - https://ebms.obr.gov.bi:9443/ebms_api/addInvoice/
-       - https://ebms.obr.gov.bi:9443/ebms_api/checkTIN/
-       - https://ebms.obr.gov.bi:9443/ebms_api/cancelInvoice/
-
-Le Serveur de production: 
-
-
-        Veuillez utiliser ces nouveaux lien vers le serveur de PRODUCTION:
-
--        https://ebms.obr.gov.bi:8443/ebms_api/login/
--        https://ebms.obr.gov.bi:8443/ebms_api/getInvoice/
--        https://ebms.obr.gov.bi:8443/ebms_api/addInvoice/
--        https://ebms.obr.gov.bi:8443/ebms_api/checkTIN/
--        https://ebms.obr.gov.bi:8443/ebms_api/cancelInvoice/
-
-
-
-
-
- IPROTHEM
-
-
-Veuillez utiliser les informations suivantes pour se connecter à notre système eBMS en tant que:
-
-1. PROTHEM-USINE:
- - nom d'utilisateur: ws400000480600270
-- mot de passe: _B_/BGv0
-
-Les URL du système eBMS  à prendre en considération pendant les tests sont:
-
-        - http://41.79.226.28:8345/ebms_api/login/
-        - http://41.79.226.28:8345/ebms_api/getInvoice/
-        - http://41.79.226.28:8345/ebms_api/addInvoice/
-        - http://41.79.226.28:8345/ebms_api/checkTIN/
-        - http://41.79.226.28:8345/ebms_api/cancelInvoice/
-
-
-### BST SOLUTION
-
-1. BURUNDI SMART TECHNOLOGY SOLUTIONS
- - nom d'utilisateur:ws400199682800460
- - mot de passe:Zt@eVzY9
-Les URL du système eBMS  à prendre en considération pendant les tests sont: 
- 
-       - https://ebms.obr.gov.bi:9443/ebms_api/login/
-       - https://ebms.obr.gov.bi:9443/ebms_api/getInvoice/
-       - https://ebms.obr.gov.bi:9443/ebms_api/addInvoice/
-       - https://ebms.obr.gov.bi:9443/ebms_api/checkTIN/
-       - https://ebms.obr.gov.bi:9443/ebms_api/cancelInvoice/
-   
-Cordialement
- 
-
-
-
+[19/12/2023 09:12] Mashaza It CORDAID: 1. Catégorie du client : ajouter les champs,personne morale ou personne physique
+[19/12/2023 09:14] Mashaza It CORDAID: 2.article: unité de mesure obligatoire,prix de revient prix de vente
+[19/12/2023 09:15] Mashaza It CORDAID: 3.rendre le taux de taxe saisable:ils peuvent écrire n'importe quel taux
+[19/12/2023 09:17] Mashaza It CORDAID: 4.message qui montre que le stock ne contient pas assez de produits quant on fait une vente
+[19/12/2023 09:18] Mashaza It CORDAID: 5. Muri sortie de stock: ajouter prix de revient na prix de vente
+[19/12/2023 09:19] Mashaza It CORDAID: 6.accuse de réception : iyo niyo tuzobaca inoti
 

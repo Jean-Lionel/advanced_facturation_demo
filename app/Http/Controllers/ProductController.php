@@ -29,18 +29,14 @@ class ProductController extends Controller
     }
     public function index()
     {
-
         // dd(Gate::allows('is-admin'));
-
         $this->authorize('view', Product::class);
-
         $search = \Request::get('search');
         $products = Product::sortable()->where('name','like', '%'.$search.'%')
         ->orWhere('code_product','like', '%'.$search.'%')
         ->orWhere('date_expiration','like', '%'.$search.'%')
         ->orWhere('unite_mesure','like', '%'.$search.'%')
         ->orWhere('marque','like', '%'.$search.'%')
-
         ->latest()->paginate();
 
         return view("products.index", compact('products','search'));

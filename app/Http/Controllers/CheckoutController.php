@@ -97,7 +97,7 @@ class CheckoutController extends Controller
                     $item['price'],
                     $item['quantite'],
                     NULL,
-                    $signature,
+                    $order->id,
                 );
             }
 

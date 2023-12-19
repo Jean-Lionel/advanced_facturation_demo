@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    /**  
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -48,13 +48,32 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         //
-
         $request->validate([
-            'name' => 'required', 
+              "client_type" => "required",
+              "vat_customer_payer" => "required",
+              "name" => "required",
+              "customer_TIN" => "sometimes|unique:clients,id",
+              "telephone" => "nullable",
+              "addresse" => "nullable"
         ]);
 
-        Client::create($request->all());
+        if($request->customer_TIN){
 
+            try {
+                $obr = new SendInvoiceToOBR();
+                $response = $obr->checkTin($request->customer_TIN);
+                if(!$response->success){
+                    session()->flash('obr_response', $request->customer_TIN . ' => '. $response->msg);
+                    return back();
+                }
+
+            }catch (\Exception $e){
+                session()->flash('obr_response', $request->customer_TIN . ' => pas de connection Internet le Nif ne peut pas etre verfier pour le moment ');
+                return back();
+            }
+
+        }
+        Client::create($request->all());
         return $this->index();
     }
 
@@ -94,7 +113,7 @@ class ClientController extends Controller
         //
 
         $request->validate([
-            'first_name' => 'required', 
+            'first_name' => 'required',
         ]);
 
         $client->update($request->all());

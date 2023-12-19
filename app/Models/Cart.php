@@ -3,6 +3,7 @@
 
 /**
  * summary
+ * Jean Lionel
  */
 
 namespace App\Models;
@@ -16,6 +17,6 @@ class Cart extends Model
      */
     public function __construct()
     {
-        
+
     }
 }
