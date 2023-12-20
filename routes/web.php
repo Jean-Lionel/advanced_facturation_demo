@@ -77,6 +77,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('bon_entre', 'StockController@bonEntre')->name('bon_entre');
     Route::get('movement_stock/{item_id}', 'ProductController@movement_stock')->name('movement_stock');
     Route::get('paimenet_dette', 'CheckoutController@paimenetDette')->name('paimenet_dette');
-
     Route::get('retour_produit', [ObrStockController::class, 'retour_produit'])->name('retour_produit');
 });

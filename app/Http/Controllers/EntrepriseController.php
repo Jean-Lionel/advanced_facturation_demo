@@ -16,7 +16,7 @@ class EntrepriseController extends Controller
     public function index()
     {
         //
-        
+
         $entreprises = Entreprise::latest()->get();
 
         return view('entreprises.index', compact('entreprises'));
@@ -62,7 +62,8 @@ class EntrepriseController extends Controller
      */
     public function edit(Entreprise $entreprise)
     {
-        //
+
+        return view('entreprises.edit', compact('entreprise'));
     }
 
     /**
@@ -74,7 +75,8 @@ class EntrepriseController extends Controller
      */
     public function update(UpdateEntrepriseRequest $request, Entreprise $entreprise)
     {
-        //
+        $entreprise->update($request->all());
+        return redirect()->route("entreprises.index");
     }
 
     /**

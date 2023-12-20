@@ -7,7 +7,7 @@
 	<div class="info"></div>
 	<table  id="fiche_stock" class="table display compact table-sm table-responsive" >
 		<thead>
-			<tr>
+			<tr >
                 <th>Désignation </th>
                 <th>Qté </th>
                 <th>Unité </th>
@@ -23,7 +23,6 @@
 		</thead>
 
 		<tbody>
-
 			@foreach ($mouvements as $item)
             <tr>
                 <td >{{ $item->item_designation}} </td>
@@ -37,17 +36,14 @@
                 <td>{{ $item->item_movement_date}} </td>
                 <td>{{ $item->is_send_to_obr}} </td>
                 <td>{{ $item->is_sent_at}} </td>
-
             </tr>
 			@endforeach
 		</tbody>
 	</table>
 </div>
-
 @stop
 
 @section('javascript')
-
 <script>
 	$(document).ready( function () {
     $('#fiche_stock').dataTable({
@@ -58,9 +54,6 @@
 			pagingType: "full_numbers",
 			scrollX: true,
 	});
-
-
 } );
 </script>
-
 @stop
