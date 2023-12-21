@@ -14,8 +14,6 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
-
         $clients = Client::latest()->paginate(20);
 
         return view('clients.index', compact('clients'));
@@ -39,12 +37,7 @@ class ClientController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         //
@@ -56,24 +49,44 @@ class ClientController extends Controller
               "telephone" => "nullable",
               "addresse" => "nullable"
         ]);
+            // Check if Tin does not exist in database
 
+        if($request->client_type === 'PERSONNE MORAL' && $request->customer_TIN ==""){
+            session()->flash('obr_response',' NIF EST OBLIGATOIRE POUR LES PERSONNES MORALE ' );
+            return back();
+        }
+        $customer_OBR = '';
         if($request->customer_TIN){
-
+           $check =  Client::where("customer_TIN", $request->customer_TIN)->first();
+           if($check){
+               session()->flash('obr_response','Le Client existe deja  '. $request->customer_TIN . ' => '.  $check->name . ' CUSTOMER ID '. $check->id );
+               return back();
+           }
             try {
                 $obr = new SendInvoiceToOBR();
                 $response = $obr->checkTin($request->customer_TIN);
                 if(!$response->success){
+                    // If the TIN
                     session()->flash('obr_response', $request->customer_TIN . ' => '. $response->msg);
                     return back();
                 }
+               // ['result']['taxpayer'][0]['tp_name']
+                $customer_OBR = $response->result->taxpayer[0]->tp_name;
 
             }catch (\Exception $e){
-                session()->flash('obr_response', $request->customer_TIN . ' => pas de connection Internet le Nif ne peut pas etre verfier pour le moment ');
+                session()->flash($e->getMessage() .'obr_response', $request->customer_TIN . ' => pas de connection Internet le Nif ne peut pas etre verfier pour le moment ');
                 return back();
             }
 
         }
-        Client::create($request->all());
+        $data =  $request->all();
+        if($customer_OBR){
+            $data = array_merge($data, [
+                'name' => $customer_OBR
+            ]);
+        }
+
+        Client::create( $data );
         return $this->index();
     }
 
