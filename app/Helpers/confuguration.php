@@ -17,7 +17,6 @@ define('BASE_CENTRE_FISCAL', 'DGC');
 define('BASE_AVENUE', 'Avenue Martin Luther King N°29');
 define('BASE_TVA', 18);
 define('BASE_UNITE_EMBALLAGE', 50);
-
 // // FOR TEST PROTHEM
 define('OBR_USERNAME', env('OBR_USERNAME', 'ws400000480600270'));
 define('OBR_PASSWORD', env('OBR_PASSWORD', '_B_/BGv0'));

@@ -20,9 +20,7 @@ class ProductController extends Controller
     */
 
     public function __construct(){
-
     }
-
     public function movement_stock($item_id){
         $mouvements = ObrMouvementStock::where('item_code',$item_id)->get();
         return view('products.movements', compact('mouvements', 'item_id'));
@@ -61,8 +59,9 @@ class ProductController extends Controller
             'code_product' => 'required',
             'date_expiration' => 'required|date',
             'category_id' => 'required',
+            'unite_mesure' => 'required',
+            'price_min' => 'required',
             'quantite' => 'numeric|min:0',
-            'price_min' => 'numeric|min:0',
             'quantite_alert' => 'numeric|min:2',
 
         ]);

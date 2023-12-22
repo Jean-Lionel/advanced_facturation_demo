@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div>
 	<div class="row">
 		<div class="col-md-6 d-flex justify-content-between">
@@ -52,22 +51,13 @@
 					{{ method_field('DELETE') }}
 					<button class="btn btn-outline-danger btn-sm delete_client">Supprimer</button>
 				</form>
-
-
 				</td>
 			</tr>
 			@endforeach
-
-
 		</tbody>
 	</table>
-
-
 </div>
-
 <div class="col-md-12" style="height: 20px; overflow: hidden;">
 		{{ $clients->links()}}
 </div>
-
-
 @endsection

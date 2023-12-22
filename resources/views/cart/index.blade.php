@@ -5,9 +5,34 @@
   <!-- End -->
   <div class="pb-5">
     <div class="container">
+
       <div class="row">
         <div class="col-lg-12 p-1 bg-white rounded shadow-sm mb-1">
           <!-- Shopping cart table -->
+            <div>
+                <form action="" >
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                <label for="">TVA EN </label>
+                                <input type="text" name="current_tva"
+                                       value="{{ \Request::get('current_tva') ?? 18 }}"
+                                       id="current_tva" class="form-control form-control-sm" placeholder="" aria-describedby="helpId">
+                                <small id="helpId" class="text-muted">%</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                <label for="">POURCENTAGE</label>
+                                <button type="submit" class="btn btn-primary btn-sm form-control form-control-sm" >Valider</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
           <div class="table-responsive">
             <table class="table table-sm">
               <thead>
@@ -28,7 +53,7 @@
                       PRIX UNITAIRE
                     </div>
                   </th>
-                  
+
                   <th scope="col" class="border-0 bg-light">
                     <div class="py-2 text-uppercase">CONDITIONEMENT</div>
                   </th>
@@ -54,7 +79,7 @@
                   </th>
 
                   <th scope="row" class="border-0">
-                    {{getPrice($product->model->price_min) . ' - '. getPrice($product->model->price_max)}}   
+                    {{getPrice($product->model->price_min) . ' - '. getPrice($product->model->price_max)}}
                   </th>
                   <th>
                     {{ $product->model->quantite }}
@@ -71,7 +96,7 @@
 
                   <td class="border-0 align-middle">
 
-                    <input type="number" 
+                    <input type="number"
                     value="{{$product->qty}}"
 
                     data-id="{{ $product->rowId }}" class="quantite quantite_select" min="1" max="{{$product->model->quantite }}" >
@@ -89,10 +114,8 @@
                      @method('DELETE')
                      <button type="submit" ><i class="fa fa-trash"></i></button>
                    </form>
-
                  </td>
 
-                 
                </tr>
                @endforeach
 
@@ -112,9 +135,9 @@
               <input type="text" id="clientNumber" placeholder="Numero du client">
               <button onclick="searchClient()" class="btn-sm btn-info">Rechercher</button>
             </p>
-            <p > 
-              <input type="checkbox" style="cursor:pointer" name="vat_customer_payer" id="vat_customer_payer">
-              <label for="vat_customer_payer" style="cursor:pointer">Client est assujetti à la TVA</label>
+            <p >
+              <input disabled type="checkbox" style="cursor:pointer" name="vat_customer_payer" id="vat_customer_payer">
+                <a href="{{ route('clients.create') }}" class="btn btn-primary btn-sm"> Nouveau client </a>
             </p>
 
           </div>
@@ -122,38 +145,40 @@
             <label for="">Date de Facturation</label>
             <input type="date" id="date_facturation" name="date_facturation">
           </div>
-          
+
           @csrf
           @method('post')
           <div class="row">
             <div class="form-group col-md-6">
-              <input required="" type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
+              <input disabled required="" type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
             </div>
 
             <div class="form-group col-md-6">
-             <input type="text" name="telephone" id="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
+             <input disabled type="text" name="telephone" id="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
            </div>
 
          </div>
          <div class="row">
            <div class="form-group col-md-6">
-            <input type="text" id="customer_TIN" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="form-control border-2">
+            <input disabled type="text" id="customer_TIN" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="form-control border-2">
           </div>
           <div class="form-group col-md-6">
-            <input type="text" id="addresse_client" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
+            <input disabled type="text" id="addresse_client" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
           </div>
 
         </div>
         <input type="hidden" value="CACHE" name="type_paiement" >
 
-        {{--   <div class="form-group">
+           <div class="form-group">
             <label for="type_paiement">MODE DE PAIEMENT</label>
            <select required="" class="form-control" name="type_paiement" id="">
-             <option value="">Choisissez ...</option>
-             <option value="CACHE">EN CACHE</option>
-             <option value="DETTE">DETTE</option>
+               <option value="">Choisissez ...</option>
+             <option value="1">en espèce</option>
+             <option value="2">banque</option>
+             <option value="3">à crédit</option>
+             <option value="4">autres</option>
            </select>
-         </div> --}}
+         </div>
          <button type="submit" class="btn btn-dark rounded-pill py-2 btn-block">Valider</button>
        </form>
         {{--  <div class="input-group mb-4 border rounded-pill p-2">
@@ -208,11 +233,12 @@
   embalage.on('blur', function(){
     let product_id = this.getAttribute('data-product');
     let embalage = this.value;
+    var current_tva = $("#current_tva").val();
     $.ajax(
     {
       url : '{{ route('update_emballage') }}',
       method : 'get',
-      data : {product_id , embalage}
+      data : {product_id , embalage , current_tva}
     }
 
     ).done(function(data){
@@ -231,14 +257,15 @@
   });
 
 
-  price_input.on('blur', function(){
+  price_input.on('keyup', function(){
     let product_id = this.getAttribute('data-product');
     let price = this.value;
+      var current_tva = $("#current_tva").val();
     $.ajax(
     {
       url : '{{ route('update_price') }}',
       method : 'get',
-      data : {product_id , price}
+      data : {product_id , price,current_tva}
     }
 
     ).done(function(data){
@@ -257,15 +284,16 @@
   });
 
 
-  quantite_select.on('change',function(){
+  quantite_select.on('keyup',function(){
     var rowId = this.getAttribute('data-id');
     var qty = this.value;
+    var current_tva = $("#current_tva").val();
 
     $.ajax({
       url : "{{ asset('update_quantite') }}",
       method : 'get',
       data : {
-        rowId, qty
+        rowId, qty, current_tva
       }
 
     }).done(function(data){
@@ -284,7 +312,7 @@
 
   function searchClient(){
      window.event.preventDefault();
-    
+
     const client_id = $("#clientNumber").val();
     $.ajax({
       url : "{{ asset('getClient') }}/" + client_id,

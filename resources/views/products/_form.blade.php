@@ -53,7 +53,7 @@
 	<div class="col-md-3">
 
 		<div class="form-group">
-			<label for="price_min">PRIX MINIMAL</label>
+			<label for="price_min">PRIX D'ACHAT</label>
 			<input type="text"
 			step="any"
 			 class="form-control {{$errors->has('price_min') ?  'is-valid' : 'is-invalid'  }}" id="price_min" name="price_min" value="{{ old('price_min') ?? $product->price_min?? ' ' }}">
@@ -67,7 +67,7 @@
 	<div class="col-md-3">
 
 		<div class="form-group">
-			<label for="price_max">PRIX MAX</label>
+			<label for="price_max">PRIX REVIENT</label>
 			<input type="text"
 			step="any"
 
@@ -80,7 +80,7 @@
 	<div class="col-md-3">
 
 		<div class="form-group">
-			<label for="price">PRIX UNITAIRE</label>
+			<label for="price">PRIX DE VENTE UNITAIRE</label>
 			<input type="text" step="any" class="form-control {{$errors->has('price') ? 'is-invalid' : 'is-valid' }}" id="price" name="price" value="{{ old('price') ?? $product->price?? ' ' }}">
 
 			{!! $errors->first('price', '<small class="help-block invalid-feedback">:message</small>') !!}

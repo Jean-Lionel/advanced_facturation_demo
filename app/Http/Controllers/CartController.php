@@ -11,10 +11,16 @@ use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
+    public $currentTax = 18;
+
+    public function __construct(){
+        $this->currentTax = \Request::get('current_tva') ?? 18;
+    }
     public function index()
     {
         //
         $paniers = Cart::content();
+
         return view('cart.index', compact('paniers'));
     }
 
@@ -30,12 +36,16 @@ class CartController extends Controller
         $total = Cart::subtotal();
        // dd($total );
         $cart = Cart::update($rowId, ['price' => $price]);
+        $taux_pourcentage = \Request::get('current_tva') ?? 18;
+        $tax = Cart::subtotal() * $taux_pourcentage / 100;
+
         return response()->json( [
             'rowId' =>  $cart->rowId,
-            'cart' => $cart->subtotal,
-            'prix_hors_tva' => getPrice($total) ,
-            'total_montant' => getPrice(Cart::total()),
-            'prix_hors_tax' => getPrice(Cart::tax())
+            'cart' => $cart->subtotal(),
+            'prix_hors_tva' => getPrice(Cart::subtotal()),
+            'total_montant' => getPrice(round($tax + Cart::subtotal())) ,
+            'prix_hors_tax' => getPrice(round($tax)),
+            'currentTax' => $this->currentTax,
 
         ]);
         //return  Cart::update($rowId, ['price' => $price]);
@@ -43,22 +53,28 @@ class CartController extends Controller
     public function update_emballage(){
         $rowId = \Request::get('product_id');
         $unite_emballage = \Request::get('embalage');
-        $total = Cart::subtotal();
+        $taux_pourcentage = \Request::get('current_tva');
 
+        $total = Cart::subtotal();
         $cart = Cart::update($rowId, ['options' => [
             'embalage' => $unite_emballage
         ]]);
+        $taux_pourcentage = \Request::get('current_tva') ?? 18;
+        $tax = Cart::subtotal() * $taux_pourcentage / 100;
 
         return response()->json( [
             'rowId' =>  $cart->rowId,
-            'cart' => $cart->subtotal,
-            'prix_hors_tva' => getPrice($total) ,
-            'total_montant' => getPrice(Cart::total()),
-            'prix_hors_tax' => getPrice(Cart::tax())
+            'cart' => $cart->subtotal(),
+            'prix_hors_tva' => getPrice(Cart::subtotal()),
+            'total_montant' => getPrice(round($tax + Cart::subtotal())) ,
+            'prix_hors_tax' => getPrice(round($tax)),
+            'currentTax' => $this->currentTax,
 
         ]);
         //return  Cart::update($rowId, ['price' => $price]);
     }
+
+
 
     public function store(Request $request)
     {
@@ -119,17 +135,16 @@ class CartController extends Controller
 
         $cart = Cart::update($rowId, $quatite);
 
-        // 'rowId' =>  $cart->rowId,
-        //     'cart' => $cart->subtotal,
-        //     'prix_hors_tva' => $total
-        $tax = Cart::subtotal() * 18 / 100;
+        $taux_pourcentage = \Request::get('current_tva') ?? 18;
+        $tax = Cart::subtotal() * $taux_pourcentage / 100;
 
         return response()->json( [
             'rowId' => $cart->rowId,
             'cart' => $cart->subtotal(),
             'prix_hors_tva' => getPrice(Cart::subtotal()),
             'total_montant' => getPrice(round($tax + Cart::subtotal())) ,
-            'prix_hors_tax' => getPrice(round($tax))
+            'prix_hors_tax' => getPrice(round($tax)),
+            'currentTax' => $this->currentTax,
 
         ]);
     }

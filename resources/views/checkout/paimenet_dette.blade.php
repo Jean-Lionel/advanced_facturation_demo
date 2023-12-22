@@ -1,9 +1,7 @@
 {{-- Checkout Methode paimenetDette 2020 CODE DECEMBRE --}}
 
 @extends('layouts.app')
-
 @section('content')
-
 <div>
 	<div>
 		<h5 class="text-right">TOTAL DES DETTES : {{ getPrice($totalDette) }} #FBU</h5>
@@ -17,14 +15,14 @@
 				<th>@sortablelink('montant_restant','Montant Restant ')</th>
 				<th>Facture Numéro</th>
 				<th>@sortablelink('status','Status')</th>
-				
+
 				<th>Date de paiement</th>
 
 				<th>@sortablelink('order_id','Date de Dette')</th>
 				<th>Action</th>
-			
+
 			</tr>
-			
+
 		</thead>
 		<tbody>
 			@foreach($dettes as $dette)
@@ -47,12 +45,12 @@
 
 			@endforeach
 
-			
+
 		</tbody>
-		
+
 	</table>
 
-	
+
 </div>
 
 
