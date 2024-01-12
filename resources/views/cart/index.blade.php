@@ -54,9 +54,9 @@
                     </div>
                   </th>
 
-                  <th scope="col" class="border-0 bg-light">
-                    <div class="py-2 text-uppercase">CONDITIONEMENT</div>
-                  </th>
+{{--                  <th scope="col" class="border-0 bg-light">--}}
+{{--                    <div class="py-2 text-uppercase">CONDITIONEMENT</div>--}}
+{{--                  </th>--}}
                   <th scope="col" class="border-0 bg-light">
                     <div class="py-2 text-uppercase">QUANTITE</div>
                   </th>
@@ -86,13 +86,12 @@
                   </th>
                   <th>
                     <input type="number" class="price_input" data-product="{{ $product->rowId }}" value="{{ $product->price }}" class="form-control">
-
                   </th>
 
-                  <td >
-                    <input type="text" class="embalage" data-product="{{ $product->rowId }}" style="width:50px;" value="{{$product->options['embalage']}}"/>
-                    <b>Kg/Sac</b>
-                  </td>
+{{--                  <td >--}}
+{{--                    <input type="text" class="embalage" data-product="{{ $product->rowId }}" style="width:50px;" value="{{$product->options['embalage']}}"/>--}}
+{{--                    <b>Kg/Sac</b>--}}
+{{--                  </td>--}}
 
                   <td class="border-0 align-middle">
 
@@ -129,14 +128,15 @@
       <div class="col-lg-6">
         <div class="bg-light rounded-pill px-1 py-1 text-uppercase font-weight-bold">INFORMATION DU CLIENT</div>
         <div class="p-1">
+            {{$errors}}
          <form action="{{ route('payement') }}" method="post">
           <div class="d-flex justify-content-between">
             <p>
-              <input type="text" id="clientNumber" placeholder="Numero du client">
+              <input type="text" name="clientNumber" id="clientNumber" placeholder="Numero du client">
               <button onclick="searchClient()" class="btn-sm btn-info">Rechercher</button>
             </p>
             <p >
-              <input disabled type="checkbox" style="cursor:pointer" name="vat_customer_payer" id="vat_customer_payer">
+              <input  type="checkbox" style="cursor:pointer" name="vat_customer_payer" id="vat_customer_payer">
                 <a href="{{ route('clients.create') }}" class="btn btn-primary btn-sm"> Nouveau client </a>
             </p>
 
@@ -150,24 +150,23 @@
           @method('post')
           <div class="row">
             <div class="form-group col-md-6">
-              <input disabled required="" type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
+              <input  required="" type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
             </div>
 
             <div class="form-group col-md-6">
-             <input disabled type="text" name="telephone" id="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
+             <input  type="text" name="telephone" id="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
            </div>
 
          </div>
          <div class="row">
            <div class="form-group col-md-6">
-            <input disabled type="text" id="customer_TIN" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="form-control border-2">
+            <input  type="text" id="customer_TIN" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="form-control border-2">
           </div>
           <div class="form-group col-md-6">
-            <input disabled type="text" id="addresse_client" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
+            <input  type="text" id="addresse_client" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
           </div>
 
         </div>
-        <input type="hidden" value="CACHE" name="type_paiement" >
 
            <div class="form-group">
             <label for="type_paiement">MODE DE PAIEMENT</label>
@@ -205,9 +204,7 @@
             </h5></li>
             <li class="d-flex justify-content-between py-2 border-bottom"><strong class="text-muted">Total</strong>
               <h5 class="font-weight-bold">
-
                 <b id="total_montant">{{ getPrice(Cart::total()) }}</b>
-
               </h5>
             </li>
           </ul>

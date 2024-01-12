@@ -2,7 +2,7 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>USINE PROTHEM</title>
+  <title>{{ RAISON_ENTREPRISE_HEADER }}</title>
   <link rel="stylesheet" href="{{ asset('login_folder/style.css') }}">
 
 </head>
@@ -11,11 +11,15 @@
 <div id="bg"></div>
 
 <form method="POST" action="{{ route('login') }}">
+    <h2 class="text-center">{{ RAISON_ENTREPRISE_HEADER }} - FACTURATION</h2>
   @csrf
   <div class="form-field">
     <input type="email" placeholder="Email / Username" name="email" value="{{ old('email') }}"  required/>
-  </div>
 
+  </div>
+    @error('email')
+    <p class="error_login">{{$message}}</p>
+    @enderror
   <div class="form-field">
     <input type="password" name="password" required placeholder="Password" required/>                         </div>
 

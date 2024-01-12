@@ -2,39 +2,30 @@
 
 use App\Http\Controllers\SendInvoiceToOBR;
 
-define('RAISON_ENTREPRISE', 'PROTHEM-USINE');
-define('BASE_FIRST_LETTER', 'P');
-define('RAISON_ENTREPRISE_HEADER', 'PROTHEM-USINE');
-define('BASE_NIF', '4000004806');
-define('BASE_RC', '64503');
-define('BASE_TELELEPHONE', '+257 22 22 07 80 / +257 22 24 46 10');
-define('BASE_BP', '176');
-define('BASE_COMMUNE', 'MUKAZA');
+define('RAISON_ENTREPRISE', 'GEOCON');
+define('BASE_FIRST_LETTER', 'G');
+define('RAISON_ENTREPRISE_HEADER', 'GEOEXPERTISE AND CONSTRUCTION');
+define('BASE_NIF', '4002043174');
+define('BASE_RC', '38222/22');
+define('BASE_TELELEPHONE', '+257 69 92 79 71');
+define('SECTEUR_ACTIVITE', 'CONSTRUCTION');
+define('EMAIL_ENTREPRISE', 'geoconexpert@gmail.com');
+define('WEBSITE_ENTREPRISE', '');
+define('BOITE_POSTAL', 'B.P. 329 Bujumbura, BURUNDI,');
+define('COMPANY_DESCRIPTION', '');
+define('BASE_BP', '329');
+define('BASE_COMMUNE', 'NTAHANGWA');
 //define('BASE_QUARTIER', 'Rohero II');
-define('BASE_QUARTIER', 'KIRIRI');
-define('BASE_SECTEUR', 'INDUSTRIEL');
-define('BASE_CENTRE_FISCAL', 'DGC');
-define('BASE_AVENUE', 'Avenue Martin Luther King N°29');
+define('BASE_QUARTIER', 'KIGOBE');
+define('BASE_SECTEUR', 'CONSTRUCTION');
+define('BASE_CENTRE_FISCAL', 'DMC');
+define('BASE_FORME_JURDIQUE', 'SPRL');
+define('BASE_AVENUE', 'AVENUE DES ETATS UNIS  No 76');
 define('BASE_TVA', 18);
 define('BASE_UNITE_EMBALLAGE', 50);
-// // FOR TEST PROTHEM
-define('OBR_USERNAME', env('OBR_USERNAME', 'ws400000480600270'));
-define('OBR_PASSWORD', env('OBR_PASSWORD', '_B_/BGv0'));
+// // FOR TEST GEOCON
 
-// Production Prothem
-
-// define('OBR_USERNAME', env('OBR_USERNAME', 'wsl400000480600187'));
-// define('OBR_PASSWORD', env('OBR_PASSWORD', 'T?v?w7}I'));
-
-// FOR TEST BST SOLUTION
-// define('OBR_USERNAME', env('OBR_USERNAME', 'ws400199682800460'));
-// define('OBR_PASSWORD', env('OBR_PASSWORD', 'Zt@eVzY9'));
-// FOR TEST DUKORE TECH
-// define('OBR_USERNAME', env('OBR_USERNAME', 'ws400199682800460'));
-// define('OBR_PASSWORD', env('OBR_PASSWORD', 'Zt@eVzY9'));
-//=== FOR PRODUCTION ===
-//  define('OBR_USERNAME', env('OBR_USERNAME', 'wsl400000480600187'));
-//  define('OBR_PASSWORD', env('OBR_PASSWORD', 'T?v?w7}I'));
-
+define('OBR_USERNAME', env('OBR_USERNAME', 'ws400204317400636'));
+define('OBR_PASSWORD', env('OBR_PASSWORD', '&C879fTw'));
 
 ?>

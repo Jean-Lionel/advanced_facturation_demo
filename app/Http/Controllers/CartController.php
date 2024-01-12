@@ -47,6 +47,7 @@ class CartController extends Controller
             'prix_hors_tax' => getPrice(round($tax)),
             'currentTax' => $this->currentTax,
 
+
         ]);
         //return  Cart::update($rowId, ['price' => $price]);
     }
@@ -132,9 +133,11 @@ class CartController extends Controller
         // rowId,
         $rowId = \Request::get('rowId');
         $quatite = \Request::get('qty');
-
-        $cart = Cart::update($rowId, $quatite);
-
+        $qte = 1;
+        if(floatval($quatite) != 0){
+            $qte =  intval($quatite);
+        }
+        $cart = Cart::update($rowId, $qte );
         $taux_pourcentage = \Request::get('current_tva') ?? 18;
         $tax = Cart::subtotal() * $taux_pourcentage / 100;
 

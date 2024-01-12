@@ -1,31 +1,23 @@
 @extends('layouts.app')
-
 {{-- StockController Rapport  --}}
 @section('content')
-
 <div>
-
 	<div class="row">
 		<div class="col-md-4">
-
 			<div class="card border-dark">
 				<div class="card card-header">
 					<h5 class="text-center">Vente du : {{ \Carbon\Carbon::now()->format('Y-m-d') }}</h5>
 				</div>
-
 				<div class="card card-body">
 					<h4 class="text-center"># {{ getPrice( $venteJournaliere) }} FBU</h4>
 				</div>
-
 			</div>
 		</div>
 
 		<div class="col-md-4">
-
 			<div class="card border-info">
 				<div class="card card-header">
 					<form action="{{ route('rapport') }}" class="form">
-						
 						<div class="row">
 							<div class="col-md-8">
 								<input type="date"  value="{{ $date_recherche }}" name="date_recherche" class="form-control">
@@ -52,27 +44,27 @@
 		</div>
 
 		<div class="col-md-4">
-				
+
 
 				<div class="card card-body border-d">
 
 					<div class="d-flex justify-content-between">
 						<p class="text-center">MOTANT TOTAL DU CAISSE</p>
 						<p class="text-center">TOTAL DES DETTES</p>
-						
+
 					</div>
 
 					<div class="d-flex justify-content-between">
 						<p class="text-center"># {{ getPrice( $montant_total) }} FBU</p>
 						<p class="text-center"># {{ getPrice( $totalDette) }} FBU</p>
-						
+
 					</div>
 
-				
+
 				</div>
 
 		</div>
-	
+
 
 	</div>
 
@@ -83,17 +75,17 @@
 				<h5>Les 10 premiers produits les plus vendus</h5>
 				<canvas id="myChart"></canvas>
 			</div>
-			
+
 		</div>
 		<div class="col-md-6">
-			
+
 			<div style="width:100%;">
 				<h5>Top 10 des quantités</h5>
 				<canvas id="chart2"></canvas>
 			</div>
-			
-			
-			
+
+
+
 		</div>
 		<div class="col-md-4">
 			CHART 3
@@ -117,13 +109,9 @@
 	const random = Math.floor(Math.random() * Charts.length );
 	const random2 = Math.floor(Math.random() * Charts.length );
 
-	
-
 	var ctx = document.getElementById('myChart').getContext('2d');
 	var chart2 = document.getElementById('chart2').getContext('2d');
-
 	let labels = '{{ $labels }}';
-
 	var myChart = new Chart(ctx, {
 		type: Charts[random],
 		data: {

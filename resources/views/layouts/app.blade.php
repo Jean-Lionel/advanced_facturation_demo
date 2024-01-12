@@ -17,7 +17,8 @@
    }
 
    #sidebar{
-      background: #009a41;
+      /*background: #009a41;*/
+      background: #5c3fd8;
    }
  </style>
 
@@ -53,7 +54,7 @@
       </li>
       <li>
         <a href="{{ route('stockes.journal') }}"><span class="fa fa-calendar"></span> Journal</a>
-      </li> 
+      </li>
 
 
       <li>
@@ -96,15 +97,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <h5>{{ RAISON_ENTREPRISE_HEADER }}</h5>
 
-           
+
           <ul class="nav navbar-nav ml-auto">
             <li>
-            
+
                 <img src="{{ asset('img/logo.jpg') }}" class="img-thumbnail"  alt="" style="width:40px; border-radius: 50%;">
-              
+
             </li>
             <li><h5 class="mr-4 mt-2">{{ Auth::user()->name }}</h5></li>
-           
+
             <li class="nav-item">
 
               <a href="{{ route('panier.index') }}" class="btn btn-primary">
@@ -114,7 +115,7 @@
               </a>
 
             </li>
-          
+
             <li class="nav-item ml-2">
 
               <form action="{{ route('logout') }}" method="post">
@@ -124,7 +125,7 @@
 
                   <i class="fa fa-power-off fa-2x" aria-hidden="true" title=" Se deconnecter"></i>
 
-                 
+
               </form>
 
             </li>
@@ -141,7 +142,7 @@
 
     <div>
       @if (session('success'))
-      {{-- expr --}} 
+      {{-- expr --}}
 
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
         <strong>SUCCESS</strong> {{ session('success')}}
@@ -153,7 +154,7 @@
 
 
       @if (session('error'))
-      {{-- expr --}} 
+      {{-- expr --}}
 
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>SUCCESS</strong> {{ session('error')}}

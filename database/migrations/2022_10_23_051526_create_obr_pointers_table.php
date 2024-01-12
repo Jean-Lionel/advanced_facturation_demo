@@ -18,6 +18,10 @@ class CreateObrPointersTable extends Migration
             $table->foreignId("order_id");
             $table->string("invoice_signature");
             $table->string("status");
+            $table->boolean("success")->nullable();
+            $table->text("electronic_signature")->nullable();
+            $table->text("msg")->nullable();
+            $table->text("result")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

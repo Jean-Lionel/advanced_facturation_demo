@@ -29,6 +29,7 @@ class CheckoutController extends Controller
     */
     public function store(Request $request)
     {
+
         $validate =
         [
             'name' => 'required|min:1',
@@ -36,18 +37,8 @@ class CheckoutController extends Controller
         ];
         if ($request->customer_TIN) {
             // code...
-            $obr = new SendInvoiceToOBR();
-            try {
-                $response = $obr->checkTin($request->customer_TIN);
-                if(!$response->success){
-                    Session::flash('error', $response->msg);
-                    // return redirect()->route('panier.index');
-                }
-            } catch (\Exception $e) {
-
-            }
+            $validate['customer_TIN'] = 'required|exists:clients';
         }
-
         $request->validate($validate);
         if (Cart::count() <= 0) {
             Session::flash('error', 'Votre panier est vide.');
@@ -62,14 +53,18 @@ class CheckoutController extends Controller
         try {
             DB::beginTransaction();
             $this->stockUpdated();
-            $client =  Client::create([
-                'name' => $request->name,
-                'telephone' => $request->telephone ?? "0000",
-                'description' =>  "",
-                'addresse' => $request->addresse_client ?? "",
-                'customer_TIN' => $request->customer_TIN ?? "",
-                'vat_customer_payer' => $request->vat_customer_payer ? 1 : 0,
-            ]);
+            $client =  Client::find($request->clientNumber);
+            if(!$client) {
+                $client =  Client::create([
+                    'name' => $request->name,
+                    'telephone' => $request->telephone ?? "0000",
+                    'description' =>  "",
+                    'addresse' => $request->addresse_client ?? "",
+                    'customer_TIN' => $request->customer_TIN ?? "",
+                    'vat_customer_payer' => $request->vat_customer_payer ? 1 : 0,
+                ]);
+            }
+
             $cartInfo = $this->extractCart();
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
             $oder_signuture = "";
@@ -126,7 +121,6 @@ class CheckoutController extends Controller
         }
 
         if(isset($order->id)){
-
             $obr = new ObrDeclarationController();
             try{
                 $obr->sendInvoinceToObr($order->id);
@@ -134,7 +128,6 @@ class CheckoutController extends Controller
 
                 Session::flash('error', $e->getMessage());
             }
-
 
             return view('cart.facture_model_prothem', compact('order'));
         }

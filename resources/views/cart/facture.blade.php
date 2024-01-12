@@ -13,12 +13,12 @@
 <body>
     <div class="main-content" id="printJS-form">
         <div class="noprint header-element">
-            
+
             <button onclick="print()" class="noprint">Imprimmer</button>
 
             <a href="{{ route('ventes.index') }}">Retour</a>
         </div>
-     
+
          <div class="header-facture">
              <h3>NDIKUMANA Jacqueline</h3>
              <span>ndikumanajacky@gmail.com</span>
@@ -30,14 +30,14 @@
     </main>
 
     <section>
-       {{--  
+       {{--
  --}}
         Nom et Prénom ou Raison sociale * : <b>NDIKUMANA Jacqueline</b>  <br>
 
         <div style="display: flex; justify-content: space-between;">
 
             <span>NIF : 4001272899</span>
-           
+
             <span>Centre fiscal : <b>DPMC</b></span>
         </div>
 
@@ -59,7 +59,7 @@
             </div>
             <div>
                 Client : <b>{{  collect(json_decode($order->client))->get('name') ?? "" }}</b>
-                
+
             </div>
         </div>
 
@@ -80,7 +80,6 @@
             </thead>
 
             <tbody>
-
 
 
                 @foreach(unserialize($order->products) as $key=> $product)

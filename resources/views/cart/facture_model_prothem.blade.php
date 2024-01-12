@@ -18,7 +18,8 @@
 
 		.adroite{
 			text-align:right !important;
-			padding-right: 15px;	
+			padding-right: 15px;
+            white-space: nowrap;
 		}
 		.text-center{
 			text-align: center !important;
@@ -32,7 +33,7 @@
 			margin: 0;
 			padding: 0;
 		}
-	</style>	
+	</style>
 </head>
 <body>
 
@@ -49,20 +50,21 @@
 				</div>
 			</div>
 			<div style="width: 80%;">
-				<h3>{{ RAISON_ENTREPRISE }} Siège Social : Gisozi-Mwaro</h3>
-				<h3>Bureau de liaison: Kiriri , Avenue Martin Luther King N°29, </h3>
+				<h3>{{ RAISON_ENTREPRISE_HEADER }} </h3>
+				<h3>{{COMPANY_DESCRIPTION}} </h3>
 				<h3>
-					B.P.176 Bujumbura, BURUNDI,
+
+                    {{BOITE_POSTAL}}
 				</h3>
 				<h3>
 					Tél : {{BASE_TELELEPHONE}}
 				</h3>
 				<h3>
-					Email : info@prothem.bi, WebSite: www.prothem.bi
+					Email : {{EMAIL_ENTREPRISE}}, WebSite: {{WEBSITE_ENTREPRISE}}
 				</h3>
 				<hr>
 			</div>
-			
+
 		</header>
 		{{-- Fin --}}
 
@@ -77,16 +79,16 @@
 				<p>Commune : <b>{{ BASE_COMMUNE }}</b>, Quartier : {{BASE_QUARTIER}}</p>
 				<p>Avenue : <b>{{BASE_AVENUE}}</b></p>
 				Assujetti à la TVA : <b>OUI</b>
-				
+
 			</div>
 			<div class="aling-right partie-droite">
 				<div>
 					<h5>FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }} </h5>
-					<p>Centre Fiscal : <b>DGC</b></p>
-					<p>Secteur d'activité : <b>INDUSTRIEL</b></p>
-					<p>Forme juridique : <b>SA</b></p>
+					<p>Centre Fiscal : <b>{{BASE_CENTRE_FISCAL}}</b></p>
+					<p>Secteur d'activité : <b>{{SECTEUR_ACTIVITE}}</b></p>
+					<p>Forme juridique : <b>{{BASE_FORME_JURDIQUE}}</b></p>
 				</div>
-				
+
 			</div>
 		</article>
 		{{-- END SIDE A --}}
@@ -96,7 +98,7 @@
 			<div>
 				<h5>B. Client</h5>
 				<p>Nom et Prénom ou Raison Socail : <b>
-					
+
 					{{$order->client->name}}
 				</b></p>
 				<p>Résident à : <b>{{ $order->addresse_client }}</b></p>
@@ -114,16 +116,13 @@
 						<th>#</th>
 						<th>Nature de l'article</th>
 						{{-- <th>Nbre de sacs</th> --}}
-						<th>Qté en Kg</th>
-						<th>PU/ Kg</th>
+						<th>Quantité</th>
+						<th>PU</th>
 						<th>PV-HTVA</th>
 					</tr>
 				</thead>
 				<tbody>
-
-
 					@foreach($order->products as $key=> $product)
-
 					<tr>
 						<td>{{ $key +1 }}</td>
 						<td> {{ $product['name'] }}</td>
@@ -132,10 +131,7 @@
 						<td class="adroite"> {{ getPrice($product['price'] ) }}</td>
 						<td class="adroite"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
 					</tr>
-
 					@endforeach
-
-
 					<tr>
 						<td colspan="4">PVT HTVA </td>
 						<td class="adroite"><b>{{ getPrice($order->amount_tax) }}</b></td>
@@ -148,53 +144,46 @@
 						<td colspan="4"><b>TOTAL TVAC</b></td>
 						{{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
 						<td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
-						
-						
-						
+
+
+
 						<td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
 					</tbody>
 				</table>
-				{{-- <h4>Mention Obligatoire</h4>
-				<h4>NB: Les non assujettis à la TVA ne remplissent pas les deuc dernières lignes</h4> --}}
+				 <h4>Mention Obligatoire</h4>
+				<h4>NB: Les non assujettis à la TVA ne remplissent pas les deux dernières lignes</h4>
 			</article>
 
-			<footer>
-				<div>
-					<h4>Confirming Order</h4>
-					<h4>Head of Commercial</h4>
-					<h4>Tanguy HICUBURUNDI</h4>
-				</div>
-				<div class="aling-right">
-					<h4>Confirming Full Payment</h4>
-					<h4>Head of Finance ai</h4>
-					<h4>Eric KAPARAYE</h4>
-				</div>
-			</footer>
-			<div>
-				<h4 class="text-center">MANAGING DIRECTOR</h4>
-				<h4 class="text-center">Fabien GAHUNGU</h4>
-			</div>
+{{--			<footer>--}}
+{{--				<div>--}}
+{{--					<h4>Confirming Order</h4>--}}
+{{--					<h4>Head of Commercial</h4>--}}
+{{--					<h4>Tanguy HICUBURUNDI</h4>--}}
+{{--				</div>--}}
+{{--				<div class="aling-right">--}}
+{{--					<h4>Confirming Full Payment</h4>--}}
+{{--					<h4>Head of Finance ai</h4>--}}
+{{--					<h4>Eric KAPARAYE</h4>--}}
+{{--				</div>--}}
+{{--			</footer>--}}
+{{--			<div>--}}
+{{--				<h4 class="text-center">MANAGING DIRECTOR</h4>--}}
+{{--				<h4 class="text-center">Fabien GAHUNGU</h4>--}}
+{{--			</div>--}}
 			<div>
 				<hr>
 				<h4 class="text-center"> {{$order->invoice_signature}}</h4>
 			</div>
 		</div>
-
-
 		<script>
 			function print(){
-
-
 				printJS({
 					printable: "printJS-form",
 					type: 'html',
 					css : {{"". asset('css/facture.css')."" }}
-
 				}
 				);
 			}
-
-
 		</script>
 	</body>
 	</html>

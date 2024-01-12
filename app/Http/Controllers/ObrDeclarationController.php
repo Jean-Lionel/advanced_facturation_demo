@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ObrRequestBody;
 use App\Models\Order;
 use App\Models\Entreprise;
 use App\Models\ObrPointer;
@@ -21,7 +22,6 @@ class ObrDeclarationController extends Controller
     public function index()
     {
         $x = new SendInvoiceToOBR();
-        
         $orders = Order::whereNull('envoye_obr')->latest()->get();
         return view('obr_declarations.index', [
             'orders' => $orders
@@ -31,7 +31,6 @@ class ObrDeclarationController extends Controller
     public function hostory()
     {
         $orders = Order::whereNotNull('envoye_obr')->latest()->get();
-
         return view('obr_declarations.history', [
             'orders' => $orders
         ]);
@@ -72,18 +71,12 @@ class ObrDeclarationController extends Controller
         $obr = new SendInvoiceToOBR();
         $order = Order::find($invoince_id);
         //DON'T Reapet your self but i did
-
         $invoice_signature = $order->invoice_signature;
-
         if (!$order->invoice_signature) {
-
             $invoice_signature = SendInvoiceToOBR::getInvoinceSignature($order->id, $order->created_at);
         }
-
         $company = Entreprise::latest()->first();
-
         $invoince = $this->generateInvoince($order, $company, $invoince_id, $invoice_signature, $order->created_at);
-
         $response = null;
         try {
             $response = $obr->addInvoice($invoince);
@@ -93,7 +86,6 @@ class ObrDeclarationController extends Controller
                 'msg' => "Vérifier que votre ordinateur est connecté"
             ]);
         }
-
         if ($response->success) {
             $order->envoye_obr = true;
             $order->envoye_par = auth()->user()->id;
@@ -103,9 +95,24 @@ class ObrDeclarationController extends Controller
             ObrPointer::create([
                 'order_id' => $order->id,
                 'invoice_signature' => $invoice_signature,
-                'status' => true,
+                'status' => $response->success,
+                'electronic_signature' => $response->electronic_signature,
+                'result' => json_encode($response->result),
+                'msg' => $response->msg,
+            ]);
+        }else{
+            ObrPointer::create([
+                'order_id' => $order->id,
+                'invoice_signature' => $invoice_signature,
+                'status' => $response->success,
+                'electronic_signature' => "",
+                'result' => "",
+                'msg' => $response->msg,
             ]);
         }
+        // Si la facture n'a pas été envoyé
+
+
 
         if ($response->msg == "Une facture avec le même numéro existe déjà.") {
             $order->envoye_obr = true;
@@ -119,6 +126,7 @@ class ObrDeclarationController extends Controller
                     'order_id' => $order->id,
                     'invoice_signature' => $invoice_signature,
                     'status' => true,
+
                 ]);
             }
         }
@@ -164,7 +172,6 @@ class ObrDeclarationController extends Controller
             }
         }
 
-
         $invoince = [
             "invoice_number" => $invoice_number,
             "invoice_date" => $invoice_date,
@@ -193,12 +200,16 @@ class ObrDeclarationController extends Controller
             "cancelled_invoice_ref" => "",
             //yyyyMMddHHmmss
             "invoice_signature" => $invoice_signature,
+            "invoice_identifier" => $invoice_signature,
             "invoice_signature_date" => $invoice_signature_date,
             "invoice_items" => $invoinces_items
 
         ];
 
-       // dd($invoince);
+        ObrRequestBody::create([
+            'invoice_id' => $invoice_number,
+            'request_body' => json_encode($invoice),
+        ]);
 
         return $invoince;
 

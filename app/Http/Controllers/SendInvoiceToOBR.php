@@ -36,7 +36,6 @@ class SendInvoiceToOBR extends Controller
             ],
             $data
         );
-
         $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovement/', $data);
        // dd();
         return $req->body();
@@ -49,7 +48,6 @@ class SendInvoiceToOBR extends Controller
         $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'checkTIN/', [
             'tp_TIN' => $tp_TIN
         ]);
-
         return json_decode($req->body());
     }
 
@@ -62,22 +60,20 @@ class SendInvoiceToOBR extends Controller
         $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'cancelInvoice/', [
             'invoice_signature' => $invoice_signature
         ]);
-
         return json_decode($req->body());
     }
 
 
     public function addInvoice($invoince)
     {
-
         $token = $this->getToken();
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'addInvoice/', $invoince);
+       // https://ebms.obr.gov.bi:9443/ebms_api/
+        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'addInvoice_confirm/', $invoince);
         return json_decode($req->body());
     }
 
     public function cancelInvoince($invoince_signature)
     {
-
         $token = $this->getToken();
         $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'cancelInvoice/', [
             'invoice_signature' => $invoince_signature

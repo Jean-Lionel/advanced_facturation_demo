@@ -185,14 +185,13 @@ class StockController extends Controller
         $montant_total = Order::where('type_paiement','=','CACHE')->sum('amount') - Depense::all()->sum('montant') +  $paiement_dettes_total + $service_montant;
 
         $data_history = DB::select("SELECT name, COUNT(`name`) as nombre_vendu , SUM(`quantite`) as quantite FROM `detail_orders` GROUP by name ORDER BY quantite DESC LIMIT 10");
-        $data['product_name'] = collect($data_history)->map->name->implode(",");
+        $data['product_name'] = collect($data_history)->map(function($item){
+            return strlen($item->name) > 15 ? substr($item->name , 0, 15) . ' ...' :  $item->name;
+        })->implode(',');
         $data['nombre_vendu'] = collect($data_history)->map->nombre_vendu->implode(',');
         $data['quantite'] = collect($data_history)->map->quantite->implode(',');
-
-        $labels = $data['product_name'];
-
+        $labels =    $data['product_name'];
         //$depenses = ;
-
        // dd($depenses);
 
           $totalDette = PaiementDette::all()->where('montant_restant','>',0)->sum('montant_restant');
