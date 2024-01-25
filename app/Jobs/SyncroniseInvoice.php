@@ -56,8 +56,11 @@ class SyncroniseInvoice implements ShouldQueue
                         $obr = new SendInvoiceToOBR();
                         $response = $obr->cancelInvoice( $item2->invoice_signature ,  $item2->motif);
                         $order = Order::where('invoice_signature' ,'=', $item2->invoice_signature)->first();
-                        $order->is_cancelled = 1;
-                        $order->save();
+
+                        if($order){
+                            $order->is_cancelled = 1;
+                            $order->save();
+                        }
                         $item2->save();
                        $current = CanceledInvoince::where('invoice_signature' ,'=', $item2->invoice_signature)->first();
                        $current->status = 1;
