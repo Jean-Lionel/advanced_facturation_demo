@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CanceledInvoince;
 use App\Models\ObrRequestBody;
 use App\Models\Order;
 use App\Models\Entreprise;
@@ -30,16 +31,23 @@ class ObrDeclarationController extends Controller
 
     public function hostory()
     {
-        $orders = Order::whereNotNull('envoye_obr')->latest()->get();
+        $order_id = \Request::get('order_id');
+        $orders = Order::whereNotNull('envoye_obr')
+                        ->where( function($query) use ($order_id){
+                            if(isset($order_id) ){
+                                $query->where('id', $order_id);
+                            }
+                        })
+                        ->latest()->paginate();
         return view('obr_declarations.history', [
-            'orders' => $orders
+            'orders' => $orders,
+            'order_id' => $order_id
         ]);
     }
 
     public function obr_declarations_cancel()
     {
-        $orders = Order::whereNotNull('is_cancelled')->latest()->get();
-
+        $orders = Order::where('is_cancelled' , '<>', 0)->latest()->get();
         return view('obr_declarations.history', [
             'orders' => $orders
         ]);
@@ -47,22 +55,47 @@ class ObrDeclarationController extends Controller
 
     public function cancelInvoice(Request $request)
     {
-        $obr = new SendInvoiceToOBR();
 
+        $request->validate([
+            'invoice_signature' => 'required',
+            'motif' => 'required',
+        ]);
+
+        if($request->internet_connection == 'NON_INTERNET'){
+                // Add to pading table
+            CanceledInvoince::create([
+                    'motif' => $request->motif,
+                    'invoice_signature' => $request->invoice_signature,
+                    'created_at' => now(),
+                    'status' => false
+            ]);
+
+            // Change the Status Of the order
+            $order = Order::where('invoice_signature', '=',$request->invoice_signature)->first();
+            $order->canceled_or_connection = 'ANNULEE HORS CONNECTION';
+            $order->save();
+            return response()->json([
+                'success' => true,
+                'msg' => 'la Facture a été annulée.',
+                'invoice_signature' => $request->invoice_signature
+            ]);
+        }
+
+            $obr = new SendInvoiceToOBR();
         try {
-            $response = $obr->cancelInvoice($request->invoice_signature);
-
+            $response = $obr->cancelInvoice($request->invoice_signature , $request->motif);
             $order = Order::find($request->order_id);
-
             $order->is_cancelled = true;
             $order->save();
             return $response;
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'msg' => $e->getMessage()
+                'msg' => $e->getMessage(). ' FILE ' . $e->getFile() . ' LINE ' .$e->getLine()
             ]);
         }
+
+
 
     }
 
@@ -88,7 +121,7 @@ class ObrDeclarationController extends Controller
         }
         if ($response->success) {
             $order->envoye_obr = true;
-            $order->envoye_par = auth()->user()->id;
+            $order->envoye_par = auth()->user()->id ?? 10000;
             $order->envoye_time = now();
             $order->invoice_signature = $invoice_signature;
             $order->save();
@@ -112,14 +145,11 @@ class ObrDeclarationController extends Controller
         }
         // Si la facture n'a pas été envoyé
 
-
-
         if ($response->msg == "Une facture avec le même numéro existe déjà.") {
             $order->envoye_obr = true;
-            $order->envoye_par = auth()->user()->id;
+            $order->envoye_par = auth()->user()->id ?? 10000;
             $order->envoye_time = now();
             $order->invoice_signature = $invoice_signature;
-
             if ($order->invoice_signature) {
                 $order->save();
                 ObrPointer::create([
@@ -157,7 +187,9 @@ class ObrDeclarationController extends Controller
                 "item_price_nvat" => $product['item_price_nvat'] ?? 0,
                 "vat" => $product['vat'] ?? 0,
                 "item_price_wvat" => $product['item_price_wvat'] ?? 0,
-                "item_total_amount" => $product['item_total_amount'] ?? 0
+                "item_total_amount" => $product['item_total_amount'] ?? 0,
+                "item_tsce_tax" => $product['item_tsce_tax'] ?? 0,
+                "item_ott_tax" => $product['item_tsce_tax'] ?? 0,
             ];
         }
 
@@ -205,11 +237,6 @@ class ObrDeclarationController extends Controller
             "invoice_items" => $invoinces_items
 
         ];
-
-        ObrRequestBody::create([
-            'invoice_id' => $invoice_number,
-            'request_body' => json_encode($invoice),
-        ]);
 
         return $invoince;
 

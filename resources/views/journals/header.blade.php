@@ -8,7 +8,7 @@
 			<a class="btn btn-secondary" href="{{ route('paimenet_dette') }}"> Paiment des dettes</a>
 		</div>
 		<div class="col-sm-6">
-			<a class="btn btn-secondary" href="{{ route('canceledInvoince') }}"> Facture Annuler avant la séclaration</a>
+			<a class="btn btn-secondary" href="{{ route('canceledInvoince') }}"> Facture Annuler avant la Déclaration</a>
 		</div>
 
 

@@ -14,17 +14,18 @@ class Order extends Model
     use HasFactory;
     use SoftDeletes;
     use Sortable;
-    
-    protected $fillable = ['amount',
-'products','user_id','tax','amount_tax','client','type_paiement', 'total_quantity', 'total_sacs', 'addresse_client', 'date_facturation', 'is_cancelled'];
 
+//    protected $fillable = ['amount',
+//'products','user_id','tax','amount_tax','client','type_paiement', 'total_quantity', 'total_sacs', 'addresse_client', 'date_facturation', 'is_cancelled', 'invoice_signature'];
+
+protected $guarded = [];
  public $sortable = ['amount',
-'products','user_id','tax','amount_tax','client','type_paiement', 'date_facturation'];
+'products','user_id','tax','amount_tax','client','type_paiement', 'date_facturation', 'invoice_signature'];
 
 	public static function boot(){
 
 		parent::boot();
-		
+
 		self::creating(function($model){
 			$model->user_id = Auth::user()->id ?? 1;
 		});
@@ -47,4 +48,8 @@ class Order extends Model
 	{
 		return unserialize($v);
 	}
+
+    public function getCompanyAttribute($v){
+        return json_decode($v);
+    }
 }

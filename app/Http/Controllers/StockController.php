@@ -160,7 +160,7 @@ class StockController extends Controller
         $paiement_dette = DetailPaimentDette::whereDate('created_at','=',Carbon::now())->sum('montant');
 
         // La vente journaliere + La somme de paiment des dettes
-         $venteJournaliere = Order::where('type_paiement','=','CACHE')->whereDate('created_at','=',Carbon::now())->sum('amount') + $paiement_dette;
+         $venteJournaliere = Order::where('is_cancelled', '=',0)->whereDate('created_at','=',Carbon::now())->sum('amount') + $paiement_dette;
 
          //Historique
 
@@ -168,7 +168,7 @@ class StockController extends Controller
 
 
         $vente_date = Order::whereDate('created_at','=',$date_recherche)
-                            ->where('type_paiement','=','CACHE')
+                            ->where('is_cancelled', '=',0)
                             ->sum('amount');
 
         $service_Date = Service::whereDate('created_at','=',$date_recherche)->sum('total');
@@ -182,7 +182,7 @@ class StockController extends Controller
 
         $paiement_dettes_total = DetailPaimentDette::all()->sum('montant');
 
-        $montant_total = Order::where('type_paiement','=','CACHE')->sum('amount') - Depense::all()->sum('montant') +  $paiement_dettes_total + $service_montant;
+        $montant_total = Order::where('is_cancelled','=','0')->sum('amount') - Depense::all()->sum('montant') +  $paiement_dettes_total + $service_montant;
 
         $data_history = DB::select("SELECT name, COUNT(`name`) as nombre_vendu , SUM(`quantite`) as quantite FROM `detail_orders` GROUP by name ORDER BY quantite DESC LIMIT 10");
         $data['product_name'] = collect($data_history)->map(function($item){

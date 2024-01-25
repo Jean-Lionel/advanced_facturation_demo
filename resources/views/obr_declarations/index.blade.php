@@ -14,13 +14,15 @@
 				<th>Tax</th>
 				<td>Product</td>
 				<td>Date</td>
+                <td>Motif </td>
+                <td>Status</td>
 				<th>
 					Action
 				</th>
 			</tr>
 		</thead>
 		<tbody>
-			
+
 			@foreach ($orders as $order)
 			{{-- expr --}}
 			<tr>
@@ -47,13 +49,23 @@
 					</ul>
 				</td>
 				<td>{{ $order->created_at }}</td>
-				<td>
-					<div id="button_{{$order->id}}">
-						<button  onclick="sendInvoice({{$order->id}})">Envoyer</button>
-					</div>
-					
+                <td class="bg-warning">
+                    <span  >Verfié si vous avez une connection internet </span>
 
-					
+                </td>
+                <td @if ( $order->canceled_or_connection)
+                    class="bg-danger"
+                @endif>
+
+                    {{  $order->canceled_or_connection }} </td>
+				<td>
+                    <a href="{{ route('orders.show', $order->id)}}">Afficher</a>
+
+					<div id="button_{{$order->id}}">
+                        @if ( ! $order->canceled_or_connection)
+                        <button  onclick="cancelIncome('{{$order->invoice_signature}}', {{$order->id}})">Annuler</button>
+                        @endif
+					</div>
 				</td>
 			</tr>
 			@endforeach
@@ -65,13 +77,45 @@
 @section('javascript')
 
 <script>
+
+function cancelIncome(invoice_signature, order_id){
+
+        let motif = prompt("Quel est le motif d'annulation de cet Facture ? ")
+        if(! motif ||  motif.trim() == ""){
+            alert("La facture n  a pas ete anuler ajouter le motif")
+            motif = prompt("Quel est le motif d'annulation de cet Facture ? ")
+            return;
+        }
+		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+		$("#order_"+order_id).html(`<div class="progress">
+			<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+			</div>`)
+		$.ajax({
+			url: 'cancelInvoice',
+			type: 'post',
+			data: {
+				invoice_signature :invoice_signature,
+				_token: CSRF_TOKEN,
+				order_id: order_id,
+                motif : motif,
+                internet_connection : 'NON_INTERNET',
+			},
+			success: function (data) {
+				console.log(data);
+				$("#button_"+order_id).html(`
+					<span class="bg-warning">${data.msg} </span>
+					`)
+			}
+		});
+	}
 	function sendInvoice(invoince_id){
 		 $("#button_"+invoince_id).html(`
 		 	<div  class="spinner-border text-primary" role="status">
 						<span class="sr-only">Loading...</span>
 					</div>
 		 	`)
-		
+
 		$.ajax({
 			url: 'sendInvoinceToObr/'+invoince_id,
 			type: 'get',

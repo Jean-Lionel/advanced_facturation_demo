@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SyncroniseInvoice;
 use App\Models\Vente;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -31,6 +32,7 @@ class VenteController extends Controller
             ->orWhere('price', 'like', '%' . $search . '%')
             ->orWhere('unite_mesure', 'like', '%' . $search . '%');
         })->latest()->paginate(6);
+        SyncroniseInvoice::dispatch(1);
         return view('ventes.index', compact('products', 'search'));
     }
 

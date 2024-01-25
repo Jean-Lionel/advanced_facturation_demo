@@ -78,40 +78,29 @@
 	</div>
 
 	<div class="col-md-3">
-
 		<div class="form-group">
 			<label for="price">PRIX DE VENTE UNITAIRE</label>
 			<input type="text" step="any" class="form-control {{$errors->has('price') ? 'is-invalid' : 'is-valid' }}" id="price" name="price" value="{{ old('price') ?? $product->price?? ' ' }}">
-
 			{!! $errors->first('price', '<small class="help-block invalid-feedback">:message</small>') !!}
-
 		</div>
-
-
 	</div>
 
 
 	<div class="col-md-3">
-
 		<div class="form-group">
 			<label for="quantite_alert">QUANTITE MINIMUM</label>
 			<input type="text" step="any" class="form-control {{$errors->has('quantite_alert') ? 'is-invalid' : 'is-valid' }}" id="quantite_alert" name="quantite_alert" value="{{ old('quantite_alert') ?? $product->quantite_alert?? ' ' }}">
-
 			{!! $errors->first('quantite_alert', '<small class="help-block invalid-feedback">:message</small>') !!}
 		</div>
 	</div>
 
 
 	<div class="col-md-3">
-
 		<div class="form-group">
 			<label for="date_expiration">DATE D'EXPIRATION</label>
 			<input type="date" class="form-control {{$errors->has('date_expiration') ? 'is-invalid' : 'is-valid' }}" id="date_expiration" name="date_expiration" value="{{ old('date_expiration') ?? $product->date_expiration?? ' ' }}">
-
 			{!! $errors->first('date_expiration', '<small class="help-block invalid-feedback">:message</small>') !!}
-
 		</div>
-
 	</div>
 
 

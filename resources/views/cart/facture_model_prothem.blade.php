@@ -5,17 +5,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>FACTURE  {{ RAISON_ENTREPRISE }}</title>
 	<link rel="stylesheet" href="{{ asset('css/print.min.css') }}">
-
 	<script src="{{ asset('js/print.min.js') }}"></script>
 	<link rel="stylesheet" href="{{ asset('css/prothem.css') }}">
-
 	<style>
 		@media print {
 			.noprint {
 				display: none;
 			}
 		}
-
 		.adroite{
 			text-align:right !important;
 			padding-right: 15px;
@@ -36,7 +33,6 @@
 	</style>
 </head>
 <body>
-
 	<div class="noprint header-element">
 		<button onclick="print()" class="noprint">Imprimer</button>
 		<a href="{{ route('ventes.index') }}">Retour</a>
@@ -72,21 +68,22 @@
 		<article class="identification_a">
 			<div>
 				<h5>A. Identification du vendeur</h5>
-				<p>Nom et prénom ou Raison Social : <b>{{RAISON_ENTREPRISE}}</b></p>
-				<p>NIF : <b>{{BASE_NIF}}</b></p>
-				<p>Registre du commerce No : <b>{{BASE_RC}}</b></p>
-				<p>BP: <b>{{BASE_BP}}</b> , Tél <b>{{BASE_TELELEPHONE}}</b></p>
-				<p>Commune : <b>{{ BASE_COMMUNE }}</b>, Quartier : {{BASE_QUARTIER}}</p>
-				<p>Avenue : <b>{{BASE_AVENUE}}</b></p>
+
+				<p>Nom et prénom ou Raison Social : <b>{{$order->company?->tp_name}}</b></p>
+				<p>NIF : <b>{{$order->company?->tp_TIN}}</b></p>
+				<p>Registre du commerce No : <b>{{ $order->company?->tp_trade_number }}</b></p>
+				<p>BP: <b>{{ $order->company?->tp_postal_number }}</b> , Tél <b>{{ $order->company?->tp_phone_number }}</b></p>
+				<p>Commune : <b>{{ $order->company?->tp_address_commune }}</b>, Quartier : {{ $order->company?->tp_address_quartier }}</p>
+				<p>Avenue : <b>{{ $order->company?->tp_address_quartier }} </b></p>
 				Assujetti à la TVA : <b>OUI</b>
 
 			</div>
 			<div class="aling-right partie-droite">
 				<div>
 					<h5>FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }} </h5>
-					<p>Centre Fiscal : <b>{{BASE_CENTRE_FISCAL}}</b></p>
-					<p>Secteur d'activité : <b>{{SECTEUR_ACTIVITE}}</b></p>
-					<p>Forme juridique : <b>{{BASE_FORME_JURDIQUE}}</b></p>
+					<p>Centre Fiscal : <b>{{ $order->company?->tp_fiscal_center }}</b></p>
+					<p>Secteur d'activité : <b> {{ $order->company?->tp_activity_sector }} </b></p>
+					<p>Forme juridique : <b> {{ $order->company?->tp_legal_form }} </b></p>
 				</div>
 
 			</div>
@@ -144,14 +141,14 @@
 						<td colspan="4"><b>TOTAL TVAC</b></td>
 						{{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
 						<td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
-
-
-
 						<td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
 					</tbody>
 				</table>
-				 <h4>Mention Obligatoire</h4>
-				<h4>NB: Les non assujettis à la TVA ne remplissent pas les deux dernières lignes</h4>
+				 {{-- <h4>Mention Obligatoire</h4>
+				<h4>NB: Les non assujettis à la TVA ne remplissent pas les deux dernières lignes</h4> --}}
+                <br>
+                <br>
+                <br>
 			</article>
 
 {{--			<footer>--}}

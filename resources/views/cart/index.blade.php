@@ -14,10 +14,15 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group ">
-                                <label for="">TVA EN </label>
-                                <input type="text" name="current_tva"
-                                       value="{{ \Request::get('current_tva') ?? 18 }}"
-                                       id="current_tva" class="form-control form-control-sm" placeholder="" aria-describedby="helpId">
+                                <label for="">TVA EST DE <b> {{ \Request::get('current_tva') ?? 18 }} % </b> </label>
+                                       <select  id="current_tva" name="current_tva">
+                                           @foreach(["", 18,10,0] as $value)
+                                               <option value="{{$value}}"
+
+                                               > {{ $value }}</option>
+                                           @endforeach
+                                       </select>
+
                                 <small id="helpId" class="text-muted">%</small>
                             </div>
                         </div>
@@ -143,7 +148,7 @@
           </div>
           <div>
             <label for="">Date de Facturation</label>
-            <input type="date" id="date_facturation" name="date_facturation">
+            <input type="hidden" id="date_facturation" value="{{ date('Y-m-d') }}"  name="date_facturation">
           </div>
 
           @csrf

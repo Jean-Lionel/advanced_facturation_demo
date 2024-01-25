@@ -13,8 +13,8 @@
                         value="{{ $entreprise->tp_name }}">
                 </div>
                 <div class="col-4">
-                    <label for="">TP_TIN</label>
-                    <input type="text" name="tp_tin" id="tp_tin" class="form-control"
+                    <label for="">TP_TIN {{ $entreprise->tp_TIN  }}</label>
+                    <input type="text" hidden name="tp_tin" id="tp_tin" class="form-control"
                         value="{{ $entreprise->tp_TIN }}">
                 </div>
                 <div class="col-4">
@@ -43,13 +43,30 @@
             <div class="form-group row">
                 <div class="col-4">
                     <label for="">CT_TAXPAYER</label>
-                    <input type="text" name="ct_taxpayer" id="ct_taxpayer" class="form-control"
-                        value="{{ $entreprise->ct_taxpayer }}">
+
+                    <select name="ct_taxpayer" id="" class="form-control">
+
+                        @foreach (["NON Assujetti à la taxe de consommation", "Assujetti à la taxe de consommation"] as $key => $value)
+                            <option value="{{ $key}}"
+                                    @if($key == $entreprise->ct_taxpayer)
+                                        selected="selected"
+                                    @endif
+                            >{{$value}}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-4">
                     <label for="">TP_FISCAL_CENTER</label>
-                    <input type="text" name="tp_fiscal_center" id="tp_fiscal_center" class="form-control"
-                        value="{{ $entreprise->tp_fiscal_center }}">
+{{--                    <input type="text" name="tp_fiscal_center" id="tp_fiscal_center" class="form-control"--}}
+{{--                        value="{{ $entreprise->tp_fiscal_center }}">--}}
+                    <select name="tp_fiscal_center" id="tp_fiscal_center" class="form-control">
+                        @foreach (['DGC','DMC','DPMC'] as $item)
+                            <option value="{{ $item}}"   @if($entreprise->tp_fiscal_center ==  $item)
+                                                             selected="selected"
+                                                             @endif
+                                > {{  $item }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-4">
                     <label for="">TP_LEGAL_FORM</label>
@@ -60,12 +77,21 @@
             <div class="form-group row">
                 <div class="col-4">
                     <label for="">TP_TYPE</label>
-                    <input type="text" name="tp_type" id="tp_type" class="form-control"
-                        value="{{ $entreprise->tp_type }}">
+
+                    <select name="tp_type" id="" class="form-control">
+                        @foreach (['',"personne physique","personne morale" ] as $key => $value)
+                            <option value="{{ $key }}"
+                                    @if($key ==$entreprise->tp_type )
+                                        selected="selected"
+                                        @endif
+
+                            >{{$value  }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-4">
-                    <label for="">TP_TRADE_NUMBER</label>
-                    <input type="text" name="tp_trade_number" id="tp_trade_number" class="form-control"
+                    <label for="">TP_TRADE_NUMBER : <b>{{ $entreprise->tp_trade_number }}</b></label>
+                    <input hidden type="text" name="tp_trade_number" id="tp_trade_number" class="form-control"
                         value="{{ $entreprise->tp_trade_number }}">
                 </div>
                 <div class="col-4">
@@ -87,15 +113,31 @@
                 </div>
                 <div class="col-4">
                     <label for="">VAT_TAXPAYER</label>
-                    <input type="text" name="vat_taxpayer" id="vat_taxpayer" class="form-control"
-                        value="{{ $entreprise->vat_taxpayer }}">
+
+                    <select name="vat_taxpayer" id="" class="form-control">
+                        @foreach ([ "NON Assujetti à la TVA","Assujetti à la TVA"] as $key => $value)
+                            <option value="{{$key}}"
+                                    @if($key == $entreprise->vat_taxpayer )
+                                        selected="selected"
+                                @endif
+                            >{{$value}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-4">
                     <label for="" class="text-">TL_TAXPAYER</label>
-                    <input type="text" name="tl_taxpayer" id="tl_taxpayer" class="form-control"
-                        value="{{ $entreprise->tl_taxpayer }}">
+
+                    <select name="tl_taxpayer" id="" class="form-control">
+                        @foreach ([ "NON Assujetti au prélèvement forfaitaire ","Assujetti au prélèvement forfaitaire "] as $key => $value)
+                            <option value="{{$key}}"
+                                    @if($key == $entreprise->tl_taxpayer )
+                                        selected="selected"
+                                    @endif
+                            >{{$value}}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-4">
                     <label for="">TP_ACTIVITY_SECTOR</label>
@@ -104,8 +146,20 @@
                 </div>
                 <div class="col-4">
                     <label for="">PAYMENT_TYPE</label>
-                    <input type="text" name="payment_type" id="payment_type" class="form-control"
-                        value="{{ $entreprise->payment_type }}">
+
+                    <select name="payment_type" class="form-control">
+
+                        @foreach (["", "en espèce","banque","à crédit", "autres"] as $key => $val)
+                            <option value="{{ $key }}"
+                                    @if($key == $entreprise->payment_type)
+                                        selected="selected"
+                                        @endif
+                            >{{$val}}</option>
+                        @endforeach
+                    </select>
+
+
+
                 </div>
             </div>
             <div class="row p-3">

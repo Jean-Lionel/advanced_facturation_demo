@@ -5,10 +5,10 @@
 @section('content')
 
 <div class="row">
-	
+
 	<div class="col-md-12">
 		@include('journals.header')
-		
+
 		<table class="table table-sm ">
 			<thead class="table-dark">
 				<tr>
@@ -32,7 +32,7 @@
 					<td>
 						<ul class="">
 							@foreach($order->products as $product)
-							<li>{{ $product['name'] }} | Qte : {{ $product['quantite'] }} | 
+							<li>{{ $product['name'] }} | Qte : {{ $product['quantite'] }} |
 							PRIX : {{ getPrice($product['price'] )}}</li>
 							@endforeach
 
@@ -43,17 +43,16 @@
 					<td>{{ getPrice($order->amount )}}</td>
 					<td>{{ $order->type_paiement ?? ""}}</td>
 					<td class="d-flex">
-						<a href="{{ route('orders.show', $order) }}" class="btn btn-sm btn-success mr-2" title="imprimer"> <i class="fa fa-print" ></i></a> 
-						
+						<a href="{{ route('orders.show', $order) }}" class="btn btn-sm btn-success mr-2" title="imprimer"> <i class="fa fa-print" ></i></a>
 
-						<form action="{{ route('cancelFactures', $order) }}" method="post">
-							@method("DELETE")
-							@csrf
-							<button type="submit" onclick="return confirm('êtez-vous sûr d\'annuler la facture?')" class="btn btn-danger btn-sm" title="Supprimer"> <i class="fa fa-minus" ></i> </button>
-							
-						</form>
+{{--						<form action="{{ route('cancelFactures', $order) }}" method="post">--}}
+{{--							@method("DELETE")--}}
+{{--							@csrf--}}
+{{--							<button type="submit" onclick="return confirm('êtez-vous sûr d\'annuler la facture?')" class="btn btn-danger btn-sm" title="Supprimer"> <i class="fa fa-minus" ></i> </button>--}}
+{{--							--}}
+{{--						</form>--}}
 					</td>
-					
+
 				</tr>
 
 				@endforeach
@@ -63,7 +62,7 @@
 
 
 	</div>
-	
+
 </div>
 
 

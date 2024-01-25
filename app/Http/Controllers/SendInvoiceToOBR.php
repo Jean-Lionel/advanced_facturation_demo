@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Entreprise;
+use App\Models\ObrPointer;
+use App\Models\ObrRequestBody;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -53,34 +55,63 @@ class SendInvoiceToOBR extends Controller
 
 
 
-    public function cancelInvoice($invoice_signature)
+    public function cancelInvoice($invoice_signature, $motif)
     {
         $token = $this->getToken();
         $invoice_signature = trim($invoice_signature);
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'cancelInvoice/', [
-            'invoice_signature' => $invoice_signature
+
+        $arrayString =  explode('/', $invoice_signature);
+        $invoice_id = end($arrayString);
+
+        ObrRequestBody::create([
+            'invoice_id' =>  $invoice_id ,
+            'request_body' => json_encode([
+                "invoice_identifier" => $invoice_signature,
+                "cn_motif" => $motif
+            ]),
         ]);
-        return json_decode($req->body());
+        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'cancelInvoice/', [
+            "invoice_identifier" => $invoice_signature,
+           "cn_motif" => $motif
+        ]);
+
+        $response = json_decode($req->body());
+
+        ObrPointer::create([
+            'order_id' =>   $invoice_id ,
+            'invoice_signature' => $invoice_signature,
+            'status' => $response->success,
+            'electronic_signature' => $invoice_signature,
+            'msg' =>  $response->msg,
+            'result' => "X",
+        ]);
+        return $response;
     }
 
 
     public function addInvoice($invoince)
     {
         $token = $this->getToken();
-       // https://ebms.obr.gov.bi:9443/ebms_api/
+       // https://ebms.obr.gov.bi:9443/ebms_api
+        ObrRequestBody::create([
+            'invoice_id' => $invoince['invoice_number'],
+            'request_body' => json_encode($invoince),
+        ]);
         $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'addInvoice_confirm/', $invoince);
         return json_decode($req->body());
     }
 
-    public function cancelInvoince($invoince_signature)
-    {
-        $token = $this->getToken();
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'cancelInvoice/', [
-            'invoice_signature' => $invoince_signature
-        ]);
-        return json_decode($req->body());
-
-    }
+//    public function cancelInvoince($invoince_signature)
+//    {
+//        $token = $this->getToken();
+//        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'cancelInvoice/', [
+//            'invoice_signature' => $invoince_signature
+//        ]);
+//        $response = json_decode($req->body());
+//
+//        return $response ;
+//
+//    }
 
     public static function getInvoinceSignature($invoince_id, $created_at)
     {

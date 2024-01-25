@@ -19,7 +19,7 @@
             <label for="client_type">TYPE DE CLIENT</label>
             <select name="client_type" id="client_type" class="form-control form-control-sm">
                 <option value="">--- SELECT ---</option>
-                <option  value="PERSONNE PHYSIQUE"  @if(old('client_type') === 'PERSONNE PHYSIQUE') selected @endif>PERSONNE PHYSIQUE</option>
+                <option  value="PERSONNE PHYSIQUE"  @if(old('client_type') === 'PERSONNE PHYSIQUE') selected @endif>PERSONNE PHYSIQUE OU SOCIETE ETRANGERE</option>
                 <option value="PERSONNE MORAL"  @if(old('client_type') === 'PERSONNE MORAL') selected @endif>PERSONNE MORAL</option>
             </select>
             {!! $errors->first('client_type', '<small class="help-block invalid-feedback">:message</small>') !!}

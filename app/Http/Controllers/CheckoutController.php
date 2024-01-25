@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 
+use App\Jobs\SyncroniseInvoice;
+use App\Models\Entreprise;
 use App\Models\ObrMouvementStock;
 use App\Models\Order;
 use App\Models\Client;
@@ -33,7 +35,7 @@ class CheckoutController extends Controller
         $validate =
         [
             'name' => 'required|min:1',
-            'date_facturation' => 'required',
+            // 'date_facturation' => 'required',
         ];
         if ($request->customer_TIN) {
             // code...
@@ -64,10 +66,11 @@ class CheckoutController extends Controller
                     'vat_customer_payer' => $request->vat_customer_payer ? 1 : 0,
                 ]);
             }
-
             $cartInfo = $this->extractCart();
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
             $oder_signuture = "";
+            $company = Entreprise::latest()->first() ?? new Entreprise();
+          //  dd($company);
             $tax = round(Cart::subtotal() * BASE_TVA / 100);
             $order = Order::create([
                 'amount' => round( $tax  + Cart::subtotal()),
@@ -79,8 +82,9 @@ class CheckoutController extends Controller
                 'products'=> serialize($cartInfo),
                 'client'=> $client->toJson(),
                 'addresse_client'=> $request->addresse_client,
-                'date_facturation'=> $request->date_facturation,
+                'date_facturation'=> now(),
                 'is_cancelled' => 0,
+                'company' =>  $company->toJson(),
             ]);
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
             $order->invoice_signature = $signature;
@@ -113,7 +117,6 @@ class CheckoutController extends Controller
             DB::commit();
 
         } catch (\Exception $e) {
-
             DB::rollBack();
             Session::flash('error', $e->getMessage());
             return back();
@@ -121,13 +124,14 @@ class CheckoutController extends Controller
         }
 
         if(isset($order->id)){
-            $obr = new ObrDeclarationController();
-            try{
-                $obr->sendInvoinceToObr($order->id);
-            }catch(\Exception $e){
-
-                Session::flash('error', $e->getMessage());
-            }
+            // Call a JOB
+            SyncroniseInvoice::dispatch($order->id);
+//            $obr = new ObrDeclarationController();
+//            try{
+//                $obr->sendInvoinceToObr($order->id);
+//            }catch(\Exception $e){
+//                Session::flash('error', $e->getMessage());
+//            }
 
             return view('cart.facture_model_prothem', compact('order'));
         }
