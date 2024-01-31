@@ -130,10 +130,13 @@ class ProductController extends Controller
             DB::beginTransaction();
             $product = Product::where('id', $request->product_id)->firstOrFail();
 
-            if(in_array($request->mouvement, ['EN' ,'ER','EI','EAJ', 'ET','EAU'])){
+            if(in_array($request->mouvement, ['EN' ,'ER','EAJ', 'ET','EAU'])){
                 $product->quantite += $request->quantite;
             }
-
+            if(in_array($request->mouvement, ['EI'])){
+                // reanitialisation du stock
+                $product->quantite = $request->quantite;
+            }
             if(in_array($request->mouvement, ['SN','SP','SV', 'SD',  'SC','SAJ','ST', 'SAU'])){
                 $product->quantite -= $request->quantite;
                 if ($product->quantite < 0) {

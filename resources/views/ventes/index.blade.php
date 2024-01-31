@@ -3,18 +3,23 @@
 
 <div>
 	<div class="row">
-		<div class="col-md-6 d-flex justify-content-between">
+		<div class="col-md-4 d-flex justify-content-between">
+			<h4 class="text-center">
+                <a href="{{ route('ventes.create') }}">Facturation des Services</a>
+			</h4>
+		</div>
+		<div class="col-md-4 d-flex justify-content-between">
 			<h4 class="text-center">
 				Liste des produits
 			</h4>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-4">
 			<form action="">
 				<input type="search" name="search" id="search" value="{{    $search }}"  class="form-control form-control-sm" placeholder="Rechercher ici ">
 			</form>
 		</div>
 	</div>
-	
+
 	<table class="table table-sm">
 		<thead>
 			<tr>
@@ -51,7 +56,7 @@
 			@endforeach
 		</tbody>
 	</table>
-	
+
 </div>
 
 <div class="col-md-12" style="height: 100px; overflow: hidden;">
@@ -78,7 +83,7 @@
 			</div>
 			@endforeach
 		</div>
-	</ul> 
+	</ul>
 </div>
 @endif
 
@@ -106,13 +111,13 @@
 	// 	  },
 	// 	  success: function(data, textStatus, xhr) {
 	// 	    //called when successful
-		   	
+
 	// 	  },
 	// 	  error: function(xhr, textStatus, errorThrown) {
 	// 	    //called when there is an error
 	// 	  }
 	// 	});
-		
+
 	// });
 </script>
 

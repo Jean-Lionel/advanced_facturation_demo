@@ -12,11 +12,7 @@ use App\Http\Controllers\SendInvoiceToOBR;
 
 class VenteController extends Controller
 {
-    /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+
     public function index()
     {
 
@@ -36,14 +32,11 @@ class VenteController extends Controller
         return view('ventes.index', compact('products', 'search'));
     }
 
-    /**
-    * Show the form for creating a new resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+
     public function create()
     {
         //
+       return view('ventes.create');
     }
 
     /**

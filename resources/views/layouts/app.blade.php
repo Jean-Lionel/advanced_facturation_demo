@@ -35,7 +35,8 @@
       @can('is-vente')
 
       <li>
-        <a href="{{ route('ventes.index') }}"><span class="fa fa-shopping-cart"></span> Vente</a>
+        <a href="{{ route('ventes.index') }}">
+            <span class="fa fa-shopping-cart"></span> Vente</a>
       </li>
       <li>
         <a href="{{ route('clients.index') }}"><span class="fa fa-users"></span> Client</a>
