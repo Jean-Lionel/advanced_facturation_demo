@@ -17,10 +17,8 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::all();
-
         foreach ($orders as $value) {
             $product = $value->products;
-            
         }
     }
 
@@ -53,7 +51,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        
+
         return view('cart.facture_model_prothem',compact('order'));
     }
 
@@ -98,7 +96,7 @@ class OrderController extends Controller
             }
             //$order->details->delete();
            // dd($order->dette);
-          
+
             if($order->dette){
 
                   $order->dette->delete();
@@ -113,7 +111,6 @@ class OrderController extends Controller
             dd($e);
             Session::flash('error', "Une erreur s'est produite");
         }
-
 
         return back();
     }

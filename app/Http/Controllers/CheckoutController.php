@@ -17,8 +17,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
-use App\Http\Controllers\sendInvoinceToObr;
-
 
 class CheckoutController extends Controller
 {
@@ -103,7 +101,6 @@ class CheckoutController extends Controller
             $order->save();
             $this->storeTodetailOder($order->id);
             // SEND INVOINCES TO OBR
-
             if($request->type_paiement == 'DETTE'){
                 //Enregistre les infos dans les dettes
                 PaiementDette::create([
@@ -193,12 +190,10 @@ class CheckoutController extends Controller
 
 
     private function extractCart(){
-
         $products = [];
         foreach (Cart::content() as $item) {
             $v = ($item->price * $item->qty) * $item->taxRate /100;
             $prix_hors_tva =  ($item->price * $item->qty);
-
             $products[] = [
                 'id' => $item->id,
                 'name' => $item->name,

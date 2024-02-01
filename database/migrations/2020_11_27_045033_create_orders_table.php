@@ -7,21 +7,21 @@ use Illuminate\Support\Facades\Schema;
 class CreateOrdersTable extends Migration
 {
     /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+    * Run the migrations.
+    *
+    * @return void
+    */
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-
             $table->double('amount',60,2);
             $table->double('tax',60,2);
             $table->double('total_quantity',60,2);
             $table->double('total_sacs',60,2);
             $table->double('amount_tax',60,2);
             $table->string('type_paiement');
+            $table->string('type_facture')->nullable();
             $table->text('products');
             $table->text('company')->nullable();
             $table->text('client')->nullable();
@@ -36,10 +36,10 @@ class CreateOrdersTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    * Reverse the migrations.
+    *
+    * @return void
+    */
     public function down()
     {
         Schema::dropIfExists('orders');
