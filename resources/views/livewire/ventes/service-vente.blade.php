@@ -25,10 +25,10 @@
                     <input type="text" wire:model="description.{{ $key }}">
                 </td>
                 <td>
-                    <input type="text"  wire:model="quantite.{{ $key }}">
+                    <input type="number"  wire:model="quantite.{{ $key }}">
                 </td>
                 <td>
-                    <input type="text"  wire:model="prices.{{ $key }}">
+                    <input type="number"  wire:model="prices.{{ $key }}">
                 </td>
                 <td>
                     <select wire:model="taxes.{{ $key }}">
@@ -82,7 +82,7 @@
             <button class="btn btn-info btn-sm" wire:click="searchClient">Search</button>
 
             <label for="" class="mr-3">TYPE DE PAIEMENT</label>
-            <select required="" class="" name="typePaiement" id="">
+            <select required="" class="" wire:model="typePaiement" id="">
                 <option value="">Choisissez ...</option>
                 <option value="1">en espèce</option>
                 <option value="2">banque</option>
@@ -90,7 +90,7 @@
                 <option value="4">autres</option>
             </select>
             <label for="" class="mr-3">TYPE DE FACTURE</label>
-            <select required="" class="" name="typeFacture" id="">
+            <select required="" class="" wire:model="typeFacture" id="">
                 <option value="FACTURE">FACTURE</option>
                 <option value="PROFORMAT">PROFORMAT</option>
             </select>

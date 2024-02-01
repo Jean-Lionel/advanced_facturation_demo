@@ -50,6 +50,8 @@ class ServiceVente extends Component
         $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
         $order->invoice_signature = $signature;
         $order->save();
+
+        return redirect()->to('orders/' . $order->id);
     }
 
     public function searchClient(){
@@ -70,7 +72,7 @@ class ServiceVente extends Component
         }
         // $this->total_montant = ;
     }
-    public function updated(){
+    public function updated($v){
         $this->updateUI();
     }
 
