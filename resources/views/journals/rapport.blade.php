@@ -18,11 +18,18 @@
 			<div class="card border-info">
 				<div class="card card-header">
 					<form action="{{ route('rapport') }}" class="form">
-						<div class="row">
-							<div class="col-md-8">
-								<input type="date"  value="{{ $date_recherche }}" name="date_recherche" class="form-control">
+						<div class="d-flex gap-3">
+
+							<div>
+                                Du
+								<input type="date"  value="{{ $start_date }}" name="start_date" >
 							</div>
-							<div class="col-md-2">
+
+							<div>
+                                Au
+								<input type="date"  value="{{ $end_date }}" name="end_date" >
+							</div>
+							<div>
 								<input type="submit" value="OK" class="btn btn-sm btn-warning">
 							</div>
 						</div>

@@ -41,10 +41,10 @@ class StockController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Show the form for creating a new resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function create()
     {
 
@@ -53,11 +53,11 @@ class StockController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    * Store a newly created resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
     public function store(Request $request)
     {
 
@@ -73,37 +73,37 @@ class StockController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Stocke  $stocke
-     * @return \Illuminate\Http\Response
-     */
+    * Display the specified resource.
+    *
+    * @param  \App\Models\Stocke  $stocke
+    * @return \Illuminate\Http\Response
+    */
     public function show(Stocke $stocke)
     {
         //
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Stocke  $stocke
-     * @return \Illuminate\Http\Response
-     */
+    * Show the form for editing the specified resource.
+    *
+    * @param  \App\Models\Stocke  $stocke
+    * @return \Illuminate\Http\Response
+    */
     public function edit(Stocke $stocke)
     {
         return view('stocks.edit', compact('stocke'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Stocke  $stocke
-     * @return \Illuminate\Http\Response
-     */
+    * Update the specified resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  \App\Models\Stocke  $stocke
+    * @return \Illuminate\Http\Response
+    */
     public function update(Request $request, Stocke $stocke)
     {
-         $request->validate([
+        $request->validate([
             'name' => 'required|max:255'
         ]);
 
@@ -113,11 +113,11 @@ class StockController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Stocke  $stocke
-     * @return \Illuminate\Http\Response
-     */
+    * Remove the specified resource from storage.
+    *
+    * @param  \App\Models\Stocke  $stocke
+    * @return \Illuminate\Http\Response
+    */
     public function destroy(Stocke $stocke)
     {
         $stocke->delete();
@@ -150,35 +150,64 @@ class StockController extends Controller
     }
 
     public function journal_history(){
-         $products = Product::latest()->paginate(20);
-         return view('journals.history', compact('products'));
+        $products = Product::latest()->paginate(20);
+        return view('journals.history', compact('products'));
     }
 
     public function rapport(){
 
-        $date_recherche = \Request::get('date_recherche');
+        $start_date = \Request::get('start_date');
+        $end_date = \Request::get('end_date');
         $paiement_dette = DetailPaimentDette::whereDate('created_at','=',Carbon::now())->sum('montant');
 
         // La vente journaliere + La somme de paiment des dettes
-         $venteJournaliere = Order::where('is_cancelled', '=',0)->whereDate('created_at','=',Carbon::now())->sum('amount') + $paiement_dette;
+        $venteJournaliere = Order::where('is_cancelled', '=',0)->whereDate('created_at','=',Carbon::now())->sum('amount') + $paiement_dette;
+        //Historique
+        $paiement_dette = DetailPaimentDette::where(function($query) use($start_date, $end_date){
+            if($start_date && $end_date){
+                $query->whereBetween('created_at',[$start_date, $end_date]);
+            }else{
+                if($start_date){
+                    $query->whereDate('created_at','=',$start_date);
+                }
+                if($end_date){
+                    $query->whereDate('created_at','=',$end_date);
+                }
+            }
 
-         //Historique
+        })->sum('montant');
+        $vente_date = Order::where(function($query) use($start_date, $end_date){
+            if($start_date && $end_date){
+                $query->whereBetween('created_at',[$start_date, $end_date]);
+            }else{
+                if($start_date){
+                    $query->whereDate('created_at','=',$start_date);
+                }
+                if($end_date){
+                    $query->whereDate('created_at','=',$end_date);
+                }
+            }
 
-         $paiement_dette = DetailPaimentDette::whereDate('created_at','=',$date_recherche)->sum('montant');
+        })
+        ->where('is_cancelled', '=',0)
+        ->sum('amount');
+        $service_Date = Service::where(function($query) use($start_date, $end_date){
+            if($start_date && $end_date){
+                $query->whereBetween('created_at',[$start_date, $end_date]);
+            }else{
+                if($start_date){
+                    $query->whereDate('created_at','=',$start_date);
+                }
+                if($end_date){
+                    $query->whereDate('created_at','=',$end_date);
+                }
+            }
 
-
-        $vente_date = Order::whereDate('created_at','=',$date_recherche)
-                            ->where('is_cancelled', '=',0)
-                            ->sum('amount');
-
-        $service_Date = Service::whereDate('created_at','=',$date_recherche)->sum('total');
-
+         })->sum('total');
         //La somme total du montant en caisse
-
         // Tout les factures paye en cache
-       // Tout les paiement des dettes - les depenses
-
-       $service_montant = Service::all()->sum('total');
+        // Tout les paiement des dettes - les depenses
+        $service_montant = Service::all()->sum('total');
 
         $paiement_dettes_total = DetailPaimentDette::all()->sum('montant');
 
@@ -192,11 +221,11 @@ class StockController extends Controller
         $data['quantite'] = collect($data_history)->map->quantite->implode(',');
         $labels =    $data['product_name'];
         //$depenses = ;
-       // dd($depenses);
+        // dd($depenses);
 
-          $totalDette = PaiementDette::all()->where('montant_restant','>',0)->sum('montant_restant');
+        $totalDette = PaiementDette::all()->where('montant_restant','>',0)->sum('montant_restant');
         return view('journals.rapport',
-            compact('venteJournaliere','date_recherche','labels','vente_date','montant_total', 'data','totalDette','service_Date'));
+        compact('venteJournaliere','end_date', 'start_date','labels','vente_date','montant_total', 'data','totalDette','service_Date'));
     }
 
 
@@ -209,7 +238,7 @@ class StockController extends Controller
 
         $d = new Carbon($e_date);
         $products = FollowProduct::where('action','=',$action)
-                                    ->whereBetween('created_at',[$s_date,  $d->addDays(1)])->paginate();
+        ->whereBetween('created_at',[$s_date,  $d->addDays(1)])->paginate();
 
         return view('products.bon_entre', compact('s_date', 'e_date','products','action'));
     }
