@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
+use PhpParser\Node\Stmt\TryCatch;
 
 class VenteController extends Controller
 {
@@ -19,6 +20,10 @@ class VenteController extends Controller
         // $r = sendHttpRequest();
         //dd($obr->getInvoice('4001996828/ws400199682800460/20230222083742/000030'));
         //dd($obr->checkTin('4002208256'));
+
+
+        //pc connecté à internet
+        dd(isInternetConnection());
 
         $search = \Request::get('search');
         $products = Product::where('quantite', '>', 1)

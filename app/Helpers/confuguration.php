@@ -30,4 +30,3 @@ define('OBR_PASSWORD', env('OBR_PASSWORD', '&C879fTw'));
 //define('OBR_USERNAME', env('OBR_USERNAME', 'wsl400204317400423'));
 //define('OBR_PASSWORD', env('OBR_PASSWORD', '0?Fs-;;N'));
 
-?>
