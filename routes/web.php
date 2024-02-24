@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\ObrStockController;
 use App\Http\Controllers\SendInvoiceToOBR;
+use App\Http\Controllers\SyncronizeController;
 use App\Jobs\ObrSendInvoince;
 use App\Models\ObrMouvementStock;
 use Illuminate\Support\Facades\Auth;
@@ -79,4 +80,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('movement_stock/{item_id}', 'ProductController@movement_stock')->name('movement_stock');
     Route::get('paimenet_dette', 'CheckoutController@paimenetDette')->name('paimenet_dette');
     Route::get('retour_produit', [ObrStockController::class, 'retour_produit'])->name('retour_produit');
+    Route::get('syncronize_to_obr', [SyncronizeController::class,  'syncronize'])->name('syncronize_to_obr');
+
 });

@@ -16,15 +16,6 @@ class VenteController extends Controller
 
     public function index()
     {
-
-        // $r = sendHttpRequest();
-        //dd($obr->getInvoice('4001996828/ws400199682800460/20230222083742/000030'));
-        //dd($obr->checkTin('4002208256'));
-
-
-        //pc connecté à internet
-        dd(isInternetConnection());
-
         $search = \Request::get('search');
         $products = Product::where('quantite', '>', 1)
         ->where(function ($query) use ($search) {
@@ -41,7 +32,7 @@ class VenteController extends Controller
     public function create()
     {
         //
-       return view('ventes.create');
+        return view('ventes.create');
     }
 
     /**
