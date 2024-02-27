@@ -224,10 +224,10 @@ class ObrDeclarationController extends Controller
             "tp_activity_sector" => $company->tp_activity_sector,
             "tp_legal_form" => $company->tp_legal_form,
             "payment_type" => $company->payment_type,
-            "customer_name" => $order->client->name,
+            "customer_name" => $order->client->name ?? "",
             "customer_TIN" => $customer_TIN,
-            "customer_address" => $order->client->addresse,
-            "vat_customer_payer" => $order->client->vat_customer_payer,
+            "customer_address" => $order->client->addresse ?? "",
+            "vat_customer_payer" => $order->client->vat_customer_payer ?? "",
             "invoice_type" => "FN",
             "cancelled_invoice_ref" => "",
             //yyyyMMddHHmmss

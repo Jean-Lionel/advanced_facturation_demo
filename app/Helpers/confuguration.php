@@ -30,3 +30,8 @@ define('OBR_PASSWORD', env('OBR_PASSWORD', '&C879fTw'));
 //define('OBR_USERNAME', env('OBR_USERNAME', 'wsl400204317400423'));
 //define('OBR_PASSWORD', env('OBR_PASSWORD', '0?Fs-;;N'));
 
+
+/* EFCCO
+- nom d’utilisateur : ws400167159500661
+- mot de passe : 2<@KYoo[
+*/

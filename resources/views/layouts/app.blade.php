@@ -188,7 +188,6 @@
                 @yield('javascript')
 
                 <script>
-
                     const checkOnlineStatus = async () => {
                         try {
                             const online = await fetch("https://jsonplaceholder.typicode.com/todos/1");
@@ -208,23 +207,20 @@
                             $.ajax({
                                 url: "syncronize_to_obr", // the url we want to send and get data from
                                 type: "GET", // type of the data we send (POST/GET)
-                              // the data we want to send
-                                success: function(data){ // when successfully sent data and returned
-                                    // do something with the returned data
-                                    console.log(data);
-                                }
-                            }).done(function(){
+                                // the data we want to send
+
+                            }).done(function(data){
                                 // this part will run when we send and return successfully
-                                console.log("Success.");
-                            }).fail(function(){
+                                console.log("Success. => ", data);
+                            }).fail(function(error){
                                 // this part will run when an error occurres
-                                console.log("An error has occurred.");
+                                console.log("An error has occurred. => " , error);
                             }).always(function(){
                                 // this part will always run no matter what
                                 console.log("Complete.");
                             });
                         }
-                    }, 10000); // probably too often, try 30000 for every 30 second
+                    }, 2000000); // probably too often, try 30000 for every 30 second
                 </script>
 
             </body>
