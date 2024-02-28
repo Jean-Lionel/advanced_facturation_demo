@@ -4,77 +4,81 @@
         <table class="table  table-sm">
 
             <tbody>
-                @foreach ($entreprises as $element)
-                    {{-- expr --}}
-                    <tr>
-                        <th> TP_NAME </th>
-                        <td> {{ $element->tp_name }} </td>
-                        <th> TP_TYPE </th>
-                        <td> {{ $element->tp_type }} </td>
-                    </tr>
-                    <tr>
-                        <th> TP_TIN </th>
-                        <td> {{ $element->tp_TIN }} </td>
-                        <th> TP_TRADE_NUMBER </th>
-                        <td> {{ $element->tp_trade_number }} </td>
-                    </tr>
-                    <tr>
-                        <th> TP_POSTAL_NUMBER </th>
-                        <td> {{ $element->tp_postal_number }} </td>
-                        <th> TP_PHONE_NUMBER </th>
-                        <td> {{ $element->tp_phone_number }} </td>
-                    </tr>
-                    <tr>
-                        <th> TP_ADDRESS_PRIVONCE </th>
-                        <td> {{ $element->tp_address_privonce }} </td>
-                        <th> TP_ADDRESS_QUARTIER </th>
+            @if ($element)
 
-                        <td> {{ $element->tp_address_quartier }} </td>
-                    </tr>
+             {{-- expr --}}
+             <tr>
+                <th> TP_NAME </th>
+                <td> {{ $element->tp_name }} </td>
+                <th> TP_TYPE </th>
+                <td> {{ $element->tp_type }} </td>
+            </tr>
+            <tr>
+                <th> TP_TIN </th>
+                <td> {{ $element->tp_TIN }} </td>
+                <th> TP_TRADE_NUMBER </th>
+                <td> {{ $element->tp_trade_number }} </td>
+            </tr>
+            <tr>
+                <th> TP_POSTAL_NUMBER </th>
+                <td> {{ $element->tp_postal_number }} </td>
+                <th> TP_PHONE_NUMBER </th>
+                <td> {{ $element->tp_phone_number }} </td>
+            </tr>
+            <tr>
+                <th> TP_ADDRESS_PRIVONCE </th>
+                <td> {{ $element->tp_address_privonce }} </td>
+                <th> TP_ADDRESS_QUARTIER </th>
 
-                    <tr>
-                        <th> TP_ADDRESS_AVENUE </th>
-                        <td> {{ $element->tp_address_avenue }} </td>
-                        <th> TP_ADDRESS_RUE </th>
-                        <td> {{ $element->tp_address_rue }} </td>
-                    </tr>
-                    <tr>
-                        <th> TP_ADDRESS_NUMBER </th>
-                        <td> {{ $element->tp_address_number }} </td>
-                        <th> VAT_TAXPAYER </th>
+                <td> {{ $element->tp_address_quartier }} </td>
+            </tr>
 
-                        <td> {{ $element->vat_taxpayer }} </td>
-                    </tr>
-                    <tr>
-                        <th> CT_TAXPAYER </th>
-                        <td> {{ $element->ct_taxpayer }} </td>
-                        <th> TL_TAXPAYER </th>
-                        <td> {{ $element->tl_taxpayer }} </td>
-                    </tr>
-                    <tr>
-                        <th> TP_FISCAL_CENTER </th>
-                        <td> {{ $element->tp_fiscal_center }} </td>
-                        <th> TP_ACTIVITY_SECTOR </th>
-                        <td> {{ $element->tp_activity_sector }} </td>
-                    </tr>
-                    <tr>
-                        <th> TP_LEGAL_FORM </th>
-                        <td> {{ $element->tp_legal_form }} </td>
-                        <th> PAYMENT_TYPE </th>
+            <tr>
+                <th> TP_ADDRESS_AVENUE </th>
+                <td> {{ $element->tp_address_avenue }} </td>
+                <th> TP_ADDRESS_RUE </th>
+                <td> {{ $element->tp_address_rue }} </td>
+            </tr>
+            <tr>
+                <th> TP_ADDRESS_NUMBER </th>
+                <td> {{ $element->tp_address_number }} </td>
+                <th> VAT_TAXPAYER </th>
+
+                <td> {{ $element->vat_taxpayer }} </td>
+            </tr>
+            <tr>
+                <th> CT_TAXPAYER </th>
+                <td> {{ $element->ct_taxpayer }} </td>
+                <th> TL_TAXPAYER </th>
+                <td> {{ $element->tl_taxpayer }} </td>
+            </tr>
+            <tr>
+                <th> TP_FISCAL_CENTER </th>
+                <td> {{ $element->tp_fiscal_center }} </td>
+                <th> TP_ACTIVITY_SECTOR </th>
+                <td> {{ $element->tp_activity_sector }} </td>
+            </tr>
+            <tr>
+                <th> TP_LEGAL_FORM </th>
+                <td> {{ $element->tp_legal_form }} </td>
+                <th> PAYMENT_TYPE </th>
 
 
-                        <td> {{ $element->payment_type }} </td>
-                    </tr>
-                @endforeach
+                <td> {{ $element->payment_type }} </td>
+            </tr>
+
+
+            @endif
+
             </tbody>
 
         </table>
         <div class="row p-4">
-            <a class="btn btn-info" href="{{ route('entreprises.edit', $element) }}">Modifier</a>
+            <a class="btn btn-info" href="{{ route('entreprises.edit', $element->id) }}">Modifier</a>
         </div>
     </div>
 
-    @if ($entreprises->count() < 1)
+    @if (!$element )
         <div>
             <h4 class="text-center">Enregistrement de l'entreprise</h4>
 

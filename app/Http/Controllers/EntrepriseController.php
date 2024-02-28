@@ -8,16 +8,14 @@ use App\Http\Requests\UpdateEntrepriseRequest;
 
 class EntrepriseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         //
 
-        $entreprises = Entreprise::latest()->get();
+        $entreprises = Entreprise::where('is_actif', '1')->first()->get();
+
+
 
         return view('entreprises.index', compact('entreprises'));
     }
