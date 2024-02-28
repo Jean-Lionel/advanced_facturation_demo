@@ -220,7 +220,7 @@
                                 console.log("Complete.");
                             });
                         }
-                    }, 2000000); // probably too often, try 30000 for every 30 second
+                    }, 5000); // probably too often, try 30000 for every 30 second
                 </script>
 
             </body>

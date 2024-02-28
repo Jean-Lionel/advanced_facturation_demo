@@ -16,11 +16,10 @@
 		.adroite{
 			text-align:right !important;
 			padding-right: 15px;
-            white-space: nowrap;
+
 		}
 		.text-center{
 			text-align: center !important;
-			line-height: 4px;
 		}
 		.img_logo{
 			width: 100px;
@@ -30,12 +29,24 @@
 			margin: 0;
 			padding: 0;
 		}
+        p, h3{
+            margin: 0;
+            padding: 0;
+
+        }
+        .header-element{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            gap: 200px;
+        }
 	</style>
 </head>
 <body>
 	<div class="noprint header-element">
-		<button onclick="print()" class="noprint">Imprimer</button>
-		<a href="{{ route('ventes.index') }}">Retour</a>
+        <a href="{{ route('ventes.index') }}" class="noprint btn">Retour</a>
+		<button onclick="print()" class="noprint btn">Imprimer</button>
 	</div>
 	<div class="main-content">
 		{{-- Entete --}}
@@ -46,8 +57,11 @@
 				</div>
 			</div>
 			<div style="width: 80%;">
-				<h3>{{ RAISON_ENTREPRISE_HEADER }} </h3>
-				<h3>{{COMPANY_DESCRIPTION}} </h3>
+
+				<h3>{{ $order->company?->tp_name }} </h3>
+
+
+				{{-- <h3>{{COMPANY_DESCRIPTION}} </h3>
 				<h3>
 
                     {{BOITE_POSTAL}}
@@ -57,19 +71,19 @@
 				</h3>
 				<h3>
 					Email : {{EMAIL_ENTREPRISE}}, WebSite: {{WEBSITE_ENTREPRISE}}
-				</h3>
+				</h3> --}}
 				<hr>
 			</div>
 
 		</header>
 		{{-- Fin --}}
-
+        <h3 class="text-center">FACTURE  </h3>
 		{{-- SIDE A --}}
 		<article class="identification_a">
 			<div>
 				<h5>A. Identification du vendeur</h5>
 
-				<p>Nom et prénom ou Raison Social : <b>{{$order->company?->tp_name}}</b></p>
+				<p>Nom et prénom ou Raison Social : <b>{{$order->company?->tp_name}}</b> </p>
 				<p>NIF : <b>{{$order->company?->tp_TIN}}</b></p>
 				<p>Registre du commerce No : <b>{{ $order->company?->tp_trade_number }}</b></p>
 				<p>BP: <b>{{ $order->company?->tp_postal_number }}</b> , Tél <b>{{ $order->company?->tp_phone_number }}</b></p>
@@ -80,7 +94,7 @@
 			</div>
 			<div class="aling-right partie-droite">
 				<div>
-					<h5>FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }} </h5>
+                    <b>N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }}</b>
 					<p>Centre Fiscal : <b>{{ $order->company?->tp_fiscal_center }}</b></p>
 					<p>Secteur d'activité : <b> {{ $order->company?->tp_activity_sector }} </b></p>
 					<p>Forme juridique : <b> {{ $order->company?->tp_legal_form }} </b></p>

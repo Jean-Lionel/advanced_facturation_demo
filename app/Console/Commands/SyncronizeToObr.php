@@ -2,19 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\SendInvoiceToOBR;
-use App\Models\ObrStockLog;
 use Illuminate\Console\Command;
-
-use App\Models\ObrMouvementStock;
-use Carbon\Carbon;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 
 class SyncronizeToObr extends Command
@@ -50,7 +38,7 @@ class SyncronizeToObr extends Command
      */
     public function handle()
     {
-       
+
         return 0;
     }
 }

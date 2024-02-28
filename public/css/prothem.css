@@ -29,10 +29,6 @@ body{
 
 .header-facture h3 {
 	text-align: center;
-	line-height:3px;
-}
-footer h4{
-	line-height:3px;
 }
 
 .identification_a{
@@ -40,9 +36,7 @@ footer h4{
 	justify-content:space-between;
 }
 
-.identification_a p, .identification_b p{
-	line-height:2px;
-}
+
 
 table{
 	width: 100%;
@@ -58,3 +52,31 @@ footer{
 	display: flex;
 	justify-content: space-between;
 }
+
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Koulen&family=Lato&family=Nunito&family=Playfair+Display:ital@1&family=Prata&family=Raleway:ital,wght@1,100&family=Roboto&family=Roboto+Condensed&family=Teko&display=swap');
+
+.btn{
+
+font-family: Lato;
+font-weight: 400;
+font-size: 14px;
+color: #fff;
+background-color: #0066CC;
+padding: 10px 30px;
+border: solid #0066cc 2px;
+box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+border-radius: 12px;
+transition : 3000ms;
+transform: translateY(0);
+display: flex;
+flex-direction: row;
+align-items: center;
+cursor: pointer;
+text-transform: uppercase;
+}
+
+
+
+
+

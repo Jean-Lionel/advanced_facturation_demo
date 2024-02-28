@@ -37,11 +37,16 @@
 				<td>{{ $order->amount }}</td>
 				<td>{{ $order->tax }}</td>
 				<td>{{ $order->created_at }}</td>
-                <td @if($order->is_cancelled)
-                    class="bg-danger"
-                    @endif>
+                <td
                     @if($order->is_cancelled)
-                    Annulée
+                        class="bg-danger"
+                        @endif>
+                        @if($order->is_cancelled)
+                        Annulée
+                    @endif
+
+                    @if(!$order->is_cancelled)
+                       <b class="bg-success "> Envoyé à OBR</b>
                     @endif
                 </td>
 
