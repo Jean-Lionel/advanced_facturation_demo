@@ -11,4 +11,8 @@ class Entreprise extends Model
     use HasFactory, SoftDeletes;
     protected $guarded = [];
 
+    public static function currentEntreprise()
+    {
+        return Entreprise::where('is_actif', 1)->first() ?? new Entreprise();
+    }
 }

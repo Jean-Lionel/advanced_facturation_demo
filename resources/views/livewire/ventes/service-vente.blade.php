@@ -3,6 +3,31 @@
     <div class="card">
         <h4>Facturation des Services</h4>
     </div>
+
+    @if ( count($errors) )
+    <div
+        class="alert alert-danger alert-dismissible fade show"
+        role="alert"
+    >
+      <ul>
+        @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div>
+
+    @endif
+
+
+    <script>
+        var alertList = document.querySelectorAll(".alert");
+        alertList.forEach(function (alert) {
+            new bootstrap.Alert(alert);
+        });
+    </script>
+
+
+
     <table class="table">
         <thead>
             <tr>
@@ -89,11 +114,11 @@
                 <option value="3">à crédit</option>
                 <option value="4">autres</option>
             </select>
-            <label for="" class="mr-3">TYPE DE FACTURE</label>
+            {{-- <label for="" class="mr-3">TYPE DE FACTURE</label>
             <select required="" class="" wire:model="typeFacture" id="">
                 <option value="FACTURE">FACTURE</option>
                 <option value="PROFORMAT">PROFORMAT</option>
-            </select>
+            </select> --}}
 
             <button class="btn btn-sm btn-primary ml-4"
             wire:click="saveValue"
