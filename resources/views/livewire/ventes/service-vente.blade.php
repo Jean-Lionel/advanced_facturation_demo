@@ -47,16 +47,16 @@
             <tr>
                 <td>{{ ++$loop->index }}</td>
                 <td>
-                    <input type="text" wire:model="description.{{ $key }}">
+                    <textarea class="form-control form-control-sm" wire:model="description.{{ $key }}"></textarea>
                 </td>
                 <td>
-                    <input type="number"  wire:model="quantite.{{ $key }}">
+                    <input type="number" class="form-control form-control-sm"  wire:model="quantite.{{ $key }}">
                 </td>
                 <td>
-                    <input type="number"  wire:model="prices.{{ $key }}">
+                    <input type="number" class="form-control form-control-sm"  wire:model="prices.{{ $key }}">
                 </td>
                 <td>
-                    <select wire:model="taxes.{{ $key }}">
+                    <select class="form-control form-control-sm" wire:model="taxes.{{ $key }}">
                         @foreach ([18,10,4,0] as $v )
                         <option value="{{ $v }}" @if ( isset($taxes[$key]) and $v == $taxes[$key])
                         selected
@@ -101,12 +101,14 @@
     </table>
 
     <div class="card">
-        <div class="col-12 d-flex">
-            <label for="" class="mr-3">NUMERO DE CLIENT</label>
-            <input type="text" class="mr-3" wire:model="clientNumber">
-            <button class="btn btn-info btn-sm" wire:click="searchClient">Search</button>
-
-            <label for="" class="mr-3">TYPE DE PAIEMENT</label>
+        <div class="col-12 d-flex justify-content-between">
+            <div>
+                <label for="" class="mr-3">NUMERO DE CLIENT</label>
+                <input type="text" class="justify-content-between" wire:model="clientNumber">
+                <button class="btn btn-info btn-sm" wire:click="searchClient">Search</button>
+            </div>
+            <div>
+                <label for="" class="mr-3">TYPE DE PAIEMENT</label>
             <select required="" class="" wire:model="typePaiement" id="">
                 <option value="">Choisissez ...</option>
                 <option value="1">en espèce</option>
@@ -114,6 +116,8 @@
                 <option value="3">à crédit</option>
                 <option value="4">autres</option>
             </select>
+            </div>
+
             {{-- <label for="" class="mr-3">TYPE DE FACTURE</label>
             <select required="" class="" wire:model="typeFacture" id="">
                 <option value="FACTURE">FACTURE</option>
