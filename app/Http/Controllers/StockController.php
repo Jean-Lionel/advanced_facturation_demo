@@ -158,6 +158,7 @@ class StockController extends Controller
 
         $start_date = \Request::get('start_date');
         $end_date = \Request::get('end_date');
+        // dd($start_date, $end_date);
         $paiement_dette = DetailPaimentDette::whereDate('created_at','=',Carbon::now())->sum('montant');
 
         // La vente journaliere + La somme de paiment des dettes
