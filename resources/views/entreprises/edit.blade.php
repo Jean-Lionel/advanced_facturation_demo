@@ -36,6 +36,11 @@
                         value="{{ $entreprise->tp_address_privonce }}">
                 </div>
                 <div class="col-4">
+                    <label for="">Commune</label>
+                    <input type="text" name="tp_address_commune" id="tp_address_commune" class="form-control"
+                        value="{{ $entreprise->tp_address_commune	 }}">
+                </div>
+                <div class="col-4">
                     <label for="">AVENUE</label>
                     <input type="text" name="tp_address_avenue" id="tp_address_avenue" class="form-control"
                         value="{{ $entreprise->tp_address_avenue }}">
