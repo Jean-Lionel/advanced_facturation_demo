@@ -91,7 +91,7 @@ class CheckoutController extends Controller
                 ObrMouvementStock::saveMouvement(
                     $product,
                     'SN',
-                    $item['price'],
+                    $product->price_max, // Prix de reviens
                     $item['quantite'],
                     NULL,
                     $order->id,

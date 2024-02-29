@@ -132,10 +132,12 @@ class ProductController extends Controller
 
             if(in_array($request->mouvement, ['EN' ,'ER','EAJ', 'ET','EAU'])){
                 $product->quantite += $request->quantite;
+                $product->price_max = $request->montant;  // Prix de revient du produit
             }
             if(in_array($request->mouvement, ['EI'])){
                 // reanitialisation du stock
                 $product->quantite = $request->quantite;
+                $product->price_max = $request->montant; // Prix de revient du produit
             }
             if(in_array($request->mouvement, ['SN','SP','SV', 'SD',  'SC','SAJ','ST', 'SAU'])){
                 $product->quantite -= $request->quantite;

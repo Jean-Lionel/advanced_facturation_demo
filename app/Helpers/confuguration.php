@@ -1,5 +1,12 @@
 <?php
 
+// Variable pour la syncronisation des donnees dans OBR
+define('CAN_SYNCRONISE', false);
+define('TIME_OUT_SYNCRONISATION', (1 * 1000)); // Seconde de Syncronisation dans OBR
+define('CAN_SYNCRONISE_STOCK', true); // Seconde de Syncronisation dans OBR
+define('CAN_SYNCRONISE_INVOICE', true); // Seconde de Syncronisation dans OBR
+
+//===================ALLORS ON DANSE==========================
 define('RAISON_ENTREPRISE', 'ADVANCED');
 define('BASE_FIRST_LETTER', 'A');
 // define('RAISON_ENTREPRISE_HEADER', 'ADVANCED IT AND RESEARCH BURUNDI');

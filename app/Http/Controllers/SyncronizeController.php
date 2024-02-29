@@ -10,6 +10,7 @@ use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Session;
 
 class SyncronizeController extends Controller
 {
@@ -20,12 +21,21 @@ class SyncronizeController extends Controller
     }
     //
     public function syncronize(){
+        Session::put('sessionName', 'message');
+       //get session
+       Session::get('sessionName');
+
         $response = 0;
         if(isInternetConnection()){
             try {
                 //code...
-               // $this->syncronizeStock();
-               $response =  $this->syncronizeInvoices();
+            if(CAN_SYNCRONISE_STOCK){
+                $this->syncronizeStock();
+            }
+
+            if(CAN_SYNCRONISE_INVOICE){
+                $response =  $this->syncronizeInvoices();
+            }
             } catch (\Throwable $th) {
                 //throw $th;
                 Log::channel('obr_log')->info( "ERROR => " .  $th->getMessage());

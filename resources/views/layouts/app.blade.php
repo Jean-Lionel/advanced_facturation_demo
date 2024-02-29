@@ -208,6 +208,9 @@
                 @yield('javascript')
 
                 <script>
+                    const canSyncronize = @json( CAN_SYNCRONISE );
+                    const timeSyncronisation = @json( TIME_OUT_SYNCRONISATION );
+                    ///updateInternetStatus();
                     const checkOnlineStatus = async () => {
                         try {
                             const online = await fetch("https://jsonplaceholder.typicode.com/todos/1");
@@ -217,16 +220,23 @@
                         }
                     };
 
-                    setInterval(async () => {
+                    const updateInternetStatus = async () => {
                         const result = await checkOnlineStatus();
                         const statusDisplay = document.getElementById("status");
-                        statusDisplay.innerHTML = result ? `
-                        <div class="avatar">
-    <span class="status active"> CONNECTED</span>
-</div>` : `
-<div class="avatar">
-    <span class="status"> NOT CONNECTED</span>
-</div>`;
+                        statusDisplay.innerHTML = result ? ( `
+                                                    <div class="avatar">
+                                <span class="status active"> CONNECTED</span>
+                            </div>`) : (`
+                            <div class="avatar">
+                                <span class="status"> NOT CONNECTED</span>
+                            </div>`);
+                    return result;
+                    }
+
+                    if(canSyncronize){
+
+                    setInterval(async () => {
+                        const result = updateInternetStatus();
                         console.log(result);
                         if(result){
                             // window.location.reload();
@@ -234,7 +244,6 @@
                                 url: "syncronize_to_obr", // the url we want to send and get data from
                                 type: "GET", // type of the data we send (POST/GET)
                                 // the data we want to send
-
                             }).done(function(data){
                                 // this part will run when we send and return successfully
                                 console.log("Success. => ", data);
@@ -246,7 +255,9 @@
                                 console.log("Complete.");
                             });
                         }
-                    }, 3000); // probably too often, try 30000 for every 30 second
+                    }, timeSyncronisation); // probably too often, try 30000 for every 30 second
+
+                }
                 </script>
 
             </body>

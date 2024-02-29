@@ -74,7 +74,7 @@
                     <td>{{ getMouvement($item->item_movement_type) }}</td>
                     <td>{{ $item->item_movement_description }}</td>
                     <td>{{ $item->item_movement_date }}</td>
-                    <td>{{ $item->is_send_to_obr }}</td>
+                    <td class="{{ $item->is_send_to_obr ? 'text-success' : 'text-danger' }}">{{ $item->is_send_to_obr ? 'Oui' : 'Non' }}</td>
                 </tr>
                 @endforeach
 

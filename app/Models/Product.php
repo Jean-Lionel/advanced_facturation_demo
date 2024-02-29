@@ -40,6 +40,22 @@ class Product extends MyModel
         });
     }
 
+    public function getPriXAchatAttribute(){
+        return $this->price_min;
+    }
+
+    public function getPriXVenteAttribute(){
+        return $this->price;
+    }
+
+    public function getPrixRevientAttribute(){
+        return $this->price_max;
+    }
+
+    public function setPrixRevientAttribute($value){
+        $this->attributes['price_max'] = $value;
+    }
+
     public function lastMouvement(){
         $mouvement = ObrMouvementStock::where('item_code', '=', $this->id)->latest()->first();
         return  $mouvement ;
