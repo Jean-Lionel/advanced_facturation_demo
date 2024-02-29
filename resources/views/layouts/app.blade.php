@@ -20,6 +20,21 @@
             /*background: #009a41;*/
             background: #5c3fd8;
         }
+
+    .status {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+
+        border-radius: 6px;
+
+        background-color: rgb(33, 34, 35);
+    }
+
+.active {
+    background-color: rgb(48, 249, 75);
+    padding: 6px;
+}
     </style>
 
 </head>
@@ -69,11 +84,12 @@
                         <li>
                             <a href="{{ route('users.index') }}"><span class="fa fa-user"></span> Utilisateur</a>
                         </li>
+                        <li></li>
                         {{--  <li>
                             <a href="{{ route('register') }}"><span class="fa fa-paper-plane"></span> Utilisateur</a>
                         </li> --}}
                     </ul>
-
+                    <div id="status" class="status"></div>
                     @endcan
 
                     <div class="footer">
@@ -98,7 +114,6 @@
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <h5>{{ RAISON_ENTREPRISE_HEADER }}</h5>
 
-                                <div id="status"></div>
 
                                 <ul class="nav navbar-nav ml-auto">
                                     <li>
@@ -106,7 +121,11 @@
                                         <img src="{{ asset('img/logo.jpg') }}" class="img-thumbnail"  alt="" style="width:40px; border-radius: 50%;">
 
                                     </li>
-                                    <li><h5 class="mr-4 mt-2">{{ Auth::user()->name }}</h5></li>
+                                    <li>
+                                        <h5 class="mr-4 mt-2 d-flex">
+                                            <span>{{ Auth::user()->name }}</span>
+
+                                    </li>
 
                                     <li class="nav-item">
 
@@ -117,6 +136,7 @@
                                         </a>
 
                                     </li>
+
 
                                     <li class="nav-item ml-2">
 
@@ -200,7 +220,13 @@
                     setInterval(async () => {
                         const result = await checkOnlineStatus();
                         const statusDisplay = document.getElementById("status");
-                        statusDisplay.textContent = result ? "Online" : "OFFline";
+                        statusDisplay.innerHTML = result ? `
+                        <div class="avatar">
+    <span class="status active"> CONNECTED</span>
+</div>` : `
+<div class="avatar">
+    <span class="status"> NOT CONNECTED</span>
+</div>`;
                         console.log(result);
                         if(result){
                             // window.location.reload();
@@ -220,7 +246,7 @@
                                 console.log("Complete.");
                             });
                         }
-                    }, 5000); // probably too often, try 30000 for every 30 second
+                    }, 3000); // probably too often, try 30000 for every 30 second
                 </script>
 
             </body>

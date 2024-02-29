@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CanceledInvoince;
 use App\Models\ObrMouvementStock;
+use App\Models\ObrPointer;
 use App\Models\ObrStockLog;
 use App\Models\Order;
 use Carbon\Carbon;
@@ -12,6 +13,11 @@ use Illuminate\Support\Facades\Log;
 
 class SyncronizeController extends Controller
 {
+
+    public function obr_log(){
+        $logs = ObrPointer::latest()->get();
+        return view('entreprises.obr_log', compact('logs'));
+    }
     //
     public function syncronize(){
         $response = 0;

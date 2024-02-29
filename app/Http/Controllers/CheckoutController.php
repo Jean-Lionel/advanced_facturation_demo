@@ -67,7 +67,7 @@ class CheckoutController extends Controller
             $cartInfo = $this->extractCart();
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
             $oder_signuture = "";
-            $company = Entreprise::latest()->first() ?? new Entreprise();
+            $company = Entreprise::currentEntreprise();
           //  dd($company);
             $tax = round(Cart::subtotal() * BASE_TVA / 100);
             $order = Order::create([

@@ -81,5 +81,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('paimenet_dette', 'CheckoutController@paimenetDette')->name('paimenet_dette');
     Route::get('retour_produit', [ObrStockController::class, 'retour_produit'])->name('retour_produit');
     Route::get('syncronize_to_obr', [SyncronizeController::class,  'syncronize'])->name('syncronize_to_obr');
+    Route::get('obr_log', [SyncronizeController::class,  'obr_log'])->name('obr_log');
 
 });

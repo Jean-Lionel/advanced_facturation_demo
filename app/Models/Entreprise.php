@@ -13,6 +13,7 @@ class Entreprise extends Model
 
     public static function currentEntreprise()
     {
-        return Entreprise::where('is_actif', 1)->first() ?? new Entreprise();
+
+        return  Entreprise::where('is_actif', 1)->first() ?? new Entreprise(); ;
     }
 }
