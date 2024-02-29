@@ -21,9 +21,6 @@ class SyncronizeController extends Controller
     }
     //
     public function syncronize(){
-        Session::put('sessionName', 'message');
-       //get session
-       Session::get('sessionName');
 
         $response = 0;
         if(isInternetConnection()){
@@ -45,14 +42,12 @@ class SyncronizeController extends Controller
         }else{
             return response()->json([
                 'success' => false,
-                'data' => 0,
+                'data' => null,
             ]);
         }
         return response()->json([
             'success' => true,
-            'data' => 1,
-            'response' =>  $response
-
+            'data' => $response,
         ]);
     }
 

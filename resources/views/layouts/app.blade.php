@@ -210,7 +210,7 @@
                 <script>
                     const canSyncronize = @json( CAN_SYNCRONISE );
                     const timeSyncronisation = @json( TIME_OUT_SYNCRONISATION );
-                    ///updateInternetStatus();
+
                     const checkOnlineStatus = async () => {
                         try {
                             const online = await fetch("https://jsonplaceholder.typicode.com/todos/1");
@@ -235,8 +235,8 @@
 
                     if(canSyncronize){
 
-                    setInterval(async () => {
-                        const result = updateInternetStatus();
+                  let  limitedInterval =  setInterval(async () => {
+                        const result = await updateInternetStatus();
                         console.log(result);
                         if(result){
                             // window.location.reload();
@@ -246,7 +246,11 @@
                                 // the data we want to send
                             }).done(function(data){
                                 // this part will run when we send and return successfully
-                                console.log("Success. => ", data);
+                                console.log(data);
+                                if(!data.data){
+                                    clearInterval(limitedInterval);
+                                    console.log('interval cleared! Pas de donnees recu');
+                                }
                             }).fail(function(error){
                                 // this part will run when an error occurres
                                 console.log("An error has occurred. => " , error);
@@ -254,6 +258,9 @@
                                 // this part will always run no matter what
                                 console.log("Complete.");
                             });
+                        }else{
+                            clearInterval(limitedInterval);
+                            console.log('interval cleared!');
                         }
                     }, timeSyncronisation); // probably too often, try 30000 for every 30 second
 
