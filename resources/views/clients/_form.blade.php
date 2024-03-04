@@ -88,7 +88,7 @@
 </div>
 @section('javascript')
 <script>
-    const client_type = $("#client_type")
+    /*const client_type = $("#client_type")
     client_type.on('change', function(e){
         if( e.target.value === 'PERSONNE PHYSIQUE'){
             $("#customer_TIN").hide();
@@ -99,6 +99,6 @@
             $("#customer_TIN").show();
             $("#vat_customer_payer").show();
         }
-    })
+    })*/
 </script>
 @endsection

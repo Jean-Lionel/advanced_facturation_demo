@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\CanceledInvoince;
+use App\Models\ObrMouvementStock;
 use App\Models\ObrRequestBody;
 use App\Models\Order;
 use App\Models\Entreprise;
 use App\Models\ObrPointer;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\ObrDeclaration;
 use App\Http\Controllers\SendInvoiceToOBR;
@@ -15,11 +17,6 @@ use App\Http\Requests\UpdateObrDeclarationRequest;
 
 class ObrDeclarationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $x = new SendInvoiceToOBR();
@@ -33,12 +30,12 @@ class ObrDeclarationController extends Controller
     {
         $order_id = \Request::get('order_id');
         $orders = Order::whereNotNull('envoye_obr')
-                        ->where( function($query) use ($order_id){
-                            if(isset($order_id) ){
-                                $query->where('id', $order_id);
-                            }
-                        })
-                        ->latest()->paginate();
+        ->where( function($query) use ($order_id){
+            if(isset($order_id) ){
+                $query->where('id', $order_id);
+            }
+        })
+        ->latest()->paginate();
         return view('obr_declarations.history', [
             'orders' => $orders,
             'order_id' => $order_id
@@ -61,18 +58,39 @@ class ObrDeclarationController extends Controller
             'motif' => 'required',
         ]);
 
-        if($request->internet_connection == 'NON_INTERNET'){
-                // Add to pading table
+        // Change the Status Of the order
+        //    dd($request->cancel_amount);
+        $order = Order::where('invoice_signature', '=',$request->invoice_signature)->first();
+        if($request->cancel_amount){
+            foreach($order->products as $productItem){
+                // dd($product);
+                try{
+                    $product = Product::find($productItem['id']);
+                    $product->quantite += $productItem['quantite'];
+                    $product->save();
+                    \App\Models\RetourProduit::create([
+                        'product_id' => $product->id,
+                        'item_name' => $product->name,
+                        'order_id' => $order->id,
+                        'quantite' => $productItem['quantite'],
+                        'description' => $request->motif,
+                        'user_id' => auth()->user()->id,
+                    ]);
+                    ObrMouvementStock::saveMouvement( $product, 'ER', $productItem['price'], $productItem['quantite'], $request->motif, $order->id);
+                }catch(\Exception $e){
+                }
+            }
+        }
+        if(!isInternetConnection()){
+            // Add to pading table
             CanceledInvoince::create([
-                    'motif' => $request->motif,
-                    'invoice_signature' => $request->invoice_signature,
-                    'created_at' => now(),
-                    'status' => false
+                'motif' => $request->motif,
+                'invoice_signature' => $request->invoice_signature,
+                'created_at' => now(),
+                'status' => false
             ]);
-
-            // Change the Status Of the order
-            $order = Order::where('invoice_signature', '=',$request->invoice_signature)->first();
             $order->canceled_or_connection = 'ANNULEE HORS CONNECTION';
+            $order->is_cancelled = true;
             $order->save();
             return response()->json([
                 'success' => true,
@@ -81,7 +99,7 @@ class ObrDeclarationController extends Controller
             ]);
         }
 
-            $obr = new SendInvoiceToOBR();
+        $obr = new SendInvoiceToOBR();
         try {
             $response = $obr->cancelInvoice($request->invoice_signature , $request->motif);
             $order = Order::find($request->order_id);
@@ -94,9 +112,6 @@ class ObrDeclarationController extends Controller
                 'msg' => $e->getMessage(). ' FILE ' . $e->getFile() . ' LINE ' .$e->getLine()
             ]);
         }
-
-
-
     }
 
     public function sendInvoinceToObr($invoince_id)
@@ -235,7 +250,6 @@ class ObrDeclarationController extends Controller
             "invoice_identifier" => $invoice_signature,
             "invoice_signature_date" => $invoice_signature_date,
             "invoice_items" => $invoinces_items
-
         ];
 
         return $invoince;

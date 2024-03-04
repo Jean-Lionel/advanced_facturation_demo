@@ -135,6 +135,7 @@ class StockController extends Controller
         $order = Order::find($order_id);
         $order->is_cancelled = 1;
 
+        // AJout des produits sur les facture
         $order->save();
         return back();
     }

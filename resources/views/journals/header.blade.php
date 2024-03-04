@@ -1,6 +1,6 @@
 <h5 class="text-center">Historique des ventes</h5>
 <div>
-	<form action="" class="form-group row">
+	{{-- <form action="" class="form-group row">
 		<div class="col-sm-6">
 			<label for="">TYPE DE PAIMENENT</label>
 		</div>
@@ -12,5 +12,5 @@
 		</div>
 
 
-	</form>
+	</form> --}}
 </div>

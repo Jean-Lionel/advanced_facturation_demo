@@ -90,10 +90,12 @@ class SyncronizeController extends Controller
                         $order->is_cancelled = 1;
                         $order->save();
                     }
-                    $item2->save();
+
                     $current = CanceledInvoince::where('invoice_signature' ,'=', $item2->invoice_signature)->first();
                     $current->status = 1;
                     $current->save();
+                    $item2->status = 1;
+                    $item2->save();
                     // var_dump("======= ". $item2->invoice_signature ."======ANNULATION DES FACTURE===================");
                     // var_dump($response);
                     return $response;

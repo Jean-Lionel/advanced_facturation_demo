@@ -10,7 +10,8 @@ define('CAN_SYNCRONISE_INVOICE', true); // Seconde de Syncronisation dans OBR
 define('RAISON_ENTREPRISE', 'ADVANCED');
 define('BASE_FIRST_LETTER', 'A');
 // define('RAISON_ENTREPRISE_HEADER', 'ADVANCED IT AND RESEARCH BURUNDI');
-define('RAISON_ENTREPRISE_HEADER', 'ENTREPRISE DE FABRICATION DE LA CHAUX ET DE CONSTRUCTION');
+//define('RAISON_ENTREPRISE_HEADER', 'ENTREPRISE DE FABRICATION DE LA CHAUX ET DE CONSTRUCTION');
+define('RAISON_ENTREPRISE_HEADER', 'KELIG MOTORS COMPANY');
 define('BASE_NIF', '400xxxxxxx');
 define('BASE_RC', '38222/22');
 define('BASE_TELELEPHONE', '+257 79 614 036');
@@ -41,7 +42,17 @@ define('BASE_UNITE_EMBALLAGE', 50);
 /* EFCCO
 - nom d’utilisateur : ws400167159500661
 - mot de passe : 2<@KYoo[
-*/
 
-define('OBR_USERNAME', env('OBR_USERNAME', 'ws400167159500661'));
-define('OBR_PASSWORD', env('OBR_PASSWORD', '2<@KYoo['));
+       define('OBR_USERNAME', env('OBR_USERNAME', 'ws400167159500661'));
+    define('OBR_PASSWORD', env('OBR_PASSWORD', '2<@KYoo['));
+    */
+
+
+
+    /*
+    KELIG MOTORS COMPANY
+    - nom d’utilisateur : ws400086611300667
+    - mot de passe : cTzm1M|o
+    */
+define('OBR_USERNAME', env('OBR_USERNAME', 'ws400086611300667'));
+define('OBR_PASSWORD', env('OBR_PASSWORD', 'cTzm1M|o'));

@@ -70,15 +70,25 @@
 @section('javascript')
 
 <script>
-	function cancelIncome(invoice_signature, order_id){
-        let motif = prompt("Quel est le motif d'annulation de cet Facture ? ")
 
-        if(! motif ||  motif.trim() == ""){
-            alert("La facture n  a pas ete anuler ajouter le motif")
-            motif = prompt("Quel est le motif d'annulation de cet Facture ? ")
-
-            return;
+function getMotif(){
+    let motif = prompt("Quel est le motif d'annulation de cet Facture ? ")
+        if(motif == null) return;
+        if(motif.trim() == ""){
+            alert("La facture n  a pas ete anuler ajouter le motif");
+            return  getMotif();
         }
+    return motif;
+}
+
+	function cancelIncome(invoice_signature, order_id){
+        let motif = getMotif();
+        let cancel_amount = 0;
+
+        if(motif){
+            cancel_amount = confirm('Voulez aussi faire le retour des Marchandises en Stock');
+        }
+
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
 		$("#order_"+order_id).html(`<div class="progress">
@@ -91,8 +101,8 @@
 				invoice_signature :invoice_signature,
 				_token: CSRF_TOKEN,
 				order_id: order_id,
-                motif : motif
-
+                motif : motif,
+                cancel_amount : cancel_amount
 			},
 			success: function (data) {
 				console.log(data);
