@@ -14,11 +14,16 @@
                             <div class="row">
                                 <div class="col-md-2">
                                     <div class="form-group ">
-                                        <label for="">TVA EST DE <b> {{ \Request::get('current_tva') ?? 18 }} % </b> </label>
+                                        @php
+                                        $currentTva = \Request::get('current_tva') ?? 18 ;
+                                        @endphp
+                                        <label for="">TVA EST DE <b> {{ $currentTva }} % </b> </label>
                                         <select  id="current_tva" name="current_tva">
-                                            @foreach(["", 18,10,0] as $value)
+                                            @foreach(["", 18,10,4,0] as $value)
                                             <option value="{{$value}}"
-
+                                            @if ($value == $currentTva)
+                                            selected="selected"
+                                            @endif
                                             > {{ $value }}</option>
                                             @endforeach
                                         </select>
@@ -48,7 +53,6 @@
                                     <th scope="col" class="border-0 bg-light">
                                         <div class="p-2 px-3 text-uppercase">MARGE DES PRIX ( #FBU)</div>
                                     </th>
-
                                     <th scope="col" class="border-0 bg-light">
                                         <div class="p-2 px-3 text-uppercase">Quantité</div>
                                     </th>
@@ -170,9 +174,7 @@
                                         <div class="form-group col-md-6">
                                             <input  type="text" id="addresse_client" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
                                         </div>
-
                                     </div>
-
                                     <div class="form-group">
                                         <label for="type_paiement">MODE DE PAIEMENT</label>
                                         <select required="" class="form-control" name="type_paiement" id="">
@@ -216,11 +218,9 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
             @stop
 
 

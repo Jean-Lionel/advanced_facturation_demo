@@ -67,7 +67,7 @@
 	<div class="col-md-3">
 
 		<div class="form-group">
-			<label for="price_max">PRIX REVIENT</label>
+			<label for="price_max">PRIX REVIENT TVAC</label>
 			<input type="text"
 			step="any"
 
@@ -79,7 +79,7 @@
 
 	<div class="col-md-3">
 		<div class="form-group">
-			<label for="price">PRIX DE VENTE UNITAIRE</label>
+			<label for="price">PRIX DE VENTE UNITAIRE </label>
 			<input type="text" step="any" class="form-control {{$errors->has('price') ? 'is-invalid' : 'is-valid' }}" id="price" name="price" value="{{ old('price') ?? $product->price?? ' ' }}">
 			{!! $errors->first('price', '<small class="help-block invalid-feedback">:message</small>') !!}
 		</div>

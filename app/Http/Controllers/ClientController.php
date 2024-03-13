@@ -69,7 +69,10 @@ class ClientController extends Controller
                     // If the TIN
                     session()->flash('obr_response', $request->customer_TIN . ' => '. $response->msg);
                     return back();
+                }else{
+                    session()->flash('obr_response',' NIF EST OBLIGATOIRE POUR LES PERSONNES MORALE ' );
                 }
+
                // ['result']['taxpayer'][0]['tp_name']
                 $customer_OBR = $response->result->taxpayer[0]->tp_name;
 

@@ -30,6 +30,7 @@ class CartController extends Controller
     }
 
     public function update_product_price(){
+
         $rowId = \Request::get('product_id');
         $price = \Request::get('price');
 

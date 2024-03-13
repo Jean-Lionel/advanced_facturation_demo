@@ -77,7 +77,7 @@
 
 		</header>
 		{{-- Fin --}}
-        <h3 class="text-center">FACTURE  </h3>
+        <h3 class="text-center">FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }} </h3>
 		{{-- SIDE A --}}
 		<article class="identification_a">
 			<div>
@@ -94,7 +94,7 @@
 			</div>
 			<div class="aling-right partie-droite">
 				<div>
-                    <b>N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }}</b>
+                    <b> </b>
 					<p>Centre Fiscal : <b>{{ $order->company?->tp_fiscal_center }}</b></p>
 					<p>Secteur d'activité : <b> {{ $order->company?->tp_activity_sector }} </b></p>
 					<p>Forme juridique : <b> {{ $order->company?->tp_legal_form }} </b></p>

@@ -7,9 +7,6 @@
 </div>
 
 @endif
-
-
-
 <div class="card-body row">
     <div class="col-md-12">
         <h5 class="text-left">Nouveau Client</h5>
