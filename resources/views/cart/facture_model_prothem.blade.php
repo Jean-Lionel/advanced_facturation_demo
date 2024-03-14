@@ -51,12 +51,12 @@
 	<div class="main-content">
 		{{-- Entete --}}
 		<header class="header-facture">
-			<div>
+			{{-- <div>
 				<div >
 					<img class="img_logo" src="{{asset('img/logo.jpg')}}" alt="">
 				</div>
-			</div>
-			<div style="width: 80%;">
+			</div> --}}
+			<div style="width: 100%;">
 
 				<h3>{{ $order->company?->tp_name }} </h3>
 

@@ -19,18 +19,22 @@
                 <option  value="PERSONNE PHYSIQUE"  @if(old('client_type') === 'PERSONNE PHYSIQUE') selected @endif>PERSONNE PHYSIQUE OU SOCIETE ETRANGERE</option>
                 <option value="PERSONNE MORAL"  @if(old('client_type') === 'PERSONNE MORAL') selected @endif>PERSONNE MORAL</option>
             </select>
-            {!! $errors->first('client_type', '<small class="help-block invalid-feedback">:message</small>') !!}
+            @error('client_type')
+            <small class="help-block invalid-feedback text-danger">{{ $message }}</small>
+            @enderror
         </div>
     </div>
     <div class="col-md-4" id="vat_customer_payer" >
         <div class="form-group">
             <label for="vat_customer_payer">CLIENT ASSUJETI A LA TVA OU NON</label>
             <select name="vat_customer_payer" id="vat_customer_payer" class="form-control form-control-sm">
-                <option>---- SELECT ---</option>
+                <option value="">---- SELECT ---</option>
                 <option  value="1" @if(old('vat_customer_payer') == 1) selected @endif>assujetti à la TVA</option>
                 <option value="0" @if(old('vat_customer_payer') == 0) selected @endif>Non assujetti </option>
             </select>
-            {!! $errors->first('vat_customer_payer', '<small class="help-block invalid-feedback">:message</small>') !!}
+            @error('vat_customer_payer')
+            <small class="help-block invalid-feedback text-danger">{{ $message }}</small>
+            @enderror
         </div>
     </div>
     <div class="col-md-4">
@@ -38,6 +42,7 @@
             <label for="name">NOM</label>
             <input type="text" class="form-control {{$errors->has('name') ? 'is-invalid' : 'is-valid' }} form-control-sm" id="name" name="name" value="{{ old('name') ?? $client->name?? ' ' }}">
             {!! $errors->first('name', '<small class="help-block invalid-feedback">:message</small>') !!}
+
         </div>
     </div>
     <div class="col-md-4" id="customer_TIN">

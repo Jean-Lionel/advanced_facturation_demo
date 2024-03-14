@@ -16,6 +16,9 @@ class VenteController extends Controller
 
     public function index()
     {
+        // $obr = new SendInvoiceToOBR();
+
+        // dd($obr->getToken());
         $search = \Request::get('search');
         $products = Product::where('quantite', '>', 1)
         ->where(function ($query) use ($search) {

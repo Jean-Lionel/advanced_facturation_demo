@@ -1,17 +1,18 @@
 <?php
 
 // Variable pour la syncronisation des donnees dans OBR
-define('CAN_SYNCRONISE', true);
+define('CAN_SYNCRONISE', false);
+define('IS_PRODUCTION', true);
 define('TIME_OUT_SYNCRONISATION', (1 * 1000)); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_STOCK', true); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_INVOICE', true); // Seconde de Syncronisation dans OBR
 
 //===================ALLORS ON DANSE==========================
-define('RAISON_ENTREPRISE', 'ADVANCED');
-define('BASE_FIRST_LETTER', 'A');
+define('RAISON_ENTREPRISE', 'KELIG');
+define('BASE_FIRST_LETTER', 'K');
 // define('RAISON_ENTREPRISE_HEADER', 'ADVANCED IT AND RESEARCH BURUNDI');
-define('RAISON_ENTREPRISE_HEADER', 'ENTREPRISE DE FABRICATION DE LA CHAUX ET DE CONSTRUCTION');
-//define('RAISON_ENTREPRISE_HEADER', 'KELIG MOTORS COMPANY');
+// define('RAISON_ENTREPRISE_HEADER', 'ENTREPRISE DE FABRICATION DE LA CHAUX ET DE CONSTRUCTION');
+define('RAISON_ENTREPRISE_HEADER', 'KELIG MOTORS COMPANY');
 define('BASE_NIF', '400xxxxxxx');
 define('BASE_RC', '38222/22');
 define('BASE_TELELEPHONE', '+257 79 614 036');
@@ -43,16 +44,36 @@ define('BASE_UNITE_EMBALLAGE', 50);
 - nom d’utilisateur : ws400167159500661
 - mot de passe : 2<@KYoo[
 
-       define('OBR_USERNAME', env('OBR_USERNAME', 'ws400167159500661'));
+    define('OBR_USERNAME', env('OBR_USERNAME', 'ws400167159500661'));
     define('OBR_PASSWORD', env('OBR_PASSWORD', '2<@KYoo['));
     */
-
-
 
     /*
     KELIG MOTORS COMPANY
     - nom d’utilisateur : ws400086611300667
     - mot de passe : cTzm1M|o
     */
-define('OBR_USERNAME', env('OBR_USERNAME', 'ws400086611300667'));
-define('OBR_PASSWORD', env('OBR_PASSWORD', 'cTzm1M|o'));
+    // define('OBR_USERNAME', env('OBR_USERNAME', 'ws400086611300667'));
+    // define('OBR_PASSWORD', env('OBR_PASSWORD', 'cTzm1M|o'));
+
+    /**
+    * PRODUCTION EFCCO
+    * -nom d'utilisateur: wsl400167159500437
+    * -mot de passe: qIg#$f-5
+    */
+    // define('OBR_USERNAME', env('OBR_USERNAME', 'wsl400167159500437'));
+    // define('OBR_PASSWORD', env('OBR_PASSWORD', 'qIg#$f-5'));
+
+    /**
+    *
+    * Veuillez trouver, en dessous, les identifiants de KELIG MOTORS COMPANY sur le serveur de production :
+        * -nom d'utilisateur: wsl400086611300438
+        * -mot de passe: 3Ku&l^RI
+        */
+
+// OBR_USERNAME=ws400000480600270
+// OBR_PASSWORD=_B_/BGv0
+
+define('OBR_USERNAME', env('OBR_USERNAME', 'ws400000480600270'));
+define('OBR_PASSWORD', env('OBR_PASSWORD', '_B_/BGv0'));
+

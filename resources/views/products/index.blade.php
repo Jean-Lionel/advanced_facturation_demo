@@ -94,7 +94,7 @@
 				    @endif
 			   </td>
 
-				<td><b>{{ $value->category->title }}</b></td>
+				<td><b>{{ $value?->category?->title }}</b></td>
                <td>
                 <a href="{{ route('movement_stock', $value->id) }}">
                      {{ $value->item_movement_type() }}

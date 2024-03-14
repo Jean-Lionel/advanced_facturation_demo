@@ -40,7 +40,7 @@ class ClientController extends Controller
 
     public function store(Request $request)
     {
-        //
+
         $request->validate([
               "client_type" => "required",
               "vat_customer_payer" => "required",
