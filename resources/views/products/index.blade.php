@@ -90,7 +90,11 @@
 				<td>
 					@if ($value->quantite <= $value->quantite_alert)
 					{{-- expr --}}
-					<i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"></i>
+					<i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"
+                    style="cursor: pointer;"
+                    title="Le stock de {{ $value->name }} est en dessous de l'alerte la quantite doit être de {{ $value->quantite_alert }}"
+
+                    ></i>
 				    @endif
 			   </td>
 
