@@ -208,6 +208,9 @@
                 @yield('javascript')
 
                 <script>
+
+
+
                     const canSyncronize = @json( CAN_SYNCRONISE );
                     const timeSyncronisation = @json( TIME_OUT_SYNCRONISATION );
 

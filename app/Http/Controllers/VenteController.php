@@ -58,11 +58,8 @@ class VenteController extends Controller
             <td> $value->quantite </td>
             <td> $value->date_expiration </td>
             <td class="d-flex justify-content-around">
-                <form action="{{ route('panier.store') }}" method="post">
+                    <button onclick="addToCartProduct($value->id)"  type="submit" class="btn btn-sm btn-primary">+ Ajouter aux pannier</button>
 
-                    <input type="hidden" name="id" value="$value->id">
-                    <button  type="submit" class="btn btn-sm btn-primary">+ Ajouter aux pannier</button>
-                </form>
             </td>
         </tr>
         EOD;

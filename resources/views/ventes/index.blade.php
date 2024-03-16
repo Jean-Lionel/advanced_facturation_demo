@@ -79,7 +79,7 @@
     searchEL.on('keyup', function(e){
         let value = e.target.value
       //  window.location = '/ventes?search='+value
-        $ajax = $.ajax({
+        $.ajax({
             url: '/ventes',
             type: 'GET',
             data: {
@@ -95,6 +95,24 @@
         })
 
     })
+
+    function addToCartProduct(product_id){
+
+        $.ajax({
+            url: '{{ route('panier.store') }}',
+            type: 'POST',
+            data: {
+                'id': product_id,
+                '_token' :  '{{ csrf_token() }}'
+            },
+            success: function(data){
+                window.location.reload();
+            },
+            error: function(data){
+                console.log(data);
+            }
+        })
+    }
 </script>
 
 

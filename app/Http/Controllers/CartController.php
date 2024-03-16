@@ -80,7 +80,6 @@ class CartController extends Controller
 
     public function store(Request $request)
     {
-
         $diplucata = Cart::search(function ($cartItem, $rowId) use ($request) {
             return $cartItem->id == $request->id;
         });
@@ -93,8 +92,10 @@ class CartController extends Controller
             [
                 'embalage' => BASE_UNITE_EMBALLAGE
             ])->associate('App\Models\Product');
-
-        return redirect()->route('ventes.index')->with('success', 'Le produit a été bien ajouter');
+        return response()->json([
+            'success' => 'Le produit a été bien ajouter',
+            'currentTax' => $this->currentTax
+        ]);
     }
 
 
