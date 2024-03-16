@@ -14,7 +14,7 @@ use PhpParser\Node\Stmt\TryCatch;
 class VenteController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         // $obr = new SendInvoiceToOBR();
 
@@ -26,9 +26,50 @@ class VenteController extends Controller
             ->orWhere('code_product', 'like', '%' . $search . '%')
             ->orWhere('price', 'like', '%' . $search . '%')
             ->orWhere('unite_mesure', 'like', '%' . $search . '%');
-        })->latest()->paginate(6);
+        })->latest()->take(6)->get();
         SyncroniseInvoice::dispatch(1);
-        return view('ventes.index', compact('products', 'search'));
+
+
+        $value_products = $this->makeProductBody($products);
+
+        if($request->ajax()){
+
+            return $value_products ;
+        }
+
+
+        return view('ventes.index', compact('products', 'value_products', 'search'));
+    }
+
+
+    private function makeProductBody($products){
+
+        $body = "";
+
+        foreach ($products as $value){
+            $body .= <<<EOD
+            <tr>
+            <td> $value->id </td>
+            <td> $value->code_product </td>
+            <td>
+                 $value->name
+            </td>
+            <td> $value->price </td>
+            <td> $value->quantite </td>
+            <td> $value->date_expiration </td>
+            <td class="d-flex justify-content-around">
+                <form action="{{ route('panier.store') }}" method="post">
+
+                    <input type="hidden" name="id" value="$value->id">
+                    <button  type="submit" class="btn btn-sm btn-primary">+ Ajouter aux pannier</button>
+                </form>
+            </td>
+        </tr>
+        EOD;
+        }
+
+        return $body;
+
     }
 
 

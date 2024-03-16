@@ -32,36 +32,17 @@
 				<th scope="col">Action</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody id="body_table">
 
-			@foreach ($products as $value)
-			{{-- expr --}}
-			<tr>
-				<td>{{ $value->id }}</td>
-				<td>{{ $value->code_product }}</td>
-				<td>
-					{{ $value->name}}
-				</td>
-				<td>{{ $value->price }}</td>
-				<td>{{ $value->quantite }}</td>
-				<td>{{ $value->date_expiration }}</td>
-				<td class="d-flex justify-content-around">
-					<form action="{{ route('panier.store') }}" method="post">
-						@csrf
-						<input type="hidden" name="id" value="{{$value->id}}">
-						<button  type="submit" class="btn btn-sm btn-primary">+ Ajouter aux pannier</button>
-					</form>
-				</td>
-			</tr>
-			@endforeach
+			{!! $value_products !!}
 		</tbody>
 	</table>
 
 </div>
 
-<div class="col-md-12" style="height: 100px; overflow: hidden;">
+{{-- <div class="col-md-12" style="height: 100px; overflow: hidden;">
 	{{ $products->links()}}
-</div>
+</div> --}}
 
 @if (Cart::content()->count() > 0)
 {{-- expr --}}
@@ -95,30 +76,25 @@
 <script>
 	const searchEL = $("#search")
 
-	// searchEL.keyup(function(event) {
-	// 	/* Act on the event */
-	// 	event.preventDefault();
-	// 	//console.log(event.target.value)
-	// 	const search = event.target.value
+    searchEL.on('keyup', function(e){
+        let value = e.target.value
+      //  window.location = '/ventes?search='+value
+        $ajax = $.ajax({
+            url: '/ventes',
+            type: 'GET',
+            data: {
+                'search': value
+            },
+            success: function(data){
 
-	// 	jQuery.ajax({
-	// 	  url: " {{ route('ventes.index')  }}",
-	// 	  type: 'GET',
-	// 	  data: {search: search},
-	// 	  complete: function(xhr, textStatus) {
-	// 	    //called when complete
-	// 	   // console.log(xhr)
-	// 	  },
-	// 	  success: function(data, textStatus, xhr) {
-	// 	    //called when successful
+                $("#body_table").html(data)
+            },
+            error: function(data){
+                console.log(data);
+            }
+        })
 
-	// 	  },
-	// 	  error: function(xhr, textStatus, errorThrown) {
-	// 	    //called when there is an error
-	// 	  }
-	// 	});
-
-	// });
+    })
 </script>
 
 

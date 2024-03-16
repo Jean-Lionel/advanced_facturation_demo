@@ -65,7 +65,7 @@
 	<div class="col-md-3">
 
 		<div class="form-group">
-			<label for="price_max">PRIX REVIENT  TVAC</label>
+			<label for="price_max">PRIX DE REVIENT  TVAC</label>
 			<input type="text"
 			step="any"
 

@@ -14,7 +14,7 @@ class SendInvoiceToOBR extends Controller
     //private string $baseUrl = 'http://41.79.226.28:8345/ebms_api/';
     //private string $baseUrl = 'https://ebms.obr.gov.bi:8443/ebms_api/';
    //private string $baseUrl = 'https://ebms.obr.gov.bi:9443/ebms_api/';
-    private string $baseUrl = 'https://ebms.obr.gov.bi:8443/ebms_api/';
+    private string $baseUrl = IS_PRODUCTION ? 'https://ebms.obr.gov.bi:8443/ebms_api/' : 'https://ebms.obr.gov.bi:9443/ebms_api/';
 
     public function __construct()
     {
