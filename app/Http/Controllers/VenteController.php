@@ -19,8 +19,10 @@ class VenteController extends Controller
         // $obr = new SendInvoiceToOBR();
 
         // dd($obr->getToken());
+       // dump(Cart::content()->map->id);
         $search = \Request::get('search');
         $products = Product::where('quantite', '>', 1)
+        ->whereNotIn('id', Cart::content()->map->id)
         ->where(function ($query) use ($search) {
             $query->where('name', 'like', '%' . $search . '%')
             ->orWhere('code_product', 'like', '%' . $search . '%')
@@ -28,7 +30,6 @@ class VenteController extends Controller
             ->orWhere('unite_mesure', 'like', '%' . $search . '%');
         })->latest()->take(6)->get();
         SyncroniseInvoice::dispatch(1);
-
 
         $value_products = $this->makeProductBody($products);
 
