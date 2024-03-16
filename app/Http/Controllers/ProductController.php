@@ -169,6 +169,6 @@ class ProductController extends Controller
             return back();
         }
 
-        return $this->index();
+        return  redirect('products');
     }
 }
