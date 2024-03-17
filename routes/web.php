@@ -3,9 +3,11 @@ use App\Http\Controllers\ObrStockController;
 use App\Http\Controllers\SendInvoiceToOBR;
 use App\Http\Controllers\SyncronizeController;
 use App\Jobs\ObrSendInvoince;
+use App\Mail\TestEmail;
 use App\Models\ObrMouvementStock;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 
 /*
@@ -44,6 +46,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('ventes', VenteController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('entreprises', EntrepriseController::class);
+    Route::get('backup_database', 'EntrepriseController@backup_database')->name('backup_database');
     Route::resource('depenses', DepenseController::class);
     Route::resource('users', UserController::class);
     Route::resource('services', ServiceController::class);

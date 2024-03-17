@@ -22,6 +22,7 @@
         "laravel/ui": "*",
         "laravelcollective/html": "^6.2",
         "livewire/livewire": "^2.3",
+        "spatie/laravel-backup": "^7.8",
         "spatie/laravel-permission": "^3.18",
         "tightenco/ziggy": "^0.9.4"
     },
