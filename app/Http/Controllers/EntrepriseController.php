@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BackupEmail;
 use App\Mail\TestEmail;
 use App\Models\Entreprise;
 use App\Http\Requests\StoreEntrepriseRequest;
@@ -37,9 +38,10 @@ class EntrepriseController extends Controller
         } else {
             echo "Backup failed!";
         }
-
-        Mail::to('backup@advanced.com')
-            ->send(new TestEmail($backupFile));
+        if(isInternetConnection() && CAN_BUCKUP_FILE == true) {
+            Mail::to(MAIL_FROM_USER)
+            ->send(new BackupEmail($backupFile));
+        }
 
         if ($returnValue === 0) {
             // Set appropriate headers for the download

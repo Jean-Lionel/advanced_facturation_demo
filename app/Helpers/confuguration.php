@@ -6,6 +6,8 @@ define('IS_PRODUCTION', true);
 define('TIME_OUT_SYNCRONISATION', (1 * 1000)); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_STOCK', true); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_INVOICE', true); // Seconde de Syncronisation dans OBR
+define('MAIL_FROM_USER','client@advanced.bi');
+define('CAN_BUCKUP_FILE',false); // Syncronisation des donnees en lignes
 
 //===================ALLORS ON DANSE==========================
 define('RAISON_ENTREPRISE', 'KELIG');
