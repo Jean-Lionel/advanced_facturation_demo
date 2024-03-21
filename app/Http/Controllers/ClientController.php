@@ -4,14 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Redirect;
 class ClientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $clients = Client::latest()->paginate(20);
@@ -19,11 +15,7 @@ class ClientController extends Controller
         return view('clients.index', compact('clients'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         return view('clients.create');
@@ -41,6 +33,7 @@ class ClientController extends Controller
     public function store(Request $request)
     {
 
+
         $request->validate([
               "client_type" => "required",
               "vat_customer_payer" => "required",
@@ -52,33 +45,36 @@ class ClientController extends Controller
             // Check if Tin does not exist in database
 
         if($request->client_type === 'PERSONNE MORAL' && $request->customer_TIN ==""){
-            session()->flash('obr_response',' NIF EST OBLIGATOIRE POUR LES PERSONNES MORALE ' );
-            return back();
+
+            return redirect('clients/create')->with('message', 'NIF EST OBLIGATOIRE POUR LES PERSONNES MORALE ');
         }
         $customer_OBR = '';
         if($request->customer_TIN){
            $check =  Client::where("customer_TIN", $request->customer_TIN)->first();
+          // dd( $check);
            if($check){
-               session()->flash('obr_response','Le Client existe deja  '. $request->customer_TIN . ' => '.  $check->name . ' CUSTOMER ID '. $check->id );
-               return back();
+               $errorMessage = 'Le Client existe deja  '. $request->customer_TIN . ' => '.  $check->name . ' CUSTOMER ID '. $check->id;
+               return redirect('clients/create')->with('message',  $errorMessage);
            }
             try {
                 $obr = new SendInvoiceToOBR();
                 $response = $obr->checkTin($request->customer_TIN);
                 if(!$response->success){
-                    // If the TIN
-                    session()->flash('obr_response', $request->customer_TIN . ' => '. $response->msg);
-                    return back();
-                }else{
-                    session()->flash('obr_response',' NIF EST OBLIGATOIRE POUR LES PERSONNES MORALE ' );
+
+                    return redirect('clients/create')->with('message',  $request->customer_TIN . ' => '. $response->msg);
+
                 }
+                // }else{
+
+                //     return redirect('clients/create')->with('message',  ' NIF EST OBLIGATOIRE POUR LES PERSONNES MORALE ');
+                // }
 
                // ['result']['taxpayer'][0]['tp_name']
                 $customer_OBR = $response->result->taxpayer[0]->tp_name;
 
             }catch (\Exception $e){
-                session()->flash($e->getMessage() .'obr_response', $request->customer_TIN . ' => pas de connection Internet le Nif ne peut pas etre verfier pour le moment ');
-                return back();
+
+                return redirect('clients/create')->with('message',  $request->customer_TIN . ' => pas de connection Internet le Nif ne peut pas etre verfier pour le moment ');
             }
 
         }
