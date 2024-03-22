@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+      - master
+name: 🚀 Deploy Application on push Buja Deal
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v2
+
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      with:
+        server: 84.46.251.167
+        username: lionel
+        password:  Buja@2024
+        server-dir: ./
