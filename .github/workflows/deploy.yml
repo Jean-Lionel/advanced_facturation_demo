@@ -15,6 +15,6 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
         server: 84.46.251.167
-        username: lionel
+        username: advanced
         password:  Buja@2024
         server-dir: ./
