@@ -1,13 +1,13 @@
 <?php
 
 // Variable pour la syncronisation des donnees dans OBR
-define('CAN_SYNCRONISE', true);
-define('IS_PRODUCTION', true);
+define('CAN_SYNCRONISE', false);
+define('IS_PRODUCTION', false);
 define('TIME_OUT_SYNCRONISATION', (1 * 1000)); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_STOCK', true); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_INVOICE', true); // Seconde de Syncronisation dans OBR
 define('MAIL_FROM_USER','client@advanced.bi');
-define('CAN_BUCKUP_FILE',true); // Syncronisation des donnees en lignes
+define('CAN_BUCKUP_FILE',false); // Syncronisation des donnees en lignes
 
 //===================ALLORS ON DANSE==========================
 define('RAISON_ENTREPRISE', 'KELIG');
@@ -81,6 +81,6 @@ define('BASE_UNITE_EMBALLAGE', 50);
 
 // Production Prothem
 
-define('OBR_USERNAME', env('OBR_USERNAME', 'wsl400000480600187'));
-define('OBR_PASSWORD', env('OBR_PASSWORD', 'T?v?w7}I'));
+// define('OBR_USERNAME', env('OBR_USERNAME', 'wsl400000480600187'));
+// define('OBR_PASSWORD', env('OBR_PASSWORD', 'T?v?w7}I'));
 

@@ -139,6 +139,8 @@
                             <div class="p-1">
                                 {{$errors}}
                                 <form action="{{ route('payement') }}" method="post">
+
+                                    <input type="hidden" name="currentTva" value="{{ $currentTva }}">
                                     <div class="d-flex justify-content-between">
                                         <p>
                                             <input type="text" name="clientNumber" id="clientNumber" placeholder="Numero du client">

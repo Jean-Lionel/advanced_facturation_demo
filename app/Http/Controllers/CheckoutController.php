@@ -21,15 +21,9 @@ use App\Http\Controllers\SendInvoiceToOBR;
 class CheckoutController extends Controller
 {
 
-    /**
-    * Store a newly created resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    */
+
     public function store(Request $request)
     {
-
         $validate =
         [
             'name' => 'required|min:1',
@@ -69,7 +63,7 @@ class CheckoutController extends Controller
             $oder_signuture = "";
             $company = Entreprise::currentEntreprise();
           //  dd($company);
-            $tax = round(Cart::subtotal() * BASE_TVA / 100);
+            $tax = round(Cart::subtotal() *   $request->currentTva / 100);
             $order = Order::create([
                 'amount' => round( $tax  + Cart::subtotal()),
                 'total_quantity' => Cart::count(),
@@ -122,7 +116,7 @@ class CheckoutController extends Controller
 
         if(isset($order->id)){
             // Call a JOB
-            SyncroniseInvoice::dispatch($order->id);
+    //        SyncroniseInvoice::dispatch($order->id);
 //            $obr = new ObrDeclarationController();
 //            try{
 //                $obr->sendInvoinceToObr($order->id);
