@@ -17,4 +17,4 @@ jobs:
         server: 84.46.251.167
         username: lionel
         password:  Buja@2024
-        server-dir: ./advanced_facturation
+        server-dir: ./advanced_facturation/
