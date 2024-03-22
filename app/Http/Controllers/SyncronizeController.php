@@ -54,8 +54,13 @@ class SyncronizeController extends Controller
     public function syncronizeInvoices(){
         $obr = new ObrDeclarationController();
         try{
-            $order_peding_ids = Order::whereNull('envoye_obr')
-            ->get()->map->id;
+
+           // $ws400000333700160
+           //$
+           $excludes_ids = ObrPointer::all()->map->order_id;
+           $order_peding_ids = Order::whereNull('envoye_obr')
+                                        ->whereNotIn('id', $excludes_ids)
+                                        ->get()->map->id;
 
             foreach ($order_peding_ids as $item) {
                 try {

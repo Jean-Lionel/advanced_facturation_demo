@@ -30,8 +30,7 @@ class EntrepriseComponent extends Component
 
     public function render()
     {
-        $element = Entreprise::where('is_actif', '1')->first();
-
+        $element = Entreprise::currentEntreprise();
         return view('livewire.entreprise.entreprise-component', [
             'element' => $element
         ]);

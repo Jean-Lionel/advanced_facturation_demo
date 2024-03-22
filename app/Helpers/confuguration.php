@@ -31,7 +31,7 @@ define('BASE_SECTEUR', 'TECHNOLOGY');
 define('BASE_CENTRE_FISCAL', 'DMC');
 define('BASE_FORME_JURDIQUE', 'SPRL');
 define('BASE_AVENUE', 'AVENUE DES ETATS UNIS  No 76');
-define('BASE_TVA', 10);
+define('BASE_TVA', 18);
 define('BASE_UNITE_EMBALLAGE', 50);
 // // FOR TEST GEOCON
 
@@ -76,6 +76,11 @@ define('BASE_UNITE_EMBALLAGE', 50);
 // OBR_USERNAME=ws400000480600270
 // OBR_PASSWORD=_B_/BGv0
 
-define('OBR_USERNAME', env('OBR_USERNAME', 'ws400000480600270'));
-define('OBR_PASSWORD', env('OBR_PASSWORD', '_B_/BGv0'));
+// define('OBR_USERNAME', env('OBR_USERNAME', 'ws400000480600270'));
+// define('OBR_PASSWORD', env('OBR_PASSWORD', '_B_/BGv0'));
+
+// Production Prothem
+
+define('OBR_USERNAME', env('OBR_USERNAME', 'wsl400000480600187'));
+define('OBR_PASSWORD', env('OBR_PASSWORD', 'T?v?w7}I'));
 

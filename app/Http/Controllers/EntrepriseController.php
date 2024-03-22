@@ -14,7 +14,7 @@ class EntrepriseController extends Controller
     public function index()
     {
         //
-        $entreprises = Entreprise::where('is_actif', '1')->first()->get();
+        $entreprises = Entreprise::all();
 
         return view('entreprises.index', compact('entreprises'));
     }

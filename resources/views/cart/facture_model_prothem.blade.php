@@ -58,7 +58,7 @@
 			</div> --}}
 			<div style="width: 100%;">
 
-				<h3>{{ $order->company?->tp_name }} </h3>
+				<h3>{{ $order->company->tp_name ?? "" }} </h3>
 
 
 				{{-- <h3>{{COMPANY_DESCRIPTION}} </h3>
@@ -79,25 +79,27 @@
 		{{-- Fin --}}
         <h3 class="text-center">FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }} </h3>
 		{{-- SIDE A --}}
+
+
 		<article class="identification_a">
 			<div>
 				<h5>A. Identification du vendeur</h5>
 
-				<p>Nom et prénom ou Raison Social : <b>{{$order->company?->tp_name}}</b> </p>
-				<p>NIF : <b>{{$order->company?->tp_TIN}}</b></p>
-				<p>Registre du commerce No : <b>{{ $order->company?->tp_trade_number }}</b></p>
-				<p>BP: <b>{{ $order->company?->tp_postal_number }}</b> , Tél <b>{{ $order->company?->tp_phone_number }}</b></p>
-				<p>Commune : <b>{{ $order->company?->tp_address_commune }}</b>, Quartier : {{ $order->company?->tp_address_quartier }}</p>
-				<p>Avenue : <b>{{ $order->company?->tp_address_quartier }} </b></p>
+				<p>Nom et prénom ou Raison Social : <b>{{$order->company->tp_name ?? ""}}</b> </p>
+				<p>NIF : <b>{{$order->company->tp_TIN}}</b></p>
+				<p>Registre du commerce No : <b>{{ $order->company->tp_trade_number ?? "" }}</b></p>
+				<p>BP: <b>{{ $order->company->tp_postal_number ?? "" }}</b> , Tél <b>{{ $order->company->tp_phone_number }}</b></p>
+				<p>Commune : <b>{{ $order->company->tp_address_commune ?? ""}}</b>, Quartier : {{ $order->company->tp_address_quartier }}</p>
+				<p>Avenue : <b>{{ $order->company->tp_address_quartier ?? ""}} </b></p>
 				Assujetti à la TVA : <b>OUI</b>
 
 			</div>
 			<div class="aling-right partie-droite">
 				<div>
                     <b> </b>
-					<p>Centre Fiscal : <b>{{ $order->company?->tp_fiscal_center }}</b></p>
-					<p>Secteur d'activité : <b> {{ $order->company?->tp_activity_sector }} </b></p>
-					<p>Forme juridique : <b> {{ $order->company?->tp_legal_form }} </b></p>
+					<p>Centre Fiscal : <b>{{ $order->company->tp_fiscal_center }}</b></p>
+					<p>Secteur d'activité : <b> {{ $order->company->tp_activity_sector }} </b></p>
+					<p>Forme juridique : <b> {{ $order->company->tp_legal_form }} </b></p>
 				</div>
 
 			</div>

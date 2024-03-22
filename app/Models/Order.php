@@ -50,6 +50,7 @@ protected $guarded = [];
 	}
 
     public function getCompanyAttribute($v){
-        return json_decode($v);
+
+        return json_decode($v) ?  json_decode($v) : Entreprise::currentEntreprise();
     }
 }
