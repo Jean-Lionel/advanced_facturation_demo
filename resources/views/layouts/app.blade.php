@@ -239,7 +239,7 @@
                         if(result){
                             // window.location.reload();
                             $.ajax({
-                                url: "syncronize_to_obr", // the url we want to send and get data from
+                                url: "{{ url('syncronize_to_obr') }}", // the url we want to send and get data from
                                 type: "GET", // type of the data we send (POST/GET)
                                 // the data we want to send
                             }).done(function(data){

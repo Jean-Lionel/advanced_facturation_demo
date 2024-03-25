@@ -10,6 +10,7 @@ define('MAIL_FROM_USER','client@advanced.bi');
 define('CAN_BUCKUP_FILE',false); // Syncronisation des donnees en lignes
 
 define('BASE_UNITE_EMBALLAGE', 50);
+define('RAISON_ENTREPRISE_HEADER', 'ADVANCED FACTURATION');
 // // FOR TEST GEOCON
 
 // TEST GEOCON
