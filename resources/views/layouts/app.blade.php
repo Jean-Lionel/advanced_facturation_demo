@@ -134,10 +134,7 @@
                                             <i class="fa fa-shopping-cart text-lg-center"></i> <span class="badge badge-light">{{ Cart::count()}}</span>
 
                                         </a>
-
                                     </li>
-
-
                                     <li class="nav-item ml-2">
 
                                         <form action="{{ route('logout') }}" method="post">

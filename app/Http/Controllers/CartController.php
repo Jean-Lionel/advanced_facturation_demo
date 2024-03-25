@@ -92,9 +92,13 @@ class CartController extends Controller
             [
                 'embalage' => BASE_UNITE_EMBALLAGE
             ])->associate('App\Models\Product');
+
+            $vente = new VenteController();
+
         return response()->json([
             'success' => 'Le produit a été bien ajouter',
-            'currentTax' => $this->currentTax
+            'currentTax' => $this->currentTax,
+            'panier' => $vente->panierContent()
         ]);
     }
 
@@ -165,7 +169,10 @@ class CartController extends Controller
 
         Cart::remove($rowId);
 
-        return back()->with('success', 'Suppression avec success');
+        return response()->json([
+            'status' => 200,
+            'panier' => VenteController::panierContent(),
+        ]);
     }
 
 

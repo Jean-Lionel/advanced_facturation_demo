@@ -19,31 +19,32 @@ class VenteController extends Controller
         // $obr = new SendInvoiceToOBR();
 
         // dd($obr->getToken());
-       // dump(Cart::content()->map->id);
+        // dump(Cart::content()->map->id);
         $search = request()->get('search');
         $products = Product::where('quantite', '>', 1)
-        ->whereNotIn('id', Cart::content()->map->id)
-        ->where(function ($query) use ($search) {
-            $query->where('name', 'like', '%' . $search . '%')
-            ->orWhere('code_product', 'like', '%' . $search . '%')
-            ->orWhere('price', 'like', '%' . $search . '%')
-            ->orWhere('unite_mesure', 'like', '%' . $search . '%');
-        })->latest()->take(6)->get();
-       // SyncroniseInvoice::dispatch(1);
+                    ->where('price', '>', 0)
+                    ->whereNotIn('id', Cart::content()->map->id)
+                    ->where(function ($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('code_product', 'like', '%' . $search . '%')
+                        ->orWhere('price', 'like', '%' . $search . '%')
+                        ->orWhere('unite_mesure', 'like', '%' . $search . '%');
+                    })->latest()->take(6)->get();
+        // SyncroniseInvoice::dispatch(1);
 
         $value_products = $this->makeProductBody($products);
 
-        if($request->ajax()){
+        $paniers_content = $this->panierContent();
 
+        if($request->ajax()){
             return $value_products ;
         }
 
-
-        return view('ventes.index', compact('products', 'value_products', 'search'));
+        return view('ventes.index', compact('products', 'paniers_content', 'value_products', 'search'));
     }
 
 
-    private function makeProductBody($products){
+    private  function makeProductBody($products){
 
         $body = "";
 
@@ -52,21 +53,39 @@ class VenteController extends Controller
             <tr>
             <td> $value->id </td>
             <td> $value->code_product </td>
-            <td>
-                 $value->name
-            </td>
+            <td> $value->name</td>
             <td> $value->price </td>
             <td> $value->quantite </td>
             <td> $value->date_expiration </td>
             <td class="d-flex justify-content-around">
-                    <button onclick="addToCartProduct($value->id)"  type="submit" class="btn btn-sm btn-primary">+ Ajouter aux pannier</button>
-
+            <button onclick="addToCartProduct($value->id)"  class="btn btn-sm btn-primary">+ Ajouter aux pannier</button>
             </td>
-        </tr>
-        EOD;
+            </tr>
+            EOD;
         }
 
         return $body;
+
+    }
+
+
+    public  static function panierContent(){
+        $body = '';
+
+        foreach (Cart::content() as $product){
+            $body .= <<< EOD
+            <div class="col-md-4">
+            <li class="list-group-item m-2 d-flex justify-content-between align-items-center">
+            $product->name
+            <span class="badge badge-primary badge-pill"> {$product->model->price} </span>
+            <button onclick="removeToContent('{$product->rowId}')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+            </li>
+            </div>
+            EOD;
+
+        }
+
+        return  $body;
 
     }
 

@@ -86,3 +86,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('obr_log', [SyncronizeController::class,  'obr_log'])->name('obr_log');
 
 });
+
+require __DIR__ . '/jetstream.php';

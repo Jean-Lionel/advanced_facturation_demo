@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>FACTURE  {{ RAISON_ENTREPRISE }}</title>
+	<title>FACTURE  {{ auth()->user()->company()->tp_name ?? "" }}</title>
 	<link rel="stylesheet" href="{{ asset('css/print.min.css') }}">
 	<script src="{{ asset('js/print.min.js') }}"></script>
 	<link rel="stylesheet" href="{{ asset('css/prothem.css') }}">

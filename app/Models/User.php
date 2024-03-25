@@ -53,6 +53,10 @@ class User extends Authenticatable
         return cache('company', Entreprise::currentEntreprise(), 30)  ;
     }
 
+    public function companyNme(){
+
+    }
+
     /**
      * The accessors to append to the model's array form.
      *
