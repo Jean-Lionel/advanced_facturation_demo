@@ -3,6 +3,8 @@
 {{-- Stocke Controller Journal --}}
 
 @section('content')
+@include('products._header_product')
+
 
 
 <div class="col-md-12">
@@ -36,7 +38,7 @@
 
 			</tbody>
 		</table>
-		
+
 
 	</div>
 

@@ -3,6 +3,9 @@
 @section('content')
 
 <div>
+    @include('products._header_product')
+
+
 	<div class="row">
 
 

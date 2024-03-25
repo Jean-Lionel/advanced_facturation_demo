@@ -73,11 +73,12 @@ class VenteController extends Controller
         $body = '';
 
         foreach (Cart::content() as $product){
+            $price = getPrice($product->model->price);
             $body .= <<< EOD
-            <div class="col-md-4">
+            <div class="col-3">
             <li class="list-group-item m-2 d-flex justify-content-between align-items-center">
             $product->name
-            <span class="badge badge-primary badge-pill"> {$product->model->price} </span>
+            <span class="badge badge-primary badge-pill"> {$price} </span>
             <button onclick="removeToContent('{$product->rowId}')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
             </li>
             </div>

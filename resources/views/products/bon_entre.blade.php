@@ -3,15 +3,18 @@
 @section('content')
 
 <div>
+    @include('products._header_product')
+
+
 	<div class="row">
-		
+
 		<div class="col-md-8">
 			<form action="">
 				<div class="row">
 					<div class="co-md-4">
-					
+
 						<input required="" type="date" value="{{ $s_date ??"" }}" id="s_date" name="s_date" class="form-control form-inline">
-						
+
 					</div>
 					<div class="col-md-1">AU</div>
 					<div class="co-md-4 ml-1">
@@ -30,17 +33,17 @@
 					</div>
 				</div>
 
-				
+
 			</form>
-			
+
 		</div>
 
 		<div class="col-md-6">
-			
+
 		</div>
 
 		<div class="col-md-12">
-			
+
 			<table class="table table-sm table-striped">
 				<thead>
 					<tr>
@@ -55,9 +58,9 @@
 						@else
 							<th colspan="2">Qté Vendue</th>
 						@endif
-						
+
 						<th>Qté Initial</th>
-						
+
 					</tr>
 				</thead>
 

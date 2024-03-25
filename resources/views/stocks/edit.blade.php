@@ -2,6 +2,8 @@
 
 
 @section('content')
+@include('products._header_product')
+
 
 
 

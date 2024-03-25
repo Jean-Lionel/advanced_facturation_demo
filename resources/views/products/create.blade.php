@@ -3,6 +3,8 @@
 
 @section('content')
 
+@include('products._header_product')
+
 
 
 <form action="{{ route('products.store') }}" method="post">

@@ -25,7 +25,7 @@
 					<label for="title">STOCK</label>
 
 					<select name="stock_id" id="" class="form-control {{$errors->has('stock_id') ? 'is-invalid' : 'is-valid' }}">
-						
+
 						@foreach ($stockes as $element)
 							{{-- expr --}}
 							<option value="">---choisissez le stock</option>
@@ -40,14 +40,14 @@
 
 					{{-- <input type="text" class="form-control {{$errors->has('title') ? 'is-invalid' : 'is-valid' }}" id="title" name="title" value="{{ old('title') ?? $category->title?? ' ' }}">
  --}}
-					
+
 				</div>
 			</div>
 
 			<div class="col-md-12">
 				<div class="form-group">
 					<label for="description">Description</label>
-					
+
 
 					<textarea class="form-control"  row="15" {{$errors->has('description') ? 'is-invalid' : 'is-valid'}} name="description">{{ old('description') ?? $category->description?? ' ' }}
 					</textarea>

@@ -1,13 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+@include('products._header_product')
+
 
 <div>
 	<div class="row">
 
 
 		<div class="col-md-6 d-flex justify-content-between">
-			<a href="{{ route('categories.create') }}" 
+			<a href="{{ route('categories.create') }}"
 			class="btn btn-primary btn-sm">Ajouter</a>
 			<h4 class="text-center">
 				Liste des categories
@@ -19,7 +21,7 @@
 			</form>
 		</div>
 	</div>
-	
+
 	<table class="table table-sm">
 		<thead>
 			<tr>
@@ -59,7 +61,7 @@
 		</tbody>
 	</table>
 
-	
+
 </div>
 
 <div class="col-md-12" style="height: 20px; overflow: hidden;">

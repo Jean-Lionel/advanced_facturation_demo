@@ -3,6 +3,8 @@
 {{-- Stocke Controller Journal --}}
 
 @section('content')
+@include('products._header_product')
+
 
 <div class="row">
 

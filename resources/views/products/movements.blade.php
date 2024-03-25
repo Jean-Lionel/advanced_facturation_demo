@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+@include('products._header_product')
+
+
 <div class="container-fluid">
 	<div>
 		<h4 class="text-center">Mouvement du Produit # {{ $item_id }} </h4>

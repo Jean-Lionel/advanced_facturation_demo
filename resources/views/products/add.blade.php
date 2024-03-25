@@ -3,6 +3,9 @@
 @section('content')
 
 <div >
+    @include('products._header_product')
+
+
     <div class="card">
         <div class="text-center card-title">{{ $product->name }}</div>
         <div class="text-center card-title">Qté en stock : {{ $product->quantite }}</div>
