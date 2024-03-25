@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>{{ RAISON_ENTREPRISE_HEADER }}</title>
+    <title>{{ auth()->user()->company()->tp_name ?? "" }}</title>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -112,7 +112,7 @@
                             </button>
 
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                <h5>{{ RAISON_ENTREPRISE_HEADER }}</h5>
+                                <h5>{{ auth()->user()->company()->tp_name ?? "" }}</h5>
 
 
                                 <ul class="nav navbar-nav ml-auto">
@@ -208,8 +208,6 @@
                 @yield('javascript')
 
                 <script>
-
-
 
                     const canSyncronize = @json( CAN_SYNCRONISE );
                     const timeSyncronisation = @json( TIME_OUT_SYNCRONISATION );

@@ -29,9 +29,9 @@
                             $item = json_decode($item->result)
                         @endphp
                         <ol>
-                            <li>invoice_number :   {{ $item->invoice_number }}</li>
-                            <li>invoice_registered_number : {{ $item->invoice_registered_number }}</li>
-                            <li>invoice_registered_date : {{ $item->invoice_registered_date }}</li>
+                            <li>invoice_number :   {{ $item->invoice_number ?? "" }}</li>
+                            <li>invoice_registered_number : {{ $item->invoice_registered_number ?? "" }}</li>
+                            <li>invoice_registered_date : {{ $item->invoice_registered_date  ?? ""}}</li>
                         </ol>
                         @endif
 

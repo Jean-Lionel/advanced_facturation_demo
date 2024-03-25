@@ -49,6 +49,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function company(){
+        return cache('company', Entreprise::currentEntreprise(), 30)  ;
+    }
+
     /**
      * The accessors to append to the model's array form.
      *

@@ -1,7 +1,7 @@
 <?php
 
 // Variable pour la syncronisation des donnees dans OBR
-define('CAN_SYNCRONISE', false);
+define('CAN_SYNCRONISE', true);
 define('IS_PRODUCTION', false);
 define('TIME_OUT_SYNCRONISATION', (1 * 1000)); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_STOCK', true); // Seconde de Syncronisation dans OBR
@@ -81,6 +81,12 @@ define('BASE_UNITE_EMBALLAGE', 50);
 
 // Production Prothem
 
-// define('OBR_USERNAME', env('OBR_USERNAME', 'wsl400000480600187'));
-// define('OBR_PASSWORD', env('OBR_PASSWORD', 'T?v?w7}I'));
+/**
+ * B@IT HEALTH
+ *  - nom d’utilisateur : ws400060445600690
+ *  - mot de passe : 0Qw-c!I|
+ */
+
+define('OBR_USERNAME', env('OBR_USERNAME', 'ws400060445600690'));
+define('OBR_PASSWORD', env('OBR_PASSWORD', '0Qw-c!I|'));
 
