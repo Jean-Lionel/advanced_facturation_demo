@@ -39,12 +39,6 @@
 
 </div>
 
-{{-- <div class="col-md-12" style="height: 100px; overflow: hidden;">
-    {{ $products->links()}}
-</div> --}}
-
-@if (Cart::content()->count() > 0)
-{{-- expr --}}
 <div>
     <ul class="list-group">
         <div class="row" id="paniers_content">
@@ -52,7 +46,6 @@
         </div>
     </ul>
 </div>
-@endif
 
 @endsection
 

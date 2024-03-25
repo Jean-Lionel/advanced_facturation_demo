@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('cancelInvoice', 'ObrDeclarationController@cancelInvoice');
     Route::get('obr_declarations_cancel', 'ObrDeclarationController@obr_declarations_cancel')->name('obr_declarations_cancel');
     Route::resource('stockes', StockController::class);
+    Route::get('bar_code', 'ProductController@bar_code')->name('bar_code');
     Route::resource('products', ProductController::class);
     Route::resource('clients', ClientController::class);
     Route::resource('categories', CategoryController::class);

@@ -46,6 +46,13 @@ class ProductController extends Controller
         return view("products.index", compact('products','search'));
     }
 
+    public function bar_code(){
+
+
+
+        return view("products.bar_code");
+    }
+
 
     public function create(Request $request)
     {

@@ -27,5 +27,12 @@
             <span>Mouvement de stock</span>
         </a>
     </div>
+
+    <div>
+        <a href="{{ route('bar_code') }}">
+            <span class="fa fa-bar-code"></span>
+            <span>Bar Code</span>
+        </a>
+    </div>
 </div>
 <hr>
