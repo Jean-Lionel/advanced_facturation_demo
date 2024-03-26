@@ -9,6 +9,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
@@ -50,7 +51,9 @@ class User extends Authenticatable
     ];
 
     public function company(){
-        return cache('company', Entreprise::currentEntreprise(), 30)  ;
+        return Cache::remember('company', (10 * 30), function () {
+            return  Entreprise::currentEntreprise(); // or any other eloquent query
+        });
     }
 
     public function companyNme(){
@@ -68,7 +71,7 @@ class User extends Authenticatable
 
 
     public function roles(){
-        return $this->belongsToMany('App\Models\Role');
+        return  $this->belongsToMany('App\Models\Role');
     }
 
 

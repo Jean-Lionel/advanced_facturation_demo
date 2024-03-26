@@ -9,8 +9,9 @@ use App\Models\ObrStockLog;
 use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class SyncronizeController extends Controller
 {
@@ -27,7 +28,7 @@ class SyncronizeController extends Controller
             try {
                 //code...
             if(CAN_SYNCRONISE_STOCK){
-                $this->syncronizeStock();
+               $this->syncronizeStock();
             }
 
             if(CAN_SYNCRONISE_INVOICE){
@@ -40,10 +41,15 @@ class SyncronizeController extends Controller
             }
 
         }else{
+
             return response()->json([
                 'success' => false,
                 'data' => null,
             ]);
+        }
+
+        if($response == null){
+            Session::put('cancel_syncronize', true);
         }
         return response()->json([
             'success' => true,
@@ -184,5 +190,6 @@ class SyncronizeController extends Controller
                 break;
             }
         }
+
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 use Kyslik\ColumnSortable\Sortable;
 
 class Product extends MyModel
@@ -65,9 +66,15 @@ class Product extends MyModel
         return  $mouvement ? $mouvement->item_movement_type : "-";
     }
 
+    public function mouvements(){
+        return $this->hasMany(ObrMouvementStock::class, 'item_code');
+    }
+
     public function category()
     {
-        return $this->belongsTo('App\Models\Category');
+       // return Cache::remember('category_product_'. $this->id, 60*24, function () {
+            return $this->belongsTo(Category::class, 'category_id');
+        //});
     }
 
 

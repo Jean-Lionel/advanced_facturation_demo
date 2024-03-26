@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Api\CacheAdvancedController;
 use App\Http\Controllers\ObrStockController;
 use App\Http\Controllers\SendInvoiceToOBR;
 use App\Http\Controllers\SyncronizeController;
@@ -85,6 +87,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('retour_produit', [ObrStockController::class, 'retour_produit'])->name('retour_produit');
     Route::get('syncronize_to_obr', [SyncronizeController::class,  'syncronize'])->name('syncronize_to_obr');
     Route::get('obr_log', [SyncronizeController::class,  'obr_log'])->name('obr_log');
+    Route::get('clear_cache', [CacheAdvancedController::class,  'index'])->name('clear_cache');
 
 });
 

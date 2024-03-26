@@ -3,14 +3,17 @@
 @section('content')
 
 <div>
+    @include('users._header_config')
+</div>
+<div>
 	<div class="row">
 
 
 		<div class="col-md-6 d-flex justify-content-between">
-			<a href="{{ route('users.create') }}" 
+			<a href="{{ route('users.create') }}"
 			class="btn btn-primary btn-sm">Ajouter</a>
 			<h4 class="text-center">
-				Liste des produits
+				Liste des Utilisateurs
 			</h4>
 		</div>
 		<div class="col-md-6">
@@ -19,7 +22,7 @@
 			</form>
 		</div>
 	</div>
-	
+
 	<table class="table table-sm">
 		<thead>
 			<tr>
@@ -41,13 +44,13 @@
 				<td>
 
 					<ul class="">
-					
+
 						@foreach($user->roles as $role)
 						<li class="">{{ $role->name }}</li>
 						@endforeach
 
 					</ul>
-					
+
 
 
 				</td>
@@ -61,7 +64,7 @@
 						<button type="submit" class="btn ml-2 btn-danger btn-sm"><i class="fa fa-trash"></i></button>
 					</form>
 				</td>
-				
+
 			</tr>
 
 			@endforeach

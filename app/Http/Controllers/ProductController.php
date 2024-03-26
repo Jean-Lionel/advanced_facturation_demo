@@ -30,7 +30,7 @@ class ProductController extends Controller
         // dd(Gate::allows('is-admin'));
         $this->authorize('view', Product::class);
         $search = \Request::get('search');
-        $products = Product::latest()
+        $products = Product::with(['category' , 'mouvements'])->latest()
                     ->where(function($query) use ($search) {
                         if($search){
                             $query->where('name','like', '%'.$search.'%')
@@ -41,17 +41,29 @@ class ProductController extends Controller
                         }
                     })
                     ->orderBy('quantite','asc')
-                     ->latest()->paginate();
+                    ->latest()->paginate();
 
         return view("products.index", compact('products','search'));
     }
 
     public function bar_code(){
         $search = request()->query('search');
+        $quantite = request()->query('quantite') ?? 10;
+        $category = request()->query('category');
 
-        $products = Product::latest()->take(40)->get();
+        $products = Product::where(function($quer) use($search){
 
-        return view("products.bar_code" , compact('products','search'));
+            if($search){
+                $quer->where('name','like', '%'.$search.'%')
+                ->orWhere('code_product','like', '%'.$search.'%')
+                ->orWhere('date_expiration','like', '%'.$search.'%')
+                ->orWhere('unite_mesure','like', '%'.$search.'%')
+                ->orWhere('marque','like', '%'.$search.'%');
+            }
+
+        })->latest()->take( $quantite)->get();
+
+        return view("products.bar_code" , compact('products','search', 'quantite'));
     }
 
 

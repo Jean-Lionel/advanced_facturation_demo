@@ -57,6 +57,7 @@
             html, body {
                 width: 210mm;
                 height: 297mm;
+
             }
         }
     </style>
@@ -106,7 +107,7 @@
                         </li>
 
                         <li>
-                            <a href="{{ route('users.index') }}"><span class="fa fa-user"></span> Utilisateur</a>
+                            <a href="{{ route('users.index') }}"><span class="fas fa-cogs"></span> Système</a>
                         </li>
                         <li></li>
                         {{--  <li>
@@ -233,6 +234,10 @@
                         const canSyncronize = @json( CAN_SYNCRONISE );
                         const timeSyncronisation = @json( TIME_OUT_SYNCRONISATION );
 
+                        const cancel_syncronize = "{{ session('cancel_syncronize') }}";
+
+                        //alert(cancel_syncronize);
+
                         const checkOnlineStatus = async () => {
                             try {
                                 const online = await fetch("https://jsonplaceholder.typicode.com/todos/1");
@@ -255,7 +260,7 @@
                             return result;
                         }
 
-                        if(canSyncronize){
+                        if(canSyncronize && !cancel_syncronize){
 
                             let  limitedInterval =  setInterval(async () => {
                                 const result = await updateInternetStatus();

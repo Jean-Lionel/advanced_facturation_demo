@@ -8,7 +8,13 @@
     /* grid-template-columns: 100px 100px 100px;
     grid-template-rows: 100px 100px 100px; */
     grid-gap: 10px;
+    margin-bottom: 20mm;
 
+}
+
+@media print {
+    .bar_code_lis{
+    }
 }
 .bar_code_lis >div{
     margin: 5px;
@@ -19,6 +25,7 @@
     align-content: center;
     flex-direction: column;
     align-items: center;
+
 
 
 }

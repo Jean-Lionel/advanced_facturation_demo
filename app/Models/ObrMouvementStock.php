@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Jobs\ObrSendInvoince;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 
 /**
 *
@@ -52,6 +53,7 @@ class ObrMouvementStock extends Model
     }
     public static function saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_description = null, $item_movement_invoice_ref = null ){
 
+        Session::put('cancel_syncronize', false);
          $item_movement_date = now();
         self::create([
             'system_or_device_id' => OBR_USERNAME,

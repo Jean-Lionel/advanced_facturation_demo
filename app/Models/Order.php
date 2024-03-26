@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Kyslik\ColumnSortable\Sortable;
 
 class Order extends Model
@@ -28,6 +29,8 @@ protected $guarded = [];
 
 		self::creating(function($model){
 			$model->user_id = Auth::user()->id ?? 1;
+
+            Session::put('cancel_syncronize', false);
 		});
 	}
 
