@@ -1,7 +1,44 @@
-1. Catégorie du client : ajouter les champs,personne morale ou personne physique
-2.article: unité de mesure obligatoire,prix de revient prix de vente
-3.rendre le taux de taxe saisable:ils peuvent écrire n'importe quel taux
-4.message qui montre que le stock ne contient pas assez de produits quant on fait une vente
-5. Muri sortie de stock: ajouter prix de revient na prix de vente
-6.accuse de réception : iyo niyo tuzobaca inoti
-
+{
+  "todotree": {
+    "tree": [
+      {
+        "key": 1711423837114,
+        "children": [
+          {
+            "key": 1711423845817,
+            "children": [],
+            "todo": {
+              "content": "",
+              "id": 1711423845817,
+              "level": "default",
+              "done": false,
+              "start": 1711423845817
+            }
+          }
+        ],
+        "todo": {
+          "content": "Bonjout",
+          "id": 1711423837114,
+          "level": "default",
+          "done": false,
+          "start": 1711423837114
+        }
+      }
+    ],
+    "expandKeys": [
+      1711423837114
+    ],
+    "schema": "https://github.com/Saber2pr/vsc-ext-todolist/blob/master/src/api/type.ts#L3",
+    "add_mode": "bottom",
+    "virtual": false,
+    "timelines": [],
+    "showLine": false,
+    "playFontSize": 24,
+    "title": "obrInformation",
+    "autoSort": false,
+    "showEndTime": false,
+    "simpleMode": false,
+    "lang": "en",
+    "version": "1711423845851"
+  }
+}
