@@ -47,10 +47,11 @@ class ProductController extends Controller
     }
 
     public function bar_code(){
+        $search = request()->query('search');
 
+        $products = Product::latest()->take(40)->get();
 
-
-        return view("products.bar_code");
+        return view("products.bar_code" , compact('products','search'));
     }
 
 

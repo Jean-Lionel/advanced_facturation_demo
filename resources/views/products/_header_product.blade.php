@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-around">
+<div class="d-flex justify-content-around noprint">
     <div>
     <a href="{{ route('products.create') }}"><span class="fa fa-seedling"></span> Entre</a>
     </div>
@@ -30,7 +30,7 @@
 
     <div>
         <a href="{{ route('bar_code') }}">
-            <span class="fa fa-bar-code"></span>
+            <span class="fa fa-barcode "></span>
             <span>Bar Code</span>
         </a>
     </div>

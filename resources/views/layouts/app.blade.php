@@ -15,33 +15,57 @@
         body{
             font-family: Arial, Helvetica,"Times New Roman", sans-serif;
         }
-
         #sidebar{
             /*background: #009a41;*/
             background: #5c3fd8;
         }
 
-    .status {
-        position: fixed;
-        bottom: 0;
-        right: 0;
+        .status {
+            position: fixed;
+            bottom: 0;
+            right: 0;
 
-        border-radius: 6px;
+            border-radius: 6px;
 
-        background-color: rgb(33, 34, 35);
-    }
+            background-color: rgb(33, 34, 35);
+        }
 
-.active {
-    background-color: rgb(48, 249, 75);
-    padding: 6px;
-}
+        .active {
+            background-color: rgb(48, 249, 75);
+            padding: 6px;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        page[size="A4"] {
+            background: white;
+            width: 21cm;
+            height: 29.7cm;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 2cm;
+            box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+        }
+
+        @media print{
+            .noprint{
+                display: none !important;
+            }
+            html, body {
+                width: 210mm;
+                height: 297mm;
+            }
+        }
     </style>
 
 </head>
 <body>
 
     <div class="wrapper d-flex align-items-stretch">
-        <nav id="sidebar" class="active">
+        <nav id="sidebar" class="active noprint" >
             <h1><a href="" class="logo">
                 <img src="{{ asset('img/logo.jpg') }}" class="img-thumbnail"  alt="">
             </a></h1>
@@ -125,145 +149,145 @@
                                         <h5 class="mr-4 mt-2 d-flex">
                                             <span>{{ Auth::user()->name }}</span>
 
-                                    </li>
-
-                                    <li class="nav-item">
-
-                                        <a href="{{ route('panier.index') }}" class="btn btn-primary">
-
-                                            <i class="fa fa-shopping-cart text-lg-center"></i> <span class="badge badge-light">{{ Cart::count()}}</span>
-
-                                        </a>
-                                    </li>
-                                    <li class="nav-item ml-2">
-
-                                        <form action="{{ route('logout') }}" method="post">
-                                            @csrf
-                                            @method('POST')
-                                            <button type="submit" class="btn btn-dark btn-sm rounded-bottom">
-
-                                                <i class="fa fa-power-off fa-2x" aria-hidden="true" title=" Se deconnecter"></i>
-
-
-                                            </form>
-
                                         </li>
 
-                                        {{--  <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('stockes.index') }}">Stocke</a>
-                                        </li> --}}
-                                    </ul>
+                                        <li class="nav-item">
+
+                                            <a href="{{ route('panier.index') }}" class="btn btn-primary">
+
+                                                <i class="fa fa-shopping-cart text-lg-center"></i> <span class="badge badge-light">{{ Cart::count()}}</span>
+
+                                            </a>
+                                        </li>
+                                        <li class="nav-item ml-2">
+
+                                            <form action="{{ route('logout') }}" method="post">
+                                                @csrf
+                                                @method('POST')
+                                                <button type="submit" class="btn btn-dark btn-sm rounded-bottom">
+
+                                                    <i class="fa fa-power-off fa-2x" aria-hidden="true" title=" Se deconnecter"></i>
+
+
+                                                </form>
+
+                                            </li>
+
+                                            {{--  <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('stockes.index') }}">Stocke</a>
+                                            </li> --}}
+                                        </ul>
+                                    </div>
                                 </div>
+                            </nav>
+
+                            <div class="container-fluid">
+
+                                <div>
+                                    @if (session('success'))
+                                    {{-- expr --}}
+
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        <strong>SUCCESS</strong> {{ session('success')}}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    @endif
+
+
+                                    @if (session('error'))
+                                    {{-- expr --}}
+
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>SUCCESS</strong> {{ session('error')}}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    @endif
+                                </div>
+
+                                @yield('content')
                             </div>
-                        </nav>
-
-                        <div class="container-fluid">
-
-                            <div>
-                                @if (session('success'))
-                                {{-- expr --}}
-
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                    <strong>SUCCESS</strong> {{ session('success')}}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                @endif
 
 
-                                @if (session('error'))
-                                {{-- expr --}}
 
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <strong>SUCCESS</strong> {{ session('error')}}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                @endif
-                            </div>
-
-                            @yield('content')
                         </div>
-
-
-
                     </div>
-                </div>
-                <script src="{{ asset('js/jquery-3.5.min.js') }}"></script>
-                <script src="{{ asset('js/popper.js') }}"></script>
-                <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-                <script src="{{ asset('js/chart.js.2.9.4_Chart.min.js') }}"></script>
-                <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
-                <script src="{{ asset('datatable/datatables.min.js') }}"></script>
-                <script src="{{ asset('datatable/pdfmake.min.js') }}"></script>
-                <script src="{{ asset('js/main.js') }}"></script>
+                    <script src="{{ asset('js/jquery-3.5.min.js') }}"></script>
+                    <script src="{{ asset('js/popper.js') }}"></script>
+                    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+                    <script src="{{ asset('js/chart.js.2.9.4_Chart.min.js') }}"></script>
+                    <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
+                    <script src="{{ asset('datatable/datatables.min.js') }}"></script>
+                    <script src="{{ asset('datatable/pdfmake.min.js') }}"></script>
+                    <script src="{{ asset('js/main.js') }}"></script>
 
-                @livewireScripts
+                    @livewireScripts
 
-                @yield('javascript')
+                    @yield('javascript')
 
-                <script>
+                    <script>
 
-                    const canSyncronize = @json( CAN_SYNCRONISE );
-                    const timeSyncronisation = @json( TIME_OUT_SYNCRONISATION );
+                        const canSyncronize = @json( CAN_SYNCRONISE );
+                        const timeSyncronisation = @json( TIME_OUT_SYNCRONISATION );
 
-                    const checkOnlineStatus = async () => {
-                        try {
-                            const online = await fetch("https://jsonplaceholder.typicode.com/todos/1");
-                            return online.status >= 200 && online.status < 300; // either true or false
-                        } catch (err) {
-                            return false; // definitely offline
-                        }
-                    };
+                        const checkOnlineStatus = async () => {
+                            try {
+                                const online = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+                                return online.status >= 200 && online.status < 300; // either true or false
+                            } catch (err) {
+                                return false; // definitely offline
+                            }
+                        };
 
-                    const updateInternetStatus = async () => {
-                        const result = await checkOnlineStatus();
-                        const statusDisplay = document.getElementById("status");
-                        statusDisplay.innerHTML = result ? ( `
-                                                    <div class="avatar">
+                        const updateInternetStatus = async () => {
+                            const result = await checkOnlineStatus();
+                            const statusDisplay = document.getElementById("status");
+                            statusDisplay.innerHTML = result ? ( `
+                            <div class="avatar">
                                 <span class="status active"> CONNECTED</span>
                             </div>`) : (`
                             <div class="avatar">
                                 <span class="status"> NOT CONNECTED</span>
                             </div>`);
-                    return result;
-                    }
-
-                    if(canSyncronize){
-
-                  let  limitedInterval =  setInterval(async () => {
-                        const result = await updateInternetStatus();
-                        console.log(result);
-                        if(result){
-                            // window.location.reload();
-                            $.ajax({
-                                url: "{{ url('syncronize_to_obr') }}", // the url we want to send and get data from
-                                type: "GET", // type of the data we send (POST/GET)
-                                // the data we want to send
-                            }).done(function(data){
-                                // this part will run when we send and return successfully
-                                console.log(data);
-                                if(!data.data){
-                                    clearInterval(limitedInterval);
-                                    console.log('interval cleared! Pas de donnees recu');
-                                }
-                            }).fail(function(error){
-                                // this part will run when an error occurres
-                                console.log("An error has occurred. => " , error);
-                            }).always(function(){
-                                // this part will always run no matter what
-                                console.log("Complete.");
-                            });
-                        }else{
-                            clearInterval(limitedInterval);
-                            console.log('interval cleared!');
+                            return result;
                         }
-                    }, timeSyncronisation); // probably too often, try 30000 for every 30 second
 
-                }
-                </script>
+                        if(canSyncronize){
 
-            </body>
-            </html>
+                            let  limitedInterval =  setInterval(async () => {
+                                const result = await updateInternetStatus();
+                                console.log(result);
+                                if(result){
+                                    // window.location.reload();
+                                    $.ajax({
+                                        url: "{{ url('syncronize_to_obr') }}", // the url we want to send and get data from
+                                        type: "GET", // type of the data we send (POST/GET)
+                                        // the data we want to send
+                                    }).done(function(data){
+                                        // this part will run when we send and return successfully
+                                        console.log(data);
+                                        if(!data.data){
+                                            clearInterval(limitedInterval);
+                                            console.log('interval cleared! Pas de donnees recu');
+                                        }
+                                    }).fail(function(error){
+                                        // this part will run when an error occurres
+                                        console.log("An error has occurred. => " , error);
+                                    }).always(function(){
+                                        // this part will always run no matter what
+                                        console.log("Complete.");
+                                    });
+                                }else{
+                                    clearInterval(limitedInterval);
+                                    console.log('interval cleared!');
+                                }
+                            }, timeSyncronisation); // probably too often, try 30000 for every 30 second
+
+                        }
+                    </script>
+
+                </body>
+                </html>
