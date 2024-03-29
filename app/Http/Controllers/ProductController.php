@@ -29,7 +29,7 @@ class ProductController extends Controller
     {
         // dd(Gate::allows('is-admin'));
         $this->authorize('view', Product::class);
-        $search = \Request::get('search');
+        $search = request()->get('search');
         $products = Product::with(['category' , 'mouvements'])->latest()
                     ->where(function($query) use ($search) {
                         if($search){
@@ -50,6 +50,7 @@ class ProductController extends Controller
         $search = request()->query('search');
         $quantite = request()->query('quantite') ?? 10;
         $category = request()->query('category');
+        $occurence = request()->query('occurence') ?? 1;
 
         $products = Product::where(function($quer) use($search){
 
@@ -63,7 +64,7 @@ class ProductController extends Controller
 
         })->latest()->take( $quantite)->get();
 
-        return view("products.bar_code" , compact('products','search', 'quantite'));
+        return view("products.bar_code" , compact('products','search', 'quantite', 'occurence'));
     }
 
 

@@ -63,7 +63,10 @@ class SyncronizeController extends Controller
 
            // $ws400000333700160
            //$
-           $excludes_ids = ObrPointer::all()->map->order_id;
+           $excludes_ids = Cache::remember('key', 4 * 60, function () {
+
+            return ObrPointer::all()->map->order_id;
+           }); ;
            $order_peding_ids = Order::whereNull('envoye_obr')
                                         ->whereNotIn('id', $excludes_ids)
                                         ->get()->map->id;
@@ -151,7 +154,7 @@ class SyncronizeController extends Controller
 
     public function syncronizeStock(){
         $today = Carbon::now();
-        $thirtyDaysAgo = $today->subDays(5);
+        $thirtyDaysAgo = $today->subDays(DAY_FOR_STOCK_DATA_SYNCRONIZE);
         $records = ObrStockLog::whereDate('created_at', '>', $thirtyDaysAgo)->get()->map->movement_id;
         $items = ObrMouvementStock::whereDate('created_at', '>', $thirtyDaysAgo)
         ->whereNotIn('id', $records)

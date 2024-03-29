@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -21,20 +22,25 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-
-            $this->user = Auth::user();
+            $this->user = Cache::remember('connected_user', 60 * 10, function () {
+                return Auth::user();
+            });
             $this->authorize('is-admin');
 
             return $next($request);
         });
-        
+
     }
     public function index()
     {
         //
-        $search = \Request::get('search');
-
-        $users = User::paginate(10);
+        $search = request()->get('search');
+        $users = Cache::remember('users_cache', 30, function () use ($search) {
+            return User::with('roles')->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%')
+                ->orderBy('name')
+                ->paginate(10);
+        });
 
         return view('users.index', compact('users', 'search'));
     }
@@ -63,11 +69,11 @@ class UserController extends Controller
             'password' => 'required|min:5'
 
         ]);
-        
+
         $user = User::create([
 
            'name' => $request->name,
-           
+
            'email' => $request->email,
            'email_verified_at' => now(),
             'password' => Hash::make($request->password), // password
@@ -130,7 +136,7 @@ class UserController extends Controller
         $user->save();
 
         return $this->index();
-       
+
     }
 
     /**

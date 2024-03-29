@@ -29,7 +29,6 @@ protected $guarded = [];
 
 		self::creating(function($model){
 			$model->user_id = Auth::user()->id ?? 1;
-
             Session::put('cancel_syncronize', false);
 		});
 	}
