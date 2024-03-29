@@ -76,27 +76,24 @@ class User extends Authenticatable
 
 
     public function isAdmin(){
-
-        return $this->roles()->where('name','ADMINISTRATEUR')->first()  || $this->id === 1;
+        return  $this->roles()->where('name','ADMINISTRATEUR')->first()  || $this->id === 1;
     }
 
     public function isControleur(){
-        return $this->roles()->where('name', 'CONTROLLEUR')->first();
+         return  $this->roles()->where('name','CONTROLLEUR')->first();
     }
 
     public function isComptable(){
-        return $this->roles()->where('name', 'COMPTABLE')->first();
+            return  $this->roles()->where('name','COMPTABLE')->first();
+
     }
 
     public function isVente(){
-        return $this->roles()->where('name', 'VENTE')->first();
+            return  $this->roles()->where('name','VENTE')->first();
     }
 
     public function isEntreProduit(){
-        return $this->roles()->where('name', 'ENTRE DES PRODUITS EN STOCK')->first();
+
+        return  $this->roles()->where('name','ENTRE DES PRODUITS')->first();
     }
-
-
-
-
 }
