@@ -1,0 +1,11 @@
+models:
+  Vendredi:
+    title: string:400
+    content: longtext
+    published_at: nullable timestamp
+
+
+
+controllers:
+  Vendredi:
+    resource: web

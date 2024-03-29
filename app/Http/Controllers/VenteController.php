@@ -16,9 +16,9 @@ class VenteController extends Controller
 
     public function index(Request $request)
     {
-        // $obr = new SendInvoiceToOBR();
+        //  $obr = new SendInvoiceToOBR();
 
-        // dd($obr->getToken());
+        //  dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
         // dump(Cart::content()->map->id);
         $search = request()->get('search');
         $products = Product::where('quantite', '>', 1)
@@ -70,21 +70,22 @@ class VenteController extends Controller
 
 
     public  static function panierContent(){
-        $body = '';
+        $body = '<table class="table table-striped"><tr><th>Produit</th><th>Prix</th><th>Quantite</th><th>Supprimer</th></tr>';
 
         foreach (Cart::content() as $product){
             $price = getPrice($product->model->price);
             $body .= <<< EOD
-            <div class="col-3">
-            <li class="list-group-item m-2 d-flex justify-content-between align-items-center">
-            $product->name
-            <span class="badge badge-primary badge-pill"> {$price} </span>
-            <button onclick="removeToContent('{$product->rowId}')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-            </li>
-            </div>
+            </tr>
+            <td>$product->name</td>
+            <td>$price</td>
+            <td></td>
+            <td><button onclick="removeToContent('{$product->rowId}')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></td>
+            </tr>
             EOD;
 
         }
+
+        $body .= '</table>';
 
         return  $body;
 

@@ -139,7 +139,7 @@ class SendInvoiceToOBR extends Controller
         $success = $response->success;
         $message = $response->msg;
 
-        return $message;
+        return  $response;
     }
 
     // Generation du TOken
