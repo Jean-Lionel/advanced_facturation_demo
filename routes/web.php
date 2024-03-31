@@ -89,12 +89,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('obr_log', [SyncronizeController::class,  'obr_log'])->name('obr_log');
     Route::get('clear_cache', [CacheAdvancedController::class,  'index'])->name('clear_cache');
 
+    Route::resource('comptes', CompteController::class);
+
 });
 
 require __DIR__ . '/jetstream.php';
 
 
-Route::resource('vendredi', App\Http\Controllers\VendrediController::class);
-
-
-Route::resource('compte', App\Http\Controllers\CompteController::class);

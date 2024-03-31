@@ -35,3 +35,7 @@ const MOUVEMENT_STOCK = [
 function getMouvement($key){
     return  MOUVEMENT_STOCK[$key];
 }
+
+function setActiveRoute($route){
+    return request()->routeIs($route) ? 'active' : '';
+}

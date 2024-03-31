@@ -98,12 +98,12 @@
 
                 @can('is-vente')
 
-                <li>
-                    <a href="{{ route('ventes.index') }}">
+                <li >
+                    <a href="{{ route('ventes.index') }}" class="{{ setActiveRoute('ventes.*') }}">
                         <span class="fa fa-shopping-cart"></span> Vente</a>
                     </li>
                     <li>
-                        <a href="{{ route('clients.index') }}"><span class="fa fa-users"></span> Client</a>
+                        <a href="{{ route('clients.index') }}" class="{{ setActiveRoute('clients.*') }}"  ><span class="fa fa-users"></span> Client</a>
                     </li>
                     {{-- <li>
                         <a href="{{ route('services.index') }}"><span class="fa fa-cubes"></span> Service</a>
@@ -111,28 +111,28 @@
                     @endcan
                     @can('is-admin')
                     <li>
-                        <a href="{{ route('products.index') }}"><span class="fa fa-sticky-note"></span> Stock</a>
+                        <a href="{{ route('products.index') }}" class="{{ setActiveRoute('products.*') }}" ><span class="fa fa-sticky-note"></span> Stock</a>
                     </li>
 
                     <li>
-                        <a href="{{ route('rapport') }}"><span class="fa fa-chart-bar"></span> Rapport</a>
+                        <a href="{{ route('rapport') }}" class="{{ setActiveRoute('rapport') }}" ><span class="fa fa-chart-bar"></span> Rapport</a>
                     </li>
                     <li>
-                        <a href="{{ route('stockes.journal') }}"><span class="fa fa-calendar"></span> Journal</a>
+                        <a href="{{ route('stockes.journal') }}"  class="{{ setActiveRoute('stockes.*') }}" ><span class="fa fa-calendar"></span> Journal</a>
                     </li>
                     <li>
-                        <a href="{{ route('depenses.index') }}"><span class="fa fa-hand-holding-usd" aria-hidden="true"></span> Abonement</a>
+                        <a href="{{ route('comptes.index') }}"  class="{{ setActiveRoute('comptes.*') }}" ><span class="fa fa-hand-holding-usd" aria-hidden="true"></span> Abonement</a>
                     </li>
                     <li>
-                        <a href="{{ route('depenses.index') }}"><span class="fa fa-minus"></span> Depense</a>
+                        <a href="{{ route('depenses.index') }}" class="{{ setActiveRoute('depenses.*') }}"><span class="fa fa-minus"></span> Depense</a>
                     </li>
                     <li>
-                        <a href="{{ route('entreprises.index') }}">
+                        <a href="{{ route('entreprises.index') }}" class="{{ setActiveRoute('entreprises.*') }}">
                             <span class="fa fa-building"></span> Entreprise</a>
                         </li>
 
                         <li>
-                            <a href="{{ route('users.index') }}"><span class="fas fa-cogs"></span> Système</a>
+                            <a href="{{ route('users.index') }}" class="{{ setActiveRoute('users.*') }}"><span class="fas fa-cogs"></span> Système</a>
                         </li>
                         <li></li>
                         {{--  <li>
