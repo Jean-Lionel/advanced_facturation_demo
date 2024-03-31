@@ -16,13 +16,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         \App\Models\User::factory(1)->create();
-        // \App\Models\Client::factory(15)->create();
-        // \App\Models\Stocke::factory(10)->create();
-        // \App\Models\Category::factory(10)->create();
-        // \App\Models\Product::factory(10)->create();
+        \App\Models\Entreprise::factory(1)->create();
+         \App\Models\Client::factory(15)->create();
+        \App\Models\Stocke::factory(1)->create();
+         \App\Models\Category::factory(2)->create();
+         \App\Models\Product::factory(10)->create();
 
         Stocke::create([
-            'name' => 'STOCK PRINCIPAL', 
+            'name' => 'STOCK PRINCIPAL',
             'description' => 'STOCK PRINCIPAL DE BASE'
         ]);
 

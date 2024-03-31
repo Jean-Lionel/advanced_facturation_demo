@@ -17,9 +17,6 @@ class ClientFactory extends Factory
     /**
      * Define the model's default state.
      *name
-telephone
-addresse
-description
      * @return array
      */
     public function definition()

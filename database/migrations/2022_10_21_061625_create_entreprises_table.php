@@ -22,6 +22,7 @@ class CreateEntreprisesTable extends Migration
             $table->string('tp_postal_number')->nullable();
             $table->string('tp_phone_number')->nullable();
             $table->string('tp_address_privonce')->nullable();
+            $table->string('tp_address_avenue')->nullable();
             $table->string('tp_address_quartier')->nullable();
             $table->string('tp_address_commune')->nullable();
             $table->string('tp_address_rue')->nullable();

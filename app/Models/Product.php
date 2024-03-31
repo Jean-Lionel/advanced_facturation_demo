@@ -34,10 +34,10 @@ class Product extends MyModel
         parent::boot();
 
         self::creating(function($model){
-            $model->user_id = auth()->user()->id;
+            $model->user_id = auth()->user()->id ?? 1;
         });
         self::updating(function($model){
-            $model->user_id = auth()->user()->id;
+            $model->user_id = auth()->user()->id ?? 1;
         });
     }
 
@@ -58,11 +58,11 @@ class Product extends MyModel
     }
 
     public function lastMouvement(){
-        $mouvement = ObrMouvementStock::where('item_code', '=', $this->id)->latest()->first();
+        $mouvement = ObrMouvementStock::where('item_code', '  >=>', $this->id)->latest()->first();
         return  $mouvement ;
     }
     public function item_movement_type(){
-        $mouvement = ObrMouvementStock::where('item_code', '=', $this->id)->latest()->first();
+        $mouvement = ObrMouvementStock::where('item_code', '  >=>', $this->id)->latest()->first();
         return  $mouvement ? $mouvement->item_movement_type : "-";
     }
 

@@ -32,22 +32,17 @@
             position: fixed;
             bottom: 0;
             right: 0;
-
             border-radius: 6px;
-
             background-color: rgb(33, 34, 35);
         }
-
         .active {
             background-color: rgb(48, 249, 75);
             padding: 6px;
         }
-
         @page {
             size: A4;
             margin: 0;
         }
-
         page[size="A4"] {
             background: white;
             width: 21cm;
@@ -57,7 +52,6 @@
             margin-bottom: 2cm;
             box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
         }
-
         @media print{
             .noprint{
                 display: none !important;
@@ -126,8 +120,9 @@
                     <li>
                         <a href="{{ route('stockes.journal') }}"><span class="fa fa-calendar"></span> Journal</a>
                     </li>
-
-
+                    <li>
+                        <a href="{{ route('depenses.index') }}"><span class="fa fa-hand-holding-usd" aria-hidden="true"></span> Abonement</a>
+                    </li>
                     <li>
                         <a href="{{ route('depenses.index') }}"><span class="fa fa-minus"></span> Depense</a>
                     </li>
@@ -225,11 +220,8 @@
                                         </button>
                                     </div>
                                     @endif
-
-
                                     @if (session('error'))
                                     {{-- expr --}}
-
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                         <strong>SUCCESS</strong> {{ session('error')}}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -238,7 +230,6 @@
                                     </div>
                                     @endif
                                 </div>
-
                                 @yield('content')
                             </div>
 
