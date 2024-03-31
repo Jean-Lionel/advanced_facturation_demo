@@ -70,14 +70,20 @@ class VenteController extends Controller
 
 
     public  static function panierContent(){
-        $body = '<table class="table table-striped"><tr><th>Produit</th><th>Prix</th><th>Quantite</th><th>Supprimer</th></tr>';
+        $body = '<div class="fixTableHead"> <table class="table table-striped table-sm table-bordered">
+        <thead>
+        <tr><th>Produit</th><th>Prix</th><th>Quantite</th><th>Supprimer</th>
+        </tr>
+        </thead>
+        <tbody id="panier_content">
+        ';
 
         foreach (Cart::content() as $product){
             $price = getPrice($product->model->price);
             $body .= <<< EOD
             </tr>
             <td>$product->name</td>
-            <td>$price</td>
+            <td class="text-right">$price</td>
             <td></td>
             <td><button onclick="removeToContent('{$product->rowId}')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></td>
             </tr>
@@ -85,7 +91,7 @@ class VenteController extends Controller
 
         }
 
-        $body .= '</table>';
+        $body .= '</tbody></table> </div>';
 
         return  $body;
 

@@ -95,3 +95,6 @@ require __DIR__ . '/jetstream.php';
 
 
 Route::resource('vendredi', App\Http\Controllers\VendrediController::class);
+
+
+Route::resource('compte', App\Http\Controllers\CompteController::class);

@@ -68,6 +68,28 @@
 
             }
         }
+
+        .fixTableHead {
+            overflow-y: auto;
+            height: 80vh;
+
+            thead th {
+                position: sticky;
+                top: 0;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            th,
+            td {
+                border: 1px solid #529432;
+            }
+            th {
+                background: #ABDD93;
+            }
+        }
+
     </style>
 
 </head>

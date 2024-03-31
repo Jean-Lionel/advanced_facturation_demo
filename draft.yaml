@@ -1,11 +1,12 @@
 models:
-  Vendredi:
-    title: string:400
-    content: longtext
-    published_at: nullable timestamp
+  Compte:
+    name: string:250
+    montant: double
+    relationships:
+      belongsTo: client
 
 
 
 controllers:
-  Vendredi:
+  Compte:
     resource: web

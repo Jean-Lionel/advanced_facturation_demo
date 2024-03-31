@@ -1,3 +1,17 @@
+created:
+    - app/Http/Controllers/CompteController.php
+    - database/factories/CompteFactory.php
+    - database/migrations/2024_03_31_053555_create_comptes_table.php
+    - app/Models/Compte.php
+    - tests/Feature/Http/Controllers/CompteControllerTest.php
+    - app/Http/Requests/CompteStoreRequest.php
+    - app/Http/Requests/CompteUpdateRequest.php
+    - resources/views/compte/index.blade.php
+    - resources/views/compte/create.blade.php
+    - resources/views/compte/show.blade.php
+    - resources/views/compte/edit.blade.php
+updated:
+    - routes/web.php
 models:
     CanceledInvoince: { invoice_signature: text, motif: text, status: string }
     Cart: {  }
@@ -28,3 +42,4 @@ models:
     Team: { user_id: 'biginteger unsigned', name: string, personal_team: boolean }
     User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, two_factor_secret: 'text nullable', two_factor_recovery_codes: 'text nullable', remember_token: 'string:100 nullable', current_team_id: 'biginteger unsigned nullable', profile_photo_path: 'text nullable' }
     Vente: {  }
+    Compte: { name: 'string:250', montant: double, relationships: { belongsTo: client } }

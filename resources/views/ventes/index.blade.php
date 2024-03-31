@@ -27,8 +27,8 @@
                 </form>
             </div>
         </div>
-
-        <table class="table table-sm">
+        <div class="fixTableHead">
+        <table class="table table-sm ">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -44,6 +44,7 @@
                 {!! $value_products !!}
             </tbody>
         </table>
+    </div>
     </div>
     <div class="col-md-4">
         <div class="row" id="paniers_content">
