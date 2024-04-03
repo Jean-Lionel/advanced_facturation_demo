@@ -6,6 +6,12 @@
                 <span>Liste des produits</span>
                 <input type="text" class="form-control-sm" wire:model="searchProduct">
             </div>
+            <div>
+                <button class="btn btn-success btn-sm" wire:click="allProduct" >
+                    <span class="fas fa-sync"></span>
+                    Tout Affecter
+                </button>
+            </div>
 
             <table class="table-sm table">
                 @foreach ($pendingProducts as $p1)
@@ -29,6 +35,7 @@
                 <h5>Liste des Produits dans : # {{ $stock->name }}</h5>
                 <input type="text" class="form-control-sm" wire:model="searchStockProduct">
             </div>
+
 
             <table class="table-sm table">
                 <thead>

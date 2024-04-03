@@ -34,6 +34,24 @@ class ProductStockComponent extends Component
         $this->pendingProducts = Product::whereNotIn('id', $this->stock->products->pluck('id'))->get();
     }
 
+    public function allProduct(){
+
+        $this->products = $this->stock->products()->get();
+        $this->pendingProducts = Product::whereNotIn('id', $this->stock->products->pluck('id'))->get();
+
+        foreach ($this->pendingProducts as $item){
+            $this->stock->products()->attach($item->id,[
+                'name' => $item->name,
+                'quantity' => 0,
+                'prix_revient' => 0,
+                'prix_vente' => 0,
+                'user_id' => auth()->user()->id
+            ]);
+        }
+
+        return back();
+    }
+
     public function addProduct($id){
         try{
             $this->stock->products()->attach($id, [
@@ -53,6 +71,7 @@ class ProductStockComponent extends Component
                 'width' => '500',
             ]);
         }
+        return back();
     }
 
     public function removeProduct($id){
@@ -62,12 +81,14 @@ class ProductStockComponent extends Component
             ProductStock::find($id)->delete();
 
             $this->getProducts();
+
             $this->alert('warning', 'Le produit a été bien supprimé',[
                 'position' => 'center',
                 'timer' => 3000,
                 'toast' => true,
                 'width' => '500',
             ]);
+            return back();
         } catch (\Throwable $th) {
             //throw $th;
             $this->alert('warning', $th->getMessage(),[

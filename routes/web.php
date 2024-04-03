@@ -4,7 +4,6 @@ use App\Http\Controllers\Api\CacheAdvancedController;
 use App\Http\Controllers\ObrStockController;
 use App\Http\Controllers\SyncronizeController;
 use App\Jobs\ObrSendInvoince;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
