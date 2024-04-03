@@ -29,13 +29,18 @@ class ProductFactory extends Factory
     */
     public function definition()
     {
+        $price =  $this->faker->buildingNumber;
         return [
-            'name' => $this->getRandomItem() .'_'. Str::random(10) ,//$this->faker->name,
-            'code_product' => Str::random(10),
-            'price' => $this->faker->buildingNumber,
+            'name' => $this->getRandomItem() .'_'. rand(1, 10) ,//$this->faker->name,
+            'code_product' => rand(1, 10000),
+            'price' => $price ,
             'quantite' => 0,
             'date_expiration' => $this->faker->date,
-            'category_id' => Category::all()->random()->id
+            'category_id' => Category::all()->random()->id,
+            'price_max' => $price  + round( $price * 0.05),
+            'unite_mesure' => 'NA',
+            'price_min' => $price - round( $price * 0.05) ,
+            'quantite_alert' => 1,
         ];
     }
 

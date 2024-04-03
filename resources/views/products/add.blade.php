@@ -44,7 +44,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="montant">Montant</label>
-                        <input required="" name="montant" class="form-control form-control-sm" type="number" value="{{ old('montant') ?? $product->price_max }}"  placeholder="Montant en FBU">
+                        <input required="" name="montant" class="form-control form-control-sm" type="text" value="{{ old('montant') ?? $product->price_max }}"  placeholder="Montant en FBU">
                         {!! $errors->first('montant', '<small class="help-block invalid-feedback">:message</small>') !!}
                     </div>
                     <div class="col-md-3">

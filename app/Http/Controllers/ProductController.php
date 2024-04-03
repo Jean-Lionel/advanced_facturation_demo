@@ -89,7 +89,7 @@ class ProductController extends Controller
             'unite_mesure' => 'required',
             'price_min' => 'required',
             'quantite' => 'numeric|min:0',
-            'quantite_alert' => 'numeric|min:2',
+            'quantite_alert' => 'numeric|min:0',
 
         ]);
 
@@ -114,7 +114,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|max:255',
             'price' => 'required|numeric|min:0',
-            'price_max' => 'required|max:255',
+            'price_max' => 'numeric|required|max:255',
             'code_product' => 'required',
             'date_expiration' => 'required|date',
             'quantite' => 'numeric|min:0',
