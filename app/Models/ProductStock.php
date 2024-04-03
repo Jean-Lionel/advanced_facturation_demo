@@ -33,6 +33,7 @@ class ProductStock extends Model
         'updated_at' => 'datetime',
     ];
 
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

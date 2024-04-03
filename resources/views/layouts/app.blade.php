@@ -247,18 +247,18 @@
                     <script src="{{ asset('js/main.js') }}"></script>
 
                     @livewireScripts
+                    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+
+                    <x-livewire-alert::scripts />
+
 
                     @yield('javascript')
 
                     <script>
-
                         const canSyncronize = @json( CAN_SYNCRONISE );
                         const timeSyncronisation = @json( TIME_OUT_SYNCRONISATION );
-
                         const cancel_syncronize = "{{ session('cancel_syncronize') }}";
-
                         //alert(cancel_syncronize);
-
                         const checkOnlineStatus = async () => {
                             try {
                                 const online = await fetch("https://jsonplaceholder.typicode.com/todos/1");

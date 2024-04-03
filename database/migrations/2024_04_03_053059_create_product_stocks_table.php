@@ -24,6 +24,7 @@ class CreateProductStocksTable extends Migration
             $table->double('prix_revient')->default('0');
             $table->double('prix_vente')->default('0');
             $table->foreignId('user_id')->constrained();
+            $table->unique(['product_id', 'stock_id']);
             $table->timestamps();
             $table->softDeletes();
         });
