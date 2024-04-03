@@ -17,7 +17,7 @@ class ProductStockComponent extends Component
     public $pendingProducts;
 
     public function mount($stock){
-        $this->stock = Stocke::with('products')->find($stock);
+        $this->stock = Stocke::with('products', 'stockProducts')->find($stock);
     }
     public function render()
     {
@@ -36,6 +36,7 @@ class ProductStockComponent extends Component
     public function addProduct($id){
         try{
             $this->stock->products()->attach($id, [
+                'name' => Product::find($id)->name,
                 'quantity' => 0,
                 'prix_revient' => 0,
                 'prix_vente' => 0,

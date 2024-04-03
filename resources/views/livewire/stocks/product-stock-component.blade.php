@@ -27,14 +27,23 @@
         <div class="col-md-8">
             <input type="text" class="form-control" wire:model="searchStockProduct">
 
-            <table>
+            <table class="table-sm table">
                 <thead>
-
+                    <tr>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Prix Vente</th>
+                        <th>Prix Revient</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    @foreach ( $stock->products  as $item)
+
+                    @foreach ( $stock->stockProducts  as $item)
                     <tr>
-                        <td>{{ $item }}</td>
+                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->quantity }}</td>
+                        <td>{{ $item->prix_vente }}</td>
+                        <td>{{ $item->prix_revient }}</td>
                     </tr>
                     @endforeach
                 </tbody>

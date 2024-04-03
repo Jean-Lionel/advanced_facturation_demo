@@ -12,7 +12,10 @@ class Stocke extends MyModel
     protected $fillable = ['name', 'description'];
 
     public function products(){
-
         return $this->belongsToMany(Product::class, 'product_stocks', 'stock_id', 'product_id');
+    }
+
+    public function stockProducts(){
+        return $this->hasMany(ProductStock::class, 'stock_id');
     }
 }
