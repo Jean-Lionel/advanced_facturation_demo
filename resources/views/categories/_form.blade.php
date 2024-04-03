@@ -25,10 +25,9 @@
 					<label for="title">STOCK</label>
 
 					<select name="stock_id" id="" class="form-control {{$errors->has('stock_id') ? 'is-invalid' : 'is-valid' }}">
-
+                        <option value="">---choisissez le stock</option>
 						@foreach ($stockes as $element)
 							{{-- expr --}}
-							<option value="">---choisissez le stock</option>
 							<option value="{{ $element->id }}">{{ $element->name }}</option>
 						@endforeach
 					</select>

@@ -89,7 +89,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('compte', CompteController::class);
     Route::get('syncronize_customer',[CompteController::class, 'syncronize_customer'] )->name('syncronize_customer');
+
+    Route::resource('product_stock', ProductStockController::class);
+
 });
 
 require __DIR__ . '/jetstream.php';
-

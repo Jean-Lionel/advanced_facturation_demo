@@ -1,15 +1,15 @@
 created:
-    - app/Http/Controllers/CompteController.php
-    - database/factories/CompteFactory.php
-    - database/migrations/2024_03_31_065640_create_comptes_table.php
-    - app/Models/Compte.php
-    - tests/Feature/Http/Controllers/CompteControllerTest.php
-    - app/Http/Requests/CompteStoreRequest.php
-    - app/Http/Requests/CompteUpdateRequest.php
-    - resources/views/compte/index.blade.php
-    - resources/views/compte/create.blade.php
-    - resources/views/compte/show.blade.php
-    - resources/views/compte/edit.blade.php
+    - app/Http/Controllers/ProductStockController.php
+    - database/factories/ProductStockFactory.php
+    - database/migrations/2024_04_03_053059_create_product_stocks_table.php
+    - app/Models/ProductStock.php
+    - tests/Feature/Http/Controllers/ProductStockControllerTest.php
+    - app/Http/Requests/ProductStockStoreRequest.php
+    - app/Http/Requests/ProductStockUpdateRequest.php
+    - resources/views/productStock/index.blade.php
+    - resources/views/productStock/create.blade.php
+    - resources/views/productStock/show.blade.php
+    - resources/views/productStock/edit.blade.php
 updated:
     - routes/web.php
 models:
@@ -43,3 +43,4 @@ models:
     User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, two_factor_secret: 'text nullable', two_factor_recovery_codes: 'text nullable', remember_token: 'string:100 nullable', current_team_id: 'biginteger unsigned nullable', profile_photo_path: 'text nullable' }
     Vente: {  }
     Compte: { name: 'string:250', montant: double, is_active: boolean, client_id: 'id foreign:clients' }
+    ProductStock: { name: 'nullable string:250', product_id: 'id foreign:products', stock_id: 'id foreign:stockes', quantity: double, prix_revient: 'double default:0', prix_vente: 'double default:0', user_id: 'id foreign:users', created_at: datetime, updated_at: datetime }

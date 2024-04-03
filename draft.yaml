@@ -1,11 +1,16 @@
 models:
-  Compte:
-    name: string:250
-    montant: double
-    is_active: boolean
-    client_id: id foreign:clients
+  ProductStock:
+    name: nullable string:250
+    product_id: id foreign:products
+    stock_id: id foreign:stockes
+    quantity: double
+    prix_revient: double default:0
+    prix_vente: double default:0
+    user_id: id foreign:users
+    created_at: datetime
+    updated_at: datetime
 
 
 controllers:
-  Compte:
+  ProductStock:
     resource: web

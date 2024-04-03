@@ -1,11 +1,11 @@
 <div class="d-flex justify-content-around noprint">
     <div>
-    <a href="{{ route('products.create') }}"><span class="fa fa-seedling"></span> Entre</a>
+    <a href="{{ route('products.create') }}" class="{{ setActiveRoute('products.create') }}"><span class="fa fa-seedling"></span> Entre</a>
     </div>
     <div>
-    <a href="{{ route('retour_produit') }}"><span class="fa fa-undo"></span> Retour des marchandises</a>
+    <a href="{{ route('retour_produit') }}" class="{{ setActiveRoute('retour_produit') }}"><span class="fa fa-undo"></span> Retour des marchandises</a>
     </div>
-    <div><a href="{{ route('categories.index') }}"><span class="fa fa-paper-plane"></span> Category</a></div>
+    <div><a href="{{ route('categories.index') }}" class="{{ setActiveRoute('categories.*') }}"><span class="fa fa-paper-plane"></span> Category</a></div>
 
     <div>
         <a href="{{ route('fiche_stock') }}" class="{{ setActiveRoute('fiche_stock') }}">
@@ -31,6 +31,12 @@
     <div>
         <a href="{{ route('stockes.index') }}" class="{{ setActiveRoute('stockes.*') }}">
             <span class="fas fa fa-bookmark"></span>
+            <span>Liste des stocks</span>
+        </a>
+    </div>
+    <div>
+        <a href="{{ route('product_stock.index') }}" class="{{ setActiveRoute('product_stock.*') }}">
+            <span class="fas fa fa-exchange-alt"></span>
             <span>Liste des stocks</span>
         </a>
     </div>
