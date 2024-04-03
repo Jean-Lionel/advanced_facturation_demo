@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Stocks;
 
 use App\Models\Product;
+use App\Models\ProductStock;
 use App\Models\Stocke;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -52,7 +53,30 @@ class ProductStockComponent extends Component
                 'width' => '500',
             ]);
         }
+    }
 
+    public function removeProduct($id){
+
+        try {
+            //code...
+            ProductStock::find($id)->delete();
+
+            $this->getProducts();
+            $this->alert('warning', 'Le produit a été bien supprimé',[
+                'position' => 'center',
+                'timer' => 3000,
+                'toast' => true,
+                'width' => '500',
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            $this->alert('warning', $th->getMessage(),[
+                'position' => 'center',
+                'timer' => 3000,
+                'toast' => true,
+                'width' => '500',
+            ]);
+        }
 
     }
 

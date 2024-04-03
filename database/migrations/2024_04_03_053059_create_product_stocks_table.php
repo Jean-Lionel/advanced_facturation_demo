@@ -20,7 +20,8 @@ class CreateProductStocksTable extends Migration
             $table->string('name', 250)->nullable();
             $table->foreignId('product_id')->constrained();
             $table->foreignId('stock_id')->constrained('stockes');
-            $table->double('quantity');
+            $table->double('quantity')->default('0');
+            $table->double('quantity_alert')->default('0');
             $table->double('prix_revient')->default('0');
             $table->double('prix_vente')->default('0');
             $table->foreignId('user_id')->constrained();
