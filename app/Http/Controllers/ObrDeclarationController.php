@@ -4,16 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\CanceledInvoince;
 use App\Models\ObrMouvementStock;
-use App\Models\ObrRequestBody;
 use App\Models\Order;
 use App\Models\Entreprise;
 use App\Models\ObrPointer;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\ObrDeclaration;
 use App\Http\Controllers\SendInvoiceToOBR;
-use App\Http\Requests\StoreObrDeclarationRequest;
-use App\Http\Requests\UpdateObrDeclarationRequest;
 
 class ObrDeclarationController extends Controller
 {
@@ -57,7 +53,6 @@ class ObrDeclarationController extends Controller
             'invoice_signature' => 'required',
             'motif' => 'required',
         ]);
-
         // Change the Status Of the order
         //    dd($request->cancel_amount);
         $order = Order::where('invoice_signature', '=',$request->invoice_signature)->first();
@@ -76,7 +71,9 @@ class ObrDeclarationController extends Controller
                         'description' => $request->motif,
                         'user_id' => auth()->user()->id,
                     ]);
-                    ObrMouvementStock::saveMouvement( $product, 'ER', $productItem['price'], $productItem['quantite'], $request->motif, $order->id);
+
+                    $current_price = $productItem['price_revient'] ;
+                    ObrMouvementStock::saveMouvement( $product, 'ER',$current_price, $productItem['quantite'], $request->motif, $order->id);
                 }catch(\Exception $e){
                 }
             }
@@ -87,7 +84,8 @@ class ObrDeclarationController extends Controller
                 'motif' => $request->motif,
                 'invoice_signature' => $request->invoice_signature,
                 'created_at' => now(),
-                'status' => false
+                'status' => false,
+                'order_id' => $order->id,
             ]);
             $order->canceled_or_connection = 'ANNULEE HORS CONNECTION';
             $order->is_cancelled = true;

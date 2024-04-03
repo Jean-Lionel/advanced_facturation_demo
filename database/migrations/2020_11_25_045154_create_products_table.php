@@ -23,6 +23,7 @@ class CreateProductsTable extends Migration
             $table->double('quantite_alert',62,2)->nullable();
             $table->double('price',62,2)->nullable();
             $table->double('price_max',62,2)->nullable();
+            $table->double('taux_tva',62,2)->nullable();
             $table->double('price_min',62,2)->nullable();
             $table->date('date_expiration')->nullable();
             $table->text('description')->nullable();

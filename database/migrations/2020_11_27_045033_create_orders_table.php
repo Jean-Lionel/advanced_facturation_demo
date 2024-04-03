@@ -25,6 +25,7 @@ class CreateOrdersTable extends Migration
             $table->text('products');
             $table->text('company')->nullable();
             $table->text('client')->nullable();
+            $table->text('canceled_or_connection')->nullable();
             $table->text('addresse_client')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('client_id')->nullable();

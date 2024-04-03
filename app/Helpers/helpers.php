@@ -1,5 +1,6 @@
 <?php
 
+define('TAUX_TVA', [18,10,0]);
 function isInternetConnection(){
     try{
         if(fsockopen('www.google.fr',80)){
@@ -9,6 +10,12 @@ function isInternetConnection(){
         return false;
     }
 }
+// Todo
+function prixVenteHorsTva($price, $taux = 0.18){
+
+    return round($price / (1 + $taux ));
+}
+
 
 function getPrice($price)
 {

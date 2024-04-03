@@ -87,10 +87,10 @@ class ProductController extends Controller
             'date_expiration' => 'required|date',
             'category_id' => 'required',
             'unite_mesure' => 'required',
+            'taux_tva' => 'required',
             'price_min' => 'required',
             'quantite' => 'numeric|min:0',
             'quantite_alert' => 'numeric|min:0',
-
         ]);
 
         Product::create($request->all());
@@ -119,6 +119,7 @@ class ProductController extends Controller
             'date_expiration' => 'required|date',
             'quantite' => 'numeric|min:0',
             'price_min' => 'numeric|min:0',
+            'taux_tva' => 'numeric|min:0',
             'quantite_alert' => 'numeric|min:2',
 
         ]);

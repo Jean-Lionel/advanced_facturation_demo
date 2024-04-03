@@ -193,6 +193,7 @@ class CheckoutController extends Controller
                 'name' => $item->name,
                 'rowId' => $item->rowId,
                 'price' => $item->price,
+                'price_revient' => $item->model->price_max,
                 'quantite' => $item->qty,
                 'nombre_sac' => ($item->qty / $item->options['embalage'] ?? 1 ),
                 'embalage' => $item->options['embalage'],
