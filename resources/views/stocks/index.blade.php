@@ -47,15 +47,24 @@
 				<td>{{ $value->description }}</td>
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
-					<a href="{{ route('stockes.edit', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
-					<form class="form-delete" action="{{ route('stockes.destroy' , $value) }}" style="display: inline;" method="POST">
+
+					<a href="{{ route('stockes.edit', $value) }}" class="mr-2 btn btn-outline-info btn-sm">
+                        <span class="fa fa-edit"></span>
+                        Modifier</a>
+
+					<a href="{{ route('product_stock.show', $value) }}" class="mr-2 btn btn-outline-info btn-sm">
+                        <span class="fa fa-sitemap"></span>
+                        products</a>
+
+
+					{{--  <form class="form-delete" action="{{ route('stockes.destroy' , $value) }}" style="display: inline;" method="POST">
 					{{ csrf_field() }}
 					{{ method_field('DELETE') }}
 					<button class="btn btn-outline-danger btn-sm delete_client"
 
                     onclick="return confirm('Voulez-vous supprimer ?')"
 
-                    >Supprimer</button>
+                    >Supprimer</button>  --}}
 				</form>
 
 

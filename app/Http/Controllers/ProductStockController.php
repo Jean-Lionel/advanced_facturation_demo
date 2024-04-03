@@ -9,10 +9,7 @@ use Illuminate\Http\Request;
 
 class ProductStockController extends Controller
 {
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
         $productStocks = ProductStock::all();
@@ -42,12 +39,8 @@ class ProductStockController extends Controller
         return redirect()->route('productStock.index');
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\ProductStock $productStock
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, ProductStock $productStock)
+
+    public function show( $productStock)
     {
         return view('productStock.show', compact('productStock'));
     }
