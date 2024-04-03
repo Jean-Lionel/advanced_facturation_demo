@@ -16,11 +16,11 @@ class CreateClientsTable extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('telephone')->nullable();
+            $table->string('telephone')->unique()->nullable();
             $table->string('addresse')->nullable();
             $table->string('description')->nullable();
             // NIF DU CLIENT
-            $table->string('customer_TIN')->nullable();
+            $table->string('customer_TIN')->unique()->nullable();
             //Si le client est assujetti à la TVA Valeur : « 0 » ou « 1 »
             $table->string('vat_customer_payer')->nullable();
             $table->timestamps();

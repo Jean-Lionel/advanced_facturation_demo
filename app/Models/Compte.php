@@ -24,6 +24,8 @@ class Compte extends Model
     protected $casts = [
         'id' => 'integer',
         'montant' => 'double',
+        'is_active' => 'boolean',
+        'client_id' => 'integer',
     ];
 
     /**

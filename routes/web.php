@@ -2,11 +2,8 @@
 
 use App\Http\Controllers\Api\CacheAdvancedController;
 use App\Http\Controllers\ObrStockController;
-use App\Http\Controllers\SendInvoiceToOBR;
 use App\Http\Controllers\SyncronizeController;
 use App\Jobs\ObrSendInvoince;
-use App\Mail\TestEmail;
-use App\Models\ObrMouvementStock;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -88,11 +85,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('syncronize_to_obr', [SyncronizeController::class,  'syncronize'])->name('syncronize_to_obr');
     Route::get('obr_log', [SyncronizeController::class,  'obr_log'])->name('obr_log');
     Route::get('clear_cache', [CacheAdvancedController::class,  'index'])->name('clear_cache');
-
     Route::resource('comptes', CompteController::class);
 
+    Route::resource('compte', CompteController::class);
+    Route::get('syncronize_customer',[CompteController::class, 'syncronize_customer'] )->name('syncronize_customer');
 });
 
 require __DIR__ . '/jetstream.php';
-
 

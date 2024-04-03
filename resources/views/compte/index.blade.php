@@ -1,7 +1,9 @@
-{{--
+
     @extends('layouts.app')
 
     @section('content')
-        compte.index template
+      <div>
+        <h1>Comming soon !!!!!!!!!!!</h1>
+      </div>
     @endsection
---}}
+

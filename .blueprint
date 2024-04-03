@@ -1,7 +1,7 @@
 created:
     - app/Http/Controllers/CompteController.php
     - database/factories/CompteFactory.php
-    - database/migrations/2024_03_31_053555_create_comptes_table.php
+    - database/migrations/2024_03_31_065640_create_comptes_table.php
     - app/Models/Compte.php
     - tests/Feature/Http/Controllers/CompteControllerTest.php
     - app/Http/Requests/CompteStoreRequest.php
@@ -13,24 +13,24 @@ created:
 updated:
     - routes/web.php
 models:
-    CanceledInvoince: { invoice_signature: text, motif: text, status: string }
+    CanceledInvoince: { order_id: integer, invoice_signature: text, motif: text, status: string }
     Cart: {  }
     Category: { title: string, description: 'text nullable', stock_id: 'biginteger unsigned' }
-    Client: { name: string, telephone: 'string nullable', addresse: 'string nullable', description: 'string nullable', customer_tin: 'string nullable', vat_customer_payer: 'string nullable', client_type: 'string:20 nullable' }
+    Client: { name: string, telephone: 'string nullable', addresse: 'string nullable', description: 'string nullable', customer_tin: 'string nullable', vat_customer_payer: 'string nullable' }
     Depense: { name: string, montant: 'float:64,2', description: 'text nullable', user_id: 'integer nullable' }
     DetailOrder: { product_id: integer, quantite: 'float:62,2', quantite_stock: 'float:62,2', price_unitaire: 'float:62,2', embalage: 'float:62,2 nullable', code_product: 'string nullable', name: 'string nullable', unite_mesure: 'string nullable', date_expiration: date, order_id: integer, user_id: integer }
     DetailPaimentDette: { paiement_dette_id: 'biginteger unsigned', montant: 'float:64,2', user_id: 'biginteger unsigned' }
-    Entreprise: { tp_name: string, tp_type: string, tp_tin: string, tp_trade_number: 'string nullable', tp_postal_number: 'string nullable', tp_phone_number: 'string nullable', tp_address_privonce: 'string nullable', tp_address_commune: string, tp_address_quartier: 'string nullable', tp_address_avenue: 'string nullable', tp_address_rue: 'string nullable', tp_address_number: 'string nullable', vat_taxpayer: 'string nullable', ct_taxpayer: 'string nullable', is_actif: 'string nullable', tl_taxpayer: 'string nullable', tp_fiscal_center: 'string nullable', tp_activity_sector: 'string nullable', tp_legal_form: 'string nullable', payment_type: 'string nullable', user_id: 'biginteger unsigned' }
+    Entreprise: { tp_name: string, tp_type: string, tp_tin: string, tp_trade_number: 'string nullable', tp_postal_number: 'string nullable', tp_phone_number: 'string nullable', tp_address_privonce: 'string nullable', tp_address_avenue: 'string nullable', tp_address_quartier: 'string nullable', tp_address_commune: 'string nullable', tp_address_rue: 'string nullable', tp_address_number: 'string nullable', vat_taxpayer: 'string nullable', ct_taxpayer: 'string nullable', tl_taxpayer: 'string nullable', tp_fiscal_center: 'string nullable', tp_activity_sector: 'string nullable', tp_legal_form: 'string nullable', payment_type: 'string nullable', is_actif: 'string nullable', user_id: 'biginteger unsigned' }
     EntrepriseHistory: { entreprise_id: 'biginteger unsigned', user_id: 'biginteger unsigned', tp_name: string, tp_type: string, tp_tin: string, tp_trade_number: 'string nullable', tp_postal_number: 'string nullable', tp_phone_number: 'string nullable', tp_address_privonce: 'string nullable', tp_address_commune: 'string nullable', tp_address_quartier: 'string nullable', tp_address_avenue: 'string nullable', tp_address_rue: 'string nullable', tp_address_number: 'string nullable', vat_taxpayer: 'string nullable', ct_taxpayer: 'string nullable', tl_taxpayer: 'string nullable', tp_fiscal_center: 'string nullable', tp_activity_sector: 'string nullable', tp_legal_form: 'string nullable', payment_type: 'string nullable' }
     FollowProduct: { action: string, quantite: string, details: text, product_id: 'biginteger unsigned nullable', user_id: 'biginteger unsigned nullable' }
     Membership: { team_id: 'biginteger unsigned', user_id: 'biginteger unsigned', role: 'string nullable' }
     MyModel: {  }
     ObrDeclaration: {  }
     ObrMouvementStock: { system_or_device_id: string, item_code: string, item_designation: string, item_quantity: 'float:10', item_measurement_unit: string, item_purchase_or_sale_price: 'float:10', item_purchase_or_sale_currency: string, item_movement_type: 'enum:EN,ER,EI,EAJ,ET,EAU,SN,SP,SV,SD,SC,SAJ,ST,SAU', item_movement_invoice_ref: 'string nullable', item_movement_description: 'string nullable', item_movement_date: 'string nullable', is_send_to_obr: 'string nullable', is_sent_at: 'datetime nullable', user_id: 'biginteger unsigned' }
-    ObrPointer: { order_id: 'biginteger unsigned', invoice_signature: string, electronic_signature: 'text nullable', status: string, result: 'text nullable', msg: 'text nullable', success: 'boolean nullable' }
+    ObrPointer: { order_id: 'biginteger unsigned', invoice_signature: string, status: string, success: 'boolean nullable', electronic_signature: 'text nullable', msg: 'text nullable', result: 'text nullable' }
     ObrRequestBody: { invoice_id: integer, request_body: 'text nullable' }
     ObrStockLog: { movement_id: string, success: string, msg: string, result: 'string nullable' }
-    Order: { amount: 'float:60,2', tax: 'float:60,2', total_quantity: 'float:60,2', total_sacs: 'float:60,2', amount_tax: 'float:60,2', type_paiement: string, products: text, client: 'text nullable', addresse_client: 'text nullable', user_id: 'biginteger unsigned nullable', client_id: 'biginteger unsigned nullable', company: 'text nullable', is_cancelled: 'boolean nullable', canceled_or_connection: 'text nullable', envoye_obr: 'string nullable', envoye_par: 'string nullable', envoye_time: 'string nullable', invoice_signature: 'string nullable', date_facturation: 'date nullable', type_facture: 'string:200 nullable' }
+    Order: { amount: 'float:60,2', tax: 'float:60,2', total_quantity: 'float:60,2', total_sacs: 'float:60,2', amount_tax: 'float:60,2', type_paiement: string, type_facture: 'string nullable', products: text, company: 'text nullable', client: 'text nullable', addresse_client: 'text nullable', user_id: 'biginteger unsigned nullable', client_id: 'biginteger unsigned nullable', is_cancelled: 'boolean nullable', envoye_obr: 'string nullable', envoye_par: 'string nullable', envoye_time: 'string nullable', invoice_signature: 'string nullable', date_facturation: 'date nullable' }
     PaiementDette: { montant: 'float:64,2 nullable', montant_restant: 'float:64,2 nullable', order_id: 'biginteger unsigned', status: 'string default:NON PAYE' }
     Product: { code_product: 'string nullable', name: string, marque: 'string nullable', unite_mesure: 'string nullable', quantite: 'float:62,2 nullable', quantite_alert: 'float:62,2 nullable', price: 'float:62,2 nullable', price_max: 'float:62,2 nullable', price_min: 'float:62,2 nullable', date_expiration: 'date nullable', description: 'text nullable', user_id: 'biginteger unsigned', category_id: 'biginteger unsigned' }
     ProductHistory: { product_id: 'biginteger unsigned', code_product: 'string nullable', name: string, marque: 'string nullable', unite_mesure: 'string nullable', quantite: 'float:62,2 nullable', quantite_alert: 'float:62,2 nullable', price: 'float:62,2 nullable', price_max: 'float:62,2 nullable', price_min: 'float:62,2 nullable', date_expiration: 'date nullable', description: 'text nullable', user_id: 'biginteger unsigned', category_id: 'biginteger unsigned' }
@@ -42,4 +42,4 @@ models:
     Team: { user_id: 'biginteger unsigned', name: string, personal_team: boolean }
     User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, two_factor_secret: 'text nullable', two_factor_recovery_codes: 'text nullable', remember_token: 'string:100 nullable', current_team_id: 'biginteger unsigned nullable', profile_photo_path: 'text nullable' }
     Vente: {  }
-    Compte: { name: 'string:250', montant: double, relationships: { belongsTo: client } }
+    Compte: { name: 'string:250', montant: double, is_active: boolean, client_id: 'id foreign:clients' }

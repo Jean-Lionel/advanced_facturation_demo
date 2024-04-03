@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Compte;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -61,15 +62,21 @@ class CompteControllerTest extends TestCase
     {
         $name = $this->faker->name;
         $montant = $this->faker->randomFloat(/** double_attributes **/);
+        $is_active = $this->faker->boolean;
+        $client = Client::factory()->create();
 
         $response = $this->post(route('compte.store'), [
             'name' => $name,
             'montant' => $montant,
+            'is_active' => $is_active,
+            'client_id' => $client->id,
         ]);
 
         $comptes = Compte::query()
             ->where('name', $name)
             ->where('montant', $montant)
+            ->where('is_active', $is_active)
+            ->where('client_id', $client->id)
             ->get();
         $this->assertCount(1, $comptes);
         $compte = $comptes->first();
@@ -129,10 +136,14 @@ class CompteControllerTest extends TestCase
         $compte = Compte::factory()->create();
         $name = $this->faker->name;
         $montant = $this->faker->randomFloat(/** double_attributes **/);
+        $is_active = $this->faker->boolean;
+        $client = Client::factory()->create();
 
         $response = $this->put(route('compte.update', $compte), [
             'name' => $name,
             'montant' => $montant,
+            'is_active' => $is_active,
+            'client_id' => $client->id,
         ]);
 
         $compte->refresh();
@@ -142,6 +153,8 @@ class CompteControllerTest extends TestCase
 
         $this->assertEquals($name, $compte->name);
         $this->assertEquals($montant, $compte->montant);
+        $this->assertEquals($is_active, $compte->is_active);
+        $this->assertEquals($client->id, $compte->client_id);
     }
 
 

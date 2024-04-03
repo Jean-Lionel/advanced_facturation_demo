@@ -26,6 +26,8 @@ class CompteUpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:250'],
             'montant' => ['required', 'numeric'],
+            'is_active' => ['required'],
+            'client_id' => ['required', 'integer', 'exists:clients,id'],
         ];
     }
 }

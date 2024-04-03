@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CompteStoreRequest;
 use App\Http\Requests\CompteUpdateRequest;
+use App\Models\Client;
 use App\Models\Compte;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,20 @@ class CompteController extends Controller
         $comptes = Compte::all();
 
         return view('compte.index', compact('comptes'));
+    }
+
+    public function syncronize_customer(){
+        $clients = Client::doesntHave('compte')->get();
+
+        foreach ($clients as $client) {
+            $compte = new Compte();
+            $compte->client_id = $client->id;
+            $compte->name = str_pad($client->id, 4, '0', STR_PAD_LEFT);
+            $compte->is_active = true;
+            $compte->montant = 0;
+            $compte->save();
+        }
+        return redirect()->back()->with('succes_message',  $clients->count() . ' comptes  ont été ajoutés');
     }
 
     /**

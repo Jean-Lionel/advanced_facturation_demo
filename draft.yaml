@@ -1,0 +1,11 @@
+models:
+  Compte:
+    name: string:250
+    montant: double
+    is_active: boolean
+    client_id: id foreign:clients
+
+
+controllers:
+  Compte:
+    resource: web
