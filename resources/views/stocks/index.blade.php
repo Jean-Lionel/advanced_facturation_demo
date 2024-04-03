@@ -11,7 +11,7 @@
 
 		<div class="col-md-6 d-flex justify-content-between">
 			<a href="{{ route('stockes.create') }}"
-			class="btn btn-primary btn-sm">bon d'entre en stock</a>
+			class="btn btn-primary btn-sm">Nouveau stock</a>
 			<h4 class="text-center">
 				Liste des stockes
 			</h4>
@@ -51,7 +51,11 @@
 					<form class="form-delete" action="{{ route('stockes.destroy' , $value) }}" style="display: inline;" method="POST">
 					{{ csrf_field() }}
 					{{ method_field('DELETE') }}
-					<button class="btn btn-outline-danger btn-sm delete_client">Supprimer</button>
+					<button class="btn btn-outline-danger btn-sm delete_client"
+
+                    onclick="return confirm('Voulez-vous supprimer ?')"
+
+                    >Supprimer</button>
 				</form>
 
 
@@ -67,7 +71,7 @@
 </div>
 
 <div class="col-md-12" style="height: 20px; overflow: hidden;">
-		{{ $stockes->links()}}
+		{{ $stocks->links()}}
 </div>
 
 

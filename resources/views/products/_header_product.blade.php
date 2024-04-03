@@ -8,28 +8,34 @@
     <div><a href="{{ route('categories.index') }}"><span class="fa fa-paper-plane"></span> Category</a></div>
 
     <div>
-        <a href="{{ route('fiche_stock') }}">
+        <a href="{{ route('fiche_stock') }}" class="{{ setActiveRoute('fiche_stock') }}">
             <span class="fa fa-file-alt"></span>
             <span>Fiche de Stock</span>
         </a>
     </div>
 
     <div>
-        <a href="{{ route('journal_history') }}">
+        <a href="{{ route('journal_history') }}" class="{{ setActiveRoute('journal_history') }}">
             <span class="fa fa-file-archive"></span>
             <span>Historique des Entres en stock</span>
         </a>
     </div>
 
     <div>
-        <a href="{{ route('mouvement_stock') }}">
+        <a href="{{ route('mouvement_stock') }}" class="{{ setActiveRoute('mouvement_stock') }}">
             <span class="fa fa-file-archive"></span>
             <span>Mouvement de stock</span>
         </a>
     </div>
 
     <div>
-        <a href="{{ route('bar_code') }}">
+        <a href="{{ route('stockes.index') }}" class="{{ setActiveRoute('stockes.*') }}">
+            <span class="fas fa fa-bookmark"></span>
+            <span>Liste des stocks</span>
+        </a>
+    </div>
+    <div>
+        <a href="{{ route('bar_code') }}" class="{{ setActiveRoute('bar_code') }}">
             <span class="fa fa-barcode "></span>
             <span>Bar Code</span>
         </a>

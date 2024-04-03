@@ -37,7 +37,7 @@ class StockController extends Controller
     public function index()
     {
         $stocks = Stocke::latest()->paginate(5);
-        return view('stocks/index', compact('stocks'));
+        return view('stocks.index', compact('stocks'));
     }
 
     /**

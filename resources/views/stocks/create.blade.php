@@ -10,7 +10,7 @@
 <form action="{{ route('stockes.store') }}" method="post">
 	@method('post')
 
-	@include('stockes._form')
+	@include('stocks._form')
 </form>
 
 @endsection

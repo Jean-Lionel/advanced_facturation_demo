@@ -32,7 +32,7 @@
 			</div>
 
 			<div class="col-md-12">
-				<input type="submit" value="{{ $btnMessage ?? 'Enregitre' }}" class="form-control btn-primary">
+				<input type="submit" value="{{ $btnMessage ?? 'Enregitrer' }}" class="form-control btn-primary">
 			</div>
 
 		</div>
