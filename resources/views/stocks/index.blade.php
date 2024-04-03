@@ -56,6 +56,10 @@
                         <span class="fa fa-sitemap"></span>
                         products</a>
 
+                    <a href="{{ route('stockes.show', $value) }}" class="mr-2 btn btn-outline-warning btn-sm">
+                        <i class="fas fa-shopping-cart"></i>
+                        Commandes
+                    </a>
 
 					{{--  <form class="form-delete" action="{{ route('stockes.destroy' , $value) }}" style="display: inline;" method="POST">
 					{{ csrf_field() }}

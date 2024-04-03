@@ -23,6 +23,7 @@ class CreateProductStocksTable extends Migration
             $table->double('quantity')->default('0');
             $table->double('quantity_alert')->default('0');
             $table->double('prix_revient')->default('0');
+            $table->double('quantite_alert')->default('0');
             $table->double('prix_vente')->default('0');
             $table->foreignId('user_id')->constrained();
             $table->unique(['product_id', 'stock_id']);

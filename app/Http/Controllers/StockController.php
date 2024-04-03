@@ -40,11 +40,7 @@ class StockController extends Controller
         return view('stocks.index', compact('stocks'));
     }
 
-    /**
-    * Show the form for creating a new resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+
     public function create()
     {
 
@@ -52,12 +48,7 @@ class StockController extends Controller
         //
     }
 
-    /**
-    * Store a newly created resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    */
+
     public function store(Request $request)
     {
 
@@ -72,15 +63,12 @@ class StockController extends Controller
 
     }
 
-    /**
-    * Display the specified resource.
-    *
-    * @param  \App\Models\Stocke  $stocke
-    * @return \Illuminate\Http\Response
-    */
-    public function show(Stocke $stocke)
+
+    public function show($stock)
     {
-        //
+        // $poducts = Stocke::find($stocke)->stockProducts;
+
+        return view('stocks.show', compact('stock'));
     }
 
     /**
