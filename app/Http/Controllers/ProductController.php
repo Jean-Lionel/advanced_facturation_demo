@@ -114,13 +114,13 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|max:255',
             'price' => 'required|numeric|min:0',
-            'price_max' => 'numeric|required|max:255',
+            'price_max' => 'numeric|required|min:0',
             'code_product' => 'required',
             'date_expiration' => 'required|date',
             'quantite' => 'numeric|min:0',
             'price_min' => 'numeric|min:0',
             'taux_tva' => 'numeric|min:0',
-            'quantite_alert' => 'numeric|min:2',
+            'quantite_alert' => 'numeric|min:1',
 
         ]);
         $p = $product->toArray();

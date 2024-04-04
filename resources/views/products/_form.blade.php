@@ -61,48 +61,43 @@
         </div>
     </div>
 
-    <div class="col-md-3">
-
+    <div class="col-md-2">
         <div class="form-group">
             <label for="price_max">PRIX DE REVIENT  TVAC</label>
             <input type="text"
             step="any"
-
             class="form-control {{$errors->has('price_max') ? 'is-invalid' : 'is-valid' }}" id="price_max" name="price_max" value="{{ old('price_max') ?? $product->price_max?? ' ' }}">
-
             {!! $errors->first('price_max', '<small class="help-block invalid-feedback">:message</small>') !!}
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group">
+            <label for="price">TAUX DE TVA </label>
+            <select name="taux_tva" id="taux_tva" class="form-control">
+                @foreach (TAUX_TVA as $tva)
+                <option value="{{ $tva }}"   @if(old('taux_tva') == $tva) selected @endif>{{ $tva }}</option>
+                @endforeach
+            </select>
+            {!! $errors->first('taux_tva', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
 
     <div class="col-md-2">
         <div class="form-group">
-            <label for="price">PRIX DE VENTE UNITAIRE </label>
+            <label for="price">PV HTVA </label>
             <input type="text" step="any" class="form-control {{$errors->has('price') ? 'is-invalid' : 'is-valid' }}" id="price" name="price" value="{{ old('price') ?? $product->price?? ' ' }}">
             {!! $errors->first('price', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
-
-    <div class="col-md-1">
+    <div class="col-md-2">
         <div class="form-group">
-            <label for="price">TAUX DE TVA </label>
-
-            <select name="taux_tva" id="" class="form-control">
-                @foreach (TAUX_TVA as $tva)
-                <option value="{{ $tva }}"   @if(old('taux_tva') == $tva) selected @endif>{{ $tva }}</option>
-                @endforeach
-
-            </select>
-
-
-
-            {!! $errors->first('price', '<small class="help-block invalid-feedback">:message</small>') !!}
+            <label for="price_tvac">PV TVAC </label>
+            <input type="text" step="any" class="form-control {{$errors->has('price_tvac') ? 'is-invalid' : 'is-valid' }}" id="price_tvac" name="price_tvac" value="{{ old('price_tvac') ?? $product->price_tvac?? ' ' }}">
+            {!! $errors->first('price_tvac', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
 
-
-
-
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="form-group">
             <label for="quantite_alert">QUANTITE MINIMUM</label>
             <input type="text" step="any" class="form-control {{$errors->has('quantite_alert') ? 'is-invalid' : 'is-valid' }}" id="quantite_alert" name="quantite_alert" value="{{ old('quantite_alert') ?? $product->quantite_alert?? ' ' }}">
@@ -113,7 +108,7 @@
 
     <div class="col-md-3">
         <div class="form-group">
-            <label for="date_expiration">DATE D'EXPIRATION</label>
+            <label for="date_expiration">{{ "DATE D'EXPIRATION"  }}</label>
             <input type="date" class="form-control {{$errors->has('date_expiration') ? 'is-invalid' : 'is-valid' }}" id="date_expiration" name="date_expiration" value="{{ old('date_expiration') ?? $product->date_expiration?? ' ' }}">
             {!! $errors->first('date_expiration', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
@@ -167,3 +162,21 @@
     </div>
 </div>
 
+
+@section('javascript')
+<script>
+    $(document).ready( function () {
+       const tva = document.querySelector('#taux_tva');
+       const price_tvac  = document.querySelector('#price_tvac');
+       const price = document.querySelector('#price');
+
+       price_tvac.addEventListener('input', function(e){
+          price.value = price_tvac.value - price_tvac.value * tva.value / 100
+       })
+
+       price.addEventListener('input', function(e){
+           price_tvac.value = price.value * tva.value / 100 + price.value
+       })
+    })
+</script>
+@append
