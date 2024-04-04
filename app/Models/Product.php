@@ -77,7 +77,11 @@ class Product extends MyModel
     }
 
     public function getPriceHorsTvaAttribute(){
-        return  prixVenteHorsTva($this->price , $this->taux_tva);
+        return  prixVenteHorsTva($this->price , ($this->taux_tva / 100));
+    }
+
+    public function getPriceAttribute($v){
+        return  prixVenteHorsTva($v , ($this->taux_tva / 100));
     }
 
 }
