@@ -28,7 +28,7 @@
 
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
 
         <div class="form-group">
             <label for="marque">MARQUE</label>
@@ -38,8 +38,16 @@
         </div>
     </div>
 
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="quantite">QUANTITE</label>
+            <input type="text" step="any" class="form-control {{$errors->has('quantite') ? 'is-invalid' : 'is-valid' }}" id="quantite" name="quantite" value="0" disabled>
+            {!! $errors->first('quantite', '<small class="help-block invalid-feedback">:message</small>') !!}
+        </div>
+    </div>
 
-    <div class="col-md-3">
+
+    <div class="col-md-2">
 
         <div class="form-group">
             <label for="unite_mesure">UNITE DE MESURE</label>
@@ -73,9 +81,11 @@
     <div class="col-md-1">
         <div class="form-group">
             <label for="price">TAUX DE TVA </label>
+
             <select name="taux_tva" id="taux_tva" class="form-control">
+
                 @foreach (TAUX_TVA as $tva)
-                <option value="{{ $tva }}"   @if(old('taux_tva') == $tva) selected @endif>{{ $tva }}</option>
+                <option value="{{ $tva }}"   @if( $product->taux_tva == $tva) selected @endif>{{ $tva }}</option>
                 @endforeach
             </select>
             {!! $errors->first('taux_tva', '<small class="help-block invalid-feedback">:message</small>') !!}
@@ -100,7 +110,7 @@
     <div class="col-md-2">
         <div class="form-group">
             <label for="quantite_alert">QUANTITE MINIMUM</label>
-            <input type="text" step="any" class="form-control {{$errors->has('quantite_alert') ? 'is-invalid' : 'is-valid' }}" id="quantite_alert" name="quantite_alert" value="{{ old('quantite_alert') ?? $product->quantite_alert?? ' ' }}">
+            <input type="number" step="any" class="form-control {{$errors->has('quantite_alert') ? 'is-invalid' : 'is-valid' }}" id="quantite_alert" name="quantite_alert" value="{{ old('quantite_alert') ?? $product->quantite_alert?? ' ' }}">
             {!! $errors->first('quantite_alert', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
@@ -134,13 +144,7 @@
             {!! $errors->first('category_id', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="form-group">
-            <label for="quantite">QUANTITE</label>
-            <input type="text" step="any" class="form-control {{$errors->has('quantite') ? 'is-invalid' : 'is-valid' }}" id="quantite" name="quantite" value="0" disabled>
-            {!! $errors->first('quantite', '<small class="help-block invalid-feedback">:message</small>') !!}
-        </div>
-    </div>
+
     <div class="col-md-3">
         <div class="form-group">
             <label for="description">Spécification techinque</label>
@@ -154,12 +158,7 @@
             <input type="submit" value="{{ $btnMessage ?? 'Enregitrer' }}" class="form-control btn-primary">
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="form-group">
-            <label for=""></label>
-            <input type="reset" value="Annuler" class="form-control btn-warning">
-        </div>
-    </div>
+
 </div>
 
 
@@ -171,12 +170,26 @@
        const price = document.querySelector('#price');
 
        price_tvac.addEventListener('input', function(e){
-          price.value = price_tvac.value - price_tvac.value * tva.value / 100
+          price.value = prixVenteHorsTva(price_tvac.value, (tva.value / 100))
+       })
+
+       tva.addEventListener('input', function(e){
+           price_tvac.value = prixVenteTvac(price.value ,(tva.value / 100))
+           price.value = prixVenteHorsTva(price_tvac.value, (tva.value / 100))
        })
 
        price.addEventListener('input', function(e){
-           price_tvac.value = price.value * tva.value / 100 + price.value
+           price_tvac.value = prixVenteTvac(price.value ,(tva.value / 100))
        })
     })
+
+    function prixVenteHorsTva(price, taux = 0.18){
+        return Math.round(price / (1 + taux ));
+    }
+
+    function prixVenteTvac(price, taux){
+        return Math.round(price * (1 + taux ));
+    }
+
 </script>
 @append

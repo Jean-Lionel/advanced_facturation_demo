@@ -10,12 +10,14 @@ function isInternetConnection(){
         return false;
     }
 }
-// Todo
 function prixVenteHorsTva($price, $taux = 0.18){
 
     return round($price / (1 + $taux ));
 }
+function prixVenteTvac($price, $taux = 0.18){
 
+    return round($price * (1 + $taux ));
+}
 
 function getPrice($price)
 {
