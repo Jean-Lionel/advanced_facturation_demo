@@ -11,11 +11,9 @@ function isInternetConnection(){
     }
 }
 function prixVenteHorsTva($price, $taux = 0.18){
-
     return round($price / (1 + $taux ));
 }
 function prixVenteTvac($price, $taux = 0.18){
-
     return round($price * (1 + $taux ));
 }
 

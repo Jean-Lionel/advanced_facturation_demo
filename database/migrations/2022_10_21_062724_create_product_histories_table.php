@@ -16,19 +16,8 @@ class CreateProductHistoriesTable extends Migration
         Schema::create('product_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id');
-            $table->string('code_product')->nullable();
-            $table->string('name');
-            $table->string('marque')->nullable();
-            $table->string('unite_mesure')->nullable();
-            $table->double('quantite',62,2)->nullable();
-            $table->double('quantite_alert',62,2)->nullable();
-            $table->double('price',62,2)->nullable();
-            $table->double('price_max',62,2)->nullable();
-            $table->double('price_min',62,2)->nullable();
-            $table->date('date_expiration')->nullable();
-            $table->text('description')->nullable();
+            $table->text('content')->nullable();
             $table->foreignId('user_id');
-            $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

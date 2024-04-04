@@ -20,7 +20,7 @@ class ProductHistory extends Model
 
         self::creating(function($model){
             $model->user_id = auth()->user()->id;
-            $model->product_id = $model->id;
+            // $model->product_id = $model->id;
             $model->id = null;
         });
     }

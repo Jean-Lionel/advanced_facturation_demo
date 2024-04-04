@@ -124,7 +124,11 @@ class ProductController extends Controller
 
         ]);
         $p = $product->toArray();
-        ProductHistory::create($p);
+
+        ProductHistory::create([
+            'product_id' => $product->id,
+            'content' => json_encode($p)
+        ]);
         $product->update($request->all());
         return $this->index();
     }
