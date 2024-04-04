@@ -31,7 +31,6 @@ class Product extends MyModel
 
     protected $sortable= ['code_product','name','price','date_expiration','quantite','quantite_alert','category_id','unite_mesure','price_min','price_max','description','marque', 'taux_tva'];
 
-    protected $appends = ['priceHorsTva'];
     public static function boot(){
         parent::boot();
         self::creating(function($model){
@@ -78,12 +77,6 @@ class Product extends MyModel
         //});
     }
 
-    public function getPriceHorsTvaAttribute(){
-        return  prixVenteHorsTva($this->price , ($this->taux_tva / 100));
-    }
 
-    public function getPriceAttribute($v){
-        return  prixVenteHorsTva($v , ($this->taux_tva / 100));
-    }
 
 }

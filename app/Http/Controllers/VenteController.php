@@ -56,10 +56,12 @@ class VenteController extends Controller
             <td> $value->code_product </td>
             <td> $value->name</td>
             <td> $value->price </td>
+            <td> $value->taux_tva </td>
+            <td> $value->price_tvac </td>
             <td> $value->quantite </td>
             <td> $value->date_expiration </td>
             <td class="d-flex justify-content-around">
-            <button onclick="addToCartProduct($value->id)"  class="btn btn-sm btn-primary">+ Ajouter aux pannier</button>
+            <button onclick="addToCartProduct($value->id)"  class="btn btn-sm btn-primary" title="Ajouter au panier">+</button>
             </td>
             </tr>
             EOD;

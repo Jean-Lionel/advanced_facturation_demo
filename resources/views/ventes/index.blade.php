@@ -34,7 +34,9 @@
                     <th scope="col">#</th>
                     <th scope="col">CODE</th>
                     <th scope="col">Designation</th>
-                    <th scope="col">Prix</th>
+                    <th scope="col">Prix HTVA</th>
+                    <th scope="col">TVA (%)</th>
+                    <th scope="col">Prix TVAC</th>
                     <th scope="col">Qte</th>
                     <th scope="col">Date d'expiration</th>
                     <th scope="col">Action</th>
