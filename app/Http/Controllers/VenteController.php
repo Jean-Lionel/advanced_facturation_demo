@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
-use PhpParser\Node\Stmt\TryCatch;
 
 class VenteController extends Controller
 {
@@ -31,6 +30,8 @@ class VenteController extends Controller
                         ->orWhere('unite_mesure', 'like', '%' . $search . '%');
                     })->latest()->take(6)->get();
         // SyncroniseInvoice::dispatch(1);
+
+        //dd($products[0]->priceHorsTva);
 
         $value_products = $this->makeProductBody($products);
 

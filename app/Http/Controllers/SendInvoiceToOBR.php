@@ -147,25 +147,18 @@ class SendInvoiceToOBR extends Controller
     {
 
         try {
-
             $req = Http::acceptJson()->post($this->baseUrl . 'login/', [
                 'username' => OBR_USERNAME,
                 'password' => OBR_PASSWORD
             ]);
-           //
             $response = json_decode($req->body());
-
-
-
             $success = $response->success;
             $message = $response->msg;
             $token = "";
             if ($success) {
                 $token = $response->result->token;
             }
-
             return $token;
-
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }

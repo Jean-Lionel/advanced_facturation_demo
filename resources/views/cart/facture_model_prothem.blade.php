@@ -147,10 +147,11 @@
 					@endforeach
 					<tr>
 						<td colspan="4">PVT HTVA </td>
+
 						<td class="adroite"><b>{{ getPrice($order->amount_tax) }}</b></td>
 					</tr>
 					<tr>
-						<td colspan="4">TVA ( 18 %)</td>
+						<td colspan="4">TVA </td>
 						<td class="adroite"><b>{{ getPrice($order->tax) }}</b></td>
 					</tr>
 					<tr>
