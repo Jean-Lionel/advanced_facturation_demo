@@ -15,10 +15,11 @@ class VenteController extends Controller
 
     public function index(Request $request)
     {
+
         //  $obr = new SendInvoiceToOBR();
 
         //  dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
-        // dump(Cart::content()->map->id);
+
         $search = request()->get('search');
         $products = Product::where('quantite', '>', 1)
                     ->where('price', '>', 0)

@@ -13,7 +13,7 @@ class CartController extends Controller
     public $currentTax = 18;
 
     public function __construct(){
-        $this->currentTax = \Request::get('current_tva') ?? 18;
+        $this->currentTax =  18;
     }
     public function index()
     {
@@ -89,9 +89,10 @@ class CartController extends Controller
         $product = Product::where('id',$request->id)->firstOrFail();
         Cart::add($product->id, $product->name, 1, $product->price,
             [
-                'embalage' => BASE_UNITE_EMBALLAGE
-            ])->associate('App\Models\Product');
-
+                'embalage' => BASE_UNITE_EMBALLAGE,
+                'taxRate' => $product->taux_tva
+            ])->associate('App\Models\Product')
+            ->setTaxRate($product->taux_tva);
             $vente = new VenteController();
 
         return response()->json([

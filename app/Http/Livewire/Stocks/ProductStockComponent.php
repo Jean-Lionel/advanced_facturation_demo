@@ -30,8 +30,8 @@ class ProductStockComponent extends Component
 
     public function getProducts(){
 
-        $this->products = $this->stock->products()->where('products.name', 'like', '%' . $this->searchProduct . '%')->get();
-        $this->pendingProducts = Product::whereNotIn('id', $this->stock->products->pluck('id'))->get();
+        $this->products = $this->stock?->products()->where('products.name', 'like', '%' . $this->searchProduct . '%')->get();
+        $this->pendingProducts = Product::whereNotIn('id', $this->stock->products?->pluck('id'))->get();
     }
 
     public function allProduct(){

@@ -10,7 +10,7 @@
                 <div class="col-lg-12 p-1 bg-white rounded shadow-sm mb-1">
                     <!-- Shopping cart table -->
                     <div>
-                        <form action="" >
+                        {{--  <form action="" >
                             <div class="row">
                                 <div class="col-md-2">
                                     <div class="form-group ">
@@ -40,7 +40,7 @@
                                 </div>
                             </div>
 
-                        </form>
+                        </form>  --}}
 
                     </div>
                     <div class="table-responsive">
@@ -48,18 +48,26 @@
                             <thead>
                                 <tr>
                                     <th scope="col" class="border-0 bg-light">
-                                        <div class="p-2 px-3 text-uppercase">Produit</div>
+                                        <div class=" text-uppercase">Produit</div>
                                     </th>
                                     <th scope="col" class="border-0 bg-light">
-                                        <div class="p-2 px-3 text-uppercase">MARGE DES PRIX ( #FBU)</div>
+                                        <div class=" text-uppercase">PRIX Revient</div>
                                     </th>
                                     <th scope="col" class="border-0 bg-light">
-                                        <div class="p-2 px-3 text-uppercase">Quantité</div>
+                                        <div class=" text-uppercase">Qté en Stock</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="text-uppercase">TVA (%)</div>
                                     </th>
 
                                     <th scope="col" class="border-0 bg-light">
-                                        <div class="p-2 px-3">
-                                            PRIX UNITAIRE
+                                        <div class="text-uppercase">
+                                            P.U HTVA
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="text-uppercase">
+                                            P.U TTC
                                         </div>
                                     </th>
 
@@ -69,7 +77,6 @@
                                         <th scope="col" class="border-0 bg-light">
                                             <div class="py-2 text-uppercase">QUANTITE</div>
                                         </th>
-
                                         <th scope="col" class="border-0 bg-light">
                                             <div class="py-2 text-uppercase">PRIX</div>
                                         </th>
@@ -88,13 +95,17 @@
                                         </th>
 
                                         <th scope="row" class="border-0">
-                                            {{getPrice($product->model->price_min) . ' - '. getPrice($product->model->price_max)}}
+                                            {{getPrice($product->model->price_max)}}
                                         </th>
                                         <th>
                                             {{ $product->model->quantite }}
                                         </th>
+                                        <th>{{ $product->model->taux_tva }}</th>
                                         <th>
                                             <input type="number" class="price_input" data-product="{{ $product->rowId }}" value="{{ $product->price }}" class="form-control">
+                                        </th>
+                                        <th>
+                                            <span>{{ $product->model->price_tvac  }}</span>
                                         </th>
 
                                         {{--                  <td >--}}
@@ -140,7 +151,7 @@
                                 {{$errors}}
                                 <form action="{{ route('payement') }}" method="post">
 
-                                    <input type="hidden" name="currentTva" value="{{ $currentTva }}">
+                                    {{--  <input type="hidden" name="currentTva" value="{{ $currentTva }}">  --}}
                                     <div class="d-flex justify-content-between">
                                         <p>
                                             <input type="text" name="clientNumber" id="clientNumber" placeholder="Numero du client">

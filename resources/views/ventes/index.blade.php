@@ -38,7 +38,7 @@
                     <th scope="col">TVA (%)</th>
                     <th scope="col">Prix TVAC</th>
                     <th scope="col">Qte</th>
-                    <th scope="col">Date d'expiration</th>
+                    <th scope="col">{{ "Date d'expiration" }}</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
