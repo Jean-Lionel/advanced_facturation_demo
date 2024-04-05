@@ -76,6 +76,40 @@ cursor: pointer;
 text-transform: uppercase;
 }
 
+@media print {
+    .noprint {
+        display: none;
+    }
+}
+.adroite{
+    text-align:right !important;
+    padding-right: 15px;
+
+}
+.text-center{
+    text-align: center !important;
+}
+.img_logo{
+    width: 100px;
+    height: 100px;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+p, h3{
+    margin: 0;
+    padding: 0;
+
+}
+.header-element{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    gap: 20px;
+}
+
 
 
 
