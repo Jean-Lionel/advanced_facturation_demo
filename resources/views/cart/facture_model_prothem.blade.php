@@ -79,14 +79,15 @@
             <article class="identification_b">
                 <div>
                     <h5>B. Client</h5>
-                    <p>Nom et Prénom ou Raison Socail : <b>
-
-                        {{$order->client->name}}
-                    </b></p>
+                    <p>Nom et Prénom ou Raison Socail :</p>
+                    <p><b>{{$order->client->name}}</b></p>
                     <p>Résident à : <b>{{ $order->addresse_client }}</b></p>
                     <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
                     <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
-                    <h5>Doit pour ce qui suit : </h5>
+
+                    <p>Doit pour ce qui suit :</p>
+                    <br>
+
                 </div>
             </article>
             {{-- END SIDE B --}}
@@ -143,7 +144,7 @@
                     </div>
                 </div>
 
-                <div id="reciept" style="display:none;">
+                <div id="reciept" style="display: none;">
                     <div  class="container">
 
                         <h6 class="invoice_signature"> {{$order->invoice_signature}}  </h6>
@@ -165,7 +166,8 @@
 
                         <h5>B. Client</h5>
                         <p>Nom et Prénom ou Raison Socail :</p>
-                        <p> <b>{{$order->client->name}}</b></p>
+                        <p>{{$order->client->name}}</p>
+
                         <p>Résident à : {{ $order->addresse_client }}</p>
                         <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
                         <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
@@ -212,7 +214,8 @@
                                 </table>
                                 <hr>
                                 <h6 class="text-center">==== MERCI !! ===</h6>
-                                <hr>
+                                <br>
+                                <p>===================================================</p>
 
                             </div>
 
@@ -238,7 +241,7 @@
                             css: ` {{ asset('css/reciept.css')  }},
                             @media print {
                                 body {
-                                    width: 90mm;
+                                    width: 80mm;
                                 }
                             }
                             `,
