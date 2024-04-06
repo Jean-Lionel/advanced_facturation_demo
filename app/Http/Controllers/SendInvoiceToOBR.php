@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Entreprise;
 use App\Models\ObrPointer;
 use App\Models\ObrRequestBody;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class SendInvoiceToOBR extends Controller
@@ -34,7 +33,7 @@ class SendInvoiceToOBR extends Controller
         // Item
         $data = array_merge(
             [
-                "system_or_device_id" => OBR_USERNAME,
+                "system_or_device_id" => env('OBR_USERNAME'),
             ],
             $data
         );
@@ -120,7 +119,7 @@ class SendInvoiceToOBR extends Controller
         $d = date_create($created_at);
         $date_facturation = date_format($d, 'YmdHis');
 
-        $invoice_signature = $company->tp_TIN . "/" . OBR_USERNAME
+        $invoice_signature = $company->tp_TIN . "/" . env('OBR_USERNAME')
             . "/" . $date_facturation . "/" . $invoice_number;
 
         return $invoice_signature;
@@ -148,8 +147,8 @@ class SendInvoiceToOBR extends Controller
 
         try {
             $req = Http::acceptJson()->post($this->baseUrl . 'login/', [
-                'username' => OBR_USERNAME,
-                'password' => OBR_PASSWORD
+                'username' => env('OBR_USERNAME'),
+                'password' => env('OBR_PASSWORD')
             ]);
             $response = json_decode($req->body());
             $success = $response->success;
