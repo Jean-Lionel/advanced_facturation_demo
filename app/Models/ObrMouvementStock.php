@@ -56,7 +56,7 @@ class ObrMouvementStock extends Model
         Session::put('cancel_syncronize', false);
          $item_movement_date = now();
         self::create([
-            'system_or_device_id' => OBR_USERNAME,
+            'system_or_device_id' => env('OBR_USERNAME'),
             'item_code'=> $produit->id,
             'item_designation' => $produit->name,
             'item_quantity' => $qte,

@@ -13,7 +13,7 @@ class SendInvoiceToOBR extends Controller
     //private string $baseUrl = 'http://41.79.226.28:8345/ebms_api/';
     //private string $baseUrl = 'https://ebms.obr.gov.bi:8443/ebms_api/';
    //private string $baseUrl = 'https://ebms.obr.gov.bi:9443/ebms_api/';
-    private string $baseUrl = env('OBR_PRODUCTION', false) ? 'https://ebms.obr.gov.bi:8443/ebms_api/' : 'https://ebms.obr.gov.bi:9443/ebms_api/';
+    private string $baseUrl ;
 
     public function __construct()
     {
@@ -26,6 +26,7 @@ class SendInvoiceToOBR extends Controller
         //     dd($req->body());
         // 4002060640
         // dump($this->checkTin("4001183237"));
+        $this->baseUrl = env('OBR_PRODUCTION', false) == true ? 'https://ebms.obr.gov.bi:8443/ebms_api/' : 'https://ebms.obr.gov.bi:9443/ebms_api/';
     }
 
     public function addStockMovement($data){
@@ -155,9 +156,17 @@ class SendInvoiceToOBR extends Controller
             $message = $response->msg;
             $token = "";
             if ($success) {
-                $token = $response->result->token;
+                return $response->result->token;
             }
-            return $token;
+            return [
+                'succees' => false,
+                'response' => $req->body(),
+                "data" => [
+                    'username' => env('OBR_USERNAME'),
+                    'password' => env('OBR_PASSWORD') ,
+                    'url' => $this->baseUrl
+                ]
+            ];
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
