@@ -2,13 +2,12 @@
 @section('content')
 @include('products._header_product')
 
-
-<div class="container-fluid">
+<div class="elemet">
 	<div>
 		<h4 class="text-center">Mouvement du Produit # {{ $item_id }} </h4>
 	</div>
 	<div class="info"></div>
-	<table  id="fiche_stock" class="table display compact table-sm table-responsive" >
+	<table  id="fiche_stock" class="display compact" style="width: 100%;">
 		<thead>
 			<tr >
                 <th>Désignation </th>

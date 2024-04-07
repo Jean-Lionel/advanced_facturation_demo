@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CacheAdvancedController;
 use App\Http\Controllers\ObrStockController;
+use App\Http\Controllers\RapportController;
 use App\Http\Controllers\SyncronizeController;
 use App\Jobs\ObrSendInvoince;
 use Illuminate\Support\Facades\Route;
@@ -90,6 +91,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('syncronize_customer',[CompteController::class, 'syncronize_customer'] )->name('syncronize_customer');
 
     Route::resource('product_stock', ProductStockController::class);
+    Route::get('rapport_detail', [RapportController::class , 'rapport_detail'])->name('rapport_detail');
 
 });
 

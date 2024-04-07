@@ -1,6 +1,8 @@
 @extends('layouts.app')
 {{-- StockController Rapport  --}}
 @section('content')
+
+@include('journals._header_file')
 <div>
 	<div class="row">
 		<div class="col-md-4">

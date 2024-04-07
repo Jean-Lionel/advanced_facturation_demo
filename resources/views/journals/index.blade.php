@@ -5,11 +5,24 @@
 @section('content')
 @include('products._header_product')
 
-
 <div class="row">
 
 	<div class="col-md-12">
 		@include('journals.header')
+
+        <div class="row">
+            <form action="" class="col-3">
+                <div class="d-flex gap-3">
+                    <span>DU</span>
+                    <input type="date" class="form-control  form-control-sm" name="startDate">
+                    <span>Au</span>
+                    <input type="date" class="form-control form-control-sm" name="endDate">
+                    <button type="submit" class="btn btn-info btn-sm">
+                        Ok
+                    </button>
+                </div>
+            </form>
+        </div>
 
 		<table class="table table-sm ">
 			<thead class="table-dark">
