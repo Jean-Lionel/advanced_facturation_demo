@@ -63,7 +63,8 @@ class CheckoutController extends Controller
             $oder_signuture = "";
             $company = Entreprise::currentEntreprise();
           //  dd($company);
-            $tax = round(Cart::subtotal() *   $request->currentTva / 100);
+            $tax = Cart::tax();
+
             $order = Order::create([
                 'amount' => round( $tax  + Cart::subtotal()),
                 'total_quantity' => Cart::count(),

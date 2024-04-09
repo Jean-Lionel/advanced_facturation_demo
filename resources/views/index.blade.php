@@ -3,7 +3,7 @@
     @foreach ($posts as $post)
         <url>
             <loc>{{ url('/') }}/page/{{ $post->name }}</loc>
-            <lastmod>{{ $post->created_at->tz('UTC')->toAtomString() }}</lastmod>
+            <lastmod>{{ $post->created_at }}</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
