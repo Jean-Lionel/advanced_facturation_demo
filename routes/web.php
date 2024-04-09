@@ -7,8 +7,6 @@ use App\Http\Controllers\SyncronizeController;
 use App\Jobs\ObrSendInvoince;
 use Illuminate\Support\Facades\Route;
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 class ClientController extends Controller
 {
 
@@ -32,6 +31,7 @@ class ClientController extends Controller
 
     public function store(Request $request)
     {
+
         $request->validate([
             "client_type" => "required",
             "vat_customer_payer" => "required",

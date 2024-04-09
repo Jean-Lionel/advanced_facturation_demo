@@ -15,6 +15,10 @@
    <div class="card">
     <p>Total du TVA Collect dans la periode {{ $startDate  }} Au {{ $endDate }}</p>
     <h2>{{ getPrice($amountTax ) }} #FBU</h2>
-    <p>Nombre Total des Factures <b>{{ $totalFacture }}</b></p>
+
+    <p class="d-flex justify-content-between gap-3">
+        <span> Nombre Total des Factures</span>
+        <span><b>{{ $totalFacture }}</b></span>
+    </p>
    </div>
 </div>

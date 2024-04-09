@@ -66,6 +66,15 @@
             {!! $errors->first('addresse', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="is_fournisseur">Définir Le Client Comme Fournisseur</label>
+            <input type="checkbox" name="is_fournisseur" class="form-control form-control-sm">
+
+            {!! $errors->first('is_fournisseur', '<small class="help-block invalid-feedback">:message</small>') !!}
+        </div>
+    </div>
     <div class="col-md-4">
         <div class="form-group">
             <label for="description">Description</label>
@@ -74,6 +83,7 @@
             {!! $errors->first('description', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
+
     <div class="col-md-4 mt-3">
         <br>
         <input type="submit" value="{{ $btnMessage ?? 'Enregitrer' }}" class="form-control btn-primary">

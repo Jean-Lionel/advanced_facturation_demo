@@ -25,6 +25,9 @@
 				<th scope="col">NOM</th>
 				<th scope="col">TELEPHONE</th>
 				<th scope="col">NIF</th>
+				<th scope="col">Fournisseur</th>
+				<th scope="col">Adresse</th>
+                <th>Date</th>
 				<th scope="col">Action</th>
 			</tr>
 		</thead>
@@ -41,6 +44,12 @@
 				<td>{{ $value->telephone }}</td>
 				<td>
 					{{ $value->customer_TIN}}
+				</td>
+                <td>
+					{{ $value->is_fournisseur}}
+				</td>
+				<td>
+					{{ $value->addresse}}
 				</td>
 
 				<td>{{ $value->created_at }}</td>

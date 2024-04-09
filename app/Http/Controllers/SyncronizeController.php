@@ -8,7 +8,6 @@ use App\Models\ObrPointer;
 use App\Models\ObrStockLog;
 use App\Models\Order;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -63,10 +62,10 @@ class SyncronizeController extends Controller
 
            // $ws400000333700160
            //$
-           $excludes_ids = Cache::remember('key', 4 * 60, function () {
+           $excludes_ids = Cache::remember('key',  60, function () {
 
             return ObrPointer::all()->map->order_id;
-           }); ;
+           });
            $order_peding_ids = Order::whereNull('envoye_obr')
                                         ->whereNotIn('id', $excludes_ids)
                                         ->get()->map->id;
