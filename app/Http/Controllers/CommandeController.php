@@ -52,6 +52,11 @@ class CommandeController extends Controller
         return view('commande.show', compact('commande'));
     }
 
+
+    public function bon_commande(){
+        return view('commande.bon_commande');
+    }
+
     /**
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Commande $commande

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CacheAdvancedController;
+use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\ObrStockController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\SyncronizeController;
@@ -91,11 +92,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('product_stock', ProductStockController::class);
     Route::get('rapport_detail', [RapportController::class , 'rapport_detail'])->name('rapport_detail');
 
+    Route::resource('commande', App\Http\Controllers\CommandeController::class);
+    Route::get('bon_commande', [CommandeController::class, 'bon_commande'])->name('bon_commande');
+    Route::resource('commande-detail', App\Http\Controllers\CommandeDetailController::class);
+
+
 });
 
 require __DIR__ . '/jetstream.php';
-
-
-Route::resource('commande', App\Http\Controllers\CommandeController::class);
-
-Route::resource('commande-detail', App\Http\Controllers\CommandeDetailController::class);
