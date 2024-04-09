@@ -27,6 +27,7 @@
 				<th scope="col">#</th>
 				<th scope="col">CODE</th>
 				<th scope="col"> @sortablelink('name','Designation') </th>
+				<th scope="col">TVA (%) </th>
 				<th scope="col">@sortablelink('price','P U')  </th>
 				<th scope="col">@sortablelink('quantite','Qté')</th>
 				<th scope="col">@sortablelink('unite_mesure','Unite')</th>
@@ -46,6 +47,9 @@
 				<td>{{ $value->code_product }}</td>
 				<td>
 					{{ $value->name}}
+				</td>
+				<td>
+					{{ $value?->taux_tva}}
 				</td>
 
 				<td>{{ $value->price }}</td>
