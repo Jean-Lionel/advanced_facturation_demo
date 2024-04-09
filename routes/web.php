@@ -94,3 +94,8 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 require __DIR__ . '/jetstream.php';
+
+
+Route::resource('commande', App\Http\Controllers\CommandeController::class);
+
+Route::resource('commande-detail', App\Http\Controllers\CommandeDetailController::class);
