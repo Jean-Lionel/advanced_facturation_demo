@@ -21,8 +21,8 @@ class CreateCommandesTable extends Migration
             $table->foreignId('stock_id')->nullable()->constrained('stockes');
             $table->foreignId('client_id')->nullable()->constrained();
             $table->text('type_commande')->nullable();
-            $table->foreignId('stock_demandant')->nullable()->constrained('stockes', 'demandant');
-            $table->foreignId('stock_livrant')->nullable()->constrained('stockes', 'livrant');
+            $table->foreignId('stock_demandant')->nullable();
+            $table->foreignId('stock_livrant')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });
