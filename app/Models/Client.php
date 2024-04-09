@@ -11,6 +11,8 @@ class Client extends MyModel
 
 	protected $guarded = [];
 
+    public static $FOURNISSEUR = 'on';
+
     public function compte(){
         return $this->hasOne(Compte::class);
     }

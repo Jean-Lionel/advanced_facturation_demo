@@ -6,7 +6,7 @@
         <h5 class="text-left">Nouveau Produit</h5>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="form-group">
             <label for="code_product">CODE DE PRODUIT</label>
             <input type="text" class="form-control {{$errors->has('code_product') ? 'is-invalid' : 'is-valid' }}" id="code_product" name="code_product" value="{{ old('code_product') ?? $product->code_product?? ' ' }}">
@@ -17,7 +17,7 @@
 
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="form-group">
             <label for="name">DESIGNATION</label>
             <input type="text" class="form-control {{$errors->has('name') ? 'is-invalid' : 'is-valid' }}" id="name" name="name" value="{{ old('name') ?? $product->name?? ' ' }}">
@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
 
         <div class="form-group">
             <label for="price_min">PRIX D ACHAT</label>
@@ -78,14 +78,12 @@
             {!! $errors->first('price_max', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
-    <div class="col-md-1">
+    <div class="col-md-2">
         <div class="form-group">
             <label for="price">TAUX DE TVA </label>
-
             <select name="taux_tva" id="taux_tva" class="form-control">
-
                 @foreach (TAUX_TVA as $tva)
-                <option value="{{ $tva }}"   @if( $product->taux_tva ?? 18 == $tva) selected @endif>{{ $tva }}</option>
+                <option value="{{ $tva }}"   @if( $product?->taux_tva == $tva || old('taux_tva') == $tva) selected @endif>{{ $tva }}</option>
                 @endforeach
             </select>
             {!! $errors->first('taux_tva', '<small class="help-block invalid-feedback">:message</small>') !!}

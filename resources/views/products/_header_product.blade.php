@@ -46,5 +46,11 @@
             <span>Bar Code</span>
         </a>
     </div>
+    <div>
+        <a href="{{ route('bon_commande') }}" class="{{ setActiveRoute('bon_commande') }}">
+            <span class="fas fa-file-invoice"></span>
+            <span>Bon de Commande</span>
+        </a>
+    </div>
 </div>
 <hr>

@@ -24,7 +24,7 @@ class ObrDeclarationController extends Controller
 
     public function hostory()
     {
-        $order_id = \Request::get('order_id');
+        $order_id = request()->query('order_id');
         $orders = Order::whereNotNull('envoye_obr')
         ->where( function($query) use ($order_id){
             if(isset($order_id) ){
@@ -121,7 +121,7 @@ class ObrDeclarationController extends Controller
         if (!$order->invoice_signature) {
             $invoice_signature = SendInvoiceToOBR::getInvoinceSignature($order->id, $order->created_at);
         }
-        $company = Entreprise::latest()->first();
+        $company = Entreprise::currentEntreprise();
         $invoince = $this->generateInvoince($order, $company, $invoince_id, $invoice_signature, $order->created_at);
         $response = null;
         try {
@@ -213,7 +213,7 @@ class ObrDeclarationController extends Controller
             $obr = new SendInvoiceToOBR();
             $response = $obr->checkTin($order->client->customer_TIN);
             if ($response->success) {
-                $customer_TI = $order->client->customer_TIN;
+                $customer_TIN = $order->client->customer_TIN;
             }
         }
 

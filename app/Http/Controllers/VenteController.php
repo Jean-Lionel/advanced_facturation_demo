@@ -17,8 +17,8 @@ class VenteController extends Controller
     {
 
         //  $obr = new SendInvoiceToOBR();
-
-        //  dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
+        // dd($obr->getToken());
+        // dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
 
         $search = request()->get('search');
         $products = Product::where('quantite', '>', 1)

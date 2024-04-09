@@ -5,12 +5,10 @@
 @section('content')
 @include('products._header_product')
 
-
-
 <div class="col-md-12">
 		<h5 class="text-center">Historique des entrées</h5>
 
-		<table class="table table-sm table-striped">
+		<table id="fiche_stock" class="table table-sm table-striped" style="width: 100%;">
 			<thead>
 				<tr>
 					<th scope="col">#</th>
@@ -41,5 +39,24 @@
 
 
 	</div>
+
+@stop
+
+@section('javascript')
+
+<script>
+    $(document).ready( function () {
+        $('#fiche_stock').dataTable({
+            dom: 'Bfrtip',
+            buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print',
+            ],
+            pagingType: "full_numbers",
+            scrollX: true,
+        });
+
+
+    } );
+</script>
 
 @stop

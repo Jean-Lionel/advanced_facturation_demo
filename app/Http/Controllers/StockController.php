@@ -19,9 +19,9 @@ class StockController extends Controller
 {
 
     public function mouvement_stock(){
-        $start_at = \Request::get('start_at');
-        $end_at = \Request::get('end_at');
-        $mouvement = \Request::get('mouvement');
+        $start_at =  request()->query('start_at');
+        $end_at =  request()->query('end_at');
+        $mouvement =  request()->query('mouvement');
 
         $mouvements = ObrMouvementStock::where(function ($query) use ($start_at, $end_at, $mouvement) {
             if($start_at and $end_at){
@@ -128,10 +128,14 @@ class StockController extends Controller
         return back();
     }
 
-
     public function journal(){
-        $orders =  Order::where('is_cancelled','=','0')->sortable()->latest()->paginate(10);
-        return view('journals.index', compact('orders'));
+        $startDate = request()->query('startDate');
+        $endDate = request()->query('endDate');
+        $orders =  Order::where('is_cancelled','=','0')
+                            ->sortable()
+                            ->latest()
+                            ->paginate(10);
+        return view('journals.index', compact('orders', 'startDate','endDate'));
     }
     public function fiche_stock(){
         $follow_products = FollowProduct::latest()->get();
@@ -145,8 +149,8 @@ class StockController extends Controller
 
     public function rapport(){
 
-        $start_date = \Request::get('start_date');
-        $end_date = \Request::get('end_date');
+        $start_date = request()->query('start_date');
+        $end_date =  request()->query('end_date');
         // dd($start_date, $end_date);
         $paiement_dette = DetailPaimentDette::whereDate('created_at','=',Carbon::now())->sum('montant');
 
@@ -222,9 +226,9 @@ class StockController extends Controller
 
     public function bonEntre(){
 
-        $s_date = \Request::get('s_date');
-        $e_date = \Request::get('e_date');
-        $action = \Request::get('action');
+        $s_date =  request()->query('s_date');
+        $e_date =  request()->query('e_date');
+        $action =  request()->query('action');
 
         $d = new Carbon($e_date);
         $products = FollowProduct::where('action','=',$action)

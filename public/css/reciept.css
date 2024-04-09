@@ -1,29 +1,27 @@
 :root{
-    --main-color: #007bff;
     --font-size : 5px;
 }
-
+.invoice_signature{
+    font-size: 20px;
+    word-wrap: break-word;
+}
 
   .container {
 
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    width: 90mm;
-
-
-    margin: 5px auto;
+    width: 80mm;
     padding: 2px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     .text-center{
         text-align: center !important;
     }
-
-    .invoice_signature{
-        word-wrap: break-word;
-
+    .text-center{
+        text-align: center ;
     }
+
     h1 {
         font-size: var(--font-size);
         text-align: center;
@@ -38,13 +36,19 @@
         width: 100%;
         border-collapse: collapse;
       }
-      td,th{
+      td,th, tr{
         font-size: var(--font-size);
         border: 2px #000000 dotted;
       }
       td.nowrap{
        white-space: nowrap;
       }
+
+      .adroite{
+        text-align:right !important;
+        padding-right: 15px;
+
+    }
   }
 
 

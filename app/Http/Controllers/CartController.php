@@ -30,14 +30,14 @@ class CartController extends Controller
 
     public function update_product_price(){
 
-        $rowId = \Request::get('product_id');
-        $price = \Request::get('price');
+        $rowId = request()->get('product_id');
+        $price = request()->get('price');
 
         $total = Cart::subtotal();
        // dd($total );
         $cart = Cart::update($rowId, ['price' => $price]);
-        $taux_pourcentage = \Request::get('current_tva') ?? 18;
-        $tax = Cart::subtotal() * $taux_pourcentage / 100;
+        //$taux_pourcentage = request()->get('current_tva') ?? 18;
+        $tax = Cart::tax();
 
         return response()->json( [
             'rowId' =>  $cart->rowId,
@@ -52,16 +52,16 @@ class CartController extends Controller
         //return  Cart::update($rowId, ['price' => $price]);
     }
     public function update_emballage(){
-        $rowId = \Request::get('product_id');
-        $unite_emballage = \Request::get('embalage');
-        $taux_pourcentage = \Request::get('current_tva');
+        $rowId = request()->get('product_id');
+        $unite_emballage = request()->get('embalage');
+        $taux_pourcentage = request()->get('current_tva');
 
         $total = Cart::subtotal();
         $cart = Cart::update($rowId, ['options' => [
             'embalage' => $unite_emballage
         ]]);
-        $taux_pourcentage = \Request::get('current_tva') ?? 18;
-        $tax = Cart::subtotal() * $taux_pourcentage / 100;
+       // $taux_pourcentage = request()->get('current_tva') ?? 18;
+        $tax = Cart::tax();
 
         return response()->json( [
             'rowId' =>  $cart->rowId,
@@ -137,16 +137,15 @@ class CartController extends Controller
 
     public function update_quantite(){
         // rowId,
-        $rowId = \Request::get('rowId');
-        $quatite = \Request::get('qty');
+        $rowId = request()->get('rowId');
+        $quatite = request()->get('qty');
         $qte = 1;
         if(floatval($quatite) != 0){
             $qte =  intval($quatite);
         }
         $cart = Cart::update($rowId, $qte );
-        $taux_pourcentage = \Request::get('current_tva') ?? 18;
-        $tax = Cart::subtotal() * $taux_pourcentage / 100;
-
+       // $taux_pourcentage = request()->get('current_tva') ?? 18;
+        $tax = Cart::tax();
         return response()->json( [
             'rowId' => $cart->rowId,
             'cart' => $cart->subtotal(),

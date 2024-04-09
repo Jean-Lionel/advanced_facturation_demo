@@ -54,8 +54,6 @@ class ServiceVente extends Component
             DB::beginTransaction();
 
             $products =  $this->extractCart();
-
-
             $order = Order::create([
                 'amount' => array_sum(array_values($this->pricesTVAC)),
                 'total_quantity' => count($this->table_length),

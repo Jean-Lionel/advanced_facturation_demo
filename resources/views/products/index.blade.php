@@ -27,6 +27,7 @@
 				<th scope="col">#</th>
 				<th scope="col">CODE</th>
 				<th scope="col"> @sortablelink('name','Designation') </th>
+				<th scope="col"> TVA(%) </th>
 				<th scope="col">TVA (%) </th>
 				<th scope="col">@sortablelink('price','P U')  </th>
 				<th scope="col">@sortablelink('quantite','Qté')</th>
@@ -52,6 +53,7 @@
 					{{ $value?->taux_tva}}
 				</td>
 
+				<td>{{ $value->taux_tva }}</td>
 				<td>{{ $value->price }}</td>
 				<td class="{{ $value->quantite >= $value->quantite_alert ? 'bg-success' : 'bg-danger'  }}">
 

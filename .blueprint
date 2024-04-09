@@ -1,15 +1,26 @@
 created:
-    - app/Http/Controllers/ProductStockController.php
-    - database/factories/ProductStockFactory.php
-    - database/migrations/2024_04_03_053059_create_product_stocks_table.php
-    - app/Models/ProductStock.php
-    - tests/Feature/Http/Controllers/ProductStockControllerTest.php
-    - app/Http/Requests/ProductStockStoreRequest.php
-    - app/Http/Requests/ProductStockUpdateRequest.php
-    - resources/views/productStock/index.blade.php
-    - resources/views/productStock/create.blade.php
-    - resources/views/productStock/show.blade.php
-    - resources/views/productStock/edit.blade.php
+    - app/Http/Controllers/CommandeController.php
+    - app/Http/Controllers/CommandeDetailController.php
+    - database/factories/CommandeFactory.php
+    - database/factories/CommandeDetailFactory.php
+    - database/migrations/2024_04_09_071626_create_commandes_table.php
+    - database/migrations/2024_04_09_071627_create_commande_details_table.php
+    - app/Models/Commande.php
+    - app/Models/CommandeDetail.php
+    - tests/Feature/Http/Controllers/CommandeControllerTest.php
+    - tests/Feature/Http/Controllers/CommandeDetailControllerTest.php
+    - app/Http/Requests/CommandeStoreRequest.php
+    - app/Http/Requests/CommandeUpdateRequest.php
+    - app/Http/Requests/CommandeDetailStoreRequest.php
+    - app/Http/Requests/CommandeDetailUpdateRequest.php
+    - resources/views/commande/index.blade.php
+    - resources/views/commande/create.blade.php
+    - resources/views/commande/show.blade.php
+    - resources/views/commande/edit.blade.php
+    - resources/views/commandeDetail/index.blade.php
+    - resources/views/commandeDetail/create.blade.php
+    - resources/views/commandeDetail/show.blade.php
+    - resources/views/commandeDetail/edit.blade.php
 updated:
     - routes/web.php
 models:
@@ -44,3 +55,5 @@ models:
     Vente: {  }
     Compte: { name: 'string:250', montant: double, is_active: boolean, client_id: 'id foreign:clients' }
     ProductStock: { name: 'nullable string:250', product_id: 'id foreign:products', stock_id: 'id foreign:stockes', quantity: double, prix_revient: 'double default:0', prix_vente: 'double default:0', user_id: 'id foreign:users', created_at: datetime, updated_at: datetime }
+    Commande: { user_id: 'id foreign:users', stock_id: 'nullable id foreign:stockes', client_id: 'nullable id foreign:clients', type_commande: 'nullable text', stock_demandant: 'nullable id foreign:stockes', stock_livrant: 'nullable id foreign:stockes', description: 'nullable text' }
+    CommandeDetail: { user_id: 'id foreign:users', commande_id: 'nullable id foreign:commandes', client_id: 'nullable id foreign:clients', product_id: 'nullable id foreign:products', quantite: 'double default:0', quantite_livre: 'double default:0', price_commande: 'double default:0', price_livraison: 'double default:0', description: 'nullable text' }

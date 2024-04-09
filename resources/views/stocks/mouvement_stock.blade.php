@@ -6,7 +6,7 @@
 @include('products._header_product')
 
 
-<div>
+<div class="">
     <div>
         <h4 class="text-center">Mouvement de stock</h4>
     </div>
