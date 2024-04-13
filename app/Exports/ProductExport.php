@@ -12,6 +12,8 @@ class ProductExport implements FromCollection
     */
     public function collection()
     {
-        return Product::all();
+        return collect([
+            ['ID', 'Name', 'Marque', 'Unite de Mesure', 'Quantite', 'Quantite alert','prix d\'Achat', 'Taux du tva', 'date d\'Expiration', 'Description'],
+        ]);
     }
 }
