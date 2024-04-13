@@ -78,7 +78,7 @@
                                             <div class="py-2 text-uppercase">QUANTITE</div>
                                         </th>
                                         <th scope="col" class="border-0 bg-light">
-                                            <div class="py-2 text-uppercase">PRIX</div>
+                                            <div class="py-2 text-uppercase">P.T HTVA </div>
                                         </th>
                                         <th scope="col" class="border-0 bg-light">
                                             <div class="py-2 text-uppercase">Action</div>
@@ -102,10 +102,13 @@
                                         </th>
                                         <th>{{ $product->model->taux_tva }}</th>
                                         <th>
-                                            <input type="number" class="price_input" data-product="{{ $product->rowId }}" value="{{ $product->price }}" class="form-control">
+                                            <input type="number" class="price_input" data-product="{{ $product->rowId }}"
+                                            value="{{ $product->price }}"
+                                            data-tva="{{ $product->model->taux_tva }}"
+                                            class="form-control">
                                         </th>
                                         <th>
-                                            <span>{{ $product->model->price_tvac  }}</span>
+                                            <span id="price_tvac_{{ $product->rowId }}" >{{ $product->model->price_tvac  }}</span>
                                         </th>
 
                                         {{--                  <td >--}}
@@ -241,6 +244,10 @@
 
             <script>
 
+                function prixVenteTvac(price, taux = 0.18){
+                    return Math.round(price * (1 + taux ));
+                }
+
                 let price_input = $('.price_input');
                 let quantite_select = $('.quantite_select');
                 let embalage = $('.embalage');
@@ -274,8 +281,12 @@
 
                 price_input.on('keyup', function(){
                     let product_id = this.getAttribute('data-product');
+                    let tva = this.getAttribute('data-tva');
                     let price = this.value;
                     var current_tva = $("#current_tva").val();
+                   const prix_tva =  prixVenteTvac(this.value , tva);
+
+                    $("#price_tvac_" + product_id).html(prix_tva)
                     $.ajax(
                     {
                         url : '{{ route('update_price') }}',

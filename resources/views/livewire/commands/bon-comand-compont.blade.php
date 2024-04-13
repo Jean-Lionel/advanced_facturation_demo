@@ -1,7 +1,6 @@
 <div>
     {{-- Be like water. --}}
 
-    <h1>Je suis en bonne sante </h1>
 
    <div class="row">
     <div class="col-md-12">
