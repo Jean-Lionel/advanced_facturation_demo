@@ -21,15 +21,13 @@ class SyncronizeController extends Controller
     }
     //
     public function syncronize(){
-
         $response = 0;
         if(isInternetConnection()){
             try {
                 //code...
             if(CAN_SYNCRONISE_STOCK){
-               $this->syncronizeStock();
+                $this->syncronizeStock();
             }
-
             if(CAN_SYNCRONISE_INVOICE){
                 $response =  $this->syncronizeInvoices();
             }

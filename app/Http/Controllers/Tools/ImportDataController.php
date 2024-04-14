@@ -28,6 +28,7 @@ class ImportDataController extends Controller
     }
 
     public function save(Request $request){
+
         $response = [
             'existing' => [],
             'error' => [],
@@ -44,33 +45,41 @@ class ImportDataController extends Controller
                 continue;
             }
 
-            if(!isValideNumber($item[5])
-            || !isValideNumber($item[6])
-            || !isValideNumber($item[8])
-            || !isValideNumber($item[9])
-            ){
-                $error['error'][] = [
-                    'item' => $item,
-                    'message' => ' Les donnees sont invalide '
-                ];
-            }
+            // if(!isValideNumber($item[5])
+
+            // ){
+            //     $error['error'][] = [
+            //         'item' => $item,
+            //         'message' => ' Les donnees sont invalide '
+            //     ];
+            // }
 
             if(count($error) == 0){
-                Product::create([
-                    // 'id' => $item[0],
-                    'code_product' => $item[1],
-                    'name' => $item[2],
-                    'marque' => $item[3],
-                    'unite_mesure' => $item[4],
-                    'quantite' => $item[5],
-                    'quantite_alert' => $item[6],
-                    'price_min' => $item[7],
-                    'price' => $item[8],
-                    'taux_tva' => $item[9],
-                    'category_id' => 1,
-                    'description' => $item[10],
-                    'user_id' => auth()->user()->id,
-                ]);
+
+                try{
+                    Product::create([
+                        // 'id' => $item[0],
+                        'code_product' => $item[1],
+                        'name' => $item[2],
+                        'marque' => $item[3],
+                        'unite_mesure' => $item[4],
+                        'quantite' => floatval($item[5]),
+                        'quantite_alert' => floatval($item[6]),
+                        'price_min' => floatval($item[7]) ,
+                        'price' => floatval($item[8]) ,
+                        'taux_tva' => floatval($item[9]) ,
+                        'category_id' => 1,
+                        'description' => $item[10],
+                        'user_id' => auth()->user()->id,
+                    ]);
+
+                }catch(\Exception $e){
+                    $error['error'][] = [
+                        'item' => $item,
+                        'message' => $e->getMessage(),
+                    ];
+                }
+                $response[] = $error;
 
                 $count ++;
             }else{

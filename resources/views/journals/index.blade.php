@@ -33,6 +33,9 @@
 					<th scope="col">
 						@sortablelink('type_paiement', 'MODE DE PAIMENT')
 					</th>
+                    <th>
+                        TVA
+                    </th>
 					<th scope="col">Action</th>
 				</tr>
 			</thead>
@@ -57,6 +60,9 @@
 					</td>
 					<td>{{ getPrice($order->amount )}}</td>
 					<td>{{ $order->type_paiement ?? ""}}</td>
+                    <td>
+                        {{ getPrice($order->tax ) }}
+                    </td>
 					<td class="d-flex">
 						<a href="{{ route('orders.show', $order) }}" class="btn btn-sm btn-success mr-2" title="imprimer"> <i class="fa fa-print" ></i></a>
 

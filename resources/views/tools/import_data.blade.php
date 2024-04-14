@@ -1,12 +1,13 @@
-
 @extends('layouts.app')
-
 @section('content')
 @include('users._header_config')
 
 <div>
     <div class="border  border-white  ">
         <a href="{{ route('export_model_product') }}">Télécharger le model pour les produits de stock</a>
+    </div>
+    <div class="container" id="error_fields">
+
     </div>
     <div>
         <form id="data" method="post" enctype="multipart/form-data">
@@ -46,7 +47,7 @@
                 success: function (data) {
                     currentFileData = data.items;
                     $("#readed_file").html(data.html);
-                    console.log(data)
+
                     $("#progressbar").hide();
                 },
                 error: function (data) {
@@ -72,8 +73,18 @@
                     items : currentFileData
                 },
                 success: function (data) {
-                    $("#readed_file").html(data);
-                    console.log(data)
+
+                    let ul = `<>
+                        <li> TOTAL DES  ENREGISTREMENT  = ${data.count}</li>
+                        `
+                        for(const item of Object.values(data.response)){
+                            ul += `<li> ${JSON.stringify(item)}</li>`
+                        }
+
+                        ul += `</ol>`
+
+                        $("#readed_file").html(ul);
+
                     $("#progressbar").hide();
                 },
                 error: function (data) {
@@ -81,13 +92,8 @@
                     console.log(data)
                     $("#progressbar").hide();
                 },
-
-
             });
         });
     });
-
-
-
 </script>
 @stop

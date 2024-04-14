@@ -24,9 +24,7 @@ protected $guarded = [];
 'products','user_id','tax','amount_tax','client','type_paiement', 'date_facturation', 'invoice_signature'];
 
 	public static function boot(){
-
 		parent::boot();
-
 		self::creating(function($model){
 			$model->user_id = Auth::user()->id ?? 1;
             Session::put('cancel_syncronize', false);
