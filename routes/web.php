@@ -98,9 +98,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('bon_commande', [CommandeController::class, 'bon_commande'])->name('bon_commande');
     Route::resource('commande-detail', App\Http\Controllers\CommandeDetailController::class);
 
-    Route::get('import_data', [ImportDataController::class, 'import_data'])->name('import_data');
+    Route::get('import_data', [ImportDataController::class, 'import_data'])->name('import_data_show');
     Route::get('export_model', [ImportDataController::class, 'export_model'])->name('export_model_product');
     Route::post('import', [ImportDataController::class, 'import'])->name('import_data');
+    Route::post('save_import_data', [ImportDataController::class, 'save'])->name('save_import_data');
 });
 
 require __DIR__ . '/jetstream.php';

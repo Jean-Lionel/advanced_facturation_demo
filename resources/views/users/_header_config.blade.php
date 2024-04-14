@@ -7,7 +7,7 @@
             <a href="{{ route('syncronize_customer') }}" class=" {{ request()->routeIs('syncronize_customer') ? 'active' : '' }} ">clear Storage</a>
         </li>
         <li class="list-group-item">
-            <a href="{{ route('import_data') }}" class=" {{ request()->routeIs('import_data') ? 'active' : '' }} ">Importation des données</a>
+            <a href="{{ route('import_data_show') }}" class=" {{ request()->routeIs('import_data_show') ? 'active' : '' }} ">Importation des données</a>
         </li>
     </ul>
 
