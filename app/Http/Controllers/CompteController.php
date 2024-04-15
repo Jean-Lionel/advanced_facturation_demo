@@ -16,9 +16,15 @@ class CompteController extends Controller
      */
     public function index(Request $request)
     {
-        $comptes = Compte::all();
+        $clients = Client::with('compte')->whereHas('compte')->latest()->paginate(20);
 
-        return view('compte.index', compact('comptes'));
+        return view('compte.index', compact('clients'));
+    }
+
+    public function clientabonne(Request $request){
+        $clients = Client::latest()->paginate(20);
+
+        return view('clients.index', compact('clients'));
     }
 
     public function syncronize_customer(){
