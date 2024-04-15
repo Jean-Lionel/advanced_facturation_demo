@@ -14,14 +14,57 @@
             <form action="" class="col-3">
                 <div class="d-flex gap-3">
                     <span>DU</span>
-                    <input type="date" class="form-control  form-control-sm" name="startDate">
+                    <input type="date" class="form-control  form-control-sm" name="startDate"
+                    value="{{ $startDate }}"
+                    >
                     <span>Au</span>
-                    <input type="date" class="form-control form-control-sm" name="endDate">
+                    <input type="date" class="form-control form-control-sm" name="endDate"
+                    value="{{ $endDate }}"
+                    >
                     <button type="submit" class="btn btn-info btn-sm">
                         Ok
                     </button>
                 </div>
             </form>
+
+            <div class=" col-4">
+                <div class="d-flex gap-3">
+                    <table class="table table-sm table-striped">
+                        <tr>
+                            <th>DATE</th>
+                            <th>
+                                DU {{ $startDate  }} AU {{ $endDate }}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>NOMBRE TOTAL DE FACTURE</th>
+                            <th>{{ getPrice($total_facture) }}</th>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <div class=" col-4">
+                <div class="d-flex gap-3">
+                    <table class="table table-sm table-striped">
+                        <tr>
+                            <th>MONTANT TOTAL DES FACTURE TVAC</th>
+                            <th>
+                               {{ getPrice($total_amount) }}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>NOMBRE TOTAL POUR  TVA</th>
+                            <th>{{ getPrice($total_tva) }}</th>
+                        </tr>
+                        <tr>
+                            <th>NOMBRE TOTAL POUR  HTVA</th>
+                            <th>{{ getPrice($total_amount_tax) }}</th>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
         </div>
 
 		<table class="table table-sm ">

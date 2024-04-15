@@ -128,13 +128,22 @@ class StockController extends Controller
     }
 
     public function journal(){
-        $startDate = request()->query('startDate');
-        $endDate = request()->query('endDate');
+        $startDate = request()->query('startDate') ?? Carbon::now()->format('Y-m-d');
+        $endDate = request()->query('endDate') ?? Carbon::now()->addDays(1)->format('Y-m-d');
         $orders =  Order::where('is_cancelled','=','0')
+                            ->whereBetween('created_at',[$startDate,$endDate])
                             ->sortable()
-                            ->latest()
-                            ->paginate(10);
-        return view('journals.index', compact('orders', 'startDate','endDate'));
+                            ->latest();
+
+        return view('journals.index', [
+            'orders' => $orders->paginate(10),
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'total_tva' => $orders->sum('tax'),
+            'total_facture' => $orders->count(),
+            'total_amount' => $orders->sum('amount'),
+            'total_amount_tax' => $orders->sum('amount_tax'),
+        ] );
     }
     public function fiche_stock(){
         $follow_products = FollowProduct::latest()->get();

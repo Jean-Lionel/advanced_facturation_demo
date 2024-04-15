@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\CacheAdvancedController;
 use App\Http\Controllers\CommandeController;
-use App\Http\Controllers\CompteController;
+//use App\Http\Controllers\CompteController;
 use App\Http\Controllers\ObrStockController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\SyncronizeController;
@@ -102,6 +102,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('export_model', [ImportDataController::class, 'export_model'])->name('export_model_product');
     Route::post('import', [ImportDataController::class, 'import'])->name('import_data');
     Route::post('save_import_data', [ImportDataController::class, 'save'])->name('save_import_data');
+    Route::get('clients_abones/{id}', 'ClientController@abonne')->name('clients_abones');
 });
 
 require __DIR__ . '/jetstream.php';
