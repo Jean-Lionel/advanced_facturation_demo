@@ -9,7 +9,9 @@ models:
     description: nullable text
 
 
+ 
 
 controllers:
   ProductDetail:
     resource: web
+  

@@ -103,6 +103,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('import', [ImportDataController::class, 'import'])->name('import_data');
     Route::post('save_import_data', [ImportDataController::class, 'save'])->name('save_import_data');
     Route::get('clients_abones/{id}', 'ClientController@abonne')->name('clients_abones');
+    //recharge le compte
+    Route::get('recharge/{id}', 'CompteController@recharge')->name('recharge');
+    Route::get('historique/{id}', 'CompteController@historique')->name('historique');
+    Route::post('updatecompte', 'CompteController@updatecompte')->name('updatecompte');
 });
 
 require __DIR__ . '/jetstream.php';

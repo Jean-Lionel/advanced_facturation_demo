@@ -21,11 +21,32 @@ class CompteController extends Controller
         return view('compte.index', compact('clients'));
     }
 
-    public function clientabonne(Request $request){
-        $clients = Client::latest()->paginate(20);
-
-        return view('clients.index', compact('clients'));
+    // View formulaire de recharge
+    public function recharge($id){
+        return view('compte.recharge')->with('id', $id);
     }
+    
+    // View de historique des transaction
+    public function historique(Request $request){
+        return view('compte.historique');
+    }
+    
+    public function updatecompte(Request $request){
+        $montant = $request->montant;
+        $modePaiement = $request->type_paiement;
+        $id= $request->id;
+        $compte = Compte::find($id);
+        $montantActuel = $compte->montant;
+        $MontTotal = $montantActuel + $montant;
+        Compte::where('id', $id)->update(['montant' => $MontTotal]);
+        /*
+            Ajout du transaction
+        */
+
+        $clients = Client::with('compte')->whereHas('compte')->latest()->paginate(20);
+        return view('compte.index', compact('clients'));
+    }
+
 
     public function syncronize_customer(){
         $clients = Client::doesntHave('compte')->get();
