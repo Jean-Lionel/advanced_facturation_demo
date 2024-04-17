@@ -89,7 +89,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('comptes', CompteController::class);
 
     Route::resource('compte', CompteController::class);
-    Route::get('syncronize_customer',[CompteController::class, 'syncronize_customer'] )->name('syncronize_customer');
+    Route::get('syncronize_customer','CompteController@syncronize_customer' )->name('syncronize_customer');
 
     Route::resource('product_stock', ProductStockController::class);
     Route::get('rapport_detail', [RapportController::class , 'rapport_detail'])->name('rapport_detail');
