@@ -106,6 +106,3 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 require __DIR__ . '/jetstream.php';
-
-
-Route::resource('product-detail', App\Http\Controllers\ProductDetailController::class);
