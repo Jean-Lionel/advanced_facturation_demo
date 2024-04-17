@@ -45,7 +45,7 @@ class Product extends MyModel
         return $this->price_min;
     }
     public function productDetails(){
-        return $this->hasMany(ProductDetail::class);
+        return $this->hasMany(ProductDetail::class)->where('quantite_restant' , '>' ,0);
     }
 
     public function getPriXVenteAttribute(){

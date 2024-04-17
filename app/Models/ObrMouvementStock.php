@@ -54,8 +54,9 @@ class ObrMouvementStock extends Model
     public static function saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_description = null, $item_movement_invoice_ref = null ){
 
         Session::put('cancel_syncronize', false);
-         $item_movement_date = now();
-        self::create([
+        $item_movement_date = now();
+
+        $active_data = [
             'system_or_device_id' => env('OBR_USERNAME'),
             'item_code'=> $produit->id,
             'item_designation' => $produit->name,
@@ -69,7 +70,40 @@ class ObrMouvementStock extends Model
             'item_movement_date' => $item_movement_date,
             'is_send_to_obr' => false,
             'user_id' => auth()->user()->id,
-        ]);
+        ];
+
+        if( in_array( $mouvement, ['SN' ,'SP','SV', 'SD','SC','SAJ','ST','SAU'])){
+            $reste = $qte;
+            foreach($produit->productDetails as $detail){
+                $tmp = $reste;
+                $reste =  $reste - $detail->quantite_restant;
+                if($reste > 0){
+                    //table.push(product.value)
+                    self::create( array_merge($active_data, [
+                        'item_quantity' =>  $detail->quantite_restant,
+                        'item_purchase_or_sale_price' => $detail->prix_revient,
+                    ]));
+                    $detail->quantite_restant = 0;
+                    $detail->save();
+                }else if( $reste <= 0){
+                    // table.push(tmp)
+                    self::create( array_merge($active_data, [
+                        'item_quantity' =>   $tmp,
+                        'item_purchase_or_sale_price' => $detail->prix_revient,
+                    ]));
+                    $detail->quantite_restant -= $tmp;
+                    $reste = 0;
+                    $detail->save();
+                    break;
+                }
+            }
+
+        }else{
+            self::create( $active_data);
+        }
+
+        $item_movement_date = now();
+
 
         ObrSendInvoince::dispatch();
 
