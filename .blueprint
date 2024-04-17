@@ -1,15 +1,15 @@
 created:
-    - app/Http/Controllers/ProductDetailController.php
-    - database/factories/ProductDetailFactory.php
-    - database/migrations/2024_04_17_065209_create_product_details_table.php
-    - app/Models/ProductDetail.php
-    - tests/Feature/Http/Controllers/ProductDetailControllerTest.php
-    - app/Http/Requests/ProductDetailStoreRequest.php
-    - app/Http/Requests/ProductDetailUpdateRequest.php
-    - resources/views/productDetail/index.blade.php
-    - resources/views/productDetail/create.blade.php
-    - resources/views/productDetail/show.blade.php
-    - resources/views/productDetail/edit.blade.php
+    - app/Http/Controllers/BienvenuHistoriqueController.php
+    - database/factories/BienvenuHistoriqueFactory.php
+    - database/migrations/2024_04_17_120704_create_bienvenu_historiques_table.php
+    - app/Models/BienvenuHistorique.php
+    - tests/Feature/Http/Controllers/BienvenuHistoriqueControllerTest.php
+    - app/Http/Requests/BienvenuHistoriqueStoreRequest.php
+    - app/Http/Requests/BienvenuHistoriqueUpdateRequest.php
+    - resources/views/bienvenuHistorique/index.blade.php
+    - resources/views/bienvenuHistorique/create.blade.php
+    - resources/views/bienvenuHistorique/show.blade.php
+    - resources/views/bienvenuHistorique/edit.blade.php
 updated:
     - routes/web.php
 models:
@@ -46,4 +46,3 @@ models:
     ProductStock: { name: 'nullable string:250', product_id: 'id foreign:products', stock_id: 'id foreign:stockes', quantity: double, prix_revient: 'double default:0', prix_vente: 'double default:0', user_id: 'id foreign:users', created_at: datetime, updated_at: datetime }
     Commande: { user_id: 'id foreign:users', stock_id: 'nullable id foreign:stockes', client_id: 'nullable id foreign:clients', type_commande: 'nullable text', stock_demandant: 'nullable id foreign:stockes', stock_livrant: 'nullable id foreign:stockes', description: 'nullable text' }
     CommandeDetail: { user_id: 'id foreign:users', commande_id: 'nullable id foreign:commandes', client_id: 'nullable id foreign:clients', product_id: 'nullable id foreign:products', quantite: 'double default:0', quantite_livre: 'double default:0', price_commande: 'double default:0', price_livraison: 'double default:0', description: 'nullable text' }
-    ProductDetail: { user_id: 'id foreign:users', stock_id: 'nullable id foreign:stockes', product_id: 'nullable id foreign:products', prix_revient: 'nullable double', quantite: 'nullable double', quantite_restant: 'nullable double', description: 'nullable text' }

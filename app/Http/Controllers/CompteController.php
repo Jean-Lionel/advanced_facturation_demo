@@ -6,6 +6,7 @@ use App\Http\Requests\CompteStoreRequest;
 use App\Http\Requests\CompteUpdateRequest;
 use App\Models\Client;
 use App\Models\Compte;
+use App\Models\BienvenuHistorique;
 use Illuminate\Http\Request;
 
 class CompteController extends Controller
@@ -23,25 +24,41 @@ class CompteController extends Controller
 
     // View formulaire de recharge
     public function recharge($id){
+        
         return view('compte.recharge')->with('id', $id);
     }
     
     // View de historique des transaction
-    public function historique(Request $request){
-        return view('compte.historique');
+    public function historique(Request $request,$id){
+        $historiques = BienvenuHistorique::where('client_id', $id)->get();
+        return view('compte.historique', compact('historiques'));
     }
     
     public function updatecompte(Request $request){
+
+        $request->validate([
+            "montant" => "required",
+            "type_paiement" => "required",
+        ]);
         $montant = $request->montant;
+        
+
         $modePaiement = $request->type_paiement;
         $id= $request->id;
         $compte = Compte::find($id);
         $montantActuel = $compte->montant;
         $MontTotal = $montantActuel + $montant;
         Compte::where('id', $id)->update(['montant' => $MontTotal]);
-        /*
-            Ajout du transaction
-        */
+       
+        
+        BienvenuHistorique::create([
+            'compte_id'=>$id,
+            'client_id'=>$compte->client_id,
+            'mode_payement'=>$modePaiement,
+            'title'=>'Depot',
+            'montant'=>$montant,
+            'description'=>"Recharge de {$montant}",
+        ]);
 
         $clients = Client::with('compte')->whereHas('compte')->latest()->paginate(20);
         return view('compte.index', compact('clients'));

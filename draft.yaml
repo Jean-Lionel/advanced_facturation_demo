@@ -1,17 +1,16 @@
 models:
-  ProductDetail:
-    user_id : id foreign:users
-    stock_id: nullable id foreign:stockes
-    product_id: nullable id foreign:products
-    prix_revient: nullable double
-    quantite: nullable double
-    quantite_restant:  nullable double
+  BienvenuHistorique:
+    compte_id : id foreign:compte
+    client_id : nullable id foreign:clients
+    mode_payement :  string:400
+    title: string:400
+    montant :  double
     description: nullable text
 
 
  
 
 controllers:
-  ProductDetail:
+  BienvenuHistorique:
     resource: web
   

@@ -8,7 +8,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="montant">MONTANT</label>
-                    <input type="number7" class="form-control form-control-sm" id="montant" name="montant" min="1000"
+                    <input type="number" class=" form-control form-control-sm" id="montant" name="montant" min="1000"
                         required>
                     {!! $errors->first('montant', '<small class="help-block invalid-feedback">:message</small>') !!}
 
@@ -18,10 +18,10 @@
                 <label for="type_paiement">MODE DE PAIEMENT</label>
                 <select required="" class="form-control" name="type_paiement" id="">
                     <option value="">Choisissez ...</option>
-                    <option value="1">en espèce</option>
-                    <option value="2">banque</option>
-                    <option value="3">à crédit</option>
-                    <option value="4">autres</option>
+                    <option value="en espèce">en espèce</option>
+                    <option value="banque">banque</option>
+                    <option value="à crédit">à crédit</option>
+                    <option value="autres">autres</option>
                 </select>
             </div>
             <input type="text" class="form-control" value="{{ $id }}" name="id" id="validationCustom04" hidden required>
