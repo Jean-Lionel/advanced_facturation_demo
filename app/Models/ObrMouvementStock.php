@@ -72,7 +72,7 @@ class ObrMouvementStock extends Model
             'user_id' => auth()->user()->id,
         ];
 
-        if( in_array( $mouvement, ['SN' ,'SP','SV', 'SD','SC','SAJ','ST','SAU'])){
+        if( in_array( $mouvement, ['SN','SP','SV', 'SD',  'SC','SAJ','ST', 'SAU'])){
             $reste = $qte;
             foreach($produit->productDetails as $detail){
                 $tmp = $reste;
@@ -101,10 +101,6 @@ class ObrMouvementStock extends Model
         }else{
             self::create( $active_data);
         }
-
-        $item_movement_date = now();
-
-
         ObrSendInvoince::dispatch();
 
     }

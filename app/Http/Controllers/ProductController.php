@@ -126,7 +126,6 @@ class ProductController extends Controller
 
         ]);
         $p = $product->toArray();
-
         ProductHistory::create([
             'product_id' => $product->id,
             'content' => json_encode($p)
@@ -163,46 +162,24 @@ class ProductController extends Controller
         try {
             DB::beginTransaction();
             $product = Product::where('id', $request->product_id)->firstOrFail();
-
             if(in_array($request->mouvement, ['EN' ,'ER','EAJ', 'ET','EAU'])){
-
                 // Verfication pour Voir que le Prix de Revient n'a pas change
                 // Implementation de l'algorithme FIFO First In First Out
-
-                if($product->price_max != $request->montant){
-                    // Recupere le stock actuel du produit
-                    $stock_id = $product->category->stock->id ?? 1;
-                    ProductDetail::insert([
-                        // Existing Data
-                        [
-                            'user_id' => auth()->user()->id,
-                            'stock_id' => $stock_id ,
-                            'product_id' => $product->id,
-                            'prix_revient' => $product->price_max,
-                            'quantite' => $product->quantite,
-                            'quantite_restant' => $product->quantite,
-                            'description' => 'OLD PRODUCT',
-                            'created_at' => Carbon::now(),
-                            'updated_at' => Carbon::now()
-                        ],
-                        // New Data
-                        [
-                            'user_id' => auth()->user()->id,
-                            'stock_id' =>  $stock_id ,
-                            'product_id' => $product->id,
-                            'prix_revient' => $request->montant,
-                            'quantite' => $request->quantite,
-                            'quantite_restant' => $request->quantite,
-                            'description' => 'NEW PRODUCT',
-                            'created_at' => Carbon::now(),
-                            'updated_at' => Carbon::now()
-                        ],
-
-                    ]);
-                    $product->price_max = $request->montant;  // Prix de revient du produit
-                }
+                // Recupere le stock actuel du produit
+                $stock_id = $product->category->stock->id ?? 1;
+                ProductDetail::create([
+                    'user_id' => auth()->user()->id,
+                    'stock_id' =>  $stock_id ,
+                    'product_id' => $product->id,
+                    'prix_revient' => $request->montant,
+                    'quantite' => $request->quantite,
+                    'quantite_restant' => $request->quantite,
+                    'description' => 'NEW PRODUCT',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
+                $product->price_max = $request->montant;  // Prix de revient du produit
                 $product->quantite += $request->quantite;
-
             }
             if(in_array($request->mouvement, ['EI'])){
                 // reanitialisation du stock
@@ -215,14 +192,12 @@ class ProductController extends Controller
                     throw new \Exception("La quantité du stocke ne doit pas être inférieur à ZERO ", 1);
                 }
             }
-
             ObrMouvementStock::saveMouvement(
                 $product,
                 $request->mouvement,
                 $request->montant,
                 $request->quantite,
                 $request->description,
-
             );
             FollowProduct::create([
                 'quantite' => $request->quantite,
