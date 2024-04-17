@@ -1,29 +1,15 @@
 models:
-  Commande:
+  ProductDetail:
     user_id : id foreign:users
     stock_id: nullable id foreign:stockes
-    client_id : nullable id foreign:clients
-    type_commande : nullable text
-    stock_demandant: nullable id foreign:stockes
-    stock_livrant: nullable id foreign:stockes
-    description: nullable text
-
-
-  CommandeDetail:
-    user_id : id foreign:users
-    commande_id : nullable id foreign:commandes
-    client_id : nullable id foreign:clients
-    product_id : nullable id foreign:products
-    quantite :  double default:0
-    quantite_livre :  double default:0
-    price_commande :  double default:0
-    price_livraison :  double default:0
+    product_id: nullable id foreign:products
+    prix_revient: nullable double
+    quantite: nullable double
+    quantite_restant:  nullable double
     description: nullable text
 
 
 
 controllers:
-  Commande:
-    resource: web
-  CommandeDetail:
+  ProductDetail:
     resource: web
