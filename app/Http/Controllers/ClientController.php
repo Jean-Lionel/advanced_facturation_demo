@@ -10,7 +10,8 @@ class ClientController extends Controller
 
     public function index()
     {
-        $clients = Client::latest()->paginate(20);
+        $model = new Client();
+        $clients =  $model->getPaginateData();
 
         return view('clients.index', compact('clients'));
     }

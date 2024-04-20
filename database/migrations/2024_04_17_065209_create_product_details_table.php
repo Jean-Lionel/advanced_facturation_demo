@@ -25,6 +25,7 @@ class CreateProductDetailsTable extends Migration
             $table->double('quantite_restant')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();

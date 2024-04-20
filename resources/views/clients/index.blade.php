@@ -12,7 +12,7 @@
 		</div>
 		<div class="col-md-6">
 			<form action="">
-				<input type="search" class="form-control form-control-sm" placeholder="Rechercher ici ">
+				<input type="search" class="form-control form-control-sm" placeholder="Rechercher ici " name="search" value="{{ \Request::get('search') ?? '' }}">
 			</form>
 		</div>
 	</div>

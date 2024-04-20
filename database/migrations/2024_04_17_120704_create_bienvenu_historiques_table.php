@@ -23,7 +23,9 @@ class CreateBienvenuHistoriquesTable extends Migration
             $table->string('title', 400);
             $table->double('montant');
             $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();

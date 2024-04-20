@@ -18,6 +18,7 @@ class CreateObrRequestBodiesTable extends Migration
             $table->integer('invoice_id');
             $table->text('request_body')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
