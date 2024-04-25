@@ -82,6 +82,7 @@ class ObrMouvementStock extends Model
                     self::create( array_merge($active_data, [
                         'item_quantity' =>  $detail->quantite_restant,
                         'item_purchase_or_sale_price' => $detail->prix_revient,
+                        'item_product_detail_id' => $detail->id
                     ]));
                     $detail->quantite_restant = 0;
                     $detail->save();
@@ -90,6 +91,7 @@ class ObrMouvementStock extends Model
                     self::create( array_merge($active_data, [
                         'item_quantity' =>   $tmp,
                         'item_purchase_or_sale_price' => $detail->prix_revient,
+                        'item_product_detail_id' => $detail->id
                     ]));
                     $detail->quantite_restant -= $tmp;
                     $reste = 0;
@@ -98,7 +100,23 @@ class ObrMouvementStock extends Model
                 }
             }
 
-        }else{
+        }else if(in_array( $mouvement, ['ER'])){
+            $mouvements = ObrMouvementStock::where('item_movement_invoice_ref', '=',$item_movement_invoice_ref)->where('item_movement_type', '=', 'SN')
+                    ->where('item_code', $produit->id )
+                    ->get();
+            foreach($mouvements as $mv){
+                $detail = ProductDetail::find($mv->item_product_detail_id);
+                self::create( array_merge($active_data, [
+                    'item_quantity' =>   $mv->item_quantity,
+                    'item_purchase_or_sale_price' => $mv->item_purchase_or_sale_price,
+                    'item_product_detail_id' => $detail->id
+                ]));
+
+                $detail->quantite += $mv->item_quantity; // Ajouter la quantite qu'on avait enleve
+                $detail->save();
+            }
+        }
+        else{
             self::create( $active_data);
         }
         ObrSendInvoince::dispatch();

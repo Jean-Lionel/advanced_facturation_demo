@@ -104,6 +104,11 @@ return [
             'path' => storage_path('logs/obr_log.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
+        'test_log' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/test_log.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
     ],
 
 ];

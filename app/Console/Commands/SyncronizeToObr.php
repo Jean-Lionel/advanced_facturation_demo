@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
+use Illuminate\Support\Facades\Log;
 
 class SyncronizeToObr extends Command
 {
@@ -38,6 +38,18 @@ class SyncronizeToObr extends Command
      */
     public function handle()
     {
+
+        $items = range(0, 45);
+        $progressBar = $this->output->createProgressBar(count($items));
+
+        $progressBar->start();
+
+        foreach ($items as $item) {
+            sleep(1);
+            $progressBar->advance(1);
+        }
+
+        $progressBar->finish();
 
         return 0;
     }

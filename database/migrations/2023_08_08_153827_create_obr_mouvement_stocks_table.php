@@ -26,6 +26,7 @@ class CreateObrMouvementStocksTable extends Migration
             $table->string('item_movement_invoice_ref')->nullable();
             $table->string('item_movement_description')->nullable();
             $table->string('item_movement_date')->nullable();
+            $table->string('item_product_detail_id')->nullable();
             $table->string('is_send_to_obr')->nullable();
             $table->dateTime('is_sent_at')->nullable();
             $table->foreignId('user_id');
