@@ -104,16 +104,22 @@ class ObrMouvementStock extends Model
             $mouvements = ObrMouvementStock::where('item_movement_invoice_ref', '=',$item_movement_invoice_ref)->where('item_movement_type', '=', 'SN')
                     ->where('item_code', $produit->id )
                     ->get();
+
+
             foreach($mouvements as $mv){
                 $detail = ProductDetail::find($mv->item_product_detail_id);
+                $detail->quantite_restant += $mv->item_quantity; // Ajouter la quantite qu'on avait enleve
+                $detail->save();
+
+                //dd( $detail);
+
                 self::create( array_merge($active_data, [
                     'item_quantity' =>   $mv->item_quantity,
                     'item_purchase_or_sale_price' => $mv->item_purchase_or_sale_price,
                     'item_product_detail_id' => $detail->id
                 ]));
 
-                $detail->quantite += $mv->item_quantity; // Ajouter la quantite qu'on avait enleve
-                $detail->save();
+
             }
         }
         else{
