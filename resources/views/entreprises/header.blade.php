@@ -3,7 +3,7 @@
         <span class="fa fa-comments-dollar"></span>
 
         Entreprise</a>
-	<a href="{{ route('obr_declarations.index') }} " class="btn btn-link {{ setActiveRoute('obr_declarations.*') }}">
+	{{--  <a href="{{ route('obr_declarations.index') }} " class="btn btn-link {{ setActiveRoute('obr_declarations.*') }}">
         <span class="fa fa-file-invoice"></span>
         Déclaration Obr</a>
 	<a href="{{ route('obr_declarations_hostory') }}" class="btn btn-link {{ setActiveRoute('obr_declarations_hostory') }}">
@@ -12,7 +12,7 @@
 
 	<a href="{{ route('obr_log') }}" class="btn btn-link {{ setActiveRoute('obr_log') }}">
         <span class="fa fa-quidditch"></span>
-        Reponses de l'OBR </a>
+        Reponses de l'OBR </a>  --}}
 	<a href="{{ route('backup_database') }}" class="btn btn-link">
         <span class="fas fa-archive"></span>
         Backup </a>
