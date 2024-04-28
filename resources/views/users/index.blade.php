@@ -57,12 +57,12 @@
 				<td class="d-flex">
 					<a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-info"> <i class="fa fa-edit"></i> </a>
 
-					<form action="{{ route('users.destroy', $user) }}" method="post">
+					{{--  <form action="{{ route('users.destroy', $user) }}" method="post">
 						@csrf
 						@method('DELETE')
 
 						<button type="submit" class="btn ml-2 btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-					</form>
+					</form>  --}}
 				</td>
 
 			</tr>

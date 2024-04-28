@@ -155,7 +155,7 @@
                     <input type="text" name="tp_activity_sector" id="tp_activity_sector" class="form-control"
                         value="{{ $entreprise->tp_activity_sector }}">
                 </div>
-                <div class="col-4">
+                {{--  <div class="col-4">
                     <label for="">TYPE DE PAIMENT</label>
 
                     <select name="payment_type" class="form-control">
@@ -169,7 +169,7 @@
                         @endforeach
                     </select>
 
-                </div>
+                </div>  --}}
             </div>
             <div class="row p-3">
                 <button type="submit" class="btn-info btn"> Modifier</button>
