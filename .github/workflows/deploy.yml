@@ -1,8 +1,8 @@
 on:
   push:
     branches:
-      - master
-name: 🚀 Deploy Application on push Buja Deal
+      - jabirlegacyauto
+name: 🚀 Deploy Application on push jabirlegacyauto
 jobs:
   web-deploy:
     name: 🎉 Deploy
@@ -14,7 +14,7 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
-        server: 84.46.251.167
-        username: advanced
-        password:  Buja@2024
+        server: ftp.cloud209.cloudwebhosting.com
+        username: ${{ secrets.JABIRLEG_USER }}
+        password:  ${{ secrets.JABRIL_PASSWORD }}
         server-dir: ./
