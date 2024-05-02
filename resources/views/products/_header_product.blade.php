@@ -27,7 +27,7 @@
             <span>Mouvement de stock</span>
         </a>
     </div>
-
+{{--
     <div>
         <a href="{{ route('stockes.index') }}" class="{{ setActiveRoute('stockes.*') }}">
             <span class="fas fa fa-bookmark"></span>
@@ -39,7 +39,7 @@
             <span class="fas fa fa-exchange-alt"></span>
             <span>Liste des stocks</span>
         </a>
-    </div>
+    </div>  --}}
     <div>
         <a href="{{ route('bar_code') }}" class="{{ setActiveRoute('bar_code') }}">
             <span class="fa fa-barcode "></span>
