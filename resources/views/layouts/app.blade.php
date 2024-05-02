@@ -223,7 +223,7 @@
                             </div>
 
                             <div class="contenu_principal">
-                                @yield('content')
+                                {{--  @yield('content')  --}}
                             </div>
 
                         </div>
