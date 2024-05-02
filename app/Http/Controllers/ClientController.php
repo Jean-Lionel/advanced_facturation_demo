@@ -3,15 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Compte;
 use Illuminate\Http\Request;
 class ClientController extends Controller
 {
 
     public function index()
     {
-        $clients = Client::latest()->paginate(20);
+        $model = new Client();
+        $clients =  $model->getPaginateData();
 
         return view('clients.index', compact('clients'));
+    }
+
+    public function abonne($id){
+        $customer = Client::find($id);
+
+        $compte = Compte::where('client_id' , $customer->id)->first();
+
+        if(!$compte){
+            Compte::create([
+                'name' => str_pad($customer->id, 4, '0', STR_PAD_LEFT),
+                'montant' => 0,
+                'is_active' => true,
+                'client_id' => $customer->id
+            ]);
+        }
+        return back();
     }
 
 

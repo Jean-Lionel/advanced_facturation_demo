@@ -33,10 +33,6 @@
 					</select>
 
 					{!! $errors->first('stock_id', '<small class="help-block invalid-feedback">:message</small>') !!}
-
-
-
-
 					{{-- <input type="text" class="form-control {{$errors->has('title') ? 'is-invalid' : 'is-valid' }}" id="title" name="title" value="{{ old('title') ?? $category->title?? ' ' }}">
  --}}
 
@@ -57,7 +53,7 @@
 			</div>
 
 			<div class="col-md-12">
-				<input type="submit" value="{{ $btnMessage ?? 'Enregitre' }}" class="form-control btn-primary">
+				<input type="submit" value="{{ $btnMessage ?? 'Enregitrer' }}" class="form-control btn-primary">
 			</div>
 
 		</div>

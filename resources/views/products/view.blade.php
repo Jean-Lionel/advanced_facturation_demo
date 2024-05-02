@@ -33,15 +33,11 @@
 				@endif
 
 				 <span class="{{ $product->quantite <= $product->quantite_alert ? 'text-danger' : '' }}">{{ $product->quantite  .' '. $product->unite_mesure}}
-
-
-
-
 				 </span>
-
-
 				</li>
-			<li class="list-group-item"><b>QUANTITE D'ALERTER </b> : {{  $product->quantite_alert}}</li>
+			<li class="list-group-item"><b>QUANTITE D ALERTER </b> : {{  $product->quantite_alert}}</li>
+			<li class="list-group-item"><b>QUANTITE EN STOCK </b> : {{  $product->quantite}}</li>
+
 
 		</ul>
 
@@ -60,12 +56,40 @@
   </div>
 </div>
 
-
 <div>
 
 	<div class="card justify-content-center">
 		{!! nl2br($product->description) !!}
 	</div>
+</div>
+
+<div>
+
+    <table class="table table-sm table-stripped">
+        <thead>
+            <tr>
+                <td>STOCK</td>
+                <td>PRODUCT</td>
+                <td>PRIX DE REVIENT</td>
+                <td>QUANTITE ENTRE</td>
+                <td>QUANTITE RESTAN EN STOCK</td>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach ($product->productDetails as $item)
+                <tr>
+                    <td>{{ $item->stock_id }}</td>
+                    <td>{{ $product->name }}</td>
+                    <td>{{ $item->prix_revient }}</td>
+                    <td>{{ $item->quantite }}</td>
+                    <td>{{ $item->quantite_restant }}</td>
+                </tr>
+            @endforeach
+
+        </tbody>
+    </table>
 </div>
 
 

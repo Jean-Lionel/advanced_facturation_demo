@@ -46,3 +46,11 @@ function getMouvement($key){
 function setActiveRoute($route){
     return request()->routeIs($route) ? 'active' : '';
 }
+
+function isValideNumber($number){
+    if (is_numeric($number)) {
+        return true;
+    } else {
+        return false;
+    }
+}

@@ -1,26 +1,15 @@
 created:
-    - app/Http/Controllers/CommandeController.php
-    - app/Http/Controllers/CommandeDetailController.php
-    - database/factories/CommandeFactory.php
-    - database/factories/CommandeDetailFactory.php
-    - database/migrations/2024_04_09_071626_create_commandes_table.php
-    - database/migrations/2024_04_09_071627_create_commande_details_table.php
-    - app/Models/Commande.php
-    - app/Models/CommandeDetail.php
-    - tests/Feature/Http/Controllers/CommandeControllerTest.php
-    - tests/Feature/Http/Controllers/CommandeDetailControllerTest.php
-    - app/Http/Requests/CommandeStoreRequest.php
-    - app/Http/Requests/CommandeUpdateRequest.php
-    - app/Http/Requests/CommandeDetailStoreRequest.php
-    - app/Http/Requests/CommandeDetailUpdateRequest.php
-    - resources/views/commande/index.blade.php
-    - resources/views/commande/create.blade.php
-    - resources/views/commande/show.blade.php
-    - resources/views/commande/edit.blade.php
-    - resources/views/commandeDetail/index.blade.php
-    - resources/views/commandeDetail/create.blade.php
-    - resources/views/commandeDetail/show.blade.php
-    - resources/views/commandeDetail/edit.blade.php
+    - app/Http/Controllers/BienvenuHistoriqueController.php
+    - database/factories/BienvenuHistoriqueFactory.php
+    - database/migrations/2024_04_17_120704_create_bienvenu_historiques_table.php
+    - app/Models/BienvenuHistorique.php
+    - tests/Feature/Http/Controllers/BienvenuHistoriqueControllerTest.php
+    - app/Http/Requests/BienvenuHistoriqueStoreRequest.php
+    - app/Http/Requests/BienvenuHistoriqueUpdateRequest.php
+    - resources/views/bienvenuHistorique/index.blade.php
+    - resources/views/bienvenuHistorique/create.blade.php
+    - resources/views/bienvenuHistorique/show.blade.php
+    - resources/views/bienvenuHistorique/edit.blade.php
 updated:
     - routes/web.php
 models:

@@ -12,7 +12,7 @@
 		</div>
 		<div class="col-md-6">
 			<form action="">
-				<input type="search" class="form-control form-control-sm" placeholder="Rechercher ici ">
+				<input type="search" class="form-control form-control-sm" placeholder="Rechercher ici " name="search" value="{{ \Request::get('search') ?? '' }}">
 			</form>
 		</div>
 	</div>
@@ -27,6 +27,8 @@
 				<th scope="col">NIF</th>
 				<th scope="col">Fournisseur</th>
 				<th scope="col">Adresse</th>
+
+                <th>Abonnées</th>
                 <th>Date</th>
 				<th scope="col">Action</th>
 			</tr>
@@ -51,14 +53,17 @@
 				<td>
 					{{ $value->addresse}}
 				</td>
+                <td>{{ $value->compte->name  ?? "" }}</td>
 
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
-{{--					<a href="{{ route('clients.edit', $value) }}" class="btn btn-outline-info btn-sm mr-2">Modifier</a>--}}
+{{--  					<a href="{{ route('clients.edit', $value) }}" class="btn btn-outline-info btn-sm mr-2">Modifier</a>--}}
 					<form class="form-delete" action="{{ route('clients.destroy' , $value) }}" style="display: inline;" method="POST">
 					{{ csrf_field() }}
 					{{ method_field('DELETE') }}
 					<button class="btn btn-outline-danger btn-sm delete_client">Supprimer</button>
+
+                    <a href="{{ route('clients_abones', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Abonée</a>
 				</form>
 				</td>
 			</tr>

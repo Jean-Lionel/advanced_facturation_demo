@@ -20,6 +20,7 @@ class CreateObrStockLogsTable extends Migration
             $table->string('msg');
             $table->string('result')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -19,7 +19,6 @@ class CreateDepensesTable extends Migration
             $table->double('montant',64,2);
             $table->text('description')->nullable();
             $table->integer('user_id')->nullable();
-          
             $table->timestamps();
             $table->softDeletes();
         });

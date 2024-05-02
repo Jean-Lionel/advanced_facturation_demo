@@ -20,6 +20,7 @@ class CreateCanceledInvoincesTable extends Migration
             $table->text('motif');
             $table->string('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

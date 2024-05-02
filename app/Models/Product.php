@@ -44,6 +44,9 @@ class Product extends MyModel
     public function getPriXAchatAttribute(){
         return $this->price_min;
     }
+    public function productDetails(){
+        return $this->hasMany(ProductDetail::class)->where('quantite_restant' , '>' ,0);
+    }
 
     public function getPriXVenteAttribute(){
         return $this->price;

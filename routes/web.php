@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Api\CacheAdvancedController;
 use App\Http\Controllers\CommandeController;
+//use App\Http\Controllers\CompteController;
 use App\Http\Controllers\ObrStockController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\SyncronizeController;
+use App\Http\Controllers\Tools\ImportDataController;
 use App\Jobs\ObrSendInvoince;
 use Illuminate\Support\Facades\Route;
 
@@ -87,7 +89,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('comptes', CompteController::class);
 
     Route::resource('compte', CompteController::class);
-    Route::get('syncronize_customer',[CompteController::class, 'syncronize_customer'] )->name('syncronize_customer');
+    Route::get('syncronize_customer','CompteController@syncronize_customer' )->name('syncronize_customer');
 
     Route::resource('product_stock', ProductStockController::class);
     Route::get('rapport_detail', [RapportController::class , 'rapport_detail'])->name('rapport_detail');
@@ -96,7 +98,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('bon_commande', [CommandeController::class, 'bon_commande'])->name('bon_commande');
     Route::resource('commande-detail', App\Http\Controllers\CommandeDetailController::class);
 
-
+    Route::get('import_data', [ImportDataController::class, 'import_data'])->name('import_data_show');
+    Route::get('export_model', [ImportDataController::class, 'export_model'])->name('export_model_product');
+    Route::post('import', [ImportDataController::class, 'import'])->name('import_data');
+    Route::post('save_import_data', [ImportDataController::class, 'save'])->name('save_import_data');
+    Route::get('clients_abones/{id}', 'ClientController@abonne')->name('clients_abones');
+    //recharge le compte
+    Route::get('recharge/{id}', 'CompteController@recharge')->name('recharge');
+    Route::get('historique/{id}', 'CompteController@historique')->name('historique');
+    Route::post('updatecompte', 'CompteController@updatecompte')->name('updatecompte');
 });
 
 require __DIR__ . '/jetstream.php';
+
+Route::resource('bienvenu-historique', App\Http\Controllers\BienvenuHistoriqueController::class);

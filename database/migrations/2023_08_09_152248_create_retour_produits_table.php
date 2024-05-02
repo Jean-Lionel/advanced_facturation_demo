@@ -22,6 +22,7 @@ class CreateRetourProduitsTable extends Migration
             $table->string('description')->nullable();
             $table->foreignId('user_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-around noprint">
     <div>
-    <a href="{{ route('products.create') }}" class="{{ setActiveRoute('products.create') }}"><span class="fa fa-seedling"></span> Entre</a>
+    <a href="{{ route('products.create') }}" class="{{ setActiveRoute('products.create') }}"><span class="fa fa-seedling"></span> Entré</a>
     </div>
     <div>
     <a href="{{ route('retour_produit') }}" class="{{ setActiveRoute('retour_produit') }}"><span class="fa fa-undo"></span> Retour des marchandises</a>
