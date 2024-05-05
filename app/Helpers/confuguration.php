@@ -11,6 +11,7 @@ define('CAN_BUCKUP_FILE',true); // Syncronisation des donnees en lignes
 define('BASE_UNITE_EMBALLAGE', 50);
 define('DAY_FOR_STOCK_DATA_SYNCRONIZE', 10);
 define('RAISON_ENTREPRISE_HEADER', 'ADVANCED FACTURATION');
+define('ARRONDIR_RESULTAT', true);
 // // FOR TEST GEOCON
 
 // TEST
