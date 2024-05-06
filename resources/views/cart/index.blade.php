@@ -155,7 +155,9 @@
                                 <form action="{{ route('payement') }}" method="post">
 
                                     {{--  <input type="hidden" name="currentTva" value="{{ $currentTva }}">  --}}
+                                    {{--  <p> SEARCHH CLIENT <input id="autocompleteInput"></p>  --}}
                                     <div class="d-flex justify-content-between">
+
                                         <p>
                                             <input type="text" name="clientNumber" id="clientNumber" placeholder="Numero du client">
                                             <button onclick="searchClient()" class="btn-sm btn-info">Rechercher</button>
@@ -236,6 +238,8 @@
                         </div>
                     </div>
                 </div>
+
+
             </div>
             @stop
 
@@ -243,6 +247,26 @@
             @section('javascript')
 
             <script>
+
+                var tags = [
+                "jQuery", "java", "php",
+                "MySQL", "javascript",
+                "html", "C#", "C", "MongoDB","LIONEL",
+                ];
+
+                $("#autocompleteInput").autocomplete({
+                    source: tags,
+                    select : showResult,
+                   /* select : showResult,
+                focus : showResult,
+                change :showResult */
+
+                });
+
+                function showResult(event, ui) {
+                   // $('#cityName').text(ui.item.label)
+                    alert("Selected: " + ui.item.value + " aka ");
+                }
 
                 function prixVenteTvac(price, taux = 0.18){
                     return Math.round(price * (1 + taux ));
@@ -284,7 +308,7 @@
                     let tva = this.getAttribute('data-tva');
                     let price = this.value;
                     var current_tva = $("#current_tva").val();
-                   const prix_tva =  prixVenteTvac(this.value , tva);
+                    const prix_tva =  prixVenteTvac(this.value , tva);
 
                     $("#price_tvac_" + product_id).html(prix_tva)
                     $.ajax(

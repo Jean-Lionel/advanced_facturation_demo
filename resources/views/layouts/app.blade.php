@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('datatable/css/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('datatable/css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
     @livewireStyles
     <style>
         body{
@@ -237,9 +238,10 @@
                 <script src="{{ asset('datatable/datatables.min.js') }}"></script>
                 <script src="{{ asset('datatable/pdfmake.min.js') }}"></script>
                 <script src="{{ asset('js/main.js') }}"></script>
+                <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+                <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
                 @livewireScripts
-                <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 
                 <x-livewire-alert::scripts />
 
