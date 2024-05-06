@@ -29,21 +29,35 @@ class ProductController extends Controller
     }
     public function index()
     {
+
         // dd(Gate::allows('is-admin'));
         $this->authorize('view', Product::class);
         $search = request()->get('search');
-        $products = Product::with(['category' , 'mouvements'])->latest()
-        ->where(function($query) use ($search) {
-            if($search){
-                $query->where('name','like', '%'.$search.'%')
-                ->orWhere('code_product','like', '%'.$search.'%')
-                ->orWhere('date_expiration','like', '%'.$search.'%')
-                ->orWhere('unite_mesure','like', '%'.$search.'%')
-                ->orWhere('marque','like', '%'.$search.'%');
-            }
-        })
-        ->orderBy('quantite','asc')
-        ->latest()->paginate();
+        $category = request()->get('category');
+        $query = Product::with(['category' , 'mouvements'])->latest()
+                        ->where(function($query) use ($search) {
+                            if($search){
+                                $query->where('name','like', '%'.$search.'%')
+                                ->orWhere('code_product','like', '%'.$search.'%')
+                                ->orWhere('date_expiration','like', '%'.$search.'%')
+                                ->orWhere('unite_mesure','like', '%'.$search.'%')
+                                ->orWhere('marque','like', '%'.$search.'%');
+                            }
+
+                        })
+                        ->orderBy('quantite','asc')
+                        ;
+         $products = [];
+        if(  $category == 'STOCK VIDE'){
+            $products = $query->where('quantite', 0)->latest()->paginate();
+        }
+        else if( $category == 'STOCK NON VIDE'){
+
+            $products = $query->where('quantite', '>=', 1)->latest()->paginate();
+        }
+        else{
+            $products =  $query->latest()->paginate();
+        }
 
         return view("products.index", compact('products','search'));
     }
@@ -86,7 +100,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'price_max' => 'required|max:255',
             'code_product' => 'required',
-            'date_expiration' => 'required|date',
+            // 'date_expiration' => 'required|date',
             'category_id' => 'required',
             'unite_mesure' => 'required',
             'taux_tva' => 'required',
@@ -96,6 +110,8 @@ class ProductController extends Controller
         ]);
 
         Product::create($request->all());
+
+
 
         return back()->with('success', 'Enregistrement réussi');
     }
@@ -118,11 +134,11 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'price_max' => 'numeric|required|min:0',
             'code_product' => 'required',
-            'date_expiration' => 'required|date',
+            // 'date_expiration' => 'required|date',
             'quantite' => 'numeric|min:0',
             'price_min' => 'numeric|min:0',
             'taux_tva' => 'numeric|min:0',
-            'quantite_alert' => 'numeric|min:1',
+            'quantite_alert' => 'numeric|min:0',
 
         ]);
         $p = $product->toArray();
@@ -131,7 +147,7 @@ class ProductController extends Controller
             'content' => json_encode($p)
         ]);
         $product->update($request->all());
-        return $this->index();
+        return redirect()->route('products.index');
     }
 
     public function destroy(Product $product)
