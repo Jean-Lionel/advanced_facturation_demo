@@ -8,41 +8,6 @@
 
             <div class="row">
                 <div class="col-lg-12 p-1 bg-white rounded shadow-sm mb-1">
-                    <!-- Shopping cart table -->
-                    <div>
-                        {{--  <form action="" >
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <div class="form-group ">
-                                        @php
-                                        $currentTva = \Request::get('current_tva') ?? 18 ;
-                                        @endphp
-                                        <label for="">TVA EST DE <b> {{ $currentTva }} % </b> </label>
-                                        <select  id="current_tva" name="current_tva">
-                                            @foreach(["", 18,10,4,0] as $value)
-                                            <option value="{{$value}}"
-                                            @if ($value == $currentTva)
-                                            selected="selected"
-                                            @endif
-                                            > {{ $value }}</option>
-                                            @endforeach
-                                        </select>
-
-                                        <small id="helpId" class="text-muted">%</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group ">
-                                        <label for="">POURCENTAGE</label>
-                                        <button type="submit" class="btn btn-primary btn-sm form-control form-control-sm" >Valider</button>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </form>  --}}
-
-                    </div>
                     <div class="table-responsive">
                         <table class="table table-sm">
                             <thead>
@@ -155,42 +120,47 @@
                                 <form action="{{ route('payement') }}" method="post">
 
                                     {{--  <input type="hidden" name="currentTva" value="{{ $currentTva }}">  --}}
-                                    {{--  <p> SEARCHH CLIENT <input id="autocompleteInput"></p>  --}}
-                                    <div class="d-flex justify-content-between">
 
+                                    <div class="d-flex justify-content-between">
                                         <p>
-                                            <input type="text" name="clientNumber" id="clientNumber" placeholder="Numero du client">
+                                            <input type="text" name="clientNumber" id="clientNumber" placeholder="
+                                            Recherche Ici ">
                                             <button onclick="searchClient()" class="btn-sm btn-info">Rechercher</button>
                                         </p>
+
                                         <p >
                                             <input  type="checkbox" style="cursor:pointer" name="vat_customer_payer" id="vat_customer_payer">
                                             <a href="{{ route('clients.create') }}" class="btn btn-primary btn-sm"> Nouveau client </a>
                                         </p>
 
                                     </div>
+                                    <p id="screenError">
+
+                                    </p>
                                     <div>
-                                        <label for="">Date de Facturation</label>
+
                                         <input type="hidden" id="date_facturation" value="{{ date('Y-m-d') }}"  name="date_facturation">
+                                        <input type="hidden" id="client_id"   name="client_id">
                                     </div>
 
                                     @csrf
                                     @method('post')
                                     <div class="row">
                                         <div class="form-group col-md-6">
-                                            <input  required="" type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
+                                            <input  disabled type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
                                         </div>
 
                                         <div class="form-group col-md-6">
-                                            <input  type="text" name="telephone" id="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
+                                            <input  disabled name="telephone" id="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
                                         </div>
 
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-6">
-                                            <input  type="text" id="customer_TIN" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="form-control border-2">
+                                            <input  disabled id="customer_TIN" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="form-control border-2">
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <input  type="text" id="addresse_client" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
+                                            <input  disabled id="addresse_client"  placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -257,10 +227,9 @@
                 $("#autocompleteInput").autocomplete({
                     source: tags,
                     select : showResult,
-                   /* select : showResult,
-                focus : showResult,
-                change :showResult */
-
+                    select : showResult,
+                    focus : showResult,
+                    change :showResult
                 });
 
                 function showResult(event, ui) {
@@ -363,18 +332,24 @@
                 function searchClient(){
                     window.event.preventDefault();
 
-                    const client_id = $("#clientNumber").val();
+                    const search = $("#clientNumber").val();
                     $.ajax({
-                        url : "{{ asset('getClient') }}/" + client_id,
+                        url : "{{ asset('getClient') }}/" + search,
                         method : 'get'
                     }).done(function(data){
                         const client = data.client;
 
-                        $("#name").val(client.name)
-                        $("#telephone").val(client.telephone)
-                        $("#addresse_client").val(client.addresse)
-                        $("#customer_TIN").val(client.customer_TIN)
-                        $("#vat_customer_payer").val(client.vat_customer_payer)
+
+                        if(client != null){
+                            $("#name").val(client.name)
+                            $("#client_id").val(client.id)
+                            $("#telephone").val(client.telephone)
+                            $("#addresse_client").val(client.addresse)
+                            $("#customer_TIN").val(client.customer_TIN)
+                            $("#vat_customer_payer").val(client.vat_customer_payer)
+                        }else{
+                            $("#screenError").html(`<span class="bg-danger text-white rounded-pill px-1 py-1 text-uppercase font-weight-bold"> ${ search } n'a pas été trouvé </span>`)
+                        }
 
                     }).catch(function(error){
                         console.log(error)
@@ -383,47 +358,6 @@
 
 
 
-                // var selects = document.querySelectorAll("#qty")
-
-                // Array.from(selects).forEach( function(element, index) {
-
-                    //   element.addEventListener('change',function(){
-
-                        //     var token = $('meta[name="csrf-token"]').attr('content');
-
-                        //     $.ajaxSetup({
-                            //       headers: {
-
-                                //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-                                //       }
-
-                                //     });
-
-                                //       $.ajax({
-
-                                    //        type:'POST',
-
-                                    //        url:"{{ route('cart.update_panier') }}",
-
-                                    //        data:{rowId : rowId, qty :qty },
-
-                                    //        success:function(data){
-
-                                        //         location.reload();
-                                        //         console.log(data)
-
-                                        //       },
-                                        //       error: function(error){
-                                            //         console.log(error)
-                                            //       }
-                                            //     });
-
-
-
-                                            //   });
-
-                                            // })
 
                                         </script>
 

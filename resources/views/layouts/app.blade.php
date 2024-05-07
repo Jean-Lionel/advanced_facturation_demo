@@ -63,8 +63,6 @@
 
             }
         }
-
-
         .fixTableHead {
             overflow-y: auto;
             height: 80vh;
@@ -125,9 +123,13 @@
                     <li>
                         <a href="{{ route('stockes.journal') }}"  class="{{ setActiveRoute('stockes.*') }}" ><span class="fa fa-calendar"></span> Journal</a>
                     </li>
+
+                    @if (USE_ABONEMENT)
                     <li>
                         <a href="{{ route('comptes.index') }}"  class="{{ setActiveRoute('comptes.*') }}" ><span class="fa fa-hand-holding-usd" aria-hidden="true"></span> Abonement</a>
                     </li>
+                    @endif
+
                     <li>
                         <a href="{{ route('depenses.index') }}" class="{{ setActiveRoute('depenses.*') }}"><span class="fa fa-minus"></span> Depense</a>
                     </li>
@@ -238,16 +240,11 @@
                 <script src="{{ asset('datatable/datatables.min.js') }}"></script>
                 <script src="{{ asset('datatable/pdfmake.min.js') }}"></script>
                 <script src="{{ asset('js/main.js') }}"></script>
-                <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
-                <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+                <script src="{{ asset('js/sweetalert2@11.js') }}" defer></script>
+                <script src="{{asset('js/jquery-ui.js')}}"></script>
                 @livewireScripts
-
                 <x-livewire-alert::scripts />
-
-
                 @yield('javascript')
-
                 <script>
                     const canSyncronize = @json( CAN_SYNCRONISE );
                     const timeSyncronisation = @json( TIME_OUT_SYNCRONISATION );
@@ -261,9 +258,9 @@
                             return false; // definitely offline
                         }
                     };
-
                     const updateInternetStatus = async () => {
                         const result = await checkOnlineStatus();
+
                         const statusDisplay = document.getElementById("status");
                         statusDisplay.innerHTML = result ? ( `
                         <div class="avatar">
@@ -296,6 +293,7 @@
                                 }).fail(function(error){
                                     // this part will run when an error occurres
                                     console.log("An error has occurred. => " , error);
+                                    clearInterval(limitedInterval);
                                 }).always(function(){
                                     // this part will always run no matter what
                                     console.log("Complete.");

@@ -21,12 +21,12 @@ use App\Http\Controllers\SendInvoiceToOBR;
 class CheckoutController extends Controller
 {
 
-
     public function store(Request $request)
     {
+
         $validate =
         [
-            'name' => 'required|min:1',
+            'client_id' => 'required|exists:clients,id',
             // 'date_facturation' => 'required',
         ];
         if ($request->customer_TIN) {
@@ -47,7 +47,9 @@ class CheckoutController extends Controller
         try {
             DB::beginTransaction();
             $this->stockUpdated();
-            $client =  Client::find($request->clientNumber);
+            $client =  Client::find($request->client_id);
+
+
             if(!$client) {
                 $client =  Client::create([
                     'name' => $request->name,
@@ -74,7 +76,7 @@ class CheckoutController extends Controller
                 'amount_tax' => round(Cart::subtotal()),
                 'products'=> serialize($cartInfo),
                 'client'=> $client->toJson(),
-                'addresse_client'=> $request->addresse_client,
+                'addresse_client'=> $client->addresse,
                 'date_facturation'=> now(),
                 'is_cancelled' => 0,
                 'company' =>  $company->toJson(),

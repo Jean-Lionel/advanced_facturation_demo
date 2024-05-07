@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Compte;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 class ClientController extends Controller
 {
 
@@ -39,7 +40,18 @@ class ClientController extends Controller
     }
 
     public function getClient($id){
+
         $client = Client::find($id);
+
+        if(!$client){
+            $columns = Schema::getColumnListing( 'clients');
+            $query = Client::query();
+            $client =  $query->where(function ($q) use ($columns, $id) {
+                foreach ($columns as $column) {
+                    $q->orWhere($column, 'LIKE', '%' . $id . '%');
+                }
+            })->first();
+        }
 
         return response()->json( [
             'client' => $client
