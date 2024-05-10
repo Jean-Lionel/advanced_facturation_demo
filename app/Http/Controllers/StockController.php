@@ -135,7 +135,7 @@ class StockController extends Controller
                             ->whereBetween('created_at', [$startDate, $endDate])
                             ->sortable()
                             ->latest()
-                            ->paginate(10);
+                            ->get();
         return view('journals.index', compact('orders', 'startDate','endDate'));
     }
     public function fiche_stock(){
