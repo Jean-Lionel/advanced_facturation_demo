@@ -41,9 +41,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia\Inertia::render('Dashboard');
 })->name('dashboard');
-
 Route::get('send_invoice', function () {
-
     ObrSendInvoince::dispatch();
 });
 
@@ -123,8 +121,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('bienvenu-historique', BienvenuHistoriqueController::class);
     Route::get('commissionnaires', [ClientController::class, 'commissionnaires'])->name('commissionnaires');
     Route::get('make_commissionnaire/{id}', [ClientController::class, 'make_commissionnaire'])->name('make_commissionnaire');
+    Route::resource('commission-detail', App\Http\Controllers\CommissionDetailController::class);
+
 });
 
 require __DIR__ . '/jetstream.php';
 
 
+
+
+
+Route::resource('order-interet', App\Http\Controllers\OrderInteretController::class);

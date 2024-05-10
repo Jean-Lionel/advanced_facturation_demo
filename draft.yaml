@@ -1,15 +1,13 @@
-models:
-  CommissionDetail:
-    compte_id : nullable id foreign:compte nullable
-    client_id : nullable id foreign:clients
-    order_id : nullable id foreign:orders
-    user_id :  id foreign:users
-    montant :  double
-    activite: nullable string
-    description: nullable text
-    SoftDeletes
+# models:
+#   OrderInteret:
+#     order_id : nullable id foreign:orders
+#     user_id :  id foreign:users
+#     montant :  double
+#     description: nullable text
+#     SoftDeletes
 
-controllers:
-  CommissionDetail:
-    resource: web
+
+# controllers:
+#   OrderInteret:
+#     resource: web
 
