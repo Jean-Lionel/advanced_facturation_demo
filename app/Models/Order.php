@@ -28,18 +28,21 @@ protected $guarded = [];
 		self::creating(function($model){
 			$model->user_id = Auth::user()->id ?? 1;
 
-            OrderInteret::create([
-                'order_id' => $model->id,
-                'user_id' => $model->user_id,
-                'montant' => collect($model->products)->pluck('interet_total')->sum(),
-                'description' => "VENTE",
-            ]);
             Session::put('cancel_syncronize', false);
 		});
 
         self::updating(function($model){
             $model->user_id = Auth::user()->id ?? 1;
             Session::put('cancel_syncronize', false);
+        });
+
+        self::created(function($model){
+            OrderInteret::create([
+                'order_id' => $model->id,
+                'user_id' => $model->user_id,
+                'montant' => collect($model->products)->pluck('interet_total')->sum(),
+                'description' => "VENTE",
+            ]);
         });
 	}
 

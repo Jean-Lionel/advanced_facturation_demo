@@ -63,24 +63,30 @@ class ObrDeclarationController extends Controller
                 // dd($product);
                 try{
                     $product = Product::find($productItem['id']);
-                    $product->quantite += $productItem['quantite'];
-                    $product->save();
-                    \App\Models\RetourProduit::create([
-                        'product_id' => $product->id,
-                        'item_name' => $product->name,
-                        'order_id' => $order->id,
-                        'quantite' => $productItem['quantite'],
-                        'description' => $request->motif,
-                        'user_id' => auth()->user()->id,
-                    ]);
+
+                    if($product ){
+                        $product->quantite += $productItem['quantite'];
+                        $product->save();
+                        \App\Models\RetourProduit::create([
+                            'product_id' => $product->id,
+                            'item_name' => $product->name,
+                            'order_id' => $order->id,
+                            'quantite' => $productItem['quantite'],
+                            'description' => $request->motif,
+                            'user_id' => auth()->user()->id,
+                        ]);
+                        $current_price = $productItem['price_revient'] ;
+                        ObrMouvementStock::saveMouvement( $product, 'ER',$current_price, $productItem['quantite'], $request->motif, $order->id);
+
+                    }
+
 
                     // Enregistres les mouvements de stock correspondant pour la facture
 
                   //  $mouvements_enregistres = ObrMouvementStock
                     //
 
-                    $current_price = $productItem['price_revient'] ;
-                    ObrMouvementStock::saveMouvement( $product, 'ER',$current_price, $productItem['quantite'], $request->motif, $order->id);
+
                 }catch(\Exception $e){
                 }
             }

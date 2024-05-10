@@ -17,8 +17,8 @@ class VenteController extends Controller
     public function index(Request $request)
     {
 
-        $order = Order::latest()->first();
-
+        // $order = Order::latest()->first();
+        // dump($order );
         //  $obr = new SendInvoiceToOBR();
         // dd($obr->getToken());
         // dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
