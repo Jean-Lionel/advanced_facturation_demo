@@ -25,10 +25,11 @@ class ClientController extends Controller
         return view('clients.commissionnaires', compact('clients'));
     }
 
-    public function abonne($id){
+    public function make_commissionnaire($id){
         $customer = Client::find($id);
-
         $compte = Compte::where('client_id' , $customer->id)->first();
+        $customer->is_commissionaire = now();
+        $customer->save();
 
         if(!$compte){
             Compte::create([
@@ -38,6 +39,22 @@ class ClientController extends Controller
                 'client_id' => $customer->id
             ]);
         }
+        return back();
+    }
+    public function abonne($id){
+        $customer = Client::find($id);
+        $compte = Compte::where('client_id' , $customer->id)->first();
+
+
+        if(!$compte){
+            Compte::create([
+                'name' => str_pad($customer->id, 4, '0', STR_PAD_LEFT),
+                'montant' => 0,
+                'is_active' => true,
+                'client_id' => $customer->id
+            ]);
+        }
+
         return back();
     }
 

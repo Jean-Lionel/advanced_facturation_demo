@@ -1,16 +1,15 @@
 models:
-  BienvenuHistorique:
-    compte_id : id foreign:compte
+  CommissionDetail:
+    compte_id : nullable id foreign:compte nullable
     client_id : nullable id foreign:clients
-    mode_payement :  string:400
-    title: string:400
+    order_id : nullable id foreign:orders
+    user_id :  id foreign:users
     montant :  double
+    activite: nullable string
     description: nullable text
-
-
- 
+    SoftDeletes
 
 controllers:
-  BienvenuHistorique:
+  CommissionDetail:
     resource: web
-  
+

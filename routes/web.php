@@ -122,6 +122,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('updatecompte', [CompteController::class, 'updatecompte'])->name('updatecompte');
     Route::resource('bienvenu-historique', BienvenuHistoriqueController::class);
     Route::get('commissionnaires', [ClientController::class, 'commissionnaires'])->name('commissionnaires');
+    Route::get('make_commissionnaire/{id}', [ClientController::class, 'make_commissionnaire'])->name('make_commissionnaire');
 });
 
 require __DIR__ . '/jetstream.php';
