@@ -27,9 +27,23 @@ protected $guarded = [];
 		parent::boot();
 		self::creating(function($model){
 			$model->user_id = Auth::user()->id ?? 1;
+
+            OrderInteret::create([
+                'order_id' => $model->id,
+                'user_id' => $model->user_id,
+                'montant' => collect($model->products)->pluck('interet_total')->sum(),
+                'description' => "VENTE",
+            ]);
             Session::put('cancel_syncronize', false);
 		});
+
+        self::updating(function($model){
+            $model->user_id = Auth::user()->id ?? 1;
+            Session::put('cancel_syncronize', false);
+        });
 	}
+
+
 
 	public function details(){
 		return $this->hasMany('App\Models\DetailOrder','order_id');
@@ -48,7 +62,9 @@ protected $guarded = [];
 	{
 		return unserialize($v);
 	}
-
+    public function getInteretAttribute(){
+        return collect($this->products)->pluck('interet_total')->sum();
+    }
     public function getCompanyAttribute($v){
 
         return json_decode($v) ?  json_decode($v) : Entreprise::currentEntreprise();

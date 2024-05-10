@@ -120,16 +120,19 @@
                                 <form action="{{ route('payement') }}" method="post">
 
                                     {{--  <input type="hidden" name="currentTva" value="{{ $currentTva }}">  --}}
-
+                                    <div class="form-group">
+                                        <input type="text" id="chercherClient" name="chercherClient" placeholder="Recherche Ici" class="form-control border-2 form-control-sm">
+                                    </div>
                                     <div class="d-flex justify-content-between">
+
                                         <p>
-                                            <input type="text" name="clientNumber" id="clientNumber" placeholder="
-                                            Recherche Ici ">
-                                            <button onclick="searchClient()" class="btn-sm btn-info">Rechercher</button>
+                                            {{--  <input type="text" name="clientNumber" id="clientNumber" placeholder="
+                                            Recherche Ici ">  --}}
+                                            {{--  <button onclick="searchClient()" class="btn-sm btn-info">Rechercher</button>  --}}
                                         </p>
 
                                         <p >
-                                            <input  type="checkbox" style="cursor:pointer" name="vat_customer_payer" id="vat_customer_payer">
+                                            {{--  <input  type="checkbox" style="cursor:pointer" name="vat_customer_payer" id="vat_customer_payer">  --}}
                                             <a href="{{ route('clients.create') }}" class="btn btn-primary btn-sm"> Nouveau client </a>
                                         </p>
 
@@ -161,6 +164,7 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             <input  disabled id="addresse_client"  placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
+                                            <span id="search_response"></span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -172,6 +176,11 @@
                                             <option value="3">à crédit</option>
                                             <option value="4">autres</option>
                                         </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="hidden" name="commissionaire_id" id="selectedCommisionnaire">
+                                        <input type="text"  id="commissionaire_id" placeholder="PORTEUR" aria-describedby="button-addon3" class=" border-2">
                                     </div>
                                     <button type="submit" class="btn btn-dark rounded-pill py-2 btn-block">Valider</button>
                                 </form>
@@ -218,24 +227,70 @@
 
             <script>
 
-                var tags = [
-                "jQuery", "java", "php",
-                "MySQL", "javascript",
-                "html", "C#", "C", "MongoDB","LIONEL",
-                ];
+                const searchCommissionnaire = async () => {
+                    try {
+                        const x = await fetch('{{ route('load_commission') }}')
+                        .then(res => res.json());
+                        return x; // either true or false
+                    } catch (err) {
+                        return false; // definitely offline
+                    }
+                };
+                const loadingCliens = async () => {
+                    try {
+                        const x = await fetch('{{ route('getClient','ALL') }}')
+                        .then(res => res.json());
+                        return x; // either true or false
+                    } catch (err) {
+                        return false; // definitely offline
+                    }
+                };
 
-                $("#autocompleteInput").autocomplete({
-                    source: tags,
-                    select : showResult,
-                    select : showResult,
-                    focus : showResult,
-                    change :showResult
+
+                $(document).ready(async function()  {
+                    var tags = await searchCommissionnaire();
+                    var clients = await loadingCliens();
+
+                    const currentTag = tags.map(tag => `${tag.name} |  ${tag.telephone} |${tag.id}`);
+                    const currentsClients = clients.map(tag => `${tag.name} |TEL :  ${tag.telephone ?? ""} | NIF: ${tag.customer_TIN ?? ""}  |#${tag.id}`);
+                    console.log("TAGS HERE ", currentTag);
+                    console.log("tags ", tags);
+
+                    $("#commissionaire_id").autocomplete({
+                        source: currentTag,
+                        /* focus : showResult,
+                        change :showResult,*/
+                        select : checkUser
+                    });
+                    $("#chercherClient").autocomplete({
+                        source: currentsClients,
+                        /*focus : showResult,
+                        change :showResult,*/
+                        select : selectClient
+                    });
+
+                    function checkUser(event, ui) {
+                        let id = ui.item.value.split('|')[2];
+                        $("#selectedCommisionnaire").val(id);
+                    }
+                    function selectClient(event, ui) {
+                        //console.log(ui.item.value);
+                        const id = ui.item.value.split('|#')[1];
+                        const client = clients.filter(client => client.id == id)[0];
+                        $("#client_id").val(id)
+                        $("#name").val(client.name)
+                        $("#telephone").val(client.telephone)
+                        $("#addresse_client").val(client.addresse)
+                        $("#customer_TIN").val(client.customer_TIN)
+                    }
+
+                    function showResult(event, ui) {
+                        // $('#cityName').text(ui.item.label)
+
+                    }
                 });
 
-                function showResult(event, ui) {
-                   // $('#cityName').text(ui.item.label)
-                    alert("Selected: " + ui.item.value + " aka ");
-                }
+
 
                 function prixVenteTvac(price, taux = 0.18){
                     return Math.round(price * (1 + taux ));
@@ -329,36 +384,17 @@
 
                 })
 
-                function searchClient(){
-                    window.event.preventDefault();
+                function searchClient(client){
+                    $("#name").val(client.name)
+                    $("#telephone").val(client.telephone)
+                    $("#addresse_client").val(client.addresse)
+                    $("#customer_TIN").val(client.customer_TIN)
 
-                    const search = $("#clientNumber").val();
-                    $.ajax({
-                        url : "{{ asset('getClient') }}/" + search,
-                        method : 'get'
-                    }).done(function(data){
-                        const client = data.client;
-
-
-                        if(client != null){
-                            $("#name").val(client.name)
-                            $("#client_id").val(client.id)
-                            $("#telephone").val(client.telephone)
-                            $("#addresse_client").val(client.addresse)
-                            $("#customer_TIN").val(client.customer_TIN)
-                            $("#vat_customer_payer").val(client.vat_customer_payer)
-                        }else{
-                            $("#screenError").html(`<span class="bg-danger text-white rounded-pill px-1 py-1 text-uppercase font-weight-bold"> ${ search } n'a pas été trouvé </span>`)
-                        }
-
-                    }).catch(function(error){
-                        console.log(error)
-                    })
                 }
 
 
 
 
-                                        </script>
+            </script>
 
-                                        @endsection
+            @endsection

@@ -122,6 +122,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('commissionnaires', [ClientController::class, 'commissionnaires'])->name('commissionnaires');
     Route::get('make_commissionnaire/{id}', [ClientController::class, 'make_commissionnaire'])->name('make_commissionnaire');
     Route::resource('commission-detail', App\Http\Controllers\CommissionDetailController::class);
+    Route::get('load_commission', [ClientController::class, 'load_commission'])->name('load_commission');
 
 });
 

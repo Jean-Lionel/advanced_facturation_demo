@@ -25,6 +25,10 @@ class ClientController extends Controller
         return view('clients.commissionnaires', compact('clients'));
     }
 
+    public function load_commission(){
+        return Client::whereNotNull('is_commissionaire')->get();
+    }
+
     public function make_commissionnaire($id){
         $customer = Client::find($id);
         $compte = Compte::where('client_id' , $customer->id)->first();
@@ -64,8 +68,13 @@ class ClientController extends Controller
         return view('clients.create');
     }
 
+
+
     public function getClient($id){
 
+        if($id == 'ALL'){
+            return Client::all();
+        }
         $client = Client::find($id);
 
         if(!$client){

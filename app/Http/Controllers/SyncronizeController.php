@@ -30,7 +30,7 @@ class SyncronizeController extends Controller
             }
             if(CAN_SYNCRONISE_INVOICE ){
                 $response =  $this->syncronizeInvoices();
-                Session::put('cancel_syncronize', true);
+
                return  $response;
             }
             } catch (\Throwable $th) {

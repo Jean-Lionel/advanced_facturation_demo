@@ -9,12 +9,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
+use App\Models\Order;
 
 class VenteController extends Controller
 {
 
     public function index(Request $request)
     {
+
+        $order = Order::latest()->first();
 
         //  $obr = new SendInvoiceToOBR();
         // dd($obr->getToken());

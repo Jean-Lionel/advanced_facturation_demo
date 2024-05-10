@@ -23,6 +23,7 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request->all());
 
         $validate =
         [
@@ -79,6 +80,7 @@ class CheckoutController extends Controller
                 'addresse_client'=> $client->addresse,
                 'date_facturation'=> now(),
                 'is_cancelled' => 0,
+                'commissionaire_id' => $request->commissionaire_id ?? null,
                 'company' =>  $company->toJson(),
             ]);
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
@@ -191,6 +193,10 @@ class CheckoutController extends Controller
         foreach (Cart::content() as $item) {
             $v = ($item->price * $item->qty) * $item->taxRate /100;
             $prix_hors_tva =  ($item->price * $item->qty);
+            $prix_hors_tva =  ($item->price * $item->qty);
+            $interet_unitaire =  ( $item->price - $item->model->price_max );
+            $interet_total =  $interet_unitaire * $item->qty;
+
             $products[] = [
                 'id' => $item->id,
                 'name' => $item->name,
@@ -203,6 +209,8 @@ class CheckoutController extends Controller
                 'item_ct' => 0,
                 'item_tl' => 0 ,
                 'item_price_nvat' => $prix_hors_tva,
+                'interet_unitaire' => $interet_unitaire,
+                'interet_total' => $interet_total,
                 'vat' => $v,
                 'item_price_wvat' => ($v + $prix_hors_tva),
                 'item_total_amount' => ($v + $prix_hors_tva)
