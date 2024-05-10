@@ -132,6 +132,7 @@ class StockController extends Controller
         $startDate = request()->query('startDate');
         $endDate = request()->query('endDate');
         $orders =  Order::where('is_cancelled','=','0')
+                            ->whereBetween('created_at', [$startDate, $endDate])
                             ->sortable()
                             ->latest()
                             ->paginate(10);

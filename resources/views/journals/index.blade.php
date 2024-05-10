@@ -14,9 +14,9 @@
             <form action="" class="col-3">
                 <div class="d-flex gap-3">
                     <span>DU</span>
-                    <input type="date" class="form-control  form-control-sm" name="startDate">
+                    <input type="date" value="{{ $startDate }}" class="form-control  form-control-sm" name="startDate">
                     <span>Au</span>
-                    <input type="date" class="form-control form-control-sm" name="endDate">
+                    <input type="date" value="{{ $endDate }}" class="form-control form-control-sm" name="endDate">
                     <button type="submit" class="btn btn-info btn-sm">
                         Ok
                     </button>
