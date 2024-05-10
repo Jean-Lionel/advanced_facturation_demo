@@ -17,6 +17,14 @@ class ClientController extends Controller
         return view('clients.index', compact('clients'));
     }
 
+    public function commissionnaires(){
+
+        $model = new Client();
+        $additionalCondition = [['column' => 'is_commissionaire', 'operator' => '<>', 'value' => null],];
+        $clients =  $model->getPaginateData($additionalCondition);
+        return view('clients.commissionnaires', compact('clients'));
+    }
+
     public function abonne($id){
         $customer = Client::find($id);
 

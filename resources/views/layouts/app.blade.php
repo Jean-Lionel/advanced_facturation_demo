@@ -272,6 +272,8 @@
                         return result;
                     }
 
+
+
                     if(canSyncronize && !cancel_syncronize){
 
                         let  limitedInterval =  setInterval(async () => {
@@ -279,6 +281,7 @@
                             console.log(result);
                             if(result){
                                 // window.location.reload();
+                                clearInterval(limitedInterval);
                                 $.ajax({
                                     url: "{{ url('syncronize_to_obr') }}", // the url we want to send and get data from
                                     type: "GET", // type of the data we send (POST/GET)
