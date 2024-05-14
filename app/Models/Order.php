@@ -41,7 +41,11 @@ protected $guarded = [];
                 'order_id' => $model->id,
                 'user_id' => $model->user_id,
                 'montant' => collect($model->products)->pluck('interet_total')->sum(),
-                'description' => "VENTE",
+                'description' => json_encode([
+                    'type' => 'VENTE',
+                    'commissionaire_id' => $model->commissionaire_id,
+                    'client_id' => $model->client_id,
+                ]),
             ]);
         });
 	}
@@ -71,5 +75,9 @@ protected $guarded = [];
     public function getCompanyAttribute($v){
 
         return json_decode($v) ?  json_decode($v) : Entreprise::currentEntreprise();
+    }
+
+    public function commissionaire(){
+        return $this->belongsTo(Client::class , 'commissionaire_id');
     }
 }

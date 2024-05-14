@@ -80,6 +80,7 @@ class CheckoutController extends Controller
                 'addresse_client'=> $client->addresse,
                 'date_facturation'=> now(),
                 'is_cancelled' => 0,
+                'client_id' => $request->client_id,
                 'commissionaire_id' => $request->commissionaire_id ?? null,
                 'company' =>  $company->toJson(),
             ]);
