@@ -19,8 +19,8 @@ class VenteController extends Controller
 
         // $order = Order::latest()->first();
         // dump($order );
-         $obr = new SendInvoiceToOBR();
-        dd($obr->getToken());
+        //  $obr = new SendInvoiceToOBR();
+        // dd($obr->getToken());
         // dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
 
         $search = request()->get('search');
