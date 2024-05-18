@@ -134,3 +134,17 @@ require __DIR__ . '/jetstream.php';
 
 
 Route::resource('order-interet', App\Http\Controllers\OrderInteretController::class);
+
+
+Route::resource('hr-chambre', App\Http\Controllers\HrChambreController::class);
+
+
+Route::resource('hr-fiche', App\Http\Controllers\HrFicheController::class);
+
+
+Route::resource('hr-fiche-detail', App\Http\Controllers\HrFicheDetailController::class);
+
+Route::resource('hr-commande', App\Http\Controllers\HrCommandeController::class);
+
+
+Route::resource('banque', App\Http\Controllers\BanqueController::class);

@@ -3,9 +3,10 @@
 {{-- Stocke Controller Journal --}}
 
 @section('content')
-@include('journals._header_file')
-<div class="row">
 
+@include('journals._header_file')
+
+<div class="row">
     <div>
         <table class="table table-sm">
             <thead>

@@ -1,13 +1,15 @@
-# models:
-#   OrderInteret:
-#     order_id : nullable id foreign:orders
-#     user_id :  id foreign:users
-#     montant :  double
-#     description: nullable text
-#     SoftDeletes
+models:
+  Fonction:
+    user_id: id foreign:users
+    name: string
+    description: text nullable
+    SoftDeletes
 
 
-# controllers:
-#   OrderInteret:
-#     resource: web
+
+seeders: Banque
+
+controllers:
+  Banque:
+    resource: web
 
