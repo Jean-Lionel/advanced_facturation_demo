@@ -104,6 +104,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('product_stock', ProductStockController::class);
     Route::get('rapport_detail', [RapportController::class , 'rapport_detail'])->name('rapport_detail');
+    Route::get('partage_interet', [RapportController::class , 'partage_interet'])->name('partage_interet');
 
     Route::resource('commande', App\Http\Controllers\CommandeController::class);
     Route::get('bon_commande', [CommandeController::class, 'bon_commande'])->name('bon_commande');

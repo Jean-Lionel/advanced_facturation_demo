@@ -20,6 +20,7 @@ class OrderInteret extends Model
 {
     use HasFactory, SoftDeletes;
 
+
     /**
      * The attributes that aren't mass assignable.
      *
@@ -39,6 +40,7 @@ class OrderInteret extends Model
         'montant' => 'double',
     ];
 
+    protected $appends = ['commisionnaireId', 'clientId'];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -53,6 +55,28 @@ class OrderInteret extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getCommisionnaireIdAttribute(){
+        $r = json_decode($this->description);
+        return $r->commissionaire_id ?? "" ;
+    }
+    public function getClientIdAttribute(){
+        $r = json_decode($this->description);
+        return $r->client_id ?? "" ;
+    }
+
+    public function commisionnaire(){
+        return Client::where('id', $this->commisionnaireId)->first();
+    }
+    public function client(){
+        return Client::where('id', $this->clientId)->first();
+    }
+
+    public function getInteretAttribute(){
+       // montant
+       $r = json_decode($this->description);
+        return $r->partage ?? [] ;
     }
 
 

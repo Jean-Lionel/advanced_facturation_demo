@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\InteretEnumValue;
 use App\Models\PaiementDette;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,14 +38,22 @@ protected $guarded = [];
         });
 
         self::created(function($model){
+            $montant = collect($model->products)->pluck('interet_total')->sum();
             OrderInteret::create([
                 'order_id' => $model->id,
                 'user_id' => $model->user_id,
-                'montant' => collect($model->products)->pluck('interet_total')->sum(),
+                'montant' => $montant ,
                 'description' => json_encode([
                     'type' => 'VENTE',
                     'commissionaire_id' => $model->commissionaire_id,
                     'client_id' => $model->client_id,
+                    'partage' => [
+                        'Informaticien' => ($montant *15 / 100),
+                        'Client' => ($montant * 5 / 100),
+                        'Commisionnaire' => ($montant * 5  / 100),
+                        'Entreprise' => ($montant * 75  / 100),
+                    ]
+
                 ]),
             ]);
         });
