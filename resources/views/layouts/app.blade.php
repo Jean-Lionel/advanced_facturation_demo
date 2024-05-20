@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('datatable/css/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('datatable/css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
     @livewireStyles
     <style>
         body{
@@ -62,8 +63,6 @@
 
             }
         }
-
-
         .fixTableHead {
             overflow-y: auto;
             height: 80vh;
@@ -124,9 +123,13 @@
                     <li>
                         <a href="{{ route('stockes.journal') }}"  class="{{ setActiveRoute('stockes.*') }}" ><span class="fa fa-calendar"></span> Journal</a>
                     </li>
-                    {{--  <li>
+
+                    @if (USE_ABONEMENT)
+                    <li>
                         <a href="{{ route('comptes.index') }}"  class="{{ setActiveRoute('comptes.*') }}" ><span class="fa fa-hand-holding-usd" aria-hidden="true"></span> Abonement</a>
-                    </li>  --}}
+                    </li>
+                    @endif
+
                     <li>
                         <a href="{{ route('depenses.index') }}" class="{{ setActiveRoute('depenses.*') }}"><span class="fa fa-minus"></span> Depense</a>
                     </li>
@@ -237,15 +240,11 @@
                 <script src="{{ asset('datatable/datatables.min.js') }}"></script>
                 <script src="{{ asset('datatable/pdfmake.min.js') }}"></script>
                 <script src="{{ asset('js/main.js') }}"></script>
-
+                <script src="{{ asset('js/sweetalert2@11.js') }}" defer></script>
+                <script src="{{asset('js/jquery-ui.js')}}"></script>
                 @livewireScripts
-                <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
-
                 <x-livewire-alert::scripts />
-
-
                 @yield('javascript')
-
                 <script>
                     const canSyncronize = @json( CAN_SYNCRONISE );
                     const timeSyncronisation = @json( TIME_OUT_SYNCRONISATION );
@@ -259,9 +258,9 @@
                             return false; // definitely offline
                         }
                     };
-
                     const updateInternetStatus = async () => {
                         const result = await checkOnlineStatus();
+
                         const statusDisplay = document.getElementById("status");
                         statusDisplay.innerHTML = result ? ( `
                         <div class="avatar">
@@ -273,6 +272,8 @@
                         return result;
                     }
 
+
+
                     if(canSyncronize && !cancel_syncronize){
 
                         let  limitedInterval =  setInterval(async () => {
@@ -280,6 +281,7 @@
                             console.log(result);
                             if(result){
                                 // window.location.reload();
+                                clearInterval(limitedInterval);
                                 $.ajax({
                                     url: "{{ url('syncronize_to_obr') }}", // the url we want to send and get data from
                                     type: "GET", // type of the data we send (POST/GET)
@@ -294,6 +296,7 @@
                                 }).fail(function(error){
                                     // this part will run when an error occurres
                                     console.log("An error has occurred. => " , error);
+                                    clearInterval(limitedInterval);
                                 }).always(function(){
                                     // this part will always run no matter what
                                     console.log("Complete.");

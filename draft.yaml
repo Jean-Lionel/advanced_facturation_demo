@@ -1,16 +1,15 @@
 models:
-  BienvenuHistorique:
-    compte_id : id foreign:compte
-    client_id : nullable id foreign:clients
-    mode_payement :  string:400
-    title: string:400
-    montant :  double
-    description: nullable text
+  Fonction:
+    user_id: id foreign:users
+    name: string
+    description: text nullable
+    SoftDeletes
 
 
- 
+
+seeders: Banque
 
 controllers:
-  BienvenuHistorique:
+  Banque:
     resource: web
-  
+

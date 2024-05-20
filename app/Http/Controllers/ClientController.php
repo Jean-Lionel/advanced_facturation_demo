@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Compte;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 class ClientController extends Controller
 {
 
@@ -16,10 +17,23 @@ class ClientController extends Controller
         return view('clients.index', compact('clients'));
     }
 
-    public function abonne($id){
-        $customer = Client::find($id);
+    public function commissionnaires(){
 
+        $model = new Client();
+        $additionalCondition = [['column' => 'is_commissionaire', 'operator' => '<>', 'value' => null],];
+        $clients =  $model->getPaginateData($additionalCondition);
+        return view('clients.commissionnaires', compact('clients'));
+    }
+
+    public function load_commission(){
+        return Client::whereNotNull('is_commissionaire')->get();
+    }
+
+    public function make_commissionnaire($id){
+        $customer = Client::find($id);
         $compte = Compte::where('client_id' , $customer->id)->first();
+        $customer->is_commissionaire = now();
+        $customer->save();
 
         if(!$compte){
             Compte::create([
@@ -31,6 +45,22 @@ class ClientController extends Controller
         }
         return back();
     }
+    public function abonne($id){
+        $customer = Client::find($id);
+        $compte = Compte::where('client_id' , $customer->id)->first();
+
+
+        if(!$compte){
+            Compte::create([
+                'name' => str_pad($customer->id, 4, '0', STR_PAD_LEFT),
+                'montant' => 0,
+                'is_active' => true,
+                'client_id' => $customer->id
+            ]);
+        }
+
+        return back();
+    }
 
 
     public function create()
@@ -38,8 +68,24 @@ class ClientController extends Controller
         return view('clients.create');
     }
 
+
+
     public function getClient($id){
+
+        if($id == 'ALL'){
+            return Client::all();
+        }
         $client = Client::find($id);
+
+        if(!$client){
+            $columns = Schema::getColumnListing( 'clients');
+            $query = Client::query();
+            $client =  $query->where(function ($q) use ($columns, $id) {
+                foreach ($columns as $column) {
+                    $q->orWhere($column, 'LIKE', '%' . $id . '%');
+                }
+            })->first();
+        }
 
         return response()->json( [
             'client' => $client
