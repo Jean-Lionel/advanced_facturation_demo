@@ -1,8 +1,8 @@
 <?php
 
 // Variable pour la syncronisation des donnees dans OBR
-define('CAN_SYNCRONISE', false);
-define('TIME_OUT_SYNCRONISATION', (10 * 1000)); // Seconde de Syncronisation dans OBR
+define('CAN_SYNCRONISE', true);
+define('TIME_OUT_SYNCRONISATION', (3 * 1000)); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_STOCK', true); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_INVOICE', true); // Seconde de Syncronisation dans OBR
 define('MAIL_FROM_USER','client@advanced.bi');
