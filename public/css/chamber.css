@@ -9,13 +9,13 @@
     justify-items: center;
 }
 .chamberSize {
-    font-size: 18px;
+    font-size: 40px;
 }
 .chamber div {
     height: 100%;
 }
 .chamber div:first-child {
-    width: 10%;
+    width: 17%;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -34,9 +34,9 @@
     background-color: rgba(0, 0, 0, 0.6);
 }
 .chamber div:last-child {
-    width: 20%;
+    width: 15%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
+    justify-content: center;
+    align-items: flex-end;
 }
