@@ -13,10 +13,15 @@ class RoomController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $rooms = Room::where('room_delete_status', 0)->orderBy("id", "desc")->get();
-        return view("rooms.index", ['rooms' => $rooms]);
+        $search = $request->get('search');
+        if ($search) {
+            $rooms = Room::where('room_delete_status', 0)->where('room_name', 'like', '%' . $search . '%')->orderBy("id", "desc")->get();
+        } else {
+            $rooms = Room::where('room_delete_status', 0)->orderBy("id", "desc")->get();
+        }
+        return view("rooms.index", ['rooms' => $rooms,'search'=>$search]);
     }
 
     /**

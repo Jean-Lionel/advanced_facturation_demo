@@ -1,18 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="" method="post">
-        @include('rooms._header_room')
-        <div class="d-flex">
-            <div class="text text-center h5">Listes des Chambres: ({{ sizeof($rooms) }})</div>
-            <hr class="bg bg-info" />
+    @include('rooms._header_room')
+    <div class="d-flex">
+        <div class="text text-center h5">Listes des Chambres: ({{ sizeof($rooms) }})</div>
+        <hr class="bg bg-info" />
+        <form action="{{ route('rooms.index') }}" method="get">
             <div class="form-group d-flex align-items-center mt-3">
                 <label for="" class="text text-primary">Search:</label>
-                <input type="text" name="search" id="" class="form-control" placeholder="Chercher la Chambre">
-                <div class="btn btn-sm btn-primary">Search</div>
+                <input type="text" name="search" id="" value="{{ isset($search) ? $search : '' }}"
+                    class="form-control" placeholder="Chercher la Chambre">
+                <button type="submit" class="btn btn-sm btn-primary">Search</button>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 
     <div class="container-fluid text-light">
         <div class="p-3 d-flex justify-content-around flex-wrap">
@@ -34,6 +35,10 @@
                         @if ($item->room_state == 0)
                             <a href="{{ route('checkin.index', ['id' => $item->id]) }}" title="Checkin"
                                 class="btn btn-sm btn-success text-light"><i class="fa fa-paper-plane"></i></a>
+                        @endif
+                        @if ($item->room_state == 1)
+                            <a href="{{ route('checkin.index', ['id' => $item->id]) }}" title="Nettoyer"
+                                class="btn btn-sm btn-info text-light"><i class="fa fa-water"></i></a>
                         @endif
                         <a title="Modifier Chambre" onclick="updateChambre('{{ $item->id }}')"
                             class="btn btn-sm btn-warning text-light"><i class="fa fa-pen"></i></a>

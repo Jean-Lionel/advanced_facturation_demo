@@ -21,7 +21,7 @@ class RoomFile extends Migration
             $table->integer('room_id_ref');
             $table->string('room_date_checkin');
             $table->string('room_date_checkout');
-            $table->inetger('room_file_creator');
+            $table->integer('room_file_creator');
             $table->integer('room_file_status')->default(0);
             $table->integer('room_file_delete_status')->default(0);
             $table->softDeletes();

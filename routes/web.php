@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('obr_declarations', ObrDeclarationController::class);
     Route::resource('rooms', RoomController::class);
     Route::resource('checkin', CheckinController::class);
+    Route::get('checkinCode', [CheckinController::class, 'checkinCode']);
     Route::post('getOneChamber', [RoomController::class, 'getOneChamber'])->name("getOneChamber");
     Route::get('obr_declarations_hostory', [ObrDeclarationController::class, 'hostory'])->name('obr_declarations_hostory');
     Route::get('sendInvoinceToObr/{invoince_id?}', [ObrDeclarationController::class, 'sendInvoinceToObr']);
@@ -64,6 +65,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('bar_code', [ProductController::class, 'bar_code'])->name('bar_code');
     Route::resource('products', ProductController::class);
     Route::resource('clients', ClientController::class);
+    Route::post('getOneClient', [ClientController::class, 'getOneClient'])->name('getOneClient');
     Route::resource('categories', CategoryController::class);
     Route::resource('ventes', VenteController::class);
     Route::resource('orders', OrderController::class);
