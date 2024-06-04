@@ -1,0 +1,42 @@
+.chamber {
+    background-color: rgb(110, 84, 223);
+    height: 180px;
+    display: flex;
+    text-align: center;
+    border-radius: 5%;
+    border: 4px solid grey;
+    justify-content: space-around;
+    justify-items: center;
+}
+.chamberSize {
+    font-size: 18px;
+}
+.chamber div {
+    height: 100%;
+}
+.chamber div:first-child {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.des_price {
+    background-color: white;
+    padding: 10px;
+    color: black;
+}
+.chamber div:nth-child(2) {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 1em;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.chamber div:last-child {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}

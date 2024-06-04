@@ -18,12 +18,14 @@ use App\Http\Controllers\PaiementDetteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductStockController;
 use App\Http\Controllers\RapportController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SyncronizeController;
 use App\Http\Controllers\Tools\ImportDataController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VenteController;
+use App\Http\Resources\Room;
 use App\Jobs\ObrSendInvoince;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +52,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [VenteController::class, 'index']);
     Route::get('product/create', [ProductController::class, 'create'])->name('product.create');
     Route::resource('obr_declarations', ObrDeclarationController::class);
+    Route::resource('rooms', RoomController::class);
     Route::get('obr_declarations_hostory', [ObrDeclarationController::class, 'hostory'])->name('obr_declarations_hostory');
     Route::get('sendInvoinceToObr/{invoince_id?}', [ObrDeclarationController::class,'sendInvoinceToObr']);
     Route::post('cancelInvoice', [ObrDeclarationController::class,'cancelInvoice']);
