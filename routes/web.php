@@ -110,5 +110,6 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 require __DIR__ . '/jetstream.php';
+require __DIR__ . '/hrm.php';
 
 Route::resource('bienvenu-historique', App\Http\Controllers\BienvenuHistoriqueController::class);

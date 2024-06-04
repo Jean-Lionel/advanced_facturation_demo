@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('datatable/css/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('datatable/css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('select2/css/select2.min.css') }}">
     @livewireStyles
     <style>
         body{
@@ -231,6 +232,7 @@
                 </div>
                 <script src="{{ asset('js/jquery-3.5.min.js') }}"></script>
                 <script src="{{ asset('js/popper.js') }}"></script>
+                <script src="{{ asset('select2/js/select2.min.js') }}"></script>
                 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
                 <script src="{{ asset('js/chart.js.2.9.4_Chart.min.js') }}"></script>
                 <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
