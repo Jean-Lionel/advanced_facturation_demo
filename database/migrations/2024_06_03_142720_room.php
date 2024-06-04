@@ -15,12 +15,13 @@ class Room extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 400);
-            $table->string('tva', 30);
+            $table->string('room_name', 400);
+            $table->string('room_tva', 30);
             $table->foreignId('user_id', )->nullable();
-            $table->double('price');
-            $table->string('capacity', 30);
-            $table->integer('state')->default(0);
+            $table->double('room_price');
+            $table->string('room_capacity', 30);
+            $table->integer('room_state')->default(0);
+            $table->text('room_description')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
