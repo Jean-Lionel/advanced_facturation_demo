@@ -13,10 +13,15 @@ class RoomController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $rooms = Room::orderBy("id", "desc")->get();
-        return view("rooms.index", ['rooms' => $rooms]);
+        $search = $request->get('search');
+        if ($search) {
+            $rooms = Room::where('room_delete_status', 0)->where('room_name', 'like', '%' . $search . '%')->orderBy("id", "desc")->get();
+        } else {
+            $rooms = Room::where('room_delete_status', 0)->orderBy("id", "desc")->get();
+        }
+        return view("rooms.index", ['rooms' => $rooms,'search'=>$search]);
     }
 
     /**
@@ -27,6 +32,12 @@ class RoomController extends Controller
     public function create()
     {
         //
+    }
+
+    public function getOneChamber()
+    {
+        $id = $_POST['id'];
+        return response()->json(['room' => Room::find($id)]);
     }
 
     /**
@@ -83,7 +94,15 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $room = $request->get('room');
+        Room::find($room['roomid'])->update([
+            'room_name' => $room['roomName'],
+            'room_tva' => $room['roomTva'],
+            'room_tc' => $room['roomTc'],
+            'room_price' => $room['roomPrice'],
+            'room_capacity' => $room['roomCapacity'],
+        ]);
+        return response()->json(['update' => true]);
     }
 
     /**
@@ -94,6 +113,7 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Room::find($id)->update(['room_delete_status' => 1]);
+        return response()->json(['deleted' => true]);
     }
 }

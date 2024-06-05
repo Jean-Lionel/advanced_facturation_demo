@@ -17,6 +17,7 @@ class Room extends Migration
             $table->id();
             $table->string('room_name', 400);
             $table->string('room_tva', 30);
+            $table->string('room_tc', 30);
             $table->foreignId('user_id', )->nullable();
             $table->double('room_price');
             $table->string('room_capacity', 30);
