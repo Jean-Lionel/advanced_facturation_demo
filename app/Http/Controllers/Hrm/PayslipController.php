@@ -47,7 +47,7 @@ class PayslipController extends Controller
         return view('hrm.payslip.list',[
             'payslips' => $payslips,
             'search' => $search,
-            'month' => $month,
+            'month' => date('Y-m',strtotime('01-'.$month)),
             'status' => $status,
         ]);
     }
@@ -104,12 +104,12 @@ class PayslipController extends Controller
         }
         $date = AppHelper::dateToFrench(date('Y-m-d',strtotime('01-'.$month)),"month");
 
-        return view('hrm.payslip.show',[
+        return view('hrm.payslip.salaries',[
             'payslips' => $payslips,
             'indeminities' => $indeminities,
             'indemnityData' => $indemnityData,
             'date' => $date,
-            'month' => $month,
+            'month' => date('Y-m',strtotime('01-'.$month)),
         ]);
     }
 
@@ -127,7 +127,7 @@ class PayslipController extends Controller
         return view('hrm.payslip.inss',[
             'payslips' => $payslips,
             'date' => $date,
-            'month' => $month,
+            'month' => date('Y-m',strtotime('01-'.$month)),
         ]);
     }
 
@@ -145,7 +145,7 @@ class PayslipController extends Controller
         return view('hrm.payslip.ipr',[
             'payslips' => $payslips,
             'date' => $date,
-            'month' => $month,
+            'month' => date('Y-m',strtotime('01-'.$month)),
         ]);
     }
 
@@ -339,7 +339,7 @@ class PayslipController extends Controller
                 'allowance'	=> $totalAllowances + $totalAllowancesNotTaxable,
                 'inss' => $inss,
                 'ire' =>	$IPR,
-                'caisse_sociale' => $caisse_sociale,
+                'deduction' => $totalRetenues,
                 'pension_salariale' => $pension_salariale,
                 'pension_patronale' => $pension_patronale,
                 'risque_prof' => $risque_professionel,

@@ -47,19 +47,16 @@
                             class="btn btn-primary"> <i class="ri-add-box-fill"></i> Génerer les salaires</a>
                     </div>
                     <div class="dropdown mt-3">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" 
+                        id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Action Multiple
                         </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" data-href="{{ route('payslip.pay') }}"
-                                    onclick="paySalaries(this)">Paiement</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" data-href="{{ route('payslip.delete') }}"
-                                    onclick="deleteSalaries(this)">Supression</a>
-                            </li>
-                        </ul>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" data-href="{{ route('payslip.pay') }}"
+                                        onclick="paySalaries(this)">Paiement</a>
+                            <a class="dropdown-item" data-href="{{ route('payslip.delete') }}"
+                                onclick="deleteSalaries(this)">Supression</a>
+                        </div>
                     </div>
                 </div>
             </div>
