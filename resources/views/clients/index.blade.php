@@ -62,8 +62,11 @@
 					{{ csrf_field() }}
 					{{ method_field('DELETE') }}
 					<button class="btn btn-outline-danger btn-sm delete_client">Supprimer</button>
-
+                    @if(USE_ABONEMENT)
                     <a href="{{ route('clients_abones', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Abonée</a>
+                    <a href="{{ route('make_commissionnaire', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Commissionnaire</a>
+
+                    @endif
 				</form>
 				</td>
 			</tr>

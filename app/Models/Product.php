@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Category;
+use App\Models\Traits\SearchOnModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
@@ -13,6 +14,7 @@ class Product extends MyModel
     use HasFactory;
     use SoftDeletes;
     use Sortable;
+    use SearchOnModel;
 
 //     code_product
 // name

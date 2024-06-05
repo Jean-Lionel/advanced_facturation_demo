@@ -29,6 +29,7 @@ class CreateOrdersTable extends Migration
             $table->text('addresse_client')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('client_id')->nullable();
+            $table->unsignedBigInteger('commissionaire_id')->nullable();
             //Creditial for OBR
             $table->boolean('is_cancelled')->nullable();
             $table->timestamps();

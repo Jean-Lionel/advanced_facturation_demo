@@ -21,6 +21,7 @@ class CreateClientsTable extends Migration
             $table->string('description')->nullable();
             $table->string('client_type')->nullable();
             $table->string('is_fournisseur')->nullable();
+            $table->string('is_commissionaire')->nullable();
             $table->string('email')->nullable();
             // NIF DU CLIENT
             $table->string('customer_TIN')->unique()->nullable();

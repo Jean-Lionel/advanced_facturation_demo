@@ -1,15 +1,16 @@
 created:
-    - app/Http/Controllers/BienvenuHistoriqueController.php
-    - database/factories/BienvenuHistoriqueFactory.php
-    - database/migrations/2024_04_17_120704_create_bienvenu_historiques_table.php
-    - app/Models/BienvenuHistorique.php
-    - tests/Feature/Http/Controllers/BienvenuHistoriqueControllerTest.php
-    - app/Http/Requests/BienvenuHistoriqueStoreRequest.php
-    - app/Http/Requests/BienvenuHistoriqueUpdateRequest.php
-    - resources/views/bienvenuHistorique/index.blade.php
-    - resources/views/bienvenuHistorique/create.blade.php
-    - resources/views/bienvenuHistorique/show.blade.php
-    - resources/views/bienvenuHistorique/edit.blade.php
+    - app/Http/Controllers/BanqueController.php
+    - database/factories/BanqueFactory.php
+    - database/migrations/2024_05_18_090016_create_banques_table.php
+    - app/Models/Banque.php
+    - database/seeders/BanqueSeeder.php
+    - tests/Feature/Http/Controllers/BanqueControllerTest.php
+    - app/Http/Requests/BanqueStoreRequest.php
+    - app/Http/Requests/BanqueUpdateRequest.php
+    - resources/views/banque/index.blade.php
+    - resources/views/banque/create.blade.php
+    - resources/views/banque/show.blade.php
+    - resources/views/banque/edit.blade.php
 updated:
     - routes/web.php
 models:
@@ -46,3 +47,10 @@ models:
     ProductStock: { name: 'nullable string:250', product_id: 'id foreign:products', stock_id: 'id foreign:stockes', quantity: double, prix_revient: 'double default:0', prix_vente: 'double default:0', user_id: 'id foreign:users', created_at: datetime, updated_at: datetime }
     Commande: { user_id: 'id foreign:users', stock_id: 'nullable id foreign:stockes', client_id: 'nullable id foreign:clients', type_commande: 'nullable text', stock_demandant: 'nullable id foreign:stockes', stock_livrant: 'nullable id foreign:stockes', description: 'nullable text' }
     CommandeDetail: { user_id: 'id foreign:users', commande_id: 'nullable id foreign:commandes', client_id: 'nullable id foreign:clients', product_id: 'nullable id foreign:products', quantite: 'double default:0', quantite_livre: 'double default:0', price_commande: 'double default:0', price_livraison: 'double default:0', description: 'nullable text' }
+    CommissionDetail: { compte_id: 'nullable id foreign:compte nullable', client_id: 'nullable id foreign:clients', order_id: 'nullable id foreign:orders', user_id: 'id foreign:users', montant: double, activite: 'nullable string', description: 'nullable text', softdeletes: SoftDeletes }
+    OrderInteret: { order_id: 'nullable id foreign:orders', user_id: 'id foreign:users', montant: double, description: 'nullable text', softdeletes: SoftDeletes }
+    HrChambre: { user_id: 'id foreign:users', name: string, description: 'nullable text', softdeletes: SoftDeletes }
+    HrFiche: { user_id: 'id foreign:users', name: 'strig nullable', date_debut: date, date_fin: 'date nullable', description: 'nullable text', softdeletes: SoftDeletes }
+    HrCommande: { user_id: 'id foreign:users', order_id: 'id foreign:orders', is_paid_at: 'string nullable', total_command: 'double default:0', softdeletes: SoftDeletes }
+    HrFicheDetail: { user_id: 'id foreign:users', fiche_id: 'id foreign:fiches', commande_id: 'id foreign:hr_commandes', date_debut: date, date_fin: 'date nullable', description: 'nullable text', softdeletes: SoftDeletes }
+    Banque: { user_id: 'id foreign:users', name: string, description: 'text nullable', softdeletes: SoftDeletes }

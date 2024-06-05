@@ -24,16 +24,16 @@ class CompteController extends Controller
 
     // View formulaire de recharge
     public function recharge($id){
-        
+
         return view('compte.recharge')->with('id', $id);
     }
-    
+
     // View de historique des transaction
     public function historique(Request $request,$id){
         $historiques = BienvenuHistorique::where('client_id', $id)->get();
         return view('compte.historique', compact('historiques'));
     }
-    
+
     public function updatecompte(Request $request){
 
         $request->validate([
@@ -41,7 +41,7 @@ class CompteController extends Controller
             "type_paiement" => "required",
         ]);
         $montant = $request->montant;
-        
+
 
         $modePaiement = $request->type_paiement;
         $id= $request->id;
@@ -49,8 +49,8 @@ class CompteController extends Controller
         $montantActuel = $compte->montant;
         $MontTotal = $montantActuel + $montant;
         Compte::where('id', $id)->update(['montant' => $MontTotal]);
-       
-        
+
+
         BienvenuHistorique::create([
             'compte_id'=>$id,
             'client_id'=>$compte->client_id,
