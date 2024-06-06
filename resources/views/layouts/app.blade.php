@@ -155,8 +155,8 @@
                                 class="fa fa-minus"></span> Depense</a>
                     </li>
                     <li>
-                        <a href="{{ route('rooms.index') }}" class="{{ setActiveRoute('rooms.*') }}"><span
-                                class="fa fa-bed"></span> Rooms</a>
+                        <a href="{{ route('invoices.index') }}" class="{{ setActiveRoute('invoices.*') }}"><span
+                                class="fa fa-bed"></span> Rooms </a>
                     </li>
                     <li>
                         <a href="{{ route('entreprises.index') }}" class="{{ setActiveRoute('entreprises.*') }}">
