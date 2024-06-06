@@ -134,9 +134,6 @@ class ClientController extends Controller
                 $response = $obr->checkTin($request->customer_TIN);
                 if(!$response->success){
                     return redirect('clients/create')->with('message',  $request->customer_TIN . ' => '. $response->msg);
-                if (!$response->success) {
-
-                    return redirect('clients/create')->with('message',  $request->customer_TIN . ' => ' . $response->msg);
                 }
                 // }else{
 
@@ -147,11 +144,6 @@ class ClientController extends Controller
                     $customer_OBR = $response->result->taxpayer[0]->tp_name;
 
                 }catch (\Exception $e){
-
-                    dd($e);
-                // ['result']['taxpayer'][0]['tp_name']
-                $customer_OBR = $response->result->taxpayer[0]->tp_name;
-            } catch (\Exception $e) {
 
                 return redirect('clients/create')->with('message',  $request->customer_TIN . ' => pas de connection Internet le Nif ne peut pas etre verfier pour le moment ');
             }
