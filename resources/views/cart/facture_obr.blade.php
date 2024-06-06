@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire OBR</title>
+    <title>Facture MAGASIN LE LEADER</title>
     <link rel="stylesheet" href="{{ asset('css/print.min.css') }}">
 
     <script src="{{ asset('js/print.min.js') }}"></script>
@@ -24,7 +24,7 @@
         </header>
         <hr class="thick-line">
         <section class="facture-info">
-            <p>Facture no. N860W672047/FN18/2024 , Date : 2024-02-04 11:47:05</p>
+            <p>Facture no. {{ $order->id }} , Date : {{ $order->created_at->format('d-m-Y') }}</p>
         </section>
         <section class="identification">
             <div class="vendeur">
