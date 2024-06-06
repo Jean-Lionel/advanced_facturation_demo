@@ -124,28 +124,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('make_commissionnaire/{id}', [ClientController::class, 'make_commissionnaire'])->name('make_commissionnaire');
     Route::resource('commission-detail', App\Http\Controllers\CommissionDetailController::class);
     Route::get('load_commission', [ClientController::class, 'load_commission'])->name('load_commission');
-
+    Route::resource('order-interet', App\Http\Controllers\OrderInteretController::class);
+    Route::resource('hr-chambre', App\Http\Controllers\HrChambreController::class);
+    Route::resource('hr-fiche', App\Http\Controllers\HrFicheController::class);
+    Route::resource('hr-fiche-detail', App\Http\Controllers\HrFicheDetailController::class);
+    Route::resource('hr-commande', App\Http\Controllers\HrCommandeController::class);
+    Route::resource('banque', App\Http\Controllers\BanqueController::class);
 });
 
 require __DIR__ . '/jetstream.php';
 require __DIR__ . '/hrm.php';
 
-
-
-
-
-Route::resource('order-interet', App\Http\Controllers\OrderInteretController::class);
-
-
-Route::resource('hr-chambre', App\Http\Controllers\HrChambreController::class);
-
-
-Route::resource('hr-fiche', App\Http\Controllers\HrFicheController::class);
-
-
-Route::resource('hr-fiche-detail', App\Http\Controllers\HrFicheDetailController::class);
-
-Route::resource('hr-commande', App\Http\Controllers\HrCommandeController::class);
-
-
-Route::resource('banque', App\Http\Controllers\BanqueController::class);
