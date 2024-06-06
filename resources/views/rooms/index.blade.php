@@ -7,10 +7,11 @@
         <hr class="bg bg-info" />
         <form action="{{ route('rooms.index') }}" method="get">
             <div class="form-group d-flex align-items-center mt-3">
-                <label for="" class="text text-primary">Search:</label>
+                <label for="" class="text text-primary h5">Search: </label>
                 <input type="text" name="search" id="" value="{{ isset($search) ? $search : '' }}"
                     class="form-control" placeholder="Chercher la Chambre">
-                <button type="submit" class="btn btn-sm btn-primary">Search</button>
+                &nbsp;
+                <button type="submit" class="btn btn-md btn-primary">Search</button>
             </div>
         </form>
     </div>
@@ -24,12 +25,12 @@
                     </div>
                     <div>
                         @if ($item->room_state == 0)
-                            <i class="alert alert-danger p-1">Statut: Libre - Propre</i>
+                            <i class="alert alert-info p-1">Statut: Libre - Propre</i>
                         @else
-                            <i class="alert alert-primary p-1">Statut: Impropre</i>
+                            <i class="alert alert-danger p-1">Statut: Impropre</i>
                         @endif
                         <i class="h5 text-light">{{ $item->room_name }}</i>
-                        <i class="des_price">Prix: {{ $item->room_price }} FBU</i>
+                        <i class="des_price">Prix: <b>{{ number_format($item->room_price, 0, ',', '.') }}</b> FBU</i>
                     </div>
                     <div>
                         @if ($item->room_state == 0)
@@ -37,8 +38,9 @@
                                 class="btn btn-sm btn-success text-light"><i class="fa fa-paper-plane"></i></a>
                         @endif
                         @if ($item->room_state == 1)
-                            <a href="{{ route('checkin.index', ['id' => $item->id]) }}" title="Nettoyer"
-                                class="btn btn-sm btn-info text-light"><i class="fa fa-water"></i></a>
+                            <a href="{{ route('checkin.index', ['id' => $item->id]) }}"
+                                title="Nettoyer {{ $item->room_name }}" class="btn btn-sm btn-info text-light"><i
+                                    class="fa fa-water"></i></a>
                         @endif
                         <a title="Modifier Chambre" onclick="updateChambre('{{ $item->id }}')"
                             class="btn btn-sm btn-warning text-light"><i class="fa fa-pen"></i></a>
