@@ -1,79 +1,77 @@
-body{
-	box-sizing: content-box;
-	width: 100%;
-	padding: 5px;
+body {
+    box-sizing: content-box;
+    width: 100%;
+    padding: 5px;
 }
-.main-content{
-	width: 700px;
-	margin: auto;
-}
-
-.right-border{
-	width: 1px;
-	height: 150px;
-	border:  2px solid black;
-	background: black;
-	margin-top:25px;
-}
-.aling-right{
-	text-align: right;
-}
-.partie-droite{
-	display: flex;
+.main-content {
+    width: 700px;
+    margin: auto;
 }
 
-.header-facture{
-	display: flex;
-	justify-content:space-between;
+.right-border {
+    width: 1px;
+    height: 150px;
+    border: 2px solid black;
+    background: black;
+    margin-top: 25px;
+}
+.aling-right {
+    text-align: right;
+}
+.partie-droite {
+    display: flex;
+}
+
+.header-facture {
+    display: flex;
+    justify-content: space-between;
 }
 
 .header-facture h3 {
-	text-align: center;
+    text-align: center;
 }
 
-.identification_a{
-	display: flex;
-	justify-content:space-between;
+.identification_a {
+    display: flex;
+    justify-content: space-between;
 }
 
-
-
-table{
-	width: 100%;
-	border-collapse:collapse;
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-table, tr, td, th{
-	border: 1px solid black;
-
+table,
+tr,
+td,
+th {
+    border: 1px solid black;
 }
 
-footer{
-	display: flex;
-	justify-content: space-between;
+footer {
+    display: flex;
+    justify-content: space-between;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Koulen&family=Lato&family=Nunito&family=Playfair+Display:ital@1&family=Prata&family=Raleway:ital,wght@1,100&family=Roboto&family=Roboto+Condensed&family=Teko&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Koulen&family=Lato&family=Nunito&family=Playfair+Display:ital@1&family=Prata&family=Raleway:ital,wght@1,100&family=Roboto&family=Roboto+Condensed&family=Teko&display=swap');
-
-.btn{
-
-font-family: Lato;
-font-weight: 400;
-font-size: 14px;
-color: #fff;
-background-color: #0066CC;
-padding: 10px 30px;
-border: solid #0066cc 2px;
-box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
-border-radius: 12px;
-transition : 3000ms;
-transform: translateY(0);
-display: flex;
-flex-direction: row;
-align-items: center;
-cursor: pointer;
-text-transform: uppercase;
+.btn {
+    font-family: Lato;
+    font-weight: 400;
+    font-size: 14px;
+    color: #fff;
+    background-color: #0066cc;
+    padding: 10px 30px;
+    border: solid #0066cc 2px;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 12px;
+    transition: 3000ms;
+    transform: translateY(0);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    text-transform: uppercase;
 }
 
 @media print {
@@ -81,36 +79,30 @@ text-transform: uppercase;
         display: none;
     }
 }
-.adroite{
-    text-align:right !important;
+.adroite {
+    text-align: right !important;
     padding-right: 15px;
-
 }
-.text-center{
+.text-center {
     text-align: center !important;
 }
-.img_logo{
+.img_logo {
     width: 100px;
     height: 100px;
 }
-body{
+body {
     margin: 0;
     padding: 0;
 }
-p, h3{
+p,
+h3 {
     margin: 0;
     padding: 0;
-
 }
-.header-element{
+.header-element {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px;
     gap: 20px;
 }
-
-
-
-
-

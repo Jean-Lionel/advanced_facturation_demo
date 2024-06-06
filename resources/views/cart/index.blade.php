@@ -8,41 +8,6 @@
 
             <div class="row">
                 <div class="col-lg-12 p-1 bg-white rounded shadow-sm mb-1">
-                    <!-- Shopping cart table -->
-                    <div>
-                        {{--  <form action="" >
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <div class="form-group ">
-                                        @php
-                                        $currentTva = \Request::get('current_tva') ?? 18 ;
-                                        @endphp
-                                        <label for="">TVA EST DE <b> {{ $currentTva }} % </b> </label>
-                                        <select  id="current_tva" name="current_tva">
-                                            @foreach(["", 18,10,4,0] as $value)
-                                            <option value="{{$value}}"
-                                            @if ($value == $currentTva)
-                                            selected="selected"
-                                            @endif
-                                            > {{ $value }}</option>
-                                            @endforeach
-                                        </select>
-
-                                        <small id="helpId" class="text-muted">%</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group ">
-                                        <label for="">POURCENTAGE</label>
-                                        <button type="submit" class="btn btn-primary btn-sm form-control form-control-sm" >Valider</button>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </form>  --}}
-
-                    </div>
                     <div class="table-responsive">
                         <table class="table table-sm">
                             <thead>
@@ -155,40 +120,51 @@
                                 <form action="{{ route('payement') }}" method="post">
 
                                     {{--  <input type="hidden" name="currentTva" value="{{ $currentTva }}">  --}}
+                                    <div class="form-group">
+                                        <input type="text" id="chercherClient" name="chercherClient" placeholder="Recherche Ici" class="form-control border-2 form-control-sm">
+                                    </div>
                                     <div class="d-flex justify-content-between">
+
                                         <p>
-                                            <input type="text" name="clientNumber" id="clientNumber" placeholder="Numero du client">
-                                            <button onclick="searchClient()" class="btn-sm btn-info">Rechercher</button>
+                                            {{--  <input type="text" name="clientNumber" id="clientNumber" placeholder="
+                                            Recherche Ici ">  --}}
+                                            {{--  <button onclick="searchClient()" class="btn-sm btn-info">Rechercher</button>  --}}
                                         </p>
+
                                         <p >
-                                            <input  type="checkbox" style="cursor:pointer" name="vat_customer_payer" id="vat_customer_payer">
+                                            {{--  <input  type="checkbox" style="cursor:pointer" name="vat_customer_payer" id="vat_customer_payer">  --}}
                                             <a href="{{ route('clients.create') }}" class="btn btn-primary btn-sm"> Nouveau client </a>
                                         </p>
 
                                     </div>
+                                    <p id="screenError">
+
+                                    </p>
                                     <div>
-                                        <label for="">Date de Facturation</label>
+
                                         <input type="hidden" id="date_facturation" value="{{ date('Y-m-d') }}"  name="date_facturation">
+                                        <input type="hidden" id="client_id"   name="client_id">
                                     </div>
 
                                     @csrf
                                     @method('post')
                                     <div class="row">
                                         <div class="form-group col-md-6">
-                                            <input  required="" type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
+                                            <input  disabled type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
                                         </div>
 
                                         <div class="form-group col-md-6">
-                                            <input  type="text" name="telephone" id="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
+                                            <input  disabled name="telephone" id="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
                                         </div>
 
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-6">
-                                            <input  type="text" id="customer_TIN" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="form-control border-2">
+                                            <input  disabled id="customer_TIN" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="form-control border-2">
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <input  type="text" id="addresse_client" name="addresse_client" placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
+                                            <input  disabled id="addresse_client"  placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
+                                            <span id="search_response"></span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -200,6 +176,11 @@
                                             <option value="3">à crédit</option>
                                             <option value="4">autres</option>
                                         </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="hidden" name="commissionaire_id" id="selectedCommisionnaire">
+                                        <input type="text"  id="commissionaire_id" placeholder="PORTEUR" aria-describedby="button-addon3" class=" border-2">
                                     </div>
                                     <button type="submit" class="btn btn-dark rounded-pill py-2 btn-block">Valider</button>
                                 </form>
@@ -236,6 +217,8 @@
                         </div>
                     </div>
                 </div>
+
+
             </div>
             @stop
 
@@ -243,6 +226,71 @@
             @section('javascript')
 
             <script>
+
+                const searchCommissionnaire = async () => {
+                    try {
+                        const x = await fetch('{{ route('load_commission') }}')
+                        .then(res => res.json());
+                        return x; // either true or false
+                    } catch (err) {
+                        return false; // definitely offline
+                    }
+                };
+                const loadingCliens = async () => {
+                    try {
+                        const x = await fetch('{{ route('getClient','ALL') }}')
+                        .then(res => res.json());
+                        return x; // either true or false
+                    } catch (err) {
+                        return false; // definitely offline
+                    }
+                };
+
+
+                $(document).ready(async function()  {
+                    var tags = await searchCommissionnaire();
+                    var clients = await loadingCliens();
+
+                    const currentTag = tags.map(tag => `${tag.name} |  ${tag.telephone} |${tag.id}`);
+                    const currentsClients = clients.map(tag => `${tag.name} |TEL :  ${tag.telephone ?? ""} | NIF: ${tag.customer_TIN ?? ""}  |#${tag.id}`);
+                    console.log("TAGS HERE ", currentTag);
+                    console.log("tags ", tags);
+
+                    $("#commissionaire_id").autocomplete({
+                        source: currentTag,
+                        /* focus : showResult,
+                        change :showResult,*/
+                        select : checkUser
+                    });
+                    $("#chercherClient").autocomplete({
+                        source: currentsClients,
+                        /*focus : showResult,
+                        change :showResult,*/
+                        select : selectClient
+                    });
+
+                    function checkUser(event, ui) {
+                        let id = ui.item.value.split('|')[2];
+                        $("#selectedCommisionnaire").val(id);
+                    }
+                    function selectClient(event, ui) {
+                        //console.log(ui.item.value);
+                        const id = ui.item.value.split('|#')[1];
+                        const client = clients.filter(client => client.id == id)[0];
+                        $("#client_id").val(id)
+                        $("#name").val(client.name)
+                        $("#telephone").val(client.telephone)
+                        $("#addresse_client").val(client.addresse)
+                        $("#customer_TIN").val(client.customer_TIN)
+                    }
+
+                    function showResult(event, ui) {
+                        // $('#cityName').text(ui.item.label)
+
+                    }
+                });
+
+
 
                 function prixVenteTvac(price, taux = 0.18){
                     return Math.round(price * (1 + taux ));
@@ -284,7 +332,7 @@
                     let tva = this.getAttribute('data-tva');
                     let price = this.value;
                     var current_tva = $("#current_tva").val();
-                   const prix_tva =  prixVenteTvac(this.value , tva);
+                    const prix_tva =  prixVenteTvac(this.value , tva);
 
                     $("#price_tvac_" + product_id).html(prix_tva)
                     $.ajax(
@@ -336,71 +384,17 @@
 
                 })
 
-                function searchClient(){
-                    window.event.preventDefault();
+                function searchClient(client){
+                    $("#name").val(client.name)
+                    $("#telephone").val(client.telephone)
+                    $("#addresse_client").val(client.addresse)
+                    $("#customer_TIN").val(client.customer_TIN)
 
-                    const client_id = $("#clientNumber").val();
-                    $.ajax({
-                        url : "{{ asset('getClient') }}/" + client_id,
-                        method : 'get'
-                    }).done(function(data){
-                        const client = data.client;
-
-                        $("#name").val(client.name)
-                        $("#telephone").val(client.telephone)
-                        $("#addresse_client").val(client.addresse)
-                        $("#customer_TIN").val(client.customer_TIN)
-                        $("#vat_customer_payer").val(client.vat_customer_payer)
-
-                    }).catch(function(error){
-                        console.log(error)
-                    })
                 }
 
 
 
-                // var selects = document.querySelectorAll("#qty")
 
-                // Array.from(selects).forEach( function(element, index) {
+            </script>
 
-                    //   element.addEventListener('change',function(){
-
-                        //     var token = $('meta[name="csrf-token"]').attr('content');
-
-                        //     $.ajaxSetup({
-                            //       headers: {
-
-                                //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-                                //       }
-
-                                //     });
-
-                                //       $.ajax({
-
-                                    //        type:'POST',
-
-                                    //        url:"{{ route('cart.update_panier') }}",
-
-                                    //        data:{rowId : rowId, qty :qty },
-
-                                    //        success:function(data){
-
-                                        //         location.reload();
-                                        //         console.log(data)
-
-                                        //       },
-                                        //       error: function(error){
-                                            //         console.log(error)
-                                            //       }
-                                            //     });
-
-
-
-                                            //   });
-
-                                            // })
-
-                                        </script>
-
-                                        @endsection
+            @endsection

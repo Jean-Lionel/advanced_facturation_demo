@@ -11,10 +11,12 @@ function isInternetConnection(){
     }
 }
 function prixVenteHorsTva($price, $taux = 0.18){
-    return round($price / (1 + $taux ));
+    $res = $price / (1 + $taux );
+    return ARRONDIR_RESULTAT ? round($res) : number_format($res, 2 );
 }
 function prixVenteTvac($price, $taux = 0.18){
-    return round($price * (1 + $taux ));
+    $res = $price * (1 + $taux );
+    return ARRONDIR_RESULTAT ? round($res) : number_format($res, 2 );
 }
 
 function getPrice($price)

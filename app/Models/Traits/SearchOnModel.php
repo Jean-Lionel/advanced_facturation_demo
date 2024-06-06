@@ -14,7 +14,7 @@ trait SearchOnModel{
     * @return mixed
     * This method Help to search on Model based on all parameters
     */
-    function getPaginateData(){
+    function getPaginateData($additionalCodition = []){
         $search = request()->query("search");
         $columns = Schema::getColumnListing($this->getTable());
         $query = self::query();
@@ -22,7 +22,16 @@ trait SearchOnModel{
             foreach ($columns as $column) {
                 $q->orWhere($column, 'LIKE', '%' . $search . '%');
             }
-        });
+        })
+        ->where(function($q) use ($additionalCodition){
+            if(!empty($additionalCodition)){
+                foreach ($additionalCodition as $condition) {
+                    $q->where($condition['column'], $condition['operator'], $condition['value']);
+                }
+
+            }
+        })
+        ;
         $data = []; //Tableau vide
         // if(!auth()->user()->isAdmin()){
             //     $data = $query->where('user_id', auth()->user()->id )->latest()->paginate();

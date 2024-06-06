@@ -29,6 +29,8 @@
     </div>
 
     {{--  <div>
+{{--
+    <div>
         <a href="{{ route('stockes.index') }}" class="{{ setActiveRoute('stockes.*') }}">
             <span class="fas fa fa-bookmark"></span>
             <span>Liste des stocks</span>

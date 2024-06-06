@@ -2,6 +2,9 @@
 
 @section('content')
 <div>
+    <div>
+        @include('compte._header')
+    </div>
     <div class="row">
         <div class="col-md-6 d-flex justify-content-between">
 
