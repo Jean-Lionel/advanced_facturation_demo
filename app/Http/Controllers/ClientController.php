@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Compte;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+
 class ClientController extends Controller
 {
 
@@ -17,7 +18,8 @@ class ClientController extends Controller
         return view('clients.index', compact('clients'));
     }
 
-    public function commissionnaires(){
+    public function commissionnaires()
+    {
 
         $model = new Client();
         $additionalCondition = [['column' => 'is_commissionaire', 'operator' => '<>', 'value' => null],];
@@ -25,17 +27,25 @@ class ClientController extends Controller
         return view('clients.commissionnaires', compact('clients'));
     }
 
-    public function load_commission(){
+    public function getOneClient()
+    {
+        $id = $_POST['id'];
+        return response()->json(['client' => Client::find($id)]);
+    }
+
+    public function load_commission()
+    {
         return Client::whereNotNull('is_commissionaire')->get();
     }
 
-    public function make_commissionnaire($id){
+    public function make_commissionnaire($id)
+    {
         $customer = Client::find($id);
-        $compte = Compte::where('client_id' , $customer->id)->first();
+        $compte = Compte::where('client_id', $customer->id)->first();
         $customer->is_commissionaire = now();
         $customer->save();
 
-        if(!$compte){
+        if (!$compte) {
             Compte::create([
                 'name' => str_pad($customer->id, 4, '0', STR_PAD_LEFT),
                 'montant' => 0,
@@ -45,12 +55,13 @@ class ClientController extends Controller
         }
         return back();
     }
-    public function abonne($id){
+    public function abonne($id)
+    {
         $customer = Client::find($id);
-        $compte = Compte::where('client_id' , $customer->id)->first();
+        $compte = Compte::where('client_id', $customer->id)->first();
 
 
-        if(!$compte){
+        if (!$compte) {
             Compte::create([
                 'name' => str_pad($customer->id, 4, '0', STR_PAD_LEFT),
                 'montant' => 0,
@@ -70,15 +81,16 @@ class ClientController extends Controller
 
 
 
-    public function getClient($id){
+    public function getClient($id)
+    {
 
-        if($id == 'ALL'){
+        if ($id == 'ALL') {
             return Client::all();
         }
         $client = Client::find($id);
 
-        if(!$client){
-            $columns = Schema::getColumnListing( 'clients');
+        if (!$client) {
+            $columns = Schema::getColumnListing('clients');
             $query = Client::query();
             $client =  $query->where(function ($q) use ($columns, $id) {
                 foreach ($columns as $column) {
@@ -87,7 +99,7 @@ class ClientController extends Controller
             })->first();
         }
 
-        return response()->json( [
+        return response()->json([
             'client' => $client
         ]);
     }
@@ -106,15 +118,15 @@ class ClientController extends Controller
         ]);
         // Check if Tin does not exist in database
 
-        if($request->client_type === 'PERSONNE MORAL' && $request->customer_TIN ==""){
+        if ($request->client_type === 'PERSONNE MORAL' && $request->customer_TIN == "") {
             return redirect('clients/create')->with('message', 'NIF EST OBLIGATOIRE POUR LES PERSONNES MORALE ');
         }
         $customer_OBR = '';
-        if($request->customer_TIN){
+        if ($request->customer_TIN) {
             $check =  Client::where("customer_TIN", $request->customer_TIN)->first();
             // dd( $check);
-            if($check){
-                $errorMessage = 'Le Client existe deja  '. $request->customer_TIN . ' => '.  $check->name . ' CUSTOMER ID '. $check->id;
+            if ($check) {
+                $errorMessage = 'Le Client existe deja  ' . $request->customer_TIN . ' => ' .  $check->name . ' CUSTOMER ID ' . $check->id;
                 return redirect('clients/create')->with('message',  $errorMessage);
             }
             try {
@@ -122,11 +134,14 @@ class ClientController extends Controller
                 $response = $obr->checkTin($request->customer_TIN);
                 if(!$response->success){
                     return redirect('clients/create')->with('message',  $request->customer_TIN . ' => '. $response->msg);
+                if (!$response->success) {
+
+                    return redirect('clients/create')->with('message',  $request->customer_TIN . ' => ' . $response->msg);
                 }
                 // }else{
 
-                    //     return redirect('clients/create')->with('message',  ' NIF EST OBLIGATOIRE POUR LES PERSONNES MORALE ');
-                    // }
+                //     return redirect('clients/create')->with('message',  ' NIF EST OBLIGATOIRE POUR LES PERSONNES MORALE ');
+                // }
 
                     // ['result']['taxpayer'][0]['tp_name']
                     $customer_OBR = $response->result->taxpayer[0]->tp_name;
@@ -134,74 +149,76 @@ class ClientController extends Controller
                 }catch (\Exception $e){
 
                     dd($e);
+                // ['result']['taxpayer'][0]['tp_name']
+                $customer_OBR = $response->result->taxpayer[0]->tp_name;
+            } catch (\Exception $e) {
 
-                    return redirect('clients/create')->with('message',  $request->customer_TIN . ' => pas de connection Internet le Nif ne peut pas etre verfier pour le moment ');
-                }
-
+                return redirect('clients/create')->with('message',  $request->customer_TIN . ' => pas de connection Internet le Nif ne peut pas etre verfier pour le moment ');
             }
-            $data =  $request->all();
-            if($customer_OBR){
-                $data = array_merge($data, [
-                    'name' => $customer_OBR
-                ]);
-            }
-
-            Client::create( $data );
-            return $this->index();
         }
-
-        /**
-        * Display the specified resource.
-        *
-        * @param  \App\Models\Client  $client
-        * @return \Illuminate\Http\Response
-        */
-        public function show(Client $client)
-        {
-            //
-        }
-
-        /**
-        * Show the form for editing the specified resource.
-        *
-        * @param  \App\Models\Client  $client
-        * @return \Illuminate\Http\Response
-        */
-        public function edit(Client $client)
-        {
-            //
-
-            return view('clients.edit', compact('client'));
-        }
-
-        /**
-        * Update the specified resource in storage.
-        *
-        * @param  \Illuminate\Http\Request  $request
-        * @param  \App\Models\Client  $client
-        * @return \Illuminate\Http\Response
-        */
-        public function update(Request $request, Client $client)
-        {
-            //
-
-            $request->validate([
-                'first_name' => 'required',
+        $data =  $request->all();
+        if ($customer_OBR) {
+            $data = array_merge($data, [
+                'name' => $customer_OBR
             ]);
-
-            $client->update($request->all());
-
-            return $this->index();
         }
 
-        /**
-        * Remove the specified resource from storage.
-        *
-        * @param  \App\Models\Client  $client
-        * @return \Illuminate\Http\Response
-        */
-        public function destroy(Client $client)
-        {
-            $client->delete();
-        }
+        Client::create($data);
+        return $this->index();
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Client  $client
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Client $client)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Client  $client
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Client $client)
+    {
+        //
+
+        return view('clients.edit', compact('client'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Client  $client
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Client $client)
+    {
+        //
+
+        $request->validate([
+            'first_name' => 'required',
+        ]);
+
+        $client->update($request->all());
+
+        return $this->index();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Client  $client
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Client $client)
+    {
+        $client->delete();
+    }
+}
