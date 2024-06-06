@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <table class="table table-sm">
+        <table class="table table-sm" id="datatable">
             <thead>
                 <tr>
                     <th style="width: 3% !important;">

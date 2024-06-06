@@ -342,6 +342,22 @@
         }
     </script>
 
+
+    <script>
+        $(document).ready( function () {
+        $('#datatable').dataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print',
+                ],
+                pagingType: "full_numbers",
+                scrollX: true,
+        });
+    
+    
+    } );
+    </script>
+    
 </body>
 
 </html>

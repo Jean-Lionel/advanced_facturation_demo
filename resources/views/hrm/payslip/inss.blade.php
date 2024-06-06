@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <table class="table table-sm">
+        <table class="table table-sm" id="datatable">
             <thead>
                 <tr>
                     <th data-priority="1">Nom et Prénom</th>

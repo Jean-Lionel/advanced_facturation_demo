@@ -38,7 +38,7 @@
             <h3>BULLETIN DE PAIE POUR LE MOIS DE {{ $date }}</h3>
         </div>
 
-        <table class="table table-sm" id="payslip_table_report">
+        <table class="table table-sm" id="payslip_table_report" id="datatable">
             <thead>
                 <tr>
                     <th data-priority="1">Nom et Prénom</th>
