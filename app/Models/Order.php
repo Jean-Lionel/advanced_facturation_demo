@@ -78,6 +78,9 @@ protected $guarded = [];
 	{
 		return unserialize($v);
 	}
+    public function detailsProducts(){
+        return $this->hasMany(DetailOrder::class    );
+    }
     public function getInteretAttribute(){
         return collect($this->products)->pluck('interet_total')->sum();
     }

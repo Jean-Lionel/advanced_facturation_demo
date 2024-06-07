@@ -142,6 +142,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('hr-fiche-detail', App\Http\Controllers\HrFicheDetailController::class);
     Route::resource('hr-commande', App\Http\Controllers\HrCommandeController::class);
     Route::resource('banque', App\Http\Controllers\BanqueController::class);
+
+    Route::get('brarudi_report', [RapportController::class, 'produit_brarudi'])->name('brarudi_report');
 });
 
 require __DIR__ . '/jetstream.php';
