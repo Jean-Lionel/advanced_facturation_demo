@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture dukorane</title>
+        <style>.invoice {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            font-family: Arial, sans-serif;
+          }
+
+          .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+          }
+
+          .invoice-header h1 {
+            font-size: 24px;
+            margin: 0;
+          }
+
+          .invoice-details {
+            flex-basis: 50%;
+          }
+
+          .invoice-details p {
+            margin: 5px 0;
+          }
+
+          .beneficiary-info {
+            flex-basis: 50%;
+            text-align: right;
+          }
+
+          .beneficiary-info p {
+            margin: 5px 0;
+          }
+
+          .tva-checkbox {
+            margin-top: 10px;
+          }
+
+          .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+          }
+
+          .invoice-table th,
+          .invoice-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+          }
+
+          .invoice-table th {
+            background-color: #f2f2f2;
+            text-align: left;
+          }
+
+          .invoice-table tfoot th,
+          .invoice-table tfoot td {
+            font-weight: bold;
+          }
+
+          .note {
+            text-align: right;
+            font-style: italic;
+          }
+
+          .signature {
+            text-align: right;
+            margin-top: 20px;
+          }
+    </style>
+</head>
+<body><div class="invoice">
+
+    <h1>FACTURE No 05 du 30/04/2024</h1>
+    <div class="invoice-header">
+      <div class="invoice-details">
+        <p>NIF : 4001157876</p>
+        <p>RC No : 13913/18</p>
+        <p>Adresse: MUHA, Kanyosha- Kajiji, 9eme Avenue, RN3</p>
+      </div>
+      <div class="beneficiary-info">
+        <p>Bank: KCB Bank</p>
+        <p>Beneficiary: Dukorane,SPRL</p>
+        <p>Account Number:: 669044896</p>
+        <div class="tva-checkbox">
+          <label>
+            <input type="checkbox" checked>
+            Assujetti à la TVA
+          </label>
+        </div>
+      </div>
+    </div>
+    <table class="invoice-table">
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Service</th>
+          <th>QTY</th>
+          <th>Période</th>
+          <th>P.U/BIF</th>
+          <th>P.T</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Location Coaster</td>
+          <td>21</td>
+          <td>Apr-24</td>
+          <td>110,000</td>
+          <td>2,310,000</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="5">Total</th>
+          <td>2,310,000</td>
+        </tr>
+      </tfoot>
+    </table>
+    <p class="note">Nous disons Deux millions trois cent dix milles francs Burundais.</p>
+    <div class="signature">
+      <p>Bujumbura, 30 Avril 2024</p>
+      <p>Mrs Directeur</p>
+      <p>Business Manager</p>
+    </div>
+  </div>
+</body>
+</html>
