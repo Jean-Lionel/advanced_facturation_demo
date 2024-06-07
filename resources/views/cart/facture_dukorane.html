@@ -4,135 +4,179 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facture dukorane</title>
-        <style>.invoice {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            font-family: Arial, sans-serif;
-          }
+    <style>body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    }
 
-          .invoice-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-          }
+    .invoice {
+        padding: 20px;
+        margin: 20px;
+        /* background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 800px; */
+    }
 
-          .invoice-header h1 {
-            font-size: 24px;
-            margin: 0;
-          }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        font-size: 1.2em;
+    }
 
-          .invoice-details {
-            flex-basis: 50%;
-          }
+    .header, .client {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
 
-          .invoice-details p {
-            margin: 5px 0;
-          }
+    .header p, .client p, .footer p {
+        margin: 5px 0;
+    }
 
-          .beneficiary-info {
-            flex-basis: 50%;
-            text-align: right;
-          }
+    .left, .right {
+        width: 45%;
+    }
 
-          .beneficiary-info p {
-            margin: 5px 0;
-          }
+    .client h3 {
+        margin: 10px 0;
+    }
 
-          .tva-checkbox {
-            margin-top: 10px;
-          }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
 
-          .invoice-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-          }
+    table, th, td {
+        border: 1px solid #000;
+    }
 
-          .invoice-table th,
-          .invoice-table td {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-          }
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
 
-          .invoice-table th {
-            background-color: #f2f2f2;
-            text-align: left;
-          }
+    th {
+        background-color: #f8f8f8;
+    }
 
-          .invoice-table tfoot th,
-          .invoice-table tfoot td {
-            font-weight: bold;
-          }
+    tfoot {
+        font-weight: bold;
+    }
 
-          .note {
-            text-align: right;
-            font-style: italic;
-          }
+    .amount {
+        margin: 20px 0;
+        /* font-weight: bold; */
+        text-align: left;
+        margin-left: 20px;
+    }
 
-          .signature {
-            text-align: right;
-            margin-top: 20px;
-          }
+
+    .footer {
+    /* text-align: center; */
+    margin-top: 20px;
+    padding: 20px 0;
+    }
+
+
+    .footer p {
+        margin: 0;
+        font-weight:600;
+        text-align: center;
+    }
+
+    .assujetti{
+       display:flex;
+       font-weight: 600;
+
+    }
+    .adresse{
+        text-align: center;
+        font-weight: 600;
+        font-size: 90%;
+    }
+    .adresse > .p {
+        color: rgba(1, 131, 238, 0.4);
+        text-decoration: underline  rgba(1, 131, 238, 0.4);
+    }
+
     </style>
 </head>
-<body><div class="invoice">
-
-    <h1>FACTURE No 05 du 30/04/2024</h1>
-    <div class="invoice-header">
-      <div class="invoice-details">
-        <p>NIF : 4001157876</p>
-        <p>RC No : 13913/18</p>
-        <p>Adresse: MUHA, Kanyosha- Kajiji, 9eme Avenue, RN3</p>
-      </div>
-      <div class="beneficiary-info">
-        <p>Bank: KCB Bank</p>
-        <p>Beneficiary: Dukorane,SPRL</p>
-        <p>Account Number:: 669044896</p>
-        <div class="tva-checkbox">
-          <label>
-            <input type="checkbox" checked>
-            Assujetti à la TVA
-          </label>
+<body>
+    <div class="invoice">
+        <img src="logodukorane.png" width="400" height="150"/>
+        <h2>Facture no 05 du 30/04/2024</h2>
+        <div class="header">
+            <div class="left">
+                <p>NIF: 4001157876</p>
+                <p>RC N° 13913/18</p>
+                <p>Adresse: MUHA, Kanyosha- Kajiji, 9eme Avenue, RN3</p>
+                <p>Av: 9eme Avenue</p>
+                <div class="assujetti">
+                    <p>Assujetti à la TVA: </p><input  type='checkbox'/><p>OUI</p><input  type='checkbox' checked/><p>NON</p>
+                </div>
+            </div>
+            <div class="right">
+                <p>Bank : KCB Bank </p>
+                <p>Beneficiary: dukorane, SPR</p>
+                <p>Account Number: 6690449521</p>
+            </div>
         </div>
-      </div>
+        <div class="left">
+            <p>LE CLIENT</p>
+            <p>Nom et Prénom :</p>
+            <p>Raison Social: <strong>SAVONOR</strong></p>
+            <p>NIF: .............................</p>
+            <p>Résident: .............................</p>
+            <div class="assujetti">
+                <p>Assujetti à la TVA: </p><input  type='checkbox' checked/><p>OUI</p><input  type='checkbox' /><p>NON</p>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Service</th>
+                    <th>QTY</th>
+                    <th>Période</th>
+                    <th>P.U/BIF</th>
+                    <th>P.T</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Location Coaster</td>
+                    <td>21</td>
+                    <td>Apr-24</td>
+                    <td>110,000</td>
+                    <td>2,310,000</td>
+                </tr>
+                <tr>
+                    <td colspan="5">Total</td>
+                    <td>2,310,000</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="amount">Nous disons Deux millions trois cent dix milles francs Burundais.</p>
+        <div class="footer">
+            <p>Bujumbura, 30 Avril 2024</p>
+            <p>Mrs Directeurs</p>
+            <p>Business Manager</p>
+        </div>
+        <div class="adresse">
+            <p class="p">Buja-Burundi , Muha;Kanyosha-Kajiji, 9eme Avenue, RN3;  Tel:+257 /79 598 316/ 69 50 65 65
+            </p>
+            <p>E-mail:leandrenkurunziza2015@gmail.com;dukorane@gmail.com </p>
+        </div>
     </div>
-    <table class="invoice-table">
-      <thead>
-        <tr>
-          <th>N°</th>
-          <th>Service</th>
-          <th>QTY</th>
-          <th>Période</th>
-          <th>P.U/BIF</th>
-          <th>P.T</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Location Coaster</td>
-          <td>21</td>
-          <td>Apr-24</td>
-          <td>110,000</td>
-          <td>2,310,000</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <th colspan="5">Total</th>
-          <td>2,310,000</td>
-        </tr>
-      </tfoot>
-    </table>
-    <p class="note">Nous disons Deux millions trois cent dix milles francs Burundais.</p>
-    <div class="signature">
-      <p>Bujumbura, 30 Avril 2024</p>
-      <p>Mrs Directeur</p>
-      <p>Business Manager</p>
-    </div>
-  </div>
 </body>
 </html>
