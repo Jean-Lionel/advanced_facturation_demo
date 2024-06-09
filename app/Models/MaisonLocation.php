@@ -46,4 +46,8 @@ class MaisonLocation extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function clients(){
+        return $this->belongsToMany(Client::class, 'client_maisons', 'maisonlocation_id');
+    }
 }

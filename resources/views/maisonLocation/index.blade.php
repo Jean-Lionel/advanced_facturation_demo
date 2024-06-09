@@ -26,6 +26,7 @@
 				<th scope="col">Name</th>
 				<th scope="col">Montant</th>
 				<th scope="col">Description</th>
+				<th scope="col">Client</th>
 				<th scope="col">Date de création</th>
 				<th scope="col">Action</th>
 			</tr>
@@ -39,11 +40,15 @@
 				<td>
 					{{ $value->name}}
 				</td>
+				
 				<td>
 					{{ $value->montant}}
 				</td>
 
 				<td>{{ $value->description }}</td>
+				<td>
+					{{ $value->clients->count() }}
+				</td>
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
 					<a href="{{ route('maison-location.show', $value) }}" class="btn btn-outline-info btn-sm mr-2">Locataire</a>
