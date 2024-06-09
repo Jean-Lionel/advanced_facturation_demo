@@ -9,37 +9,26 @@ use Illuminate\Http\Request;
 
 class MaisonLocationController extends Controller
 {
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
-        $maisonLocations = MaisonLocation::all();
+        $maisonLocations = MaisonLocation::latest()->paginate();
 
         return view('maisonLocation.index', compact('maisonLocations'));
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
         return view('maisonLocation.create');
     }
 
-    /**
-     * @param \App\Http\Requests\MaisonLocationStoreRequest $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(MaisonLocationStoreRequest $request)
     {
         $maisonLocation = MaisonLocation::create($request->validated());
 
         $request->session()->flash('maisonLocation.id', $maisonLocation->id);
 
-        return redirect()->route('maisonLocation.index');
+        return$this->index($request);
     }
 
     /**

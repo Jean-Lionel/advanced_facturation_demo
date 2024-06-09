@@ -117,7 +117,7 @@
                         <a href="{{ route('products.index') }}" class="{{ setActiveRoute('products.*') }}" ><span class="fa fa-sticky-note"></span> Stock</a>
                     </li>
                     <li>
-                        <a href="{{ route('products.index') }}" class="{{ setActiveRoute('products.*') }}" ><span class="fa fa-sticky-note"></span> Stock</a>
+                        <a href="{{ route('maison-location.index') }}" class="{{ setActiveRoute('maison-location.*') }}" ><span class="fa fa-cubes"></span> Location</a>
                     </li>
                     
                     <li>

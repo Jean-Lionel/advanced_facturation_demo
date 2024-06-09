@@ -24,11 +24,11 @@ class MaisonLocationStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
+            
             'name' => ['required', 'string'],
-            'description' => ['string'],
+            'description' => ['string', 'nullable'],
             'montant' => ['required', 'numeric'],
-            'softdeletes' => ['required'],
+           
         ];
     }
 }
