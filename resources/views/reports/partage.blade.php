@@ -4,7 +4,11 @@
 
 @section('content')
 
+@if(USE_ABONEMENT)
 @include('journals._header_file')
+@endif
+
+
 
 <div class="row">
     <div>
