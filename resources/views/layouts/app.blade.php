@@ -3,7 +3,7 @@
 <head>
     <title>{{ auth()->user()->company()->tp_name ?? "" }}</title>
     <meta charset="utf-8">
-
+    
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -13,7 +13,7 @@
     <meta name="theme-color" content="#ffffff">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    
     <link rel="stylesheet" href="{{ asset('css/css/all.css')  }}" defer="defer">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('datatable/css/datatables.min.css') }}">
@@ -28,7 +28,7 @@
             /*background: #009a41;*/
             background: #5c3fd8;
         }
-
+        
         .status {
             position: fixed;
             bottom: 0;
@@ -60,13 +60,13 @@
             html, body {
                 width: 210mm;
                 height: 297mm;
-
+                
             }
         }
         .fixTableHead {
             overflow-y: auto;
             height: 80vh;
-
+            
             thead th {
                 position: sticky;
                 top: 0;
@@ -83,17 +83,17 @@
                 background: #ABDD93;
             }
         }
-
+        
         .contenu_principal{
             width: 98%;
             margin: auto;
         }
-
+        
     </style>
-
+    
 </head>
 <body>
-
+    
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar" class="active noprint" >
             <h1><a href="" class="logo">
@@ -116,20 +116,23 @@
                     <li>
                         <a href="{{ route('products.index') }}" class="{{ setActiveRoute('products.*') }}" ><span class="fa fa-sticky-note"></span> Stock</a>
                     </li>
-
+                    <li>
+                        <a href="{{ route('products.index') }}" class="{{ setActiveRoute('products.*') }}" ><span class="fa fa-sticky-note"></span> Stock</a>
+                    </li>
+                    
                     <li>
                         <a href="{{ route('rapport') }}" class="{{ setActiveRoute('rapport') }}" ><span class="fa fa-chart-bar"></span> Rapport</a>
                     </li>
                     <li>
                         <a href="{{ route('stockes.journal') }}"  class="{{ setActiveRoute('stockes.*') }}" ><span class="fa fa-calendar"></span> Journal</a>
                     </li>
-
+                    
                     @if (USE_ABONEMENT)
                     <li>
                         <a href="{{ route('comptes.index') }}"  class="{{ setActiveRoute('comptes.*') }}" ><span class="fa fa-hand-holding-usd" aria-hidden="true"></span> Abonement</a>
                     </li>
                     @endif
-
+                    
                     <li>
                         <a href="{{ route('depenses.index') }}" class="{{ setActiveRoute('depenses.*') }}"><span class="fa fa-minus"></span> Depense</a>
                     </li>
@@ -137,7 +140,7 @@
                         <a href="{{ route('entreprises.index') }}" class="{{ setActiveRoute('entreprises.*') }}">
                             <span class="fa fa-building"></span> Entreprise</a>
                         </li>
-
+                        
                         <li>
                             <a href="{{ route('users.index') }}" class="{{ setActiveRoute('users.*') }}"><span class="fas fa-cogs"></span> Système</a>
                         </li>
@@ -148,18 +151,18 @@
                     </ul>
                     <div id="status" class="status"></div>
                     @endcan
-
+                    
                     <div class="footer">
-
+                        
                     </div>
                 </nav>
-
+                
                 <!-- Page Content  -->
                 <div id="content" class="p-0 p-md-6">
-
+                    
                     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0">
                         <div class="container-fluid">
-
+                            
                             {{-- <button type="button" id="sidebarCollapse" class="btn btn-primary">
                                 <i class="fa fa-bars"></i>
                                 <span class="sr-only">Toggle Menu</span>
@@ -167,7 +170,7 @@
                             <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <i class="fa fa-bars"></i>
                             </button>
-
+                            
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <h5>{{ auth()->user()->company()->tp_name ?? "" }}</h5>
                                 <ul class="nav navbar-nav ml-auto">
@@ -190,10 +193,10 @@
                                             @method('POST')
                                             <button type="submit" class="btn btn-dark btn-sm rounded-bottom">
                                                 <i class="fa fa-power-off fa-2x" aria-hidden="true" title=" Se deconnecter"></i>
-
+                                                
                                             </form>
                                         </li>
-
+                                        
                                         {{--  <li class="nav-item">
                                             <a class="nav-link" href="{{ route('stockes.index') }}">Stocke</a>
                                         </li> --}}
@@ -201,9 +204,9 @@
                                 </div>
                             </div>
                         </nav>
-
+                        
                         <div class="container-fluid">
-
+                            
                             <div>
                                 @if (session('success'))
                                 {{-- expr --}}
@@ -224,11 +227,11 @@
                                 </div>
                                 @endif
                             </div>
-
+                            
                             <div class="contenu_principal">
                                 @yield('content')
                             </div>
-
+                            
                         </div>
                     </div>
                 </div>
@@ -260,7 +263,7 @@
                     };
                     const updateInternetStatus = async () => {
                         const result = await checkOnlineStatus();
-
+                        
                         const statusDisplay = document.getElementById("status");
                         statusDisplay.innerHTML = result ? ( `
                         <div class="avatar">
@@ -271,11 +274,11 @@
                         </div>`);
                         return result;
                     }
-
-
-
+                    
+                    
+                    
                     if(canSyncronize && !cancel_syncronize){
-
+                        
                         let  limitedInterval =  setInterval(async () => {
                             const result = await updateInternetStatus();
                             console.log(result);
@@ -306,9 +309,10 @@
                                 console.log('interval cleared!');
                             }
                         }, timeSyncronisation); // probably too often, try 30000 for every 30 second
-
+                        
                     }
                 </script>
-
+                
             </body>
             </html>
+            
