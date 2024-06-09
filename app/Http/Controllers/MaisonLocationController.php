@@ -31,11 +31,6 @@ class MaisonLocationController extends Controller
         return$this->index($request);
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\MaisonLocation $maisonLocation
-     * @return \Illuminate\Http\Response
-     */
     public function show(Request $request, MaisonLocation $maisonLocation)
     {
         return view('maisonLocation.show', compact('maisonLocation'));
