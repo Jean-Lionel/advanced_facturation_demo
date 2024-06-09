@@ -50,6 +50,7 @@ class SendInvoiceToOBR extends Controller
         $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'checkTIN/', [
             'tp_TIN' => $tp_TIN
         ]);
+
         return json_decode($req->body());
     }
 

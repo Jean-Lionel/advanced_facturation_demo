@@ -9,17 +9,24 @@
     <link rel="stylesheet" href="{{ asset('css/prothem.css') }}">
     <link rel="stylesheet" href="{{ asset('css/reciept.css') }}">
 
+    <style>
+        .item_name{
+            width: 47%;
+            padding: 5px;
+        }
+    </style>
+
 </head>
 <body>
     <div class="container_body">
         <div class="noprint header-element">
             <a href="{{ route('ventes.index') }}" class="noprint btn">Retour</a>
-            <button onclick="print()" class=" btn">Imprimer</button>
+            <button onclick="print()" class=" btn noprint">Imprimer</button>
             <button id="print_reciept"  class="noprint btn">Imprimer Reciept</button>
         </div>
         <div class="main-content" id="printJS-form" >
             {{-- Entete --}}
-            <header class="header-facture">
+            <header class="header-facture ">
                 {{-- <div>
                     <div >
                         <img class="img_logo" src="{{asset('img/logo.jpg')}}" alt="">
@@ -108,7 +115,7 @@
                         @foreach($order->products as $key=> $product)
                         <tr>
                             <td>{{ $key +1 }}</td>
-                            <td> {{ $product['name'] }}</td>
+                            <td class="item_name"> {{ $product['name'] }}</td>
                             {{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
                             <td class="adroite"> {{ $product['quantite'] }}</td>
                             <td class="adroite"> {{ getPrice($product['price'] ) }}</td>
@@ -189,9 +196,9 @@
                                     @foreach($order->products as $key=> $product)
                                     <tr>
                                         <td>{{ $key +1 }}</td>
-                                        <td> {{ $product['name'] }}</td>
+                                        <td class="item_name"> {{ $product['name'] }}</td>
                                         {{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
-                                        <td class="adroite"> {{ $product['quantite'] }}</td>
+                                        <td class="adroite" > {{ $product['quantite'] }}</td>
                                         <td class="adroite nowrap"> {{ getPrice($product['price'] ) }}</td>
                                         <td class="adroite nowrap"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                                     </tr>
