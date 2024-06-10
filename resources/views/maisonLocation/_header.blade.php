@@ -1,10 +1,12 @@
-<div>
-    <ul class="list-group-horizontal underline">
-        <li class="">
-           Bien ou Service à Louer
-        </li>
-        <li>
-           <a href="{{ route('payment-location-mensuel.index') }}">Paiement de Location Mensuel</a>
-        </li>
-    </ul>
+<div class="d-flex ">
+    <div>
+        <a href="{{ route('payment-location-mensuel.index') }}">Paiement de Location Mensuel</a>
+    </div>
+    <div>
+        <a href="{{ route('payment-location-mensuel.index') }}">Historique de paiement</a>
+    </div>
+    <div>
+        <a href="{{ route('payment-location-mensuel.index') }}">Paiement de Location Mensuel</a>
+    </div>
+    
 </div>

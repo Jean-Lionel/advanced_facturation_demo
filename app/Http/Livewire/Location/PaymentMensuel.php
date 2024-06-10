@@ -64,7 +64,7 @@ class PaymentMensuel extends Component
             
             DB::beginTransaction();
             // Creating Order 
-            PaymentLocationMensuel::create([
+             $paiementM =   PaymentLocationMensuel::create([
                 'maisonlocation_id' => $this->paymentID,
                 'description' => $this->description,
                 'montant' => $this->montant,
@@ -96,6 +96,7 @@ class PaymentMensuel extends Component
                 'is_cancelled' => 0,
                 'client_id' => $this->maison->ClientId,
                 'commissionaire_id' => null,
+                'maison_id' => $paiementM->id,
                 'company' =>  Entreprise::currentEntreprise()->toJson(),
             ]);
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
