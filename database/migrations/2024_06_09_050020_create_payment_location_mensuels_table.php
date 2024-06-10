@@ -20,6 +20,7 @@ class CreatePaymentLocationMensuelsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('maisonlocation_id')->constrained('maison_locations');
             $table->text('description')->nullable();
+            $table->text('type_paiement')->nullable();
             $table->double('montant')->default('0');
             $table->date('date_paiement')->nullable();
             $table->softDeletes();

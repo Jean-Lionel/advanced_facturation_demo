@@ -9,10 +9,7 @@ use Illuminate\Http\Request;
 
 class PaymentLocationMensuelController extends Controller
 {
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
         $paymentLocationMensuels = PaymentLocationMensuel::all();

@@ -21,6 +21,7 @@ class CreateMaisonLocationsTable extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->double('montant')->default('0');
+            $table->double('tax')->default('0');
             $table->softDeletes();
             $table->timestamps();
         });

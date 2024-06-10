@@ -47,7 +47,7 @@
 
 				<td>{{ $value->description }}</td>
 				<td>
-					{{ $value->clients->count() }}
+					{{ $value->clients_count}}
 				</td>
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
