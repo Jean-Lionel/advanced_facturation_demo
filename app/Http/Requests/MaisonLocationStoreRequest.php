@@ -28,6 +28,7 @@ class MaisonLocationStoreRequest extends FormRequest
             'name' => ['required', 'string'],
             'description' => ['string', 'nullable'],
             'montant' => ['required', 'numeric'],
+            'tax' => ['required'],
            
         ];
     }

@@ -27,6 +27,7 @@
 				<th scope="col">Montant</th>
 				<th scope="col">Description</th>
 				<th scope="col">Client</th>
+				<th scope="col">Tax (%)</th>
 				<th scope="col">Date de création</th>
 				<th scope="col">Action</th>
 			</tr>
@@ -49,14 +50,13 @@
 				<td>
 					{{ $value->clients_count}}
 				</td>
+				<th scope="col">{{  $value->tax}}</th>
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
 					<a href="{{ route('maison-location.show', $value) }}" class="btn btn-outline-info btn-sm mr-2">Locataire</a>
 				</td>
 			</tr>
 			@endforeach
-
-
 		</tbody>
 	</table>
 

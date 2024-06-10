@@ -4,7 +4,7 @@
     <div>
         <div class="row">
            
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="col-md-12">
                     <p>Maison à Payé </p>
                     <input type="text" placeholder="DISIGNATION" wire:model="houseNumber" class="form-controler">
@@ -16,7 +16,9 @@
                         <tr>
                             <th>#</th>
                             <th>Maison</th>
-                            <th>Montant Mensuel</th>
+                            <th>Montant Mensuel (HTVA)</th>
+                            <th>TVA</th>
+                            <th>Montant Mensuel (TTC)</th>
                             <th>Client</th>
                             <th>Action</th>
                         </tr>
@@ -27,6 +29,8 @@
                             <td>{{ $loop->iteration  }}</td>
                             <td>{{ $item->name }}</td>
                             <td>{{ getPrice($item->montant) }}</td>
+                            <td>{{ getPrice($item->tax) }}</td>
+                            <td>{{ $item->priceTTC }}</td>
                             <td>
                                 <ol>
                                     @foreach ($item->clients as $el)
@@ -46,7 +50,7 @@
                 
             </div>
 
-            <div class="col-6">
+            <div class="col-4">
                 @if ($displayPayment)
                     <div>
                         <h4>Paiment de {{ $maison->name  }}</h4>
