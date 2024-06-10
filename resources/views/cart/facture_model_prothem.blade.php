@@ -67,7 +67,7 @@
                     <p>BP: <b>{{ $order->company->tp_postal_number ?? "" }}</b> , Tél <b>{{ $order->company->tp_phone_number }}</b></p>
                     <p>Commune : <b>{{ $order->company->tp_address_commune ?? ""}}</b>, Quartier : {{ $order->company->tp_address_quartier }}</p>
                     <p>Avenue : <b>{{ $order->company->tp_address_avenue ?? ""}} </b></p>
-                    Assujetti à la TVA : <b>OUI</b>
+                    Assujetti à la TVA : <b>NON</b>
 
                 </div>
                 <div class="aling-right partie-droite">
