@@ -48,7 +48,11 @@ class OrderController extends Controller
     {
         if(USE_FACTURE_MODEL_DUKORANE){
             return view('cart.facture_model_dukorane',compact('order'));
-        }else{
+        }
+        else if(USE_FACTURE_MODEL_ERFO){
+            return view('cart.facture_model_erfo',compact('order'));
+        }
+        else{
             return view('cart.facture_model_prothem',compact('order'));
         }
      

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facture MAGASIN LE LEADER</title>
+    <title>FACTURE  {{ auth()->user()->company()->tp_name ?? "" }} Numero {{ $order->id }}</title>
     <link rel="stylesheet" href="{{ asset('css/print.min.css') }}">
 
     <script src="{{ asset('js/print.min.js') }}"></script>
@@ -15,11 +15,11 @@
         <header>
             <div class="header-left">
                 <img src="logo.png" alt="Logo" class="logo">
-                <p style="font-weight: 800;">AMENAGEMENT, CONSTRUCTION, CONSEIL, ETUDE, SURVEILLANCE. "ACOCES"</p>
-                <p style="font-weight: 800;">NIF : 40000252082</p>
+                <p style="font-weight: 800;">{{$order->company->tp_name ?? ""}}</p>
+                <p style="font-weight: 800;">NIF : {{$order->company->tp_TIN ?? ""}}</p>
             </div>
             <div class="header-right">
-                <p style="font-weight: 800;">RC : 01098</p>
+                <p style="font-weight: 800;">RC : {{ $order->company->tp_trade_number ?? "" }}</p>
             </div>
         </header>
         <hr class="thick-line">
@@ -30,23 +30,23 @@
             <div class="vendeur">
                 <p>A. Identification du vendeur</p>
                 <p>Personne physique: <input type="checkbox"> | Société: <input type="checkbox" checked></p>
-                <p>Centre Fiscal: DGC</p>
-                <p>Nom du contribuable: AMENAGEMENT DES MARAIS, CONSTRUCTION, CONSEIL, ETUDES ET SURVEILLANCE</p>
-                <p>Secteur d'activité: 010-CONSTRUCTION</p>
-                <p>NIF: 400000252082</p>
-                <p>Registre de commerce: 01098</p>
-                <p>B.P:89 <br>
-                    Tél://79972430 <br>
-                    Commune: AVENUE DEMOCRATIE <br>
-                    Numero:13 </p>
+                <p>Centre Fiscal: {{ $order->company->tp_fiscal_center }}</p>
+                <p>Nom du contribuable: {{ $order->company->tp_name ?? "" }}</p>
+                <p>{{ "Secteur d'activité" }} : <b> {{ $order->company->tp_activity_sector }}</p>
+                <p>NIF: {{ $order->company->customer_TIN ?? "" }}</p>
+                <p>Registre de commerce: {{ $order->company->tp_trade_number ?? "" }}</p>
+                <p>B.P:{{ $order->company->tp_postal_number ?? "" }} <br>
+                    Tél:{{ $order->company->tp_postal_number ?? "" }} <br>
+                    Commune: {{ $order->company->tp_address_commune ?? ""}} <br>
+                    Numero: {{ $order->company->vat_taxpayer ? 'OUI' : 'NON' }}</p>
             </div>
             <div class="client">
                 <p>B. Client</p>
                 <p>Personne physique: <input type="checkbox" checked> | Société: <input type="checkbox"></p>
-                <p>Nom: enabel</p>
-                <p>NIF: 400000252082</p>
+                <p>Nom: {{$order->client->name}}</p>
+                <p>NIF:  {{$order->company->tp_TIN ?? ""}}</p>
                 <p>Resident à: rohero</p>
-                <p>Assujetti à la TVA: <input type="checkbox" checked> OUI <input type="checkbox"> NON</p>
+                <p>Assujetti à la TVA: {{$order->client->customer_TIN ?? ""}}  <input type="checkbox" checked> OUI <input type="checkbox"> NON</p>
             </div>
         </section>
         <section class="tax-info">
