@@ -43,16 +43,15 @@ class OrderController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show(Order $order)
     {
-
-        return view('cart.facture_model_prothem',compact('order'));
+        if(USE_FACTURE_MODEL_DUKORANE){
+            return view('cart.facture_model_dukorane',compact('order'));
+        }else{
+            return view('cart.facture_model_prothem',compact('order'));
+        }
+     
     }
 
     /**

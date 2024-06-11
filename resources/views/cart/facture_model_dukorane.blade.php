@@ -11,7 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    
     background-color: #f0f0f0;
     }
 
@@ -113,11 +113,11 @@
 <body>
     <div class="invoice">
         <img src="logodukorane.png" width="400" height="150"/>
-        <h2>Facture no 05 du 30/04/2024</h2>
+        <h2>FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }}</h2>
         <div class="header">
             <div class="left">
-                <p>NIF: 4001157876</p>
-                <p>RC N° 13913/18</p>
+                <p>NIF: {{$order->company->tp_TIN ?? ""}}</p>
+                <p>RC N°  <b>{{ $order->company->tp_trade_number ?? "" }}</p>
                 <p>Adresse: MUHA, Kanyosha- Kajiji, 9eme Avenue, RN3</p>
                 <p>Av: 9eme Avenue</p>
                 <div class="assujetti">
