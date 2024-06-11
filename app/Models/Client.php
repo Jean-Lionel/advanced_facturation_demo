@@ -17,4 +17,6 @@ class Client extends MyModel
     public function compte(){
         return $this->hasOne(Compte::class);
     }
+
+    
 }

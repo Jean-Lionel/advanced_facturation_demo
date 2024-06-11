@@ -14,6 +14,11 @@
             width: 47%;
             padding: 5px;
         }
+        .element-center{
+            display: flex;
+            justify-content: center;
+            align-content: center;
+        }
     </style>
 
 </head>
@@ -21,7 +26,7 @@
     <div class="container_body">
         <div class="noprint header-element">
             <a href="{{ route('ventes.index') }}" class="noprint btn">Retour</a>
-            <button onclick="print()" class=" btn noprint">Imprimer</button>
+            <button id="printElement" class=" btn noprint">Imprimer</button>
             <button id="print_reciept"  class="noprint btn">Imprimer Reciept</button>
         </div>
         <div class="main-content" id="printJS-form" >
@@ -87,7 +92,9 @@
                 <div>
                     <h5>B. Client</h5>
                     <p>Nom et Prénom ou Raison Socail :</p>
-                    <p><b>{{$order->client->name}}</b></p>
+                    <p>
+                        <b>{{$order->client->name}}</b>
+                    </p>
                     <p>Résident à : <b>{{ $order->client->addresse }}</b></p>
                     <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
                     <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
@@ -141,14 +148,12 @@
                     {{-- <h4>Mention Obligatoire</h4>
                         <h4>NB: Les non assujettis à la TVA ne remplissent pas les deux dernières lignes</h4> --}}
                         <br>
-                        <br>
-                        <br>
+                        <h4 class="text-center"> {{$order->invoice_signature}}</h4>
+                        <div class="element-center">
+                            {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
+                        </div>
                     </article>
 
-                    <div>
-                        <hr>
-                        <h4 class="text-center"> {{$order->invoice_signature}}</h4>
-                    </div>
                 </div>
 
                 <div id="reciept" style="display: none;">
@@ -230,14 +235,14 @@
                     </div>
                 </div>
                 <script>
-                    function print(){
-                        printJS({
-                            printable: "printJS-form",
-                            type: 'html',
-                            css: ' {{ asset('css/prothem.css')  }}'
-                        }
-                        );
-                    }
+
+                    const printElement = document.getElementById("printElement")
+
+                    printElement.addEventListener("click", function(e){
+                        e.preventDefault();
+                        window.print();
+                    })
+                    
 
                     const reciept = document.getElementById('print_reciept')
                     reciept.addEventListener('click',function(event){

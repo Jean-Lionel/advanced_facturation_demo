@@ -98,18 +98,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('obr_log', [SyncronizeController::class,  'obr_log'])->name('obr_log');
     Route::get('clear_cache', [CacheAdvancedController::class,  'index'])->name('clear_cache');
     Route::resource('comptes', CompteController::class);
-
+    
     Route::resource('compte', CompteController::class);
     Route::get('syncronize_customer',[CompteController::class, 'syncronize_customer'] )->name('syncronize_customer');
-
+    
     Route::resource('product_stock', ProductStockController::class);
     Route::get('rapport_detail', [RapportController::class , 'rapport_detail'])->name('rapport_detail');
     Route::get('partage_interet', [RapportController::class , 'partage_interet'])->name('partage_interet');
-
+    
     Route::resource('commande', App\Http\Controllers\CommandeController::class);
     Route::get('bon_commande', [CommandeController::class, 'bon_commande'])->name('bon_commande');
     Route::resource('commande-detail', App\Http\Controllers\CommandeDetailController::class);
-
+    
     Route::get('import_data', [ImportDataController::class, 'import_data'])->name('import_data_show');
     Route::get('export_model', [ImportDataController::class, 'export_model'])->name('export_model_product');
     Route::post('import', [ImportDataController::class, 'import'])->name('import_data');
@@ -124,7 +124,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('make_commissionnaire/{id}', [ClientController::class, 'make_commissionnaire'])->name('make_commissionnaire');
     Route::resource('commission-detail', App\Http\Controllers\CommissionDetailController::class);
     Route::get('load_commission', [ClientController::class, 'load_commission'])->name('load_commission');
-
+    Route::resource('order-interet', App\Http\Controllers\OrderInteretController::class);
+    Route::resource('hr-chambre', App\Http\Controllers\HrChambreController::class);
+    Route::resource('hr-fiche', App\Http\Controllers\HrFicheController::class);
+    Route::resource('hr-fiche-detail', App\Http\Controllers\HrFicheDetailController::class);
+    Route::resource('hr-commande', App\Http\Controllers\HrCommandeController::class);
+    Route::resource('banque', App\Http\Controllers\BanqueController::class);
+    Route::resource('maison-location', App\Http\Controllers\MaisonLocationController::class);
+    Route::resource('client-maison', App\Http\Controllers\ClientMaisonController::class);
+    Route::resource('payment-location-mensuel', App\Http\Controllers\PaymentLocationMensuelController::class);
 });
 
 require __DIR__ . '/jetstream.php';
@@ -133,18 +141,3 @@ require __DIR__ . '/jetstream.php';
 
 
 
-Route::resource('order-interet', App\Http\Controllers\OrderInteretController::class);
-
-
-Route::resource('hr-chambre', App\Http\Controllers\HrChambreController::class);
-
-
-Route::resource('hr-fiche', App\Http\Controllers\HrFicheController::class);
-
-
-Route::resource('hr-fiche-detail', App\Http\Controllers\HrFicheDetailController::class);
-
-Route::resource('hr-commande', App\Http\Controllers\HrCommandeController::class);
-
-
-Route::resource('banque', App\Http\Controllers\BanqueController::class);

@@ -41,6 +41,15 @@ const MOUVEMENT_STOCK = [
     'SAU' => 'Sorties Autres',
 ];
 
+const TYPE_PAYMENT = [
+    1 => 'En espèce',
+    2 => 'banque',
+    3 => 'à crédit',
+    4 => 'autres',
+];
+
+const TVA_RANGES =[18,10,4,0];
+
 function getMouvement($key){
     return  MOUVEMENT_STOCK[$key];
 }
