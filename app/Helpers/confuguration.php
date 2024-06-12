@@ -13,11 +13,10 @@ define('DAY_FOR_STOCK_DATA_SYNCRONIZE', 10);
 define('RAISON_ENTREPRISE_HEADER', 'ADVANCED FACTURATION');
 define('ARRONDIR_RESULTAT', true);
 define('USE_ABONEMENT', false);
-define('USE_LOCATION', false);
+define('USE_LOCATION', true);
 define('INVOICE_PREFIX', '');
 // // FOR TEST GEOCON
 
 // TEST
 // define('OBR_USERNAME', env('OBR_USERNAME'));
 // define('OBR_PASSWORD', env('OBR_PASSWORD'));
-
