@@ -98,18 +98,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('obr_log', [SyncronizeController::class,  'obr_log'])->name('obr_log');
     Route::get('clear_cache', [CacheAdvancedController::class,  'index'])->name('clear_cache');
     Route::resource('comptes', CompteController::class);
-    
+
     Route::resource('compte', CompteController::class);
     Route::get('syncronize_customer',[CompteController::class, 'syncronize_customer'] )->name('syncronize_customer');
-    
+
     Route::resource('product_stock', ProductStockController::class);
     Route::get('rapport_detail', [RapportController::class , 'rapport_detail'])->name('rapport_detail');
     Route::get('partage_interet', [RapportController::class , 'partage_interet'])->name('partage_interet');
-    
+
     Route::resource('commande', App\Http\Controllers\CommandeController::class);
     Route::get('bon_commande', [CommandeController::class, 'bon_commande'])->name('bon_commande');
     Route::resource('commande-detail', App\Http\Controllers\CommandeDetailController::class);
-    
+
     Route::get('import_data', [ImportDataController::class, 'import_data'])->name('import_data_show');
     Route::get('export_model', [ImportDataController::class, 'export_model'])->name('export_model_product');
     Route::post('import', [ImportDataController::class, 'import'])->name('import_data');
@@ -133,11 +133,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('maison-location', App\Http\Controllers\MaisonLocationController::class);
     Route::resource('client-maison', App\Http\Controllers\ClientMaisonController::class);
     Route::resource('payment-location-mensuel', App\Http\Controllers\PaymentLocationMensuelController::class);
+    Route::resource('historique-paiement', App\Http\Controllers\HistoriquePaymentController::class);
+    // Route::get('payment-location-mensuel', App\Http\Controllers\HistoriquePaymentController::class);
 });
 
 require __DIR__ . '/jetstream.php';
-
-
-
-
-
