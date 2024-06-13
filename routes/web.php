@@ -134,7 +134,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('client-maison', App\Http\Controllers\ClientMaisonController::class);
     Route::resource('payment-location-mensuel', App\Http\Controllers\PaymentLocationMensuelController::class);
     Route::resource('historique-paiement', App\Http\Controllers\HistoriquePaymentController::class);
-    // Route::get('payment-location-mensuel', App\Http\Controllers\HistoriquePaymentController::class);
 });
 
 require __DIR__ . '/jetstream.php';
