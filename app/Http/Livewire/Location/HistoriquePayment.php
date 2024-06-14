@@ -11,6 +11,7 @@ class HistoriquePayment extends Component
     public $search = '';
 
     public function mount(){
+        // get payment about location
         $this->payments = Order::all();
     }
     public function updatedSearch()

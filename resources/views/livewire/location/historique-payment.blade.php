@@ -39,16 +39,17 @@
                         </ul>
                     </td>
                     <td>
-                        <p>Nom: {{ $payment->company->tp_name }}</p>
-                        <p>Type: {{ $payment->company->tp_type }}</p>
-                        <p>Numéro de TIN: {{ $payment->company->tp_TIN }}</p>
+                        <p>Nom: {{ $payment->company->tp_name ?? ""}}</p>
+                        <p>Type: {{ $payment->company->tp_type  ?? ""}}</p>
+                        <p>Numéro de TIN: {{ $payment->company->tp_TIN  ?? ""}}</p>
                     </td>
                     <td>
-                        <p>Nom: {{ $payment->client->name }}</p>
-                        <p>Adresse: {!! nl2br(e($payment->client->addresse)) !!}</p>
+                        <p>Nom: {{ $payment->client->name ?? "" }}</p>
+                        <p>Adresse: {!! nl2br(e($payment->client->addresse ?? "")) !!}</p>
                     </td>
-                    <td>{{ $payment->date_facturation }}</td>
+                    <td>{{ $payment->date_facturation ?? "" }}</td>
                 </tr>
+
             @endforeach
         </tbody>
     </table>
