@@ -102,7 +102,9 @@ class PaymentMensuel extends Component
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
             $order->invoice_signature = $signature;
             $order->save();
-
+            
+            $paiementM->order_id = $order->id;
+            $paiementM->save();
             $currentOrderId = $order;
             
             DB::commit();
