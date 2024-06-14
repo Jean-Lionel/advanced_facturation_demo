@@ -4,10 +4,10 @@
         <input type="text" class="form-control" placeholder="Rechercher par nom de client..." wire:model.debounce.300ms="search">
     </div>  --}}
 
-    <div>
-        <input type="date" wire:model="startDate">
-        <input type="date" wire:model="endDate">
-        <button wire:model="searchData">Ok</button>
+    <div class="row my-2">
+        <input type="date" class="form-control mr-3 col-1" wire:model='startDate'>
+        <input type="date" class="form-control mr-3 col-1" wire:model='endDate'>
+        <button type="submit" class="btn btn-outline-primary" wire:model='searchDate'>OK</button>
     </div>
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
@@ -41,7 +41,7 @@
                             @endforeach
                         </ul>
                     </td>
-                    
+
                     <td>
                         <p>Nom: {{ $payment->order?->client->name ?? "" }}</p>
                         <p>Adresse: {!! nl2br(e($payment->order?->client->addresse ?? "")) !!}</p>
@@ -54,7 +54,7 @@
     </table>
 
     {{ $payments->links() }}
-  
+
 </div>
 
 <style>

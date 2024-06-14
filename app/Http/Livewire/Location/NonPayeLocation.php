@@ -8,25 +8,43 @@ use Livewire\Component;
 
 class NonPayeLocation extends Component
 {
+    private $nonpays = [];
+    public $startDate;
+    public $endDate;
+
     public function render()
     {
-        return view('livewire.location.non-paye-location');
+        $this->nonPayes();
+        return view('livewire.location.non-paye-location',[
+            'nonpays' => $this->nonpays,
+        ]);
     }
-    
-    
-    public function nonPayes(){
-        
-        // touts les maisons id 
-        
-        // verfication d'une dans une mois donnees 
-        //maisons id 
-        
+
+    public function searchData(){
+        $this->nonPayes();
+
+    }
+
+    private function nonPayes(){
+
+        $s_date = $this->startDate;
+        $e_date = $this->endDate;
+        // touts les maisons id
+
+        // verfication d'une dans une mois donnees
+        //maisons id
+
         // Payment dans un interval
         $idsMaisons =  PaymentLocationMensuel::get()->map->maisonlocation_id;
-        
-        $nonpays = MaisonLocation::with('clients')
+
+        $this->nonpays = MaisonLocation::with('clients')
                                 ->whereHas('clients')
+                                ->where(function($query) use($s_date,$e_date ) {
+                                    if($s_date && $e_date){
+                                        $query->whereBetween('created_at', [$this->startDate, $this->endDate]);
+                                    }
+                                })
                                 ->whereNotIn('id', $idsMaisons)
-                                ->get();
+                                ->latest()->paginate();
     }
 }
