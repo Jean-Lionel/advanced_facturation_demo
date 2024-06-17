@@ -121,7 +121,7 @@ class PaymentMensuel extends Component
     protected function getProduct(){
         $products[] = [
             'id' => $this->maison->id,
-            'name' => $this->description,
+            'name' => 'Loyer ' . $this->maison->name. ' || '   . $this->description ,
             'rowId' => "",
             'price' => $this->maison->montant,
             'price_revient' =>  $this->maison->montant,
