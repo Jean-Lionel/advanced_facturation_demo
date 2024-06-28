@@ -66,7 +66,7 @@ class VenteController extends Controller
             <tr>
             <td> $value->id </td>
             <td> $value->code_product </td>
-            <td> $value->name</td>
+            <td> $value->name [ $value->unite_mesure]</td>
             <td> $value->price </td>
             <td> $value->taux_tva </td>
             <td> $value->price_tvac </td>

@@ -114,7 +114,7 @@
                             <th>{{ "Nature de l'article" }}</th>
                             {{-- <th>Nbre de sacs</th> --}}
                             <th>Quantité</th>
-                            <th>PU</th>
+                            <th>PU HTVA</th>
                             <th>PV-HTVA</th>
                         </tr>
                     </thead>
@@ -124,7 +124,8 @@
                             <td>{{ $key +1 }}</td>
                             <td class="item_name"> {{ $product['name'] }}</td>
                             {{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
-                            <td class="adroite"> {{ $product['quantite'] }}</td>
+                            <td class="adroite" style="width: 40px;"> {{ $product['quantite'] }}
+                                 {{ $product['unite_mesure'] ?? ""}}</td>
                             <td class="adroite"> {{ getPrice($product['price'] ) }}</td>
                             <td class="adroite"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                         </tr>
