@@ -56,4 +56,8 @@ class PaymentLocationMensuel extends Model
     {
         return $this->belongsTo(MaisonLocation::class);
     }
+
+    public function order(){
+        return $this->belongsTo(Order::class);
+    }
 }

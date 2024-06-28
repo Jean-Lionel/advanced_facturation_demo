@@ -72,7 +72,9 @@
                     <p>BP: <b>{{ $order->company->tp_postal_number ?? "" }}</b> , Tél <b>{{ $order->company->tp_phone_number }}</b></p>
                     <p>Commune : <b>{{ $order->company->tp_address_commune ?? ""}}</b>, Quartier : {{ $order->company->tp_address_quartier }}</p>
                     <p>Avenue : <b>{{ $order->company->tp_address_avenue ?? ""}} </b></p>
-                    Assujetti à la TVA : <b>NON</b>
+                    Assujetti à la TVA : {{$order->company?->vat_taxpayer ? 'OUI' : 'NON'  }}<b>
+                        
+                    </b>
 
                 </div>
                 <div class="aling-right partie-droite">
@@ -114,7 +116,7 @@
                             <th>{{ "Nature de l'article" }}</th>
                             {{-- <th>Nbre de sacs</th> --}}
                             <th>Quantité</th>
-                            <th>PU</th>
+                            <th>PU HTVA</th>
                             <th>PV-HTVA</th>
                         </tr>
                     </thead>
@@ -124,7 +126,8 @@
                             <td>{{ $key +1 }}</td>
                             <td class="item_name"> {{ $product['name'] }}</td>
                             {{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
-                            <td class="adroite"> {{ $product['quantite'] }}</td>
+                            <td class="adroite" style="width: 40px;"> {{ $product['quantite'] }}
+                                 {{ $product['unite_mesure'] ?? ""}}</td>
                             <td class="adroite"> {{ getPrice($product['price'] ) }}</td>
                             <td class="adroite"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                         </tr>
@@ -222,6 +225,7 @@
                                         {{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
                                         <td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
                                         <td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
+                                    </tr>
                                     </tbody>
                                 </table>
                                 <hr>

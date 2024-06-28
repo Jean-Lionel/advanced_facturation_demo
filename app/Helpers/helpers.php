@@ -1,6 +1,19 @@
 <?php
 
+use NumberToWords\NumberToWords;
 define('TAUX_TVA', [18,10,0]);
+
+
+function getNumberToWord($number , $language='fr'){
+    // create the number to words "manager" class
+    $numberToWords = new NumberToWords();
+    // build a new number transformer using the RFC 3066 language identifier
+    $numberTransformer = $numberToWords->getNumberTransformer($language);
+    
+   return  $numberTransformer->toWords($number);
+}
+
+
 function isInternetConnection(){
     try{
         if(fsockopen('www.google.fr',80)){
