@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facture dukorane</title>
+    <title>Facture dukorane No {{ $order->id }}</title>
     <style>body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        
     }
-
+    
     .invoice {
         padding: 20px;
         margin: 20px;
@@ -23,80 +23,80 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         width: 800px; */
     }
-
+    
     h2 {
         text-align: center;
         margin-bottom: 20px;
         text-transform: uppercase;
         font-size: 1.2em;
     }
-
+    
     .header, .client {
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
     }
-
+    
     .header p, .client p, .footer p {
         margin: 5px 0;
     }
-
+    
     .left, .right {
         width: 45%;
     }
-
+    
     .client h3 {
         margin: 10px 0;
     }
-
+    
     table {
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 20px;
     }
-
+    
     table, th, td {
         border: 1px solid #000;
     }
-
+    
     th, td {
         padding: 10px;
         text-align: left;
     }
-
+    
     th {
         background-color: #f8f8f8;
     }
-
+    
     tfoot {
         font-weight: bold;
     }
-
+    
     .amount {
         margin: 20px 0;
         /* font-weight: bold; */
         text-align: left;
         margin-left: 20px;
     }
-
-
+    
+    
     .footer {
-    /* text-align: center; */
-    margin-top: 20px;
-    padding: 20px 0;
+        /* text-align: center; */
+        margin-top: 20px;
+        padding: 20px 0;
     }
-
-
+    
+    
     .footer p {
         margin: 0;
         font-weight:600;
         text-align: center;
     }
-
+    
     .assujetti{
-       display:flex;
-       font-weight: 600;
-
+        display:flex;
+        font-weight: 600;
+        
     }
     .adresse{
         text-align: center;
@@ -107,39 +107,51 @@
         color: rgba(1, 131, 238, 0.4);
         text-decoration: underline  rgba(1, 131, 238, 0.4);
     }
-
-    </style>
+   
+    .title_article{
+        width: 30px;
+    }
+    
+</style>
 </head>
 <body>
     <div class="invoice">
-        <img src="logodukorane.png" width="400" height="150"/>
-        <h2>Facture no 05 du 30/04/2024</h2>
+        <img src="{{ asset('img/logo_dukorane.jpg') }}" width="200" height="100"/>
+        <h2>Facture no {{ $order->id }} du {{ $order->created_at->format('d/m/Y') }}</h2>
         <div class="header">
             <div class="left">
-                <p>NIF: 4001157876</p>
-                <p>RC N° 13913/18</p>
-                <p>Adresse: MUHA, Kanyosha- Kajiji, 9eme Avenue, RN3</p>
-                <p>Av: 9eme Avenue</p>
-                <div class="assujetti">
-                    <p>Assujetti à la TVA: </p><input  type='checkbox'/><p>OUI</p><input  type='checkbox' checked/><p>NON</p>
-                </div>
+                <p>Nom et prénom ou Raison Social : <b>{{$order->company->tp_name ?? ""}}</b> </p>
+                <p>NIF : <b>{{$order->company->tp_TIN}}</b></p>
+                <p>Registre du commerce No : <b>{{ $order->company->tp_trade_number ?? "" }}</b></p>
+                <p>BP: <b>{{ $order->company->tp_postal_number ?? "" }}</b> , Tél <b>{{ $order->company->tp_phone_number }}</b></p>
+                <p>Commune : <b>{{ $order->company->tp_address_commune ?? ""}}</b>, Quartier : {{ $order->company->tp_address_quartier }}</p>
+                <p>Avenue : <b>{{ $order->company->tp_address_avenue ?? ""}} </b></p>
+                Assujetti à la TVA : <b>{{$order->company?->vat_taxpayer ? 'OUI' : 'NON'  }}</b>
+                
+                
             </div>
             <div class="right">
+                
+                <p>Centre Fiscal : <b>{{ $order->company->tp_fiscal_center }}</b></p>
+                <p>{{ "Secteur d'activité" }} : <b> {{ $order->company->tp_activity_sector }} </b></p>
+                <p>Forme juridique : <b> {{ $order->company->tp_legal_form }} </b></p>
+                <hr>
                 <p>Bank : KCB Bank </p>
                 <p>Beneficiary: dukorane, SPR</p>
                 <p>Account Number: 6690449521</p>
             </div>
         </div>
         <div class="left">
-            <p>LE CLIENT</p>
-            <p>Nom et Prénom :</p>
-            <p>Raison Social: <strong>SAVONOR</strong></p>
-            <p>NIF: .............................</p>
-            <p>Résident: .............................</p>
-            <div class="assujetti">
-                <p>Assujetti à la TVA: </p><input  type='checkbox' checked/><p>OUI</p><input  type='checkbox' /><p>NON</p>
-            </div>
+            <h5>B. Client</h5>
+            <p>Nom et Prénom ou Raison Socail :</p>
+            <p>
+                <b>{{$order->client->name}}</b>
+            </p>
+            <p>Résident à : <b>{{ $order->client->addresse }}</b></p>
+            <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
+            <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
         </div>
+        <h5>Doit pour ce qui suit : </h5>
         <table>
             <thead>
                 <tr>
@@ -152,23 +164,39 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach($order->products as $key=> $product)
                 <tr>
-                    <td>1</td>
-                    <td>Location Coaster</td>
-                    <td>21</td>
+                    <td>
+                        {{ $key +1 }}
+                    </td >
+                    <td class="title_article">{{ $product['name'] }}</td>
+                    <td>{{ $product['quantite'] }}</td>
                     <td>Apr-24</td>
-                    <td>110,000</td>
-                    <td>2,310,000</td>
+                    <td>{{ getPrice($product['price'] ) }}</td>
+                    <td>{{ getPrice( $product['price'] * $product['quantite'])  }}</td>
+                </tr>
+                @endforeach
+                <tr>
+                    <td colspan="5">PVT HTVA </td>
+
+                    <td class="adroite nowrap"><b>{{ getPrice($order->amount_tax) }}</b></td>
                 </tr>
                 <tr>
-                    <td colspan="5">Total</td>
-                    <td>2,310,000</td>
+                    <td colspan="5">TVA </td>
+                    <td class="adroite"><b>{{ getPrice($order->tax) }}</b></td>
+                </tr>
+                <tr>
+                    <td colspan="5"><b>TOTAL TVAC</b></td>
+                    {{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
+                    <td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
+                    <td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
                 </tr>
             </tbody>
         </table>
-        <p class="amount">Nous disons Deux millions trois cent dix milles francs Burundais.</p>
+        
+        
+        <p class="amount">Nous disons  {{ getNumberToWord($order->amount) }} francs Burundais.</p>
         <div class="footer">
-            <p>Bujumbura, 30 Avril 2024</p>
             <p>Mrs Directeurs</p>
             <p>Business Manager</p>
         </div>
