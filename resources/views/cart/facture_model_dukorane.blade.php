@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facture dukorane No {{ $order->id }}</title>
-    <style>body {
+    <style>
+        body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
@@ -12,21 +13,12 @@
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        
     }
     
-    .invoice {
-        padding: 20px;
-        margin: 20px;
-        /* background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 800px; */
-    }
     
     h2 {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 0;
         text-transform: uppercase;
         font-size: 1.2em;
     }
@@ -34,25 +26,23 @@
     .header, .client {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 20px;
     }
     
-    .header p, .client p, .footer p {
-        margin: 5px 0;
+    p {
+        margin:  0;
     }
-    
     .left, .right {
         width: 45%;
     }
-    
+
     .client h3 {
-        margin: 10px 0;
+        margin:  0;
     }
     
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
     
     table, th, td {
@@ -109,13 +99,24 @@
     }
    
     .title_article{
-        width: 30px;
+        width: 50px;
+    }
+
+    @media print{
+        .no_print{
+            display: none;
+        }
     }
     
 </style>
 </head>
 <body>
+    
     <div class="invoice">
+        <div class="no_print">
+            <a href="{{ URL::previous() }}">Retour</a>
+            <button onclick="window.print()" class="btn">Imprimer</button>
+        </div>
         <img src="{{ asset('img/logo_dukorane.jpg') }}" width="200" height="100"/>
         <h2>Facture no {{ $order->id }} du {{ $order->created_at->format('d/m/Y') }}</h2>
         <div class="header">
@@ -156,9 +157,9 @@
             <thead>
                 <tr>
                     <th>N°</th>
-                    <th>Service</th>
+                    <th colspan="2">Service</th>
                     <th>QTY</th>
-                    <th>Période</th>
+                    {{--  <th>Période</th>  --}}
                     <th>P.U/BIF</th>
                     <th>P.T</th>
                 </tr>
@@ -169,9 +170,9 @@
                     <td>
                         {{ $key +1 }}
                     </td >
-                    <td class="title_article">{{ $product['name'] }}</td>
+                    <td colspan="2" style="width: 200px;"> {{  $product['name'] }}</td>
                     <td>{{ $product['quantite'] }}</td>
-                    <td>Apr-24</td>
+                    {{--  <td>Apr-24</td>  --}}
                     <td>{{ getPrice($product['price'] ) }}</td>
                     <td>{{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                 </tr>
