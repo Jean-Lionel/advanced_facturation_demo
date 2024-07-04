@@ -13,19 +13,17 @@ class Retenue extends Model
 
     protected $primaryKey = "employee_retenue_id";
 
-    public $timestamps = false;
-
     protected $fillable = [
-        "retenue_id","employee_id_in_retenue","retenue_amount",
-        "retenue_month","created_by","created_at"
-     ];
+        "retenue_id", "employee_id_in_retenue", "retenue_amount",
+        "retenue_month", "created_by"
+    ];
 
     /**
      * Get the user that created the record.
      */
     public function user()
     {
-        return $this->belongsTo(User::class,'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     /**
@@ -33,7 +31,7 @@ class Retenue extends Model
      */
     public function type()
     {
-        return $this->belongsTo(TypeRetenue::class,'retenue_id');
+        return $this->belongsTo(TypeRetenue::class, 'retenue_id');
     }
 
     /**
@@ -41,6 +39,6 @@ class Retenue extends Model
      */
     public function employee()
     {
-        return $this->belongsTo(Employee::class,'employee_id_in_retenue');
+        return $this->belongsTo(Employee::class, 'employee_id_in_retenue');
     }
 }

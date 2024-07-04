@@ -13,10 +13,8 @@ class Poste extends Model
 
     protected $primaryKey = 'fonction_id';
 
-    public $timestamps = false;
-
     protected $fillable = [
-       "title","department_id","created_by","created_date" 
+        "title", "department_id", "created_by"
     ];
 
     /**
@@ -24,7 +22,7 @@ class Poste extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class,'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     /**
@@ -32,6 +30,6 @@ class Poste extends Model
      */
     public function department()
     {
-        return $this->belongsTo(Departement::class,'department_id');
+        return $this->belongsTo(Departement::class, 'department_id');
     }
 }

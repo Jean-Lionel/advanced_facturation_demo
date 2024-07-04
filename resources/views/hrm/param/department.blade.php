@@ -32,10 +32,10 @@
                         <tr>
                             <td>{{ $value->title }}</td>
                             <td>{{ $value->user->name ?? '-' }}</td>
-                            <td>{{ $value->created_date }}</td>
+                            <td>{{ $value->created_at }}</td>
                         <td>
                             <a data-href="{{ route('departement.update',['departement' => $value->department_id]) }}" data-department="{{ json_encode($value) }}" onclick="editDepartment(this)" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
-                            
+
                             <form class="form-delete" action="{{ route('departement.destroy',['departement' => $value->department_id]) }}" style="display: inline;" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
@@ -69,7 +69,7 @@
                             </div>
                         </div>
 
-                        
+
                     </form>
                 </div>
 
@@ -108,7 +108,7 @@
                             </div>
                         </div>
 
-                        
+
                     </form>
                 </div>
 

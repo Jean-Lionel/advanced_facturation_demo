@@ -11,10 +11,10 @@ class Departement extends Model
 
     protected $table = 'hrm_department';
     protected $primaryKey = 'department_id';
-    public $timestamps = false;
+
 
     protected $fillable = [
-       "title","created_by","created_date"
+        "title", "created_by"
     ];
 
     /**
@@ -22,6 +22,6 @@ class Departement extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class,'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

@@ -13,10 +13,8 @@ class TypeLeave extends Model
 
     protected $primaryKey = 'leave_category_id';
 
-    public $timestamps = false;
-
     protected $fillable = [
-       "category","created_date","created_by" 
+        "category", "created_by"
     ];
 
     /**
@@ -24,6 +22,6 @@ class TypeLeave extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class,'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

@@ -50,8 +50,7 @@ class TypeLeaveController extends Controller
 
             $status = TypeLeave::create([
                 "category" => $category,
-                "created_by" => auth()->id(),
-                "created_date" => date('Y-m-d H:i:s')
+                "created_by" => auth()->id()
             ]);
 
             if($status) {

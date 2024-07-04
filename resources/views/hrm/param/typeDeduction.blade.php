@@ -32,11 +32,11 @@
                     <tr>
                         <td>{{ $value->name_retenue_type }}</td>
                         <td>{{ $value->user->name }}</td>
-                        <td>{{ $value->createdAt_retenue_type }}</td>
+                        <td>{{ $value->created_at }}</td>
                         <td>
                         <td>
                             <a data-href="{{ route('typeRetenue.update',['typeRetenue' => $value->id_retenue_type]) }}" data-retenue="{{ json_encode($value) }}" onclick="editTypeRetenue(this)" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
-                            
+
                             <form class="form-delete" action="{{ route('typeRetenue.destroy',['typeRetenue' => $value->id_retenue_type]) }}" style="display: inline;" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
@@ -157,7 +157,7 @@
                         $('#error_title').html("");
                     }
 
-                    
+
                     $(th).attr('disabled',false);
                     $('#infos').attr('hidden',true);
                 }
@@ -194,7 +194,7 @@
                     form.trigger("reset");
                     window.location.reload();
                 } else {
-                    
+
                     if(data.messages.title != undefined) {
                         $('#error_area_title_up').html(`
                             <div class="alert alert-danger">${ data.messages.title[0] }</div>
@@ -203,7 +203,7 @@
                         toastr["error"](data.messages,"Info");
                     }
 
-                    
+
                     $(th).attr('disabled',false);
                     $('#info').attr('hidden',true);
                 }

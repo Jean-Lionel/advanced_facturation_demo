@@ -13,10 +13,8 @@ class Bank extends Model
 
     protected $primaryKey = 'bank_id';
 
-    public $timestamps = false;
-
     protected $fillable = [
-       "bank_name","bank_code","created_by","created_date" 
+        "bank_name", "bank_code", "created_by"
     ];
 
     /**
@@ -24,6 +22,6 @@ class Bank extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class,'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

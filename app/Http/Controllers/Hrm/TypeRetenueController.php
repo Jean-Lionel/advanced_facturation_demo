@@ -39,22 +39,21 @@ class TypeRetenueController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             "title" => "required",
-        ],[
+        ], [
             "required" => "Le champs titre est requis pour continuer"
         ]);
 
-        if(!$validator->fails()) {
+        if (!$validator->fails()) {
             $title = $validator->safe()->only(['title'])['title'];
 
             $status = TypeRetenue::create([
                 "name_retenue_type" => $title,
-                "createdBy_retenue_type" => auth()->id(),
-                "createdAt_retenue_type" => date('Y-m-d H:i:s')
+                "createdBy_retenue_type" => auth()->id()
             ]);
 
-            if($status) {
+            if ($status) {
                 echo json_encode([
                     'success' => true,
                     'messages' => 'nouvel type de retenue ajouté!!',
@@ -105,20 +104,20 @@ class TypeRetenueController extends Controller
      */
     public function update(Request $request, TypeRetenue $typeRetenue)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             "title" => "required",
-        ],[
+        ], [
             "required" => "Le champs titre est requis pour continuer"
         ]);
 
-        if(!$validator->fails()) {
+        if (!$validator->fails()) {
             $title = $validator->safe()->only(['title'])['title'];
 
             $status = $typeRetenue->update([
                 "name_retenue_type" => $title,
             ]);
 
-            if($status) {
+            if ($status) {
                 echo json_encode([
                     'success' => true,
                     'messages' => 'Type de retenue modifié!!',
@@ -149,6 +148,5 @@ class TypeRetenueController extends Controller
         $typeRetenue->delete();
 
         return redirect()->route('typeRetenue.index')->with('success', 'type de déduction supprimé avec succé');
-
     }
 }

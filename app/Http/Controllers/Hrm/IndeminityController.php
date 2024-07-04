@@ -39,15 +39,15 @@ class IndeminityController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             "title" => "required",
             "percentage" => "required",
             "taxable" => "required",
-        ],[
+        ], [
             "required" => "Le champs :attribute est requis pour continuer"
         ]);
 
-        if(!$validator->fails()) {
+        if (!$validator->fails()) {
             $title = $validator->safe()->only(['title'])['title'];
             $percentage = $validator->safe()->only(['percentage'])['percentage'];
             $taxable = $validator->safe()->only(['taxable'])['taxable'];
@@ -56,11 +56,10 @@ class IndeminityController extends Controller
                 "title" => $title,
                 "percentage" => $percentage,
                 "taxable" => $taxable,
-                "created_by" => auth()->id(),
-                "created_date" => date('Y-m-d H:i:s')
+                "created_by" => auth()->id()
             ]);
 
-            if($status) {
+            if ($status) {
                 echo json_encode([
                     'success' => true,
                     'messages' => 'nouvelle indeminité ajouté!!',
@@ -111,15 +110,15 @@ class IndeminityController extends Controller
      */
     public function update(Request $request, Indeminity $indeminity)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             "title" => "required",
             "percentage" => "required",
             "taxable" => "required",
-        ],[
+        ], [
             "required" => "Le champs :attribute est requis pour continuer"
         ]);
 
-        if(!$validator->fails()) {
+        if (!$validator->fails()) {
             $title = $validator->safe()->only(['title'])['title'];
             $percentage = $validator->safe()->only(['percentage'])['percentage'];
             $taxable = $validator->safe()->only(['taxable'])['taxable'];
@@ -130,7 +129,7 @@ class IndeminityController extends Controller
                 "taxable" => $taxable,
             ]);
 
-            if($status) {
+            if ($status) {
                 echo json_encode([
                     'success' => true,
                     'messages' => 'Relation modifier avec succé!!',
@@ -161,6 +160,5 @@ class IndeminityController extends Controller
         $indeminity->delete();
 
         return redirect()->route('indeminity.index')->with('success', 'Indeminité supprimé avec succé');
-
     }
 }

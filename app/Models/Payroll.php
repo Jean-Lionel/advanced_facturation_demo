@@ -13,11 +13,9 @@ class Payroll extends Model
 
     protected $primaryKey = 'payroll_id';
 
-    public $timestamps = false;
-
     protected $fillable = [
-        "employee_id","basic_salary","net_salary","work_days_per_month","brut_salary","payment_type",
-        "transport_allowance","additional_pension","created_date","created_by"
+        "employee_id", "basic_salary", "net_salary", "work_days_per_month", "brut_salary", "payment_type",
+        "transport_allowance", "additional_pension", "created_by"
     ];
 
     /**
@@ -25,11 +23,11 @@ class Payroll extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class,'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function employee()
     {
-        return $this->belongsTo(Employee::class,'employee_id');
+        return $this->belongsTo(Employee::class, 'employee_id');
     }
 }

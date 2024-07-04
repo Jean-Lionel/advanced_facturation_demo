@@ -34,10 +34,10 @@
                         <td>{{ $value->title }}</td>
                         <td>{{ $value->department->title ?? '-' }}</td>
                         <td>{{ $value->user->name ?? '-' }}</td>
-                        <td>{{ $value->created_date }}</td>
+                        <td>{{ $value->created_at }}</td>
                         <td>
                             <a data-href="{{ route('poste.update',['poste' => $value->fonction_id]) }}" data-poste="{{ json_encode($value) }}" onclick="editPoste(this)" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
-                            
+
                             <form class="form-delete" action="{{ route('poste.destroy',['poste' => $value->fonction_id]) }}" style="display: inline;" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
@@ -84,7 +84,7 @@
                             </div>
                         </div>
 
-                        
+
                     </form>
                 </div>
 
@@ -199,7 +199,7 @@
       $('#title_up').val(data.title);
       $('#department_up').val(data.department_id);
       $('#department_up').val(data.department_id).trigger('change');
-    
+
       $('#edit_poste_form').attr('action',up_url);
 
       $('#editPosteModal').modal('show');

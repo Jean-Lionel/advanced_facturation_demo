@@ -16,9 +16,11 @@ class Employee extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        "first_name", "last_name", "date_of_birth", "gender", "cni_number", "full_address", "school_degree",
-        "phone", "email", "joining_date", "father_name", "mother_name", "leaving_date", "code_inss", "fonction_id", "work_address", "status",
-        "created_date", "created_by", "modified_date", "modified_by", "maratial_status"
+        "first_name", "last_name", "date_of_birth", "gender", "cni_number",
+        "full_address", "school_degree", "phone", "email", "joining_date",
+        "father_name", "mother_name", "leaving_date", "code_inss", "fonction_id",
+        "work_address", "status", "created_by",
+        "modified_by", "maratial_status"
     ];
 
 

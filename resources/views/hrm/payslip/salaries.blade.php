@@ -47,8 +47,6 @@
                         <th>Indeminité de {{ $value->title .' '.intval($value->percentage) }}%</th>
                     @endforeach
                     <th data-priority="3">Salaire Brut</th>
-                    <th data-priority="3">MFP 4% Employ</th>
-                    <th data-priority="3">MFP Patronale 6%</th>
                     <th data-priority="3">INSS 4% Employ</th>
                     <th data-priority="3">INSS PP(Pension) 6%</th>
                     <th data-priority="3">INSS PP(Risques Prof) 3%</th>
@@ -68,8 +66,6 @@
                             <td>{{ number_format($indemnityData[$value->employee_id][$val->type_indeminite_id], 0, ',','.') }}</td>
                         @endforeach
                         <td>{{ number_format($value->gross_salary, 0,',','.') }}</td>
-                        <td>{{ number_format($value->mfp_salariale, 0,',','.') }}</td>
-                        <td>{{ number_format($value->mfp_patronal, 0,',','.') }}</td>
                         <td>{{ number_format($value->pension_salariale, 0,',','.') }}</td>
                         <td>{{ number_format($value->pension_patronale, 0,',','.') }}</td>
                         <td>{{ number_format($value->risque_prof, 0,',','.') }}</td>

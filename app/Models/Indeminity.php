@@ -13,10 +13,8 @@ class Indeminity extends Model
 
     protected $primaryKey = 'type_indeminite_id';
 
-    public $timestamps = false;
-
     protected $fillable = [
-       "title","percentage","taxable","created_by","created_date" 
+        "title", "percentage", "taxable", "created_by"
     ];
 
     /**
@@ -24,6 +22,6 @@ class Indeminity extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class,'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

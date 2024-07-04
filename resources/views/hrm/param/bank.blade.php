@@ -32,10 +32,10 @@
                     <tr>
                         <td>{{ $value->bank_name }}</td>
                         <td>{{ $value->user->name ?? "-" }}</td>
-                        <td>{{ $value->created_date }}</td>
+                        <td>{{ $value->created_at }}</td>
                         <td>
                             <a data-href="{{ route('bank.update',['bank' => $value->bank_id]) }}" data-bank="{{ json_encode($value) }}" onclick="editBank(this)" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
-                            
+
                             <form class="form-delete" action="{{ route('bank.destroy',['bank' => $value->bank_id]) }}" style="display: inline;" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
@@ -69,7 +69,7 @@
                             </div>
                         </div>
 
-                        
+
                     </form>
                 </div>
 
@@ -108,7 +108,7 @@
                             </div>
                         </div>
 
-                        
+
                     </form>
                 </div>
 

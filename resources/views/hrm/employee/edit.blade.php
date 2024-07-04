@@ -243,8 +243,6 @@
         var mfpEmployee = Math.round(((gross_salary - Math.round((basic_salary * 60)/100)) * mfpEmployeePerc)/100);
         var mfpPatronal = Math.round(((gross_salary - Math.round((basic_salary * 60)/100)) * mfpEmployerPerc)/100);
 
-        var mfp = mfpEmployee + mfpPatronal;
-
         var pension_salariale = 0;
         var pension_patronale = 0;
         var risque_professionel = 0;
@@ -265,7 +263,7 @@
 
         var inss = pension_salariale + pension_patronale + risque_professionel;
 
-        var tax_base = gross_salary - pension_salariale - mfpEmployee - totalAllowances;
+        var tax_base = gross_salary - pension_salariale - totalAllowances;
 
         var IPR = 0;
 
@@ -282,7 +280,7 @@
         }
 
         
-        var net_salary = parseFloat(gross_salary - pension_salariale - mfpEmployee - IPR);
+        var net_salary = parseFloat(gross_salary - pension_salariale - IPR);
         $('#net_salary').val(net_salary);
         $('#brut_salary').val(gross_salary);
         return;
@@ -290,7 +288,6 @@
             {
                 totalAllowances: totalAllowances,
                 gross_salary: gross_salary,
-                mfp:mfp,
                 pension_salariale: pension_salariale,
                 pension_patronale:pension_patronale,
                 risque_professionel:risque_professionel,

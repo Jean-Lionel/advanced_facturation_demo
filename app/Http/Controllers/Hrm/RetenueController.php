@@ -19,8 +19,8 @@ class RetenueController extends Controller
     public function index()
     {
         $retenues = Retenue::all();
-        $employees = Employee::active()->select('employee_id','first_name','last_name')->get();
-        $typeRetenues = TypeRetenue::select('id_retenue_type','name_retenue_type')->get();
+        $employees = Employee::active()->select('employee_id', 'first_name', 'last_name')->get();
+        $typeRetenues = TypeRetenue::select('id_retenue_type', 'name_retenue_type')->get();
 
         return view('hrm.deduction.index', [
             'retenues' => $retenues,
@@ -47,28 +47,27 @@ class RetenueController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = Validator::make($request->all(),[
+        $validated = Validator::make($request->all(), [
             "employee" => "required",
             "retenue" => "required",
             "montant" => "required"
-        ],[
+        ], [
             "required" => "Le champ :attribute est requis",
             "retenue.required" => "Le champ Déduction est requis"
         ]);
 
-        if(!$validated->fails()){
+        if (!$validated->fails()) {
             $data = $validated->safe()->all();
 
             $retenue = Retenue::create([
                 "retenue_id" => $data["retenue"],
                 "employee_id_in_retenue" => $data["employee"],
                 "retenue_amount" => $data["montant"],
-                "retenue_month" => !empty($request->month) ? date('m-Y',strtotime($request->month)) : date('m-Y'),
-                "created_by" => auth()->id(),
-                "created_at" => date('Y-m-d H:i:s')
+                "retenue_month" => !empty($request->month) ? date('m-Y', strtotime($request->month)) : date('m-Y'),
+                "created_by" => auth()->id()
             ]);
 
-            if($retenue) {
+            if ($retenue) {
                 echo json_encode([
                     "success" => true,
                     "messages" => "Déduction enregistré avec succés",
@@ -119,26 +118,26 @@ class RetenueController extends Controller
      */
     public function update(Request $request, Retenue $retenue)
     {
-        $validated = Validator::make($request->all(),[
+        $validated = Validator::make($request->all(), [
             "employee" => "required",
             "retenue" => "required",
             "montant" => "required"
-        ],[
+        ], [
             "required" => "Le champ :attribute est requis",
             "retenue.required" => "Le champ Déduction est requis"
         ]);
 
-        if(!$validated->fails()){
+        if (!$validated->fails()) {
             $data = $validated->safe()->all();
 
             $status = $retenue->update([
                 "retenue_id" => $data["retenue"],
                 "employee_id_in_retenue" => $data["employee"],
                 "retenue_amount" => $data["montant"],
-                "retenue_month" => !empty($request->month) ? date('m-Y',strtotime($request->month)) : date('m-Y'),
+                "retenue_month" => !empty($request->month) ? date('m-Y', strtotime($request->month)) : date('m-Y'),
             ]);
 
-            if($status) {
+            if ($status) {
                 echo json_encode([
                     "success" => true,
                     "messages" => "Déduction Modifié avec succés",

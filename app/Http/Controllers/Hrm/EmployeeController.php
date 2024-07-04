@@ -35,10 +35,10 @@ class EmployeeController extends Controller
             select
             hrm_employee.*,hrm_fonctions.title as poste,hrm_department.title as department
             from
-                `hrm_employee` left join hrm_fonctions ON 
+                `hrm_employee` left join hrm_fonctions ON
                 `hrm_fonctions`.`fonction_id` = `hrm_employee`.`fonction_id`
-                left join hrm_department ON hrm_department.department_id = `hrm_fonctions`.`department_id` left join hrm_branche ON hrm_branche.id =  hrm_employee.school_degree
-                left join hrm_employee_payroll ON hrm_employee_payroll.employee_id = hrm_employee.employee_id where hrm_employee.status = 1 
+                left join hrm_department ON hrm_department.department_id = `hrm_fonctions`.`department_id`
+                left join hrm_employee_payroll ON hrm_employee_payroll.employee_id = hrm_employee.employee_id where hrm_employee.status = 1
             $where
             order by
                 `last_name` asc
@@ -63,7 +63,7 @@ class EmployeeController extends Controller
     public function create()
     {
         $postes = Poste::select("fonction_id", "title")->get();
-        $branchs = Branch::select("id", "title")->get();
+        // $branchs = Branch::select("id", "title")->get();
         $banks = Bank::select("bank_id", "bank_name")->get();
         $indeminities = Indeminity::select("type_indeminite_id", "title", "percentage", "taxable")->get();
         // $provinces = DB::select("SELECT distinct region from burundizipcodes");
@@ -71,7 +71,7 @@ class EmployeeController extends Controller
 
         return view('hrm.employee.create', [
             'postes' => $postes,
-            'branchs' => $branchs,
+            // 'branchs' => $branchs,
             'banks' => $banks,
             'indeminities' => $indeminities
             // 'provinces' => $provinces
@@ -87,7 +87,7 @@ class EmployeeController extends Controller
     public function store(StoreEmployeeRequest $request)
     {
         $data = $request->validated();
-        
+
 
         $employee = Employee::create([
             "first_name" => $data["first_name"],
@@ -103,7 +103,6 @@ class EmployeeController extends Controller
             "code_inss" => $request->code_inss,
             "leaving_date" => date('Y-m-d', strtotime($request->leaving_date)),
             "gender" => $data["gender"],
-            "created_date" => date('Y-m-d'),
             "created_by" => auth()->id()
         ]);
 
@@ -112,7 +111,6 @@ class EmployeeController extends Controller
                 "bank_id" => $request->bank_id,
                 "employee_id" => $employee->employee_id,
                 "account_number" => $request->account_number,
-                "created_date" => date('Y-m-d'),
                 "created_by" => auth()->id()
             ]);
 
@@ -162,16 +160,16 @@ class EmployeeController extends Controller
     {
         $postes = Poste::select("fonction_id", "title")->get();
         $banks = Bank::select("bank_id", "bank_name")->get();
-        $branchs = Branch::select("id", "title")->get();
+        // $branchs = Branch::select("id", "title")->get();
         $indeminities = Indeminity::select("type_indeminite_id", "title", "percentage", "taxable")->get();
 
         $salary = Payroll::where('employee_id', $employee->employee_id)->first();
         $bank_emp = DB::table('hrm_employee_bank')->where('employee_id', $employee->employee_id)->first();
-        
+
 
         return view('hrm.employee.edit', [
             'postes' => $postes,
-            'branchs' => $branchs,
+            // 'branchs' => $branchs,
             'employee' => $employee,
             'banks' => $banks,
             'indeminities' => $indeminities,
@@ -205,7 +203,6 @@ class EmployeeController extends Controller
             "code_inss" => $request->code_inss,
             "leaving_date" => date('Y-m-d', strtotime($request->leaving_date)),
             "gender" => $data["gender"],
-            "modified_date" => date('Y-m-d'),
             "modified_by" => auth()->id()
         ]);
 
@@ -215,8 +212,7 @@ class EmployeeController extends Controller
                 ->update([
                     "bank_id" => $request->bank_id,
                     "employee_id" => $employee->employee_id,
-                    "account_number" => $request->account_number,
-                    "account_money" => $request->account_money
+                    "account_number" => $request->account_number
                 ]);
 
             $salary = Payroll::where('employee_id', $employee->employee_id)
@@ -243,8 +239,8 @@ class EmployeeController extends Controller
     {
         $employee->update([
             "status" => 0,
-            "deleted_status" => 1,
-            "deleted_date" => date('Y-m-d'),
+            // "deleted_status" => 1,
+            // "deleted_date" => date('Y-m-d'),
             "deleted_by" => auth()->id()
         ]);
 

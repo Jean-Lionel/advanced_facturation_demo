@@ -13,10 +13,9 @@ class TypeRetenue extends Model
 
     protected $primaryKey = 'id_retenue_type';
 
-    public $timestamps = false;
 
     protected $fillable = [
-       "name_retenue_type","createdBy_retenue_type","createdAt_retenue_type" 
+        "name_retenue_type", "createdBy_retenue_type"
     ];
 
     /**
@@ -24,6 +23,6 @@ class TypeRetenue extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class,'createdBy_retenue_type');
+        return $this->belongsTo(User::class, 'createdBy_retenue_type');
     }
 }

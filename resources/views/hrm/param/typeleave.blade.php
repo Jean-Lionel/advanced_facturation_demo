@@ -32,10 +32,10 @@
                     <tr>
                         <td>{{ $value->category }}</td>
                         <td>{{ $value->user->name }}</td>
-                        <td>{{ $value->created_date }}</td>
+                        <td>{{ $value->created_at }}</td>
                         <td>
                             <a data-href="{{ route('typeLeave.update',['typeLeave' => $value->leave_category_id]) }}" data-leave="{{ json_encode($value) }}" onclick="editTypeLeave(this)" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
-                            
+
                             <form class="form-delete" action="{{ route('typeLeave.destroy',['typeLeave' => $value->leave_category_id]) }}" style="display: inline;" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
@@ -145,7 +145,7 @@
                     $('#addTypeLeaveModal').modal('hide');
                     $('.typeLeave_table').load(' .typeLeave_table');
                     form.trigger("reset");
-                    
+
                     window.location.reload();
 
                 } else {
@@ -157,7 +157,7 @@
                         $('#error_area_category').html("");
                     }
 
-                    
+
                     $(th).attr('disabled',false);
                     $('#infos').attr('hidden',true);
                 }
@@ -194,7 +194,7 @@
                     form.trigger("reset");
                     window.location.reload();
                 } else {
-                    
+
                     if(data.messages.category != undefined) {
                         $('#error_category_up').html(`
                             <div class="alert alert-danger">${ data.messages.category[0] }</div>
@@ -203,7 +203,7 @@
                         $('#error_area_category_up').html("");
                     }
 
-                    
+
                     $(th).attr('disabled',false);
                     $('#info').attr('hidden',true);
                 }

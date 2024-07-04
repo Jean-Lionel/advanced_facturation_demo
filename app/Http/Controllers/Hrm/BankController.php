@@ -21,7 +21,7 @@ class BankController extends Controller
         $banks = collect($banks)->sortBy('bank_name');
         // dd($banks[0]->user);
 
-        return view('hrm.param.bank',compact('banks'));
+        return view('hrm.param.bank', compact('banks'));
     }
 
     /**
@@ -42,9 +42,9 @@ class BankController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'bank_name' => 'required'
-        ],[
+        ], [
             'required' => 'Le champs du nom de la banque ne doit pas etre vide'
         ]);
 
@@ -54,11 +54,10 @@ class BankController extends Controller
             $status = Bank::create([
                 "bank_name" => $data["bank_name"],
                 "bank_code" => $request->bank_code,
-                "created_by" => auth()->id(),
-                "created_date" => date('Y-m-d H:i:s')
+                "created_by" => auth()->id()
             ]);
 
-            if($status) {
+            if ($status) {
                 echo json_encode([
                     'success' => true,
                     'messages' => 'nouvelle banque ajouter!!',
@@ -97,7 +96,6 @@ class BankController extends Controller
      */
     public function edit(Bank $bank)
     {
-        
     }
 
     /**
@@ -109,9 +107,9 @@ class BankController extends Controller
      */
     public function update(Request $request, Bank $bank)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'bank_name' => 'required'
-        ],[
+        ], [
             'required' => 'Le champs du nom de la banque ne doit pas etre vide'
         ]);
 
@@ -123,7 +121,7 @@ class BankController extends Controller
                 "bank_code" => $request->bank_code,
             ]);
 
-            if($status) {
+            if ($status) {
                 echo json_encode([
                     'success' => true,
                     'messages' => 'banque modifié!!',
@@ -159,6 +157,5 @@ class BankController extends Controller
         ]);
 
         return redirect()->route('bank.index')->with('success', 'Banque supprimé avec succé');
-
     }
 }

@@ -20,7 +20,7 @@ class DepartementController extends Controller
 
         $departments = collect($departments)->sortBy('title');
 
-        return view('hrm.param.department',compact('departments'));
+        return view('hrm.param.department', compact('departments'));
     }
 
     /**
@@ -41,9 +41,9 @@ class DepartementController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'title' => 'required'
-        ],[
+        ], [
             'required' => 'Le champs du nom du departement ne doit pas etre vide'
         ]);
 
@@ -52,11 +52,10 @@ class DepartementController extends Controller
 
             $status = Departement::create([
                 "title" => $data["title"],
-                "created_by" => auth()->id(),
-                "created_date" => date('Y-m-d H:i:s')
+                "created_by" => auth()->id()
             ]);
 
-            if($status) {
+            if ($status) {
                 echo json_encode([
                     'success' => true,
                     'messages' => 'nouvelle departement ajouter!!',
@@ -107,9 +106,9 @@ class DepartementController extends Controller
      */
     public function update(Request $request, Departement $departement)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'title' => 'required'
-        ],[
+        ], [
             'required' => 'Le champs du nom du departement ne doit pas etre vide'
         ]);
 
@@ -120,7 +119,7 @@ class DepartementController extends Controller
                 "title" => $data["title"],
             ]);
 
-            if($status) {
+            if ($status) {
                 echo json_encode([
                     'success' => true,
                     'messages' => 'Departement modifié!!',
@@ -151,6 +150,5 @@ class DepartementController extends Controller
         $departement->delete();
 
         return redirect()->route('departement.index')->with('success', 'Département supprimé avec succé');
-
     }
 }

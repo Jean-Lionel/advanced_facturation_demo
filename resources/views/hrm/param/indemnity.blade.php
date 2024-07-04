@@ -42,10 +42,10 @@
                             @endif
                         </td>
                         <td>{{ $value->user->name ?? '-' }}</td>
-                        <td>{{ $value->created_date }}</td>
+                        <td>{{ $value->created_at }}</td>
                         <td>
                             <a data-href="{{ route('indeminity.update',['indeminity' => $value->type_indeminite_id]) }}" data-indeminity="{{ json_encode($value) }}" onclick="editIndeminity(this)" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
-                            
+
                             <form class="form-delete" action="{{ route('indeminity.destroy',['indeminity' => $value->type_indeminite_id]) }}" style="display: inline;" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
@@ -208,7 +208,7 @@
                             </div>
                         `);
                     });
-                    
+
                     $(th).attr('disabled',false);
                     $('#infos').attr('hidden',true);
                 }
@@ -260,7 +260,7 @@
                             </div>
                         `);
                     });
-                    
+
                     $(th).attr('disabled',false);
                     $('#info').attr('hidden',true);
                 }

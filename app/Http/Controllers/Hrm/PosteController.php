@@ -18,11 +18,11 @@ class PosteController extends Controller
     public function index()
     {
         $postes = Poste::all();
-        $departments = Departement::select('department_id','title')->get();
+        $departments = Departement::select('department_id', 'title')->get();
 
         $postes = collect($postes)->sortBy('title');
 
-        return view('hrm.param.poste',[
+        return view('hrm.param.poste', [
             "postes" => $postes,
             "departments" => $departments,
         ]);
@@ -46,25 +46,24 @@ class PosteController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'title' => 'required',
             'department' => 'required'
-        ],[
+        ], [
             'required' => 'Le champ :attribute est requis pour continuer'
         ]);
 
 
-        if(!$validator->fails()){
+        if (!$validator->fails()) {
             $data = $validator->safe()->all();
 
             $status = Poste::create([
                 "title" => $data['title'],
                 "department_id" => $data['department'],
-                "created_date" => date('Y-m-d H:i:s'),
                 "created_by" => auth()->id()
-             ]);
-    
-            if($status) {
+            ]);
+
+            if ($status) {
                 echo json_encode([
                     'success' => true,
                     'messages' => 'nouveau Poste ajouter!!',
@@ -103,7 +102,6 @@ class PosteController extends Controller
      */
     public function edit(Poste $poste)
     {
-        
     }
 
     /**
@@ -115,22 +113,22 @@ class PosteController extends Controller
      */
     public function update(Request $request, Poste $poste)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'title' => 'required',
             'department' => 'required'
-        ],[
+        ], [
             'required' => 'Le champ :attribute est requis pour continuer'
         ]);
 
-        if(!$validator->fails()){
+        if (!$validator->fails()) {
             $data = $validator->safe();
 
             $status = $poste->update([
                 "title" => $data['title'],
                 "department_id" => $data['department'],
             ]);
-    
-            if($status) {
+
+            if ($status) {
                 echo json_encode([
                     'success' => true,
                     'messages' => 'Poste modifié!!',
@@ -161,6 +159,5 @@ class PosteController extends Controller
         $poste->delete();
 
         return redirect()->route('poste.index')->with('success', 'Poste supprimé avec succé');
-
     }
 }
