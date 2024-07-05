@@ -198,7 +198,6 @@
         
         <p class="amount">Nous disons  {{ getNumberToWord($order->amount) }} francs Burundais.</p>
         <div class="footer">
-            <p>Mrs Directeurs</p>
             <p>Business Manager</p>
         </div>
         <div class="adresse">
