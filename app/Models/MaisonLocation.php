@@ -78,4 +78,12 @@ class MaisonLocation extends Model
     public function getVatCustomerPayerAttribute(){
         return $this->clients->map->vat_customer_payer->first() ?? 0;
     }
+    public function payments()
+    {
+        return $this->hasMany(PaymentLocationMensuel::class, 'client_maison_id');
+    }
+    public function clientMaisons()
+    {
+        return $this->hasMany(ClientMaison::class);
+    }
 }

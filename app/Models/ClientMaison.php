@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\SearchOnModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -65,4 +66,9 @@ class ClientMaison extends Model
     {
         return $this->belongsTo(MaisonLocation::class);
     }
+    public function payments(): HasMany
+    {
+        return $this->hasMany(PaymentLocationMensuel::class, 'client_maison_id');
+    }
+
 }

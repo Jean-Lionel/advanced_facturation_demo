@@ -8,5 +8,11 @@
     <div>
         <a href="{{ route('non-paiement-location.index') }}">Location non payé</a>
     </div>
+    <div>
+        <a href="{{ route('LocationMaison.index') }}">Les loyers non payés</a>
+    </div>
+    <div>
+        <a href="{{ route('LocationMaison.nonPays.index') }}">Les loyers non payés mensuellement</a>
+    </div>
 
 </div>
