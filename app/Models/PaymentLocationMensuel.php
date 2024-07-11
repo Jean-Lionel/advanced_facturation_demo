@@ -37,6 +37,7 @@ class PaymentLocationMensuel extends Model
         'id' => 'integer',
         'user_id' => 'integer',
         'maisonlocation_id' => 'integer',
+        'client_maison_id' => 'integer',
         'montant' => 'double',
         'date_paiement' => 'date',
     ];
@@ -60,4 +61,9 @@ class PaymentLocationMensuel extends Model
     public function order(){
         return $this->belongsTo(Order::class);
     }
+    public function clientMaison()
+    {
+       return $this->belongsTo(ClientMaison::class, 'client_maison_id');
+   }
+   
 }
