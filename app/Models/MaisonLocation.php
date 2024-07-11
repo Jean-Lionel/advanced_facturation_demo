@@ -80,10 +80,6 @@ class MaisonLocation extends Model
     }
     public function payments()
     {
-        return $this->hasMany(PaymentLocationMensuel::class, 'client_maison_id');
-    }
-    public function clientMaisons()
-    {
-        return $this->hasMany(ClientMaison::class);
+        return $this->hasMany(PaymentLocationMensuel::class);
     }
 }

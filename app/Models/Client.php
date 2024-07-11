@@ -17,10 +17,5 @@ class Client extends MyModel
     public function compte(){
         return $this->hasOne(Compte::class);
     }
-    public function clientMaison()
-    {
-        return $this->hasOne(ClientMaison::class);
-    }
-
     
 }

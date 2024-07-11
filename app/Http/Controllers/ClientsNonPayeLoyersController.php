@@ -15,7 +15,7 @@ class ClientsNonPayeLoyersController extends Controller
          $dateDebut = $request->input('dateDebut');
        $dateFin = $request->input('dateFin');
    
-       $clientsMaisons = ClientMaison::with(['client', 'maisonlocation', 'payments' => function ($query) use ($dateDebut, $dateFin) {
+       $clientsMaisons = ClientMaison::with(['client','payments' => function ($query) use ($dateDebut, $dateFin) {
            $query->whereBetween('date_paiement', [$dateDebut, $dateFin]);
        }])
        ->get();

@@ -60,8 +60,4 @@ class PaymentLocationMensuel extends Model
     public function order(){
         return $this->belongsTo(Order::class);
     }
-    public function clientMaison()
-    {
-       return $this->belongsTo(ClientMaison::class, 'client_maison_id');
-    }
 }
