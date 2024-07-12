@@ -97,7 +97,7 @@
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar" class="active noprint" >
             <h1><a href="" class="logo">
-                <img src="{{ asset('img/logo.jpg') }}" class="img-thumbnail"  alt="">
+                <img src="{{ asset('img/'. LOGO_NAME) }}" class="img-thumbnail"  alt="">
             </a></h1>
             <ul class="list-unstyled components mb-5">
                 @can('is-vente')
@@ -180,7 +180,7 @@
                                 <h5>{{ auth()->user()->company()->tp_name ?? "" }}</h5>
                                 <ul class="nav navbar-nav ml-auto">
                                     <li>
-                                        <img src="{{ asset('img/logo.jpg') }}" class="img-thumbnail"  alt="" style="width:40px; border-radius: 50%;">
+                                        <img src="{{ asset('img/'. LOGO_NAME) }}" class="img-thumbnail"  alt="" style="width:40px; border-radius: 50%;">
                                     </li>
                                     <li>
                                         <h5 class="mr-4 mt-2 d-flex">
