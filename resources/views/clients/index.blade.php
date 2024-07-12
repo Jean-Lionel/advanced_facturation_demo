@@ -25,10 +25,11 @@
 				<th scope="col">NOM</th>
 				<th scope="col">TELEPHONE</th>
 				<th scope="col">NIF</th>
-				<th scope="col">Fournisseur</th>
 				<th scope="col">Adresse</th>
-
-                <th>Abonnées</th>
+				@if (USE_ABONEMENT)
+				<th scope="col">Fournisseur</th>
+				<th>Abonnées</th>
+				@endif
                 <th>Date</th>
 				<th scope="col">Action</th>
 			</tr>
@@ -47,13 +48,17 @@
 				<td>
 					{{ $value->customer_TIN}}
 				</td>
-                <td>
-					{{ $value->is_fournisseur}}
-				</td>
+               
 				<td>
 					{{ $value->addresse}}
 				</td>
-                <td>{{ $value->compte->name  ?? "" }}</td>
+              
+				@if (USE_ABONEMENT)
+				<td>
+					{{ $value->is_fournisseur}}
+				</td>
+				<td>{{ $value->compte->name  ?? "" }}</td>
+				@endif
 
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">

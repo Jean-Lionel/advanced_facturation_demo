@@ -39,7 +39,7 @@ class MaisonLocation extends Model
         'montant' => 'double',
     ];
 
-    protected $appends = ['priceTTC', 'tax'];
+    protected $appends = ['priceTTC'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -57,10 +57,7 @@ class MaisonLocation extends Model
         return prixVenteTvac($this->montant, (($this->tax ?? 0) / 100));
     }
 
-    public function getTaxAttribute(){
-        return $this->getPriceTTCAttribute() - $this->montant;
-    }
-
+   
     public function getClientNameAttribute(){
         return implode(" && ", $this->clients->map->name->toArray() ?? []) ;
     }

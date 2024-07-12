@@ -70,6 +70,7 @@ class PaymentMensuel extends Component
                 'montant' => $this->montant,
                 'date_paiement' => $this->payementDate,
                 'user_id' => auth()->user()->id,
+               // 'client_maison_id' =>   $this->maison->ClientId,
             ]);
 
             $client = new Client([
@@ -112,7 +113,7 @@ class PaymentMensuel extends Component
             //throw $th;
             DB::rollBack();
 
-            dd($th->getMessage());
+            dd($th);
         }
 
         return redirect()->to('orders/'.$currentOrderId->id);

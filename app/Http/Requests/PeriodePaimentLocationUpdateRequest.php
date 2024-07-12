@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MaisonLocationStoreRequest extends FormRequest
+class PeriodePaimentLocationUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,11 @@ class MaisonLocationStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            
-            'name' => ['required', 'string', 'unique:maison_locations'],
-            'description' => ['string', 'nullable'],
-            'montant' => ['required', 'numeric'],
-            'tax' => ['required'],
-           
+            'user_id' => ['required', 'integer', 'exists:users,id'],
+            'year' => ['string'],
+            'month' => ['string'],
+            'status' => ['string'],
+            'softdeletes' => ['required'],
         ];
     }
 }

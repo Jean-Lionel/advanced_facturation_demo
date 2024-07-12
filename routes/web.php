@@ -138,3 +138,5 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 require __DIR__ . '/jetstream.php';
+
+Route::resource('periode-paiment-location', App\Http\Controllers\PeriodePaimentLocationController::class);
