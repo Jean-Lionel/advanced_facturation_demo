@@ -33,15 +33,15 @@ class ClientsNonPayeLoyersController extends Controller
        $nonPayeursData = [];
    
        foreach ($nonPayeurs as $nonPayeur) {
-           $totalImpaye += $nonPayeur->maisonlocation->montant;
+           $totalImpaye += $nonPayeur->maisonlocation->montant ?? 0;
            $nbreNonPayeurs++;
    
            $nonPayeursData[] = [
-               'name' => $nonPayeur->client->name,
-               'telephone' => $nonPayeur->client->telephone,
-               'adresse' => $nonPayeur->maisonlocation->adresse,
-               'montant' => $nonPayeur->maisonlocation->montant,
-               'maison_louee'=> $nonPayeur->maisonlocation->name,
+               'name' => $nonPayeur->client->name ?? "",
+               'telephone' => $nonPayeur->client->telephone ?? '',
+               'adresse' => $nonPayeur->maisonlocation->adresse ?? '',
+               'montant' => $nonPayeur->maisonlocation->montant ?? '',
+               'maison_louee'=> $nonPayeur->maisonlocation->name ?? '',
            ];
            
            if ($nonPayeur->payments()->count() > 0) {
