@@ -6,6 +6,7 @@ use App\Models\Traits\SearchOnModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\PaymentLocationMensuel;
 
 /**
  * @property int $id
@@ -77,5 +78,10 @@ class MaisonLocation extends Model
     }
     public function getVatCustomerPayerAttribute(){
         return $this->clients->map->vat_customer_payer->first() ?? 0;
+    }
+    
+    public function paymentLocationMensuels()
+    {
+        return $this->hasOne(PaymentLocationMensuel::class,'maisonlocation_id');
     }
 }
