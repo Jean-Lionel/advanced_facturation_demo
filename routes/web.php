@@ -136,8 +136,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('historique-paiement', App\Http\Controllers\HistoriquePaymentController::class);
     Route::resource('non-paiement-location', App\Http\Controllers\NonPaymentLocationController::class);
     Route::prefix('/LocationMaison')->name('LocationMaison.')->group(function(){
-      //  Route::resource('', App\Http\Controllers\ClientsNonPayeLoyersController::class)
-               // ->except([ 'edit', 'update', 'destroy','show','create']);
+        Route::resource('', App\Http\Controllers\ClientsNonPayeLoyersController::class)
+               ->except([ 'edit', 'update', 'destroy','show','create']);
         Route::resource('All', App\Http\Controllers\ClientsNonPayeLoyersAllController::class)
                 ->except([ 'edit', 'update', 'destroy','show','create']);
     }); 

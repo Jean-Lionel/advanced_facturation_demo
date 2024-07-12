@@ -9,7 +9,10 @@
         <a href="{{ route('non-paiement-location.index') }}">Location non payé</a>
     </div>
     <div>
-        <a href="{{ route('LocationMaison.All.index') }}">Locateurs non payé</a>
+        <a href="{{ route('LocationMaison.index') }}">Cherchez les locations non payées</a>
+    </div>
+    <div>
+        <a href="{{ route('LocationMaison.All.index') }}">Locations non payées</a>
     </div>
 
 </div>

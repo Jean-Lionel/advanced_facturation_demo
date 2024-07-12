@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class ClientsNonPayeLoyersAllController extends Controller
 {
-   
     public function index(Request $request)
     {
         $idsMaisons = PaymentLocationMensuel::whereDate('date_paiement', '>=', now()->subMonths(1))
