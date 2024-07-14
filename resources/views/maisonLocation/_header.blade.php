@@ -5,8 +5,6 @@
     <div>
         <a href="{{ route('historique-paiement.index') }}">Historique de paiement</a>
     </div>
-    <div>
-        <a href="{{ route('non-paiement-location.index') }}">Location non payé</a>
-    </div>
+   
 
 </div>
