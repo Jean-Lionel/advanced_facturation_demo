@@ -1,6 +1,19 @@
 <?php
 
+use NumberToWords\NumberToWords;
 define('TAUX_TVA', [18,10,0]);
+
+
+function getNumberToWord($number , $language='fr'){
+    // create the number to words "manager" class
+    $numberToWords = new NumberToWords();
+    // build a new number transformer using the RFC 3066 language identifier
+    $numberTransformer = $numberToWords->getNumberTransformer($language);
+    
+   return  $numberTransformer->toWords($number);
+}
+
+
 function isInternetConnection(){
     try{
         if(fsockopen('www.google.fr',80)){
@@ -40,6 +53,15 @@ const MOUVEMENT_STOCK = [
     'ST' => 'Sorties Transfert',
     'SAU' => 'Sorties Autres',
 ];
+
+const TYPE_PAYMENT = [
+    1 => 'En espèce',
+    2 => 'banque',
+    3 => 'à crédit',
+    4 => 'autres',
+];
+
+const TVA_RANGES =[18,10,4,0];
 
 function getMouvement($key){
     return  MOUVEMENT_STOCK[$key];

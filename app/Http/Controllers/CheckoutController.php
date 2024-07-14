@@ -203,6 +203,7 @@ class CheckoutController extends Controller
                 'name' => $item->name,
                 'rowId' => $item->rowId,
                 'price' => $item->price,
+                'unite_mesure' => $item->model->unite_mesure,
                 'price_revient' => $item->model->price_max,
                 'quantite' => $item->qty,
                 'nombre_sac' => ($item->qty / $item->options['embalage'] ?? 1 ),

@@ -1,16 +1,16 @@
 created:
-    - app/Http/Controllers/BanqueController.php
-    - database/factories/BanqueFactory.php
-    - database/migrations/2024_05_18_090016_create_banques_table.php
-    - app/Models/Banque.php
-    - database/seeders/BanqueSeeder.php
-    - tests/Feature/Http/Controllers/BanqueControllerTest.php
-    - app/Http/Requests/BanqueStoreRequest.php
-    - app/Http/Requests/BanqueUpdateRequest.php
-    - resources/views/banque/index.blade.php
-    - resources/views/banque/create.blade.php
-    - resources/views/banque/show.blade.php
-    - resources/views/banque/edit.blade.php
+    - app/Http/Controllers/PaymentLocationMensuelController.php
+    - database/factories/PaymentLocationMensuelFactory.php
+    - database/migrations/2024_06_09_050020_create_payment_location_mensuels_table.php
+    - app/Models/PaymentLocationMensuel.php
+    - database/seeders/PaymentLocationMensuelSeeder.php
+    - tests/Feature/Http/Controllers/PaymentLocationMensuelControllerTest.php
+    - app/Http/Requests/PaymentLocationMensuelStoreRequest.php
+    - app/Http/Requests/PaymentLocationMensuelUpdateRequest.php
+    - resources/views/paymentLocationMensuel/index.blade.php
+    - resources/views/paymentLocationMensuel/create.blade.php
+    - resources/views/paymentLocationMensuel/show.blade.php
+    - resources/views/paymentLocationMensuel/edit.blade.php
 updated:
     - routes/web.php
 models:
@@ -54,3 +54,6 @@ models:
     HrCommande: { user_id: 'id foreign:users', order_id: 'id foreign:orders', is_paid_at: 'string nullable', total_command: 'double default:0', softdeletes: SoftDeletes }
     HrFicheDetail: { user_id: 'id foreign:users', fiche_id: 'id foreign:fiches', commande_id: 'id foreign:hr_commandes', date_debut: date, date_fin: 'date nullable', description: 'nullable text', softdeletes: SoftDeletes }
     Banque: { user_id: 'id foreign:users', name: string, description: 'text nullable', softdeletes: SoftDeletes }
+    MaisonLocation: { user_id: 'id foreign:users', name: string, description: 'text nullable', montant: 'double default:0', softdeletes: SoftDeletes }
+    ClientMaison: { user_id: 'id foreign:users', client_id: 'id foreign:clients', maisonlocation_id: 'id foreign:maison_locations', description: 'text nullable', montant: 'double default:0', softdeletes: SoftDeletes }
+    PaymentLocationMensuel: { user_id: 'id foreign:users', maisonlocation_id: 'id foreign:maison_locations', description: 'text nullable', montant: 'double default:0', date_paiement: 'date nullable', softdeletes: SoftDeletes }
