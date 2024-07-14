@@ -14,7 +14,7 @@
         <tbody>
             <tr>
                 <td><span class="badge bg-primary" style="font-size: 1.5rem;">{{ $clientsMaisonTotal }}</span></td>
-                <td><span class="badge bg-primary" style="font-size: 1.5rem;">{{ $nbreClientsNonPayeurs }} <span> = </span>{{ $nbreClientsNonPayeurs_percentage }} %</span></td>
+                <td><span class="badge bg-success" style="font-size: 1.5rem;">{{ $nbreClientsNonPayeurs }} <span> = </span>{{ $nbreClientsNonPayeurs_percentage }} %</span></td>
                 <td><span class="badge bg-primary" style="font-size: 1.5rem;">{{ $totalImpaye }} Fbu</span></td>
             </tr>
         </tbody>
