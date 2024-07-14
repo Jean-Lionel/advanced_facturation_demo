@@ -22,7 +22,20 @@ class ClientsNonPayeLoyersAllController extends Controller
         $clientsMaisonnonpay = ClientMaison::whereIn('maisonlocation_id', $idsMaisonsnonpay)
                                 ->with('client')
                                 ->get();
-                       
-        return view('LocationMaison.All.index', compact('clientsMaisonnonpay'));
+        $totalImpaye = 0;
+        $nbreClientsNonPayeurs = 0;
+        $clientsMaisonTotal= ClientMaison::count();
+        foreach ($clientsMaisonnonpay as  $clientMaison) {
+            $totalImpaye +=  $clientMaison->maisonlocation->montant;
+            $nbreClientsNonPayeurs++;
+            $nbreClientsNonPayeurs_percentage=round(($nbreClientsNonPayeurs / $clientsMaisonTotal) * 100, 2);
+        }
+        return view('LocationMaison.All.index',[
+                'clientsMaisonnonpay'=> $clientsMaisonnonpay,
+                'nbreClientsNonPayeurs'=>$nbreClientsNonPayeurs,
+                'clientsMaisonTotal'=>  $clientsMaisonTotal,
+                'nbreClientsNonPayeurs_percentage'=>$nbreClientsNonPayeurs_percentage,
+                'totalImpaye'=>  $totalImpaye 
+        ]);
     }
 }
