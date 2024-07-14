@@ -2,7 +2,7 @@
 @section('content')
 @include('maisonLocation._header')
 <div class="container">
-    <h4>Clients n'ayant pas payé leurs loyers mensuels</h4>
+    <h4>Clients n'ayant pas payé leurs loyers </h4>
     <table class="table table-striped table-bordered border-dark">
         <thead>
             <tr>
