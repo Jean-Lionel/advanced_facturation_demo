@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    page-break-inside: avoid;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+header img {
+    width: 80px;
+    height: auto;
+}
+
+.header-left p,
+.header-right p {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+hr {
+    border: 2px solid #000;
+}
+
+.facture-info,
+.identification,
+.tax-info,
+.articles,
+.description,
+.signature {
+    margin: 20px 0;
+}
+
+.identification {
+    display: flex;
+    justify-content: space-between;
+}
+
+.identification .vendeur,
+.identification .client {
+    width: 48%;
+}
+
+.tax-info p {
+    margin: 5px 0;
+}
+
+.articles table {
+    width: 100%;
+    border-collapse: collapse;
+    page-break-inside: auto;
+}
+
+.articles th,
+.articles td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: left;
+}
+
+.articles tfoot .id-section {
+    text-align: right;
+    font-style: italic;
+}
+
+.description {
+    text-align: center;
+    font-weight: bold;
+}
+
+footer {
+    border-top: 4px solid #333; /* Ligne horizontale épaisse */
+    color: #333;
+    font-weight: 800;
+    text-align: center;
+    font-size: 15px; /* Taille de police plus grande */
+  }
+
+  footer p {
+    margin: 10px 0; /* Espacement vertical plus grand */
+  }
+
+  .warning-section {
+    text-align: right;
+    font-size: 18px;
+    margin-top: 20px;
+  }
+
+  .signature-section {
+    line-height: 0%;
+    text-align: right;
+    font-size: 15px;
+    margin-bottom: 10px;
+    margin-right: 30px;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+
+  .signature-box {
+    display: inline-block;
+    text-align: left;
+  }
+
+
+
+@media print {
+    body, .container {
+        width: 100%;
+        margin: 0;
+        box-shadow: none;
+        background-color: #fff;
+    }
+
+    .container {
+        padding: 0;
+    }
+
+    .signature-box {
+        border: none;
+    }
+}

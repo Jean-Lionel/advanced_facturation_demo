@@ -1,15 +1,17 @@
 models:
-  Fonction:
+  PaymentLocationMensuel:
     user_id: id foreign:users
-    name: string
+    maisonlocation_id: id foreign:maison_locations
     description: text nullable
+    montant: double default:0
+    date_paiement: date nullable
     SoftDeletes
 
 
 
-seeders: Banque
+seeders: PaymentLocationMensuel
 
 controllers:
-  Banque:
+  PaymentLocationMensuel:
     resource: web
 

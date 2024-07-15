@@ -19,8 +19,16 @@ class VenteController extends Controller
 
         // $order = Order::latest()->first();
         // dump($order );
-        //  $obr = new SendInvoiceToOBR();
-        // dd($obr->getToken());
+
+        if(env('OBR_CHECKCONNECTIVITY', false)){
+            $obr = new SendInvoiceToOBR();
+            dd($obr->getToken());
+
+            // dump($obr->checkTin(('4000834368')));
+            // dd($obr->getToken());
+        }
+
+
         // dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
 
         $search = request()->get('search');
@@ -58,7 +66,7 @@ class VenteController extends Controller
             <tr>
             <td> $value->id </td>
             <td> $value->code_product </td>
-            <td> $value->name</td>
+            <td> $value->name [ $value->unite_mesure]</td>
             <td> $value->price </td>
             <td> $value->taux_tva </td>
             <td> $value->price_tvac </td>
