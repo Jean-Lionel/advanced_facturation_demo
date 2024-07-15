@@ -55,11 +55,15 @@ class MaisonLocation extends Model
     }
 
     public function getPriceTTCAttribute(){
-        return prixVenteTvac($this->montant, (($this->tax ?? 0) / 100));
+        // return prixVenteTvac($this->montant, (($this->tax ?? 0) / 100));
+         return prixVenteTvac($this->montant);
+
+
     }
 
     public function getTaxAttribute(){
-        return $this->getPriceTTCAttribute() - $this->montant;
+        
+        return $this->getPriceTTCAttribute() -($this->montant);
     }
 
     public function getClientNameAttribute(){

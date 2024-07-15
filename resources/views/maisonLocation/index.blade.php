@@ -18,6 +18,7 @@
 			</form>
 		</div>
 	</div>
+	
 
 	<table class="table table-sm">
 		<thead>
@@ -50,7 +51,7 @@
 				<td>
 					{{ $value->clients_count}}
 				</td>
-				<th scope="col">{{  $value->tax}}</th>
+				<th scope="col">{{$value->tax }}</th>
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
 					<a href="{{ route('maison-location.show', $value) }}" class="btn btn-outline-info btn-sm mr-2">Locataire</a>
