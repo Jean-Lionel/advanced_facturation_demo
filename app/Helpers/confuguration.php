@@ -16,5 +16,5 @@ define('USE_ABONEMENT', false);
 define('USE_LOCATION', false);
 define('USE_LOGO', true);
 define('USE_LOGO_NAME', false);
-define('LOGO_NAME', "galerie_ideal.jpg");
+define('LOGO_NAME', "logo.jpg");
 define('INVOICE_PREFIX', '');
