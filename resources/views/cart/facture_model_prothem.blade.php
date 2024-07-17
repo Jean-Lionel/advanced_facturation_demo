@@ -32,11 +32,13 @@
         <div class="main-content" id="printJS-form" >
             {{-- Entete --}}
             <header class="header-facture ">
-                {{-- <div>
+                @if (USE_LOGO_NAME)
+                <div>
                     <div >
-                        <img class="img_logo" src="{{asset('img/logo.jpg')}}" alt="">
+                        <img class="img_logo" src="{{asset('img/'.  LOGO_NAME)}}" alt="">
                     </div>
-                </div> --}}
+                </div>
+                @endif
                 <div style="width: 100%;">
 
                     <h3>{{ $order->company->tp_name ?? "" }} </h3>

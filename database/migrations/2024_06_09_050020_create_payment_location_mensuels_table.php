@@ -22,6 +22,7 @@ class CreatePaymentLocationMensuelsTable extends Migration
             $table->foreignId('client_maison_id')->nullable();
             $table->text('description')->nullable();
             $table->foreignId('order_id')->nullable();
+            $table->foreignId('periode_paiement_id')->nullable();
             $table->text('type_paiement')->nullable();
             $table->double('montant')->default('0');
             $table->date('date_paiement')->nullable();

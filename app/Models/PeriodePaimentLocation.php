@@ -44,4 +44,9 @@ class PeriodePaimentLocation extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getPeriodeAttribute()
+    {
+        return $this->year.'-'.$this->month;
+    }
 }

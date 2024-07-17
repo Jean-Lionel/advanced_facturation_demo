@@ -8,6 +8,7 @@ use App\Models\Entreprise;
 use App\Models\MaisonLocation;
 use App\Models\Order;
 use App\Models\PaymentLocationMensuel;
+use App\Models\PeriodePaimentLocation;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -21,6 +22,7 @@ class PaymentMensuel extends Component
     public $montant;
     public $description;
     public $maison;
+    public $periodePaymentValue;
     public $typePaiement;
     public $displayPayment = false;
     
@@ -28,12 +30,39 @@ class PaymentMensuel extends Component
         'payementDate' => 'required|date',
         'montant' => 'required',
         'typePaiement' => 'required',
+        'periodePaymentValue' => 'required',
     ];
+
+    public function mount(){
+        $this->canCreatePaymentPeriode();
+    }
     
     public function render()
     {
-        return view('livewire.location.payment-mensuel');
+        $periodesPayment = PeriodePaimentLocation::latest()->take(3)->get();
+
+        return view('livewire.location.payment-mensuel', [
+            'periodesPayments' => $periodesPayment
+        ]);
     }
+
+    // Check if you can create a new payment periode 
+
+    private function canCreatePaymentPeriode(){
+        $check = PeriodePaimentLocation::where('month', date('m'))
+                                        ->where('year', date('Y'))
+                                        ->first();
+        // case null create periode payment 
+        if(is_null($check)){
+            PeriodePaimentLocation::create([
+                'month' => date('m'),
+                'year' => date('Y'),
+                'user_id' => auth()->user()->id
+            ]);
+        }
+    }
+
+    
     
     public function updatedHouseNumber(){
         if(strlen($this->houseNumber)){
@@ -61,15 +90,30 @@ class PaymentMensuel extends Component
         $currentOrderId = 0;
         try {
             //code...
-            
             DB::beginTransaction();
             // Creating Order 
+
+            // Checking if total amount of the periode has not orleady paid 
+
+           $totalAmount = PaymentLocationMensuel::where('periode_paiement_id', $this->periodePaymentValue)
+                                            ->where('maisonlocation_id', $this->paymentID)
+                                            ->sum('montant');
+
+            if( $totalAmount >= $this->maison->montant){
+                throw new \Exception('La periode de paiement est deja paye');
+            }
+
+            if( $totalAmount + $this->montant > $this->maison->montant){
+                throw new \Exception('Montant restant est de '. ($this->maison->montant - $totalAmount));
+            }
+
              $paiementM =   PaymentLocationMensuel::create([
                 'maisonlocation_id' => $this->paymentID,
                 'description' => $this->description,
                 'montant' => $this->montant,
                 'date_paiement' => $this->payementDate,
                 'user_id' => auth()->user()->id,
+                'periode_paiement_id' => $this->periodePaymentValue
                // 'client_maison_id' =>   $this->maison->ClientId,
             ]);
 
@@ -89,7 +133,7 @@ class PaymentMensuel extends Component
                 'total_sacs' => 0,
                 'tax' => $this->maison->tax,
                 'type_paiement' => $this->typePaiement,
-                'amount_tax' => $this->maison->montant, // Motant Hors tax 
+                'amount_tax' => $this->montant, // Motant Hors tax 
                 'products'=> serialize($this->getProduct()),
                 'client'=> $client->toJson() ,//  substr($this->maison->clientName ?? "" , 0,100) ,
                 'addresse_client'=> substr($this->maison->adresse ?? "" , 0,100) ,// $this->maison->adresse,
@@ -120,9 +164,16 @@ class PaymentMensuel extends Component
     }
     
     protected function getProduct(){
+
+        $periode = PeriodePaimentLocation::find($this->periodePaymentValue);
+        
+        $paidTime = "";
+        if( $periode ){
+            $paidTime = $periode->month . '/' . $periode->year;
+        }
         $products[] = [
             'id' => $this->maison->id,
-            'name' => 'Loyer ' . $this->maison->name. ' || '   . $this->description ,
+            'name' => 'Loyer [ '. $paidTime. '] || '. $this->maison->name. ' || '   . $this->description . '  '  ,
             'rowId' => "",
             'price' => $this->maison->montant,
             'price_revient' =>  $this->maison->montant,
