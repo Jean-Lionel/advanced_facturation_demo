@@ -21,12 +21,13 @@ use App\Http\Controllers\SendInvoiceToOBR;
 class CheckoutController extends Controller
 {
 
-
     public function store(Request $request)
     {
+        //dd($request->all());
+
         $validate =
         [
-            'name' => 'required|min:1',
+            'client_id' => 'required|exists:clients,id',
             // 'date_facturation' => 'required',
         ];
         if ($request->customer_TIN) {
@@ -47,7 +48,9 @@ class CheckoutController extends Controller
         try {
             DB::beginTransaction();
             $this->stockUpdated();
-            $client =  Client::find($request->clientNumber);
+            $client =  Client::find($request->client_id);
+
+
             if(!$client) {
                 $client =  Client::create([
                     'name' => $request->name,
@@ -74,9 +77,11 @@ class CheckoutController extends Controller
                 'amount_tax' => round(Cart::subtotal()),
                 'products'=> serialize($cartInfo),
                 'client'=> $client->toJson(),
-                'addresse_client'=> $request->addresse_client,
+                'addresse_client'=> $client->addresse,
                 'date_facturation'=> now(),
                 'is_cancelled' => 0,
+                'client_id' => $request->client_id,
+                'commissionaire_id' => $request->commissionaire_id ?? null,
                 'company' =>  $company->toJson(),
             ]);
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
@@ -189,11 +194,16 @@ class CheckoutController extends Controller
         foreach (Cart::content() as $item) {
             $v = ($item->price * $item->qty) * $item->taxRate /100;
             $prix_hors_tva =  ($item->price * $item->qty);
+            $prix_hors_tva =  ($item->price * $item->qty);
+            $interet_unitaire =  ( $item->price - $item->model->price_max );
+            $interet_total =  $interet_unitaire * $item->qty;
+
             $products[] = [
                 'id' => $item->id,
                 'name' => $item->name,
                 'rowId' => $item->rowId,
                 'price' => $item->price,
+                'unite_mesure' => $item->model->unite_mesure,
                 'price_revient' => $item->model->price_max,
                 'quantite' => $item->qty,
                 'nombre_sac' => ($item->qty / $item->options['embalage'] ?? 1 ),
@@ -201,6 +211,8 @@ class CheckoutController extends Controller
                 'item_ct' => 0,
                 'item_tl' => 0 ,
                 'item_price_nvat' => $prix_hors_tva,
+                'interet_unitaire' => $interet_unitaire,
+                'interet_total' => $interet_total,
                 'vat' => $v,
                 'item_price_wvat' => ($v + $prix_hors_tva),
                 'item_total_amount' => ($v + $prix_hors_tva)

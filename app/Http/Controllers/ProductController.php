@@ -7,7 +7,9 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\FollowProduct;
+use App\Models\ProductDetail;
 use App\Models\ProductHistory;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
@@ -27,21 +29,35 @@ class ProductController extends Controller
     }
     public function index()
     {
+
         // dd(Gate::allows('is-admin'));
         $this->authorize('view', Product::class);
         $search = request()->get('search');
-        $products = Product::with(['category' , 'mouvements'])->latest()
-                    ->where(function($query) use ($search) {
-                        if($search){
-                            $query->where('name','like', '%'.$search.'%')
-                            ->orWhere('code_product','like', '%'.$search.'%')
-                            ->orWhere('date_expiration','like', '%'.$search.'%')
-                            ->orWhere('unite_mesure','like', '%'.$search.'%')
-                            ->orWhere('marque','like', '%'.$search.'%');
-                        }
-                    })
-                    ->orderBy('quantite','asc')
-                    ->latest()->paginate();
+        $category = request()->get('category');
+        $query = Product::with(['category' , 'mouvements'])->latest()
+                        ->where(function($query) use ($search) {
+                            if($search){
+                                $query->where('name','like', '%'.$search.'%')
+                                ->orWhere('code_product','like', '%'.$search.'%')
+                                ->orWhere('date_expiration','like', '%'.$search.'%')
+                                ->orWhere('unite_mesure','like', '%'.$search.'%')
+                                ->orWhere('marque','like', '%'.$search.'%');
+                            }
+
+                        })
+                        ->orderBy('quantite','asc')
+                        ;
+         $products = [];
+        if(  $category == 'STOCK VIDE'){
+            $products = $query->where('quantite', 0)->latest()->paginate();
+        }
+        else if( $category == 'STOCK NON VIDE'){
+
+            $products = $query->where('quantite', '>=', 1)->latest()->paginate();
+        }
+        else{
+            $products =  $query->latest()->paginate();
+        }
 
         return view("products.index", compact('products','search'));
     }
@@ -84,7 +100,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'price_max' => 'required|max:255',
             'code_product' => 'required',
-            'date_expiration' => 'required|date',
+            // 'date_expiration' => 'required|date',
             'category_id' => 'required',
             'unite_mesure' => 'required',
             'taux_tva' => 'required',
@@ -94,6 +110,8 @@ class ProductController extends Controller
         ]);
 
         Product::create($request->all());
+
+
 
         return back()->with('success', 'Enregistrement réussi');
     }
@@ -116,21 +134,20 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'price_max' => 'numeric|required|min:0',
             'code_product' => 'required',
-            'date_expiration' => 'required|date',
+            // 'date_expiration' => 'required|date',
             'quantite' => 'numeric|min:0',
             'price_min' => 'numeric|min:0',
             'taux_tva' => 'numeric|min:0',
-            'quantite_alert' => 'numeric|min:1',
+            'quantite_alert' => 'numeric|min:0',
 
         ]);
         $p = $product->toArray();
-
         ProductHistory::create([
             'product_id' => $product->id,
             'content' => json_encode($p)
         ]);
         $product->update($request->all());
-        return $this->index();
+        return redirect()->route('products.index');
     }
 
     public function destroy(Product $product)
@@ -152,7 +169,7 @@ class ProductController extends Controller
     public function add_quantite_stock(Request $request){
 
         $validator = [
-             'quantite' => 'required|numeric|min:0',
+            'quantite' => 'required|numeric|min:0',
             'montant' => 'required|numeric|min:0',
             'mouvement' => 'required|min:2|max:5',
             'date_mouvement' => 'required|date',
@@ -161,10 +178,24 @@ class ProductController extends Controller
         try {
             DB::beginTransaction();
             $product = Product::where('id', $request->product_id)->firstOrFail();
-
             if(in_array($request->mouvement, ['EN' ,'ER','EAJ', 'ET','EAU'])){
-                $product->quantite += $request->quantite;
+                // Verfication pour Voir que le Prix de Revient n'a pas change
+                // Implementation de l'algorithme FIFO First In First Out
+                // Recupere le stock actuel du produit
+                $stock_id = $product->category->stock->id ?? 1;
+                ProductDetail::create([
+                    'user_id' => auth()->user()->id,
+                    'stock_id' =>  $stock_id ,
+                    'product_id' => $product->id,
+                    'prix_revient' => $request->montant,
+                    'quantite' => $request->quantite,
+                    'quantite_restant' => $request->quantite,
+                    'description' => 'NEW PRODUCT',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
                 $product->price_max = $request->montant;  // Prix de revient du produit
+                $product->quantite += $request->quantite;
             }
             if(in_array($request->mouvement, ['EI'])){
                 // reanitialisation du stock
@@ -177,14 +208,12 @@ class ProductController extends Controller
                     throw new \Exception("La quantité du stocke ne doit pas être inférieur à ZERO ", 1);
                 }
             }
-
             ObrMouvementStock::saveMouvement(
                 $product,
                 $request->mouvement,
                 $request->montant,
                 $request->quantite,
                 $request->description,
-
             );
             FollowProduct::create([
                 'quantite' => $request->quantite,

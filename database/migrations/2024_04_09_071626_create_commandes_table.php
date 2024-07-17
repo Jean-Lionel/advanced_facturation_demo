@@ -26,6 +26,7 @@ class CreateCommandesTable extends Migration
             $table->foreignId('stock_livrant')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();

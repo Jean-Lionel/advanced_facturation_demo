@@ -8,7 +8,6 @@ use App\Models\ObrPointer;
 use App\Models\ObrStockLog;
 use App\Models\Order;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
@@ -26,12 +25,13 @@ class SyncronizeController extends Controller
         if(isInternetConnection()){
             try {
                 //code...
-            if(CAN_SYNCRONISE_STOCK){
-               $this->syncronizeStock();
+            if(CAN_SYNCRONISE_STOCK && CAN_SYNCRONISE){
+                $this->syncronizeStock();
             }
-
-            if(CAN_SYNCRONISE_INVOICE){
+            if(CAN_SYNCRONISE_INVOICE ){
                 $response =  $this->syncronizeInvoices();
+
+               return  $response;
             }
             } catch (\Throwable $th) {
                 //throw $th;
@@ -59,13 +59,9 @@ class SyncronizeController extends Controller
     public function syncronizeInvoices(){
         $obr = new ObrDeclarationController();
         try{
-
            // $ws400000333700160
            //$
-           $excludes_ids = Cache::remember('key',  60, function () {
-
-            return ObrPointer::all()->map->order_id;
-           });
+           $excludes_ids = ObrPointer::all()->map->order_id;
            $order_peding_ids = Order::whereNull('envoye_obr')
                                         ->whereNotIn('id', $excludes_ids)
                                         ->get()->map->id;
@@ -137,7 +133,7 @@ class SyncronizeController extends Controller
             // var_dump('CODE DE MESSAGE '. $e->getCode());
             // var_dump('FILE => ' . $e->getFile());
             // var_dump('LIGNE => ' . $e->getLine());
-            //                var_dump($e->getTrace());
+            // var_dump($e->getTrace());
             return response()->json([
                 'success' => false,
                 'data' => [

@@ -83,7 +83,7 @@
             <label for="price">TAUX DE TVA </label>
             <select name="taux_tva" id="taux_tva" class="form-control">
                 @foreach (TAUX_TVA as $tva)
-                <option value="{{ $tva }}"   @if( $product?->taux_tva == $tva || old('taux_tva') == $tva) selected @endif>{{ $tva }}</option>
+                <option value="{{ $tva }}"   @if( (isset($product) && $product?->taux_tva == $tva ) || old('taux_tva') == $tva) selected @endif>{{ $tva }}</option>
                 @endforeach
             </select>
             {!! $errors->first('taux_tva', '<small class="help-block invalid-feedback">:message</small>') !!}
@@ -162,6 +162,7 @@
 
 @section('javascript')
 <script>
+    const ARRONDIR_RESULTAT = "{{ ARRONDIR_RESULTAT }}";
     $(document).ready( function () {
        const tva = document.querySelector('#taux_tva');
        const price_tvac  = document.querySelector('#price_tvac');
@@ -182,11 +183,13 @@
     })
 
     function prixVenteHorsTva(price, taux = 0.18){
-        return Math.round(price / (1 + taux ));
+        const res = price / (1 + taux );
+        return ARRONDIR_RESULTAT ? res.toFixed(2) : Math.round(price / (1 + taux ));
     }
 
     function prixVenteTvac(price, taux){
-        return Math.round(price * (1 + taux ));
+        const res = price * (1 + taux );
+        return ARRONDIR_RESULTAT ? res.toFixed(2) : Math.round(price * (1 + taux ));
     }
 
 </script>

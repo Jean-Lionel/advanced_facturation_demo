@@ -9,22 +9,36 @@
     <link rel="stylesheet" href="{{ asset('css/prothem.css') }}">
     <link rel="stylesheet" href="{{ asset('css/reciept.css') }}">
 
+    <style>
+        .item_name{
+            width: 47%;
+            padding: 5px;
+        }
+        .element-center{
+            display: flex;
+            justify-content: center;
+            align-content: center;
+        }
+    </style>
+
 </head>
 <body>
     <div class="container_body">
         <div class="noprint header-element">
             <a href="{{ route('ventes.index') }}" class="noprint btn">Retour</a>
-            <button onclick="print()" class=" btn">Imprimer</button>
+            <button id="printElement" class=" btn noprint">Imprimer</button>
             <button id="print_reciept"  class="noprint btn">Imprimer Reciept</button>
         </div>
         <div class="main-content" id="printJS-form" >
             {{-- Entete --}}
-            <header class="header-facture">
-                {{-- <div>
+            <header class="header-facture ">
+                @if (USE_LOGO_NAME)
+                <div>
                     <div >
-                        <img class="img_logo" src="{{asset('img/logo.jpg')}}" alt="">
+                        <img class="img_logo" src="{{asset('img/'.  LOGO_NAME)}}" alt="">
                     </div>
-                </div> --}}
+                </div>
+                @endif
                 <div style="width: 100%;">
 
                     <h3>{{ $order->company->tp_name ?? "" }} </h3>
@@ -59,8 +73,10 @@
                     <p>Registre du commerce No : <b>{{ $order->company->tp_trade_number ?? "" }}</b></p>
                     <p>BP: <b>{{ $order->company->tp_postal_number ?? "" }}</b> , Tél <b>{{ $order->company->tp_phone_number }}</b></p>
                     <p>Commune : <b>{{ $order->company->tp_address_commune ?? ""}}</b>, Quartier : {{ $order->company->tp_address_quartier }}</p>
-                    <p>Avenue : <b>{{ $order->company->tp_address_quartier ?? ""}} </b></p>
-                    Assujetti à la TVA : <b>OUI</b>
+                    <p>Avenue : <b>{{ $order->company->tp_address_avenue ?? ""}} </b></p>
+                    Assujetti à la TVA : {{$order->company?->vat_taxpayer ? 'OUI' : 'NON'  }}<b>
+                        
+                    </b>
 
                 </div>
                 <div class="aling-right partie-droite">
@@ -80,8 +96,10 @@
                 <div>
                     <h5>B. Client</h5>
                     <p>Nom et Prénom ou Raison Socail :</p>
-                    <p><b>{{$order->client->name}}</b></p>
-                    <p>Résident à : <b>{{ $order->addresse_client }}</b></p>
+                    <p>
+                        <b>{{$order->client->name}}</b>
+                    </p>
+                    <p>Résident à : <b>{{ $order->client->addresse }}</b></p>
                     <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
                     <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
 
@@ -100,7 +118,7 @@
                             <th>{{ "Nature de l'article" }}</th>
                             {{-- <th>Nbre de sacs</th> --}}
                             <th>Quantité</th>
-                            <th>PU</th>
+                            <th>PU HTVA</th>
                             <th>PV-HTVA</th>
                         </tr>
                     </thead>
@@ -108,9 +126,10 @@
                         @foreach($order->products as $key=> $product)
                         <tr>
                             <td>{{ $key +1 }}</td>
-                            <td> {{ $product['name'] }}</td>
+                            <td class="item_name"> {{ $product['name'] }}</td>
                             {{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
-                            <td class="adroite"> {{ $product['quantite'] }}</td>
+                            <td class="adroite" style="width: 40px;"> {{ $product['quantite'] }}
+                                 {{ $product['unite_mesure'] ?? ""}}</td>
                             <td class="adroite"> {{ getPrice($product['price'] ) }}</td>
                             <td class="adroite"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                         </tr>
@@ -134,14 +153,12 @@
                     {{-- <h4>Mention Obligatoire</h4>
                         <h4>NB: Les non assujettis à la TVA ne remplissent pas les deux dernières lignes</h4> --}}
                         <br>
-                        <br>
-                        <br>
+                        <h4 class="text-center"> {{$order->invoice_signature}}</h4>
+                        <div class="element-center">
+                            {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
+                        </div>
                     </article>
 
-                    <div>
-                        <hr>
-                        <h4 class="text-center"> {{$order->invoice_signature}}</h4>
-                    </div>
                 </div>
 
                 <div id="reciept" style="display: none;">
@@ -189,9 +206,9 @@
                                     @foreach($order->products as $key=> $product)
                                     <tr>
                                         <td>{{ $key +1 }}</td>
-                                        <td> {{ $product['name'] }}</td>
+                                        <td class="item_name"> {{ $product['name'] }}</td>
                                         {{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
-                                        <td class="adroite"> {{ $product['quantite'] }}</td>
+                                        <td class="adroite" > {{ $product['quantite'] }}</td>
                                         <td class="adroite nowrap"> {{ getPrice($product['price'] ) }}</td>
                                         <td class="adroite nowrap"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                                     </tr>
@@ -210,6 +227,7 @@
                                         {{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
                                         <td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
                                         <td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
+                                    </tr>
                                     </tbody>
                                 </table>
                                 <hr>
@@ -223,14 +241,14 @@
                     </div>
                 </div>
                 <script>
-                    function print(){
-                        printJS({
-                            printable: "printJS-form",
-                            type: 'html',
-                            css: ' {{ asset('css/prothem.css')  }}'
-                        }
-                        );
-                    }
+
+                    const printElement = document.getElementById("printElement")
+
+                    printElement.addEventListener("click", function(e){
+                        e.preventDefault();
+                        window.print();
+                    })
+                    
 
                     const reciept = document.getElementById('print_reciept')
                     reciept.addEventListener('click',function(event){

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
+use App\Models\Order;
 
 class VenteController extends Controller
 {
@@ -16,8 +17,18 @@ class VenteController extends Controller
     public function index(Request $request)
     {
 
-        //  $obr = new SendInvoiceToOBR();
-        // dd($obr->getToken());
+        // $order = Order::latest()->first();
+        // dump($order );
+
+        if(env('OBR_CHECKCONNECTIVITY', false)){
+            $obr = new SendInvoiceToOBR();
+            dd($obr->getToken());
+
+            // dump($obr->checkTin(('4000834368')));
+            // dd($obr->getToken());
+        }
+
+
         // dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
 
         $search = request()->get('search');
@@ -55,7 +66,7 @@ class VenteController extends Controller
             <tr>
             <td> $value->id </td>
             <td> $value->code_product </td>
-            <td> $value->name</td>
+            <td> $value->name [ $value->unite_mesure]</td>
             <td> $value->price </td>
             <td> $value->taux_tva </td>
             <td> $value->price_tvac </td>

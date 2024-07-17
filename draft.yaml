@@ -1,29 +1,16 @@
 models:
-  Commande:
-    user_id : id foreign:users
-    stock_id: nullable id foreign:stockes
-    client_id : nullable id foreign:clients
-    type_commande : nullable text
-    stock_demandant: nullable id foreign:stockes
-    stock_livrant: nullable id foreign:stockes
-    description: nullable text
+  PeriodePaimentLocation:
+    user_id: id foreign:users
+    year: string nullable
+    month: string nullable
+    status: string nullable
+    SoftDeletes
 
 
-  CommandeDetail:
-    user_id : id foreign:users
-    commande_id : nullable id foreign:commandes
-    client_id : nullable id foreign:clients
-    product_id : nullable id foreign:products
-    quantite :  double default:0
-    quantite_livre :  double default:0
-    price_commande :  double default:0
-    price_livraison :  double default:0
-    description: nullable text
 
-
+seeders: PeriodePaimentLocation
 
 controllers:
-  Commande:
+  PeriodePaimentLocation:
     resource: web
-  CommandeDetail:
-    resource: web
+

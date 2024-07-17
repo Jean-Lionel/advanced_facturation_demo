@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\SearchOnModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Client extends MyModel
 {
-	use HasFactory;
+	use HasFactory, SearchOnModel;
 
 	protected $guarded = [];
 
@@ -16,4 +17,6 @@ class Client extends MyModel
     public function compte(){
         return $this->hasOne(Compte::class);
     }
+
+    
 }

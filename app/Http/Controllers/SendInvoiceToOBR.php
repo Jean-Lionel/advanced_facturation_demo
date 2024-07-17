@@ -50,6 +50,7 @@ class SendInvoiceToOBR extends Controller
         $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'checkTIN/', [
             'tp_TIN' => $tp_TIN
         ]);
+
         return json_decode($req->body());
     }
 
@@ -121,7 +122,7 @@ class SendInvoiceToOBR extends Controller
         $date_facturation = date_format($d, 'YmdHis');
 
         $invoice_signature = $company->tp_TIN . "/" . env('OBR_USERNAME')
-            . "/" . $date_facturation . "/" . $invoice_number;
+            . "/" . $date_facturation . "/" .INVOICE_PREFIX. $invoice_number;
 
         return $invoice_signature;
 

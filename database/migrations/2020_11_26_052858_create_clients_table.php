@@ -21,11 +21,13 @@ class CreateClientsTable extends Migration
             $table->string('description')->nullable();
             $table->string('client_type')->nullable();
             $table->string('is_fournisseur')->nullable();
+            $table->string('is_commissionaire')->nullable();
             $table->string('email')->nullable();
             // NIF DU CLIENT
             $table->string('customer_TIN')->unique()->nullable();
             //Si le client est assujetti à la TVA Valeur : « 0 » ou « 1 »
             $table->string('vat_customer_payer')->nullable();
+            $table->string('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

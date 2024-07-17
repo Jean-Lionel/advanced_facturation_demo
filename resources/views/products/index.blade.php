@@ -15,8 +15,15 @@
 			</h4>
 		</div>
 		<div class="col-md-6">
-			<form action="">
+			<form action="" class="d-flex gap-2">
+                <select name="category" id="">
+
+                    @foreach (['TOUT' , 'STOCK VIDE' , 'STOCK NON VIDE'] as $item)
+                    <option value="{{ $item }}" {{ \Request::get('category') == $item ? 'selected' : '' }}>{{ $item }}</option>
+                    @endforeach
+                </select>
 				<input type="text" name="search" class="form-control form-control-sm" value="{{ $search }}" placeholder="Rechercher ici ">
+                <button>Ok</button>
 			</form>
 		</div>
 	</div>

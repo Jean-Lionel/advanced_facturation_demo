@@ -15,6 +15,8 @@ class ObrDeclarationController extends Controller
 {
     public function index()
     {
+        $order = Order::find(3);
+
         $x = new SendInvoiceToOBR();
         $orders = Order::whereNull('envoye_obr')->latest()->get();
         return view('obr_declarations.index', [
@@ -61,24 +63,35 @@ class ObrDeclarationController extends Controller
                 // dd($product);
                 try{
                     $product = Product::find($productItem['id']);
-                    $product->quantite += $productItem['quantite'];
-                    $product->save();
-                    \App\Models\RetourProduit::create([
-                        'product_id' => $product->id,
-                        'item_name' => $product->name,
-                        'order_id' => $order->id,
-                        'quantite' => $productItem['quantite'],
-                        'description' => $request->motif,
-                        'user_id' => auth()->user()->id,
-                    ]);
 
-                    $current_price = $productItem['price_revient'] ;
-                    ObrMouvementStock::saveMouvement( $product, 'ER',$current_price, $productItem['quantite'], $request->motif, $order->id);
+                    if($product ){
+                        $product->quantite += $productItem['quantite'];
+                        $product->save();
+                        \App\Models\RetourProduit::create([
+                            'product_id' => $product->id,
+                            'item_name' => $product->name,
+                            'order_id' => $order->id,
+                            'quantite' => $productItem['quantite'],
+                            'description' => $request->motif,
+                            'user_id' => auth()->user()->id,
+                        ]);
+                        $current_price = $productItem['price_revient'] ;
+                        ObrMouvementStock::saveMouvement( $product, 'ER',$current_price, $productItem['quantite'], $request->motif, $order->id);
+
+                    }
+
+
+                    // Enregistres les mouvements de stock correspondant pour la facture
+
+                  //  $mouvements_enregistres = ObrMouvementStock
+                    //
+
+
                 }catch(\Exception $e){
                 }
             }
         }
-        if(!isInternetConnection()){
+        if(!isInternetConnection() || !CAN_SYNCRONISE){
             // Add to pading table
             CanceledInvoince::create([
                 'motif' => $request->motif,
@@ -95,21 +108,24 @@ class ObrDeclarationController extends Controller
                 'msg' => 'la Facture a été annulée.',
                 'invoice_signature' => $request->invoice_signature
             ]);
+        }else{
+            $obr = new SendInvoiceToOBR();
+            try {
+                $response = $obr->cancelInvoice($request->invoice_signature , $request->motif);
+                $order = Order::find($request->order_id);
+                $order->is_cancelled = true;
+                $order->save();
+                return $response;
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'msg' => $e->getMessage(). ' FILE ' . $e->getFile() . ' LINE ' .$e->getLine()
+                ]);
+            }
+
         }
 
-        $obr = new SendInvoiceToOBR();
-        try {
-            $response = $obr->cancelInvoice($request->invoice_signature , $request->motif);
-            $order = Order::find($request->order_id);
-            $order->is_cancelled = true;
-            $order->save();
-            return $response;
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'msg' => $e->getMessage(). ' FILE ' . $e->getFile() . ' LINE ' .$e->getLine()
-            ]);
-        }
+
     }
 
     public function sendInvoinceToObr($invoince_id)

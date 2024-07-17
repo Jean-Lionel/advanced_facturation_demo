@@ -22,6 +22,7 @@ class CreateComptesTable extends Migration
             $table->boolean('is_active');
             $table->foreignId('client_id')->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();

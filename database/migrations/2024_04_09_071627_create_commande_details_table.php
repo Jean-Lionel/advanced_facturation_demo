@@ -27,6 +27,7 @@ class CreateCommandeDetailsTable extends Migration
             $table->double('price_livraison')->default('0');
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();
