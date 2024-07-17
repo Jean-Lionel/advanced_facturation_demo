@@ -75,7 +75,6 @@ class ObrMouvementStock extends Model
         if( in_array( $mouvement, ['SN','SP','SV', 'SD',  'SC','SAJ','ST', 'SAU'])){
             $reste = $qte;
             foreach($produit->productDetails as $detail){
-              
                 if($detail != null){
                     $tmp = $reste;
                     $reste =  $reste - ($detail->quantite_restant ?? 0);
@@ -113,16 +112,18 @@ class ObrMouvementStock extends Model
 
             foreach($mouvements as $mv){
                 $detail = ProductDetail::find($mv->item_product_detail_id);
-                $detail->quantite_restant += $mv->item_quantity; // Ajouter la quantite qu'on avait enleve
-                $detail->save();
-
-                //dd( $detail);
-
-                self::create( array_merge($active_data, [
-                    'item_quantity' =>   $mv->item_quantity,
-                    'item_purchase_or_sale_price' => $mv->item_purchase_or_sale_price,
-                    'item_product_detail_id' => $detail->id
-                ]));
+                if($detail != null){
+                    $detail->quantite_restant += $mv->item_quantity; // Ajouter la quantite qu'on avait enleve
+                    $detail->save();
+    
+                    //dd( $detail);
+                    self::create( array_merge($active_data, [
+                        'item_quantity' =>   $mv->item_quantity,
+                        'item_purchase_or_sale_price' => $mv->item_purchase_or_sale_price,
+                        'item_product_detail_id' => $detail->id
+                    ]));
+                }
+               
 
 
             }
