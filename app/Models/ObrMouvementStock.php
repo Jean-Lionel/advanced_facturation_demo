@@ -75,29 +75,34 @@ class ObrMouvementStock extends Model
         if( in_array( $mouvement, ['SN','SP','SV', 'SD',  'SC','SAJ','ST', 'SAU'])){
             $reste = $qte;
             foreach($produit->productDetails as $detail){
-                $tmp = $reste;
-                $reste =  $reste - ($detail->quantite_restant ?? 0);
-                if($reste > 0){
-                    //table.push(product.value)
-                    self::create( array_merge($active_data, [
-                        'item_quantity' =>  $detail->quantite_restant ?? 0,
-                        'item_purchase_or_sale_price' => $detail->prix_revient ?? 0,
-                        'item_product_detail_id' => $detail->id
-                    ]));
-                    $detail->quantite_restant = 0;
-                    $detail->save();
-                }else if( $reste <= 0){
-                    // table.push(tmp)
-                    self::create( array_merge($active_data, [
-                        'item_quantity' =>   $tmp,
-                        'item_purchase_or_sale_price' => $detail->prix_revient,
-                        'item_product_detail_id' => $detail->id
-                    ]));
-                    $detail->quantite_restant -= $tmp;
-                    $reste = 0;
-                    $detail->save();
-                    break;
+              
+                if($detail != null){
+                    $tmp = $reste;
+                    $reste =  $reste - ($detail->quantite_restant ?? 0);
+                    if($reste > 0){
+                        //table.push(product.value)
+                        self::create( array_merge($active_data, [
+                            'item_quantity' =>  $detail->quantite_restant ?? 0,
+                            'item_purchase_or_sale_price' => $detail->prix_revient ?? 0,
+                            'item_product_detail_id' => $detail->id
+                        ]));
+                        $detail->quantite_restant = 0;
+                        $detail->save();
+                    }else if( $reste <= 0){
+                        // table.push(tmp)
+                        self::create( array_merge($active_data, [
+                            'item_quantity' =>   $tmp,
+                            'item_purchase_or_sale_price' => $detail->prix_revient,
+                            'item_product_detail_id' => $detail->id
+                        ]));
+                        $detail->quantite_restant -= $tmp;
+                        $reste = 0;
+                        $detail->save();
+                        break;
+                    }
+
                 }
+               
             }
 
         }else if(in_array( $mouvement, ['ER'])){
