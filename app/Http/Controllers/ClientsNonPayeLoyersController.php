@@ -15,7 +15,7 @@ class ClientsNonPayeLoyersController extends Controller
     $dateFin = $request->input('dateFin', date('Y-m-d'));
 
     if ($dateDebut && $dateFin) {
-        $idsMaisons = PaymentLocationMensuel::whereBetween('date_paiement', [
+        $idsMaisons = PaymentLocationMensuel::whereBetween('created_at', [
             Carbon::parse($dateDebut)->startOfDay(),
             Carbon::parse($dateFin)->endOfDay(),
         ])->pluck('maisonlocation_id')->toArray();

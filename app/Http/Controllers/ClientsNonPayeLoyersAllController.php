@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\DB;
 class ClientsNonPayeLoyersAllController extends Controller
 {
     public function index(Request $request)
-    {
-        $idsMaisons = PaymentLocationMensuel::whereDate('date_paiement', '>=', now()->subMonths(1))
+    {  
+        
+        $idsMaisons = PaymentLocationMensuel::whereDate('created_at', '>=', now()->subMonths(1))
                         ->pluck('maisonlocation_id')
                         ->toArray();
         $nonpayMaisons = MaisonLocation::whereNotIn('id', $idsMaisons)->get();

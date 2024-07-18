@@ -27,6 +27,7 @@
             </div>
         </div>
     </form>
+    <!--
     <table class="table table-striped table-bordered border-dark">
     <thead>
         <tr>
@@ -43,6 +44,7 @@
         </tr>
     </tbody>
     </table>
+-->
     @if(isset($clientsMaisonnonpay) && $clientsMaisonnonpay->isNotEmpty())
     <table class="table table-striped table-bordered border-dark">
         <thead>
