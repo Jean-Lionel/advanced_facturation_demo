@@ -41,7 +41,7 @@ class HistoriquePayment extends Component
     private function searchInvoices(){
         $s_date = $this->startDate;
         $e_date = $this->endDate;
-        $this->p =   PaymentLocationMensuel::with('order')
+        $this->p =   PaymentLocationMensuel::with(['order' , 'periode'])
         ->wherehas('order')
         ->where(function($query) use($s_date,$e_date ) {
             if($s_date && $e_date){

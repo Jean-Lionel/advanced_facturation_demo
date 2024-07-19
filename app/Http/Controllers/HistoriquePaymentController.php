@@ -7,11 +7,7 @@ use Illuminate\Http\Request;
 
 class HistoriquePaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $payments = Order::all();

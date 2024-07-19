@@ -13,7 +13,7 @@ define('DAY_FOR_STOCK_DATA_SYNCRONIZE', 10);
 define('RAISON_ENTREPRISE_HEADER', 'ADVANCED FACTURATION');
 define('ARRONDIR_RESULTAT', true);
 define('USE_ABONEMENT', false);
-define('USE_LOCATION', false);
+define('USE_LOCATION', true);
 define('USE_LOGO', true);
 define('USE_LOGO_NAME', false);
 define('LOGO_NAME', "logo.jpg");

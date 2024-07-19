@@ -60,4 +60,9 @@ class PaymentLocationMensuel extends Model
     public function order(){
         return $this->belongsTo(Order::class);
     }
+
+    public function periode(){
+        return $this->belongsTo( PeriodePaimentLocation::class,'periode_paiement_id');
+    }
+
 }
