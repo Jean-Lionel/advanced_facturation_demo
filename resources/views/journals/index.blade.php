@@ -11,19 +11,28 @@
 		@include('journals.header')
 
         <div class="row">
-            <form action="" class="col-3">
-                <div class="d-flex gap-3">
-                    <span>DU</span>
-                    <input type="date" class="form-control  form-control-sm" name="startDate"
-                    value="{{ $startDate }}"
-                    >
-                    <span>Au</span>
-                    <input type="date" class="form-control form-control-sm" name="endDate"
-                    value="{{ $endDate }}"
-                    >
-                    <button type="submit" class="btn btn-info btn-sm">
-                        Ok
-                    </button>
+            <form action="" class="col-4">
+                <div class="row">
+                    <div class="col-6">
+                        <span>DU</span>
+                        <input type="date" class="form-control  form-control-sm" name="startDate"
+                        value="{{ $startDate }}"
+                        >
+                    </div>
+                    <div class="col-6">
+                        <span>Au</span>
+                        <input type="date" class="form-control form-control-sm" name="endDate"
+                        value="{{ $endDate }}"
+                        >
+                    </div>
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-info btn-sm">
+                            Ok
+                        </button>
+                    </div>
+                   
+                    
+                    
                 </div>
             </form>
 

@@ -100,8 +100,8 @@ class ClientController extends Controller
             "client_type" => "required",
             "vat_customer_payer" => "required",
             "name" => "required",
-            "customer_TIN" => "sometimes|unique:clients,id",
-            "telephone" => "nullable",
+            "customer_TIN" => "nullable|unique:clients,customer_TIN",
+            "telephone" => "nullable|unique:clients,telephone",
             "addresse" => "nullable"
         ]);
         // Check if Tin does not exist in database
@@ -121,9 +121,7 @@ class ClientController extends Controller
                 $obr = new SendInvoiceToOBR();
                 $response = $obr->checkTin($request->customer_TIN);
                 if(!$response->success){
-
                     return redirect('clients/create')->with('message',  $request->customer_TIN . ' => '. $response->msg);
-
                 }
                 // }else{
 
@@ -134,6 +132,8 @@ class ClientController extends Controller
                     $customer_OBR = $response->result->taxpayer[0]->tp_name;
 
                 }catch (\Exception $e){
+
+                    dd($e);
 
                     return redirect('clients/create')->with('message',  $request->customer_TIN . ' => pas de connection Internet le Nif ne peut pas etre verfier pour le moment ');
                 }

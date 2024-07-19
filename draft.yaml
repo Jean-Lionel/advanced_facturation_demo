@@ -1,15 +1,16 @@
 models:
-  Fonction:
+  PeriodePaimentLocation:
     user_id: id foreign:users
-    name: string
-    description: text nullable
+    year: string nullable
+    month: string nullable
+    status: string nullable
     SoftDeletes
 
 
 
-seeders: Banque
+seeders: PeriodePaimentLocation
 
 controllers:
-  Banque:
+  PeriodePaimentLocation:
     resource: web
 

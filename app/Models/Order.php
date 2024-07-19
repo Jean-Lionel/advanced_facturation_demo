@@ -65,6 +65,7 @@ protected $guarded = [];
 		return $this->hasMany('App\Models\DetailOrder','order_id');
 	}
 
+
 	public function dette(){
 		return $this->belongsTo(PaiementDette::class , 'id','order_id');
 	}
