@@ -61,10 +61,10 @@ class MaisonLocation extends Model
 
     }
 
-    public function getTaxAttribute(){
+    // public function getTaxAttribute(){
         
-        return $this->getPriceTTCAttribute() -($this->montant);
-    }
+    //     return $this->getPriceTTCAttribute() -($this->montant);
+    // }
 
     public function getClientNameAttribute(){
         return implode(" && ", $this->clients->map->name->toArray() ?? []) ;
