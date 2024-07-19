@@ -12,8 +12,6 @@ function getNumberToWord($number , $language='fr'){
     
    return  $numberTransformer->toWords($number);
 }
-
-
 function isInternetConnection(){
     try{
         if(fsockopen('www.google.fr',80)){
@@ -31,7 +29,6 @@ function prixVenteTvac($price, $taux = 0.18){
     $res = $price * (1 + $taux );
     return ARRONDIR_RESULTAT ? round($res) : number_format($res, 2 );
 }
-
 function getPrice($price)
 {
     $price = floatval($price);

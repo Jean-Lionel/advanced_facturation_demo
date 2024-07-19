@@ -65,4 +65,5 @@ class ClientMaison extends Model
     {
         return $this->belongsTo(MaisonLocation::class);
     }
+    
 }

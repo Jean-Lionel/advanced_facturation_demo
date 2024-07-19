@@ -6,7 +6,10 @@
         <a href="{{ route('historique-paiement.index') }}">Historique de paiement</a>
     </div>
     <div>
-        <a href="{{ route('non-paiement-location.index') }}">Location non payé</a>
+        <a href="{{ route('LocationMaison.index') }}">Locations non payées par periode</a>
+    </div>
+    <div>
+        <a href="{{ route('LocationMaison.All.index') }}">Locations mensuelles non payées</a>
     </div>
 
 </div>

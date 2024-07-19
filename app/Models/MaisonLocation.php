@@ -6,6 +6,7 @@ use App\Models\Traits\SearchOnModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\PaymentLocationMensuel;
 
 /**
  * @property int $id
@@ -54,10 +55,17 @@ class MaisonLocation extends Model
     }
 
     public function getPriceTTCAttribute(){
-        return prixVenteTvac($this->montant, (($this->tax ?? 0) / 100));
+        // return prixVenteTvac($this->montant, (($this->tax ?? 0) / 100));
+         return prixVenteTvac($this->montant);
+
+
     }
 
-   
+    public function getTaxAttribute(){
+        
+        return $this->getPriceTTCAttribute() -($this->montant);
+    }
+
     public function getClientNameAttribute(){
         return implode(" && ", $this->clients->map->name->toArray() ?? []) ;
     }
@@ -74,5 +82,10 @@ class MaisonLocation extends Model
     }
     public function getVatCustomerPayerAttribute(){
         return $this->clients->map->vat_customer_payer->first() ?? 0;
+    }
+    
+    public function paymentLocationMensuels()
+    {
+        return $this->hasOne(PaymentLocationMensuel::class,'maisonlocation_id');
     }
 }
