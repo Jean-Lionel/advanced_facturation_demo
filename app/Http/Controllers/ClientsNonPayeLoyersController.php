@@ -9,6 +9,9 @@ use Carbon\Carbon;
 
 class ClientsNonPayeLoyersController extends Controller
 {
+
+    
+
     public function index(Request $request)
 {
     $dateDebut = $request->input('dateDebut',date('Y-m-d', strtotime('-1 month')));

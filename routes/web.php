@@ -141,6 +141,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('All', App\Http\Controllers\ClientsNonPayeLoyersAllController::class)
                 ->except([ 'edit', 'update', 'destroy','show','create']);
     }); 
+
+    Route::view('clients_non_paye_loyers_all', 'location.non_paye_loyers_all')->name('clients_non_paye_loyers_all');
 });
 
 require __DIR__ . '/jetstream.php';
