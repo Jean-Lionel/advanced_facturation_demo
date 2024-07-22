@@ -32,6 +32,9 @@
                     </p>
                     @endforeach
                 </td>
+                <td>
+                    {{ $item->periode }}
+                </td>
             </tr>
             @endforeach
         </tbody>

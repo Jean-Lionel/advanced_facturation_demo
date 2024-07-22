@@ -18,8 +18,12 @@ class RapportRevenu extends Component
     }
     public function render()
     {
-       $this->searchInteret();
+      
         return view('livewire.rapports.rapport-revenu');
+    }
+
+    public function updated(){
+        $this->searchInteret();
     }
 
    private function searchInteret(){
@@ -41,6 +45,6 @@ class RapportRevenu extends Component
             $result['Entreprise'] += $v->partage->Entreprise;
         }
        $this->revenues = $result;
-        return  $result;
+       // return  $result;
    }
 }

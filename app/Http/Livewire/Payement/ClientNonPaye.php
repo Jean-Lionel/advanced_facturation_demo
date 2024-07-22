@@ -27,8 +27,9 @@ class ClientNonPaye extends Component
 
     public function getNonPayment(){
         // get historique payment payment_location_mensuels
-         $payment_maison_ids  = PaymentLocationMensuel::where('periode_paiement_id',$this->periodeID)
-                                  ->get()->map->maisonlocation_id;
+         $payment_maison_ids  = PaymentLocationMensuel::
+         with('periode')->where('periode_paiement_id',$this->periodeID)
+         ->get()->map->maisonlocation_id;
         
         $this->curentNonPay =  MaisonLocation::with(['clients'])->whereNotIn('id', $payment_maison_ids)->get();
     }
