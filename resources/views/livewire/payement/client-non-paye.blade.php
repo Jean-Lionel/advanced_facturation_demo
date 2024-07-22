@@ -16,8 +16,7 @@
                 <th>ID</th>
                 <th>Maison </th>
                 <th>Locataire</th>
-                <th>Periode</th>
-                <th> Montant </th>
+        
             </tr>
         </thead>
         <tbody>
