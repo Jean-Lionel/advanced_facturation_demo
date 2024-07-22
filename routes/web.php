@@ -126,7 +126,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('load_commission', [ClientController::class, 'load_commission'])->name('load_commission');
     Route::resource('order-interet', App\Http\Controllers\OrderInteretController::class);
     Route::resource('hr-chambre', App\Http\Controllers\HrChambreController::class);
-    Route::resource('hr-fiche', App\Http\Controllers\HrFicheController::class);
+    Route::resource('partage_interethr-fiche', App\Http\Controllers\HrFicheController::class);
     Route::resource('hr-fiche-detail', App\Http\Controllers\HrFicheDetailController::class);
     Route::resource('hr-commande', App\Http\Controllers\HrCommandeController::class);
     Route::resource('banque', App\Http\Controllers\BanqueController::class);
@@ -143,6 +143,8 @@ Route::group(['middleware' => ['auth']], function () {
     }); 
 
     Route::view('clients_non_paye_loyers_all', 'location.non_paye_loyers_all')->name('clients_non_paye_loyers_all');
+
+    Route::view('rapport_revenue','reports.rapport_revenue' )->name('rapport_revenue');
 });
 
 require __DIR__ . '/jetstream.php';
