@@ -21,9 +21,8 @@
                 <th>Montant Total avec Tax</th>
                 {{--  <th>Type de Paiement</th>  --}}
                 <th>Periode de paiement</th>
-              
-              
                 <th>Date de Facturation</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -48,6 +47,9 @@
                     <td>{{ $payment->order?->amount_tax }}</td>
                     <td>{{ $payment->periode?->periode ?? '' }}</td>
                     <td>{{ $payment->order?->date_facturation ?? "" }}</td>
+                    <td>
+                        <a href="{{ route('orders.show',$payment->order?->id ) }}">Afficher</a>
+                    </td>
                 </tr>
 
             @endforeach

@@ -25,7 +25,7 @@
 <body>
     <div class="container_body">
         <div class="noprint header-element">
-            <a href="{{ route('ventes.index') }}" class="noprint btn">Retour</a>
+            <a href="{{URL::previous() }}" class="noprint btn">Retour</a>
             <button id="printElement" class=" btn noprint">Imprimer</button>
             <button id="print_reciept"  class="noprint btn">Imprimer Reciept</button>
         </div>
