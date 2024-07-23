@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\MaisonLocation;
 use NumberToWords\NumberToWords;
 define('TAUX_TVA', [18,10,0]);
 
@@ -74,4 +75,9 @@ function isValideNumber($number){
     } else {
         return false;
     }
+}
+
+
+function getMaisonById($id){
+    return MaisonLocation::find($id);
 }

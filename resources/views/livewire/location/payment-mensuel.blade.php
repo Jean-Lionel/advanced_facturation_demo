@@ -1,6 +1,5 @@
 <div>
     {{-- The best athlete wants his opponent at his best. --}}
-    
     <div>
         <div class="row">
             
@@ -9,7 +8,6 @@
                     <p>Maison à Payé </p>
                     <input type="text" placeholder="DISIGNATION" wire:model="houseNumber" class="form-controler">
                 </div>
-                
                 @if ($maisonLocations)
                 <table class="table table-sm">
                     <thead>
@@ -46,10 +44,7 @@
                     </tbody>
                 </table>
                 @endif
-                
-                
             </div>
-            
             <div class="col-4">
                 @if ($displayPayment)
                 <div>

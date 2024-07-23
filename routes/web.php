@@ -143,6 +143,7 @@ Route::group(['middleware' => ['auth']], function () {
     }); 
 
     Route::view('clients_non_paye_loyers_all', 'location.non_paye_loyers_all')->name('clients_non_paye_loyers_all');
+    Route::view('clients_half_paid', 'location.clients_half_paid')->name('clients_half_paid');
 
     Route::view('rapport_revenue','reports.rapport_revenue' )->name('rapport_revenue');
 });

@@ -6,10 +6,11 @@
         <a href="{{ route('historique-paiement.index') }}">Historique de paiement</a>
     </div>
     <div>
-        <a href="{{ route('clients_non_paye_loyers_all') }}">Locations non payées par periode</a>
+        <a href="{{ route('clients_non_paye_loyers_all') }}">Les non payées par periode</a>
     </div>
-    {{--  <div>
-        <a href="{{ route('LocationMaison.All.index') }}">Locations mensuelles non payées</a>
-    </div>  --}}
+    <div>
+        <a href="{{ route('clients_half_paid') }}">Paiement partielle </a>
+    </div>
+    
 
 </div>

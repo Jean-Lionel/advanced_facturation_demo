@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $user_id
  * @property int $maisonlocation_id
  * @property string $description
+ * @property string $total_payment_mensuel
  * @property double $montant
  * @property \Carbon\Carbon $date_paiement
  * @property \Carbon\Carbon $deleted_at

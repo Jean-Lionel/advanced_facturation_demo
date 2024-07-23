@@ -92,17 +92,13 @@ class PaymentMensuel extends Component
             //code...
             DB::beginTransaction();
             // Creating Order 
-
             // Checking if total amount of the periode has not orleady paid 
-
            $totalAmount = PaymentLocationMensuel::where('periode_paiement_id', $this->periodePaymentValue)
                                             ->where('maisonlocation_id', $this->paymentID)
                                             ->sum('montant');
-
             if( $totalAmount >= $this->maison->montant){
                 throw new \Exception('La periode de paiement est deja paye');
             }
-
             if( $totalAmount + $this->montant > $this->maison->montant){
                 throw new \Exception('Montant restant est de '. ($this->maison->montant - $totalAmount));
             }
@@ -113,7 +109,8 @@ class PaymentMensuel extends Component
                 'montant' => $this->montant,
                 'date_paiement' => $this->payementDate,
                 'user_id' => auth()->user()->id,
-                'periode_paiement_id' => $this->periodePaymentValue
+                'periode_paiement_id' => $this->periodePaymentValue,
+                'total_payment_mensuel' => $this->maison->montant
                // 'client_maison_id' =>   $this->maison->ClientId,
             ]);
 

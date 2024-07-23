@@ -13,7 +13,6 @@ class PaymentLocationMensuelController extends Controller
     public function index(Request $request)
     {
         $paymentLocationMensuels = PaymentLocationMensuel::all();
-
         return view('paymentLocationMensuel.index', compact('paymentLocationMensuels'));
     }
 
