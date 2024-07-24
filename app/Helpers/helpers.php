@@ -1,9 +1,7 @@
 <?php
-
 use App\Models\MaisonLocation;
 use NumberToWords\NumberToWords;
 define('TAUX_TVA', [18,10,0]);
-
 
 function getNumberToWord($number , $language='fr'){
     // create the number to words "manager" class

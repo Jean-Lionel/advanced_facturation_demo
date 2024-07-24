@@ -13,6 +13,8 @@
             </select>
         </div>
     </div>
+
+    @if ($paiementPartiel)
    <table class="table table-striped ">
     <thead>
         <tr>
@@ -29,6 +31,7 @@
     </thead>
 
     <tbody>
+        
         @foreach ($paiementPartiel as $key => $items)
            <tr>
             <td>    {{ ++$loop->index }}</td>
@@ -71,4 +74,6 @@
         @endforeach
     </tbody>
    </table>
+
+   @endif
 </div>
