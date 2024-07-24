@@ -1,16 +1,13 @@
 models:
-  PeriodePaimentLocation:
+  ClientHistory:
     user_id: id foreign:users
-    year: string nullable
-    month: string nullable
-    status: string nullable
+    client_id: id foreign:clients
+    content: text 
     SoftDeletes
 
-
-
-seeders: PeriodePaimentLocation
+seeders: ClientHistory
 
 controllers:
-  PeriodePaimentLocation:
+  ClientHistory:
     resource: web
 

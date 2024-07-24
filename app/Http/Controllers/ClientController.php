@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\ClientHistory;
 use App\Models\Compte;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 class ClientController extends Controller
 {
@@ -188,18 +190,27 @@ class ClientController extends Controller
                 "telephone" => "nullable",
                 "addresse" => "nullable"
             ]);
-
-            dd($request->all());
             $client->update($request->all());
-
             return $this->index();
         }
 
-       
         public function destroy(Client $client)
         {
-            $client->delete();
-
+            try {
+                //code...
+                DB::beginTransaction();
+                    ClientHistory::create([
+                        'client_id' => $client->id,
+                        'user_id' => auth()->user()->id,
+                        'content' => $client->toJson(),
+                    ]);
+                    // Delete with soft delete
+                    $client->forceDelete();
+                DB::commit();
+            } catch (\Throwable $th) {
+                //throw $th;
+               session()->flash('error', 'Suppression impossible');
+            }
             return back();
         }
     }
