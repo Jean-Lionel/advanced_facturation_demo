@@ -3,16 +3,27 @@
 namespace App\Http\Livewire\Payement;
 
 use App\Models\PaymentLocationMensuel;
+use App\Models\PeriodePaimentLocation;
 use Livewire\Component;
 
 class PaymentPartielle extends Component
 {
     public $periodeID = 1;
     public $paiementPartiel;
+    public $periodes;
+
+    public function mount(){
+        $this->periodes = PeriodePaimentLocation::latest()->get();
+    }
+
     public function render()
     {
+        return view('livewire.payement.payment-partielle', [
+        ]);
+    }
+
+    public function updatedPeriodeID(){
         $this->loadPayment();
-        return view('livewire.payement.payment-partielle');
     }
 
     public function loadPayment(){

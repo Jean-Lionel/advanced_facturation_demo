@@ -1,5 +1,18 @@
 <div>
     {{-- Care about people's approval and you will be their prisoner. --}}
+
+    <div class="row">
+        <div class="col-md-6">
+            Liste de ceux qui n ont pas encore payer la totalite 
+        </div>
+        <div class="col-md-6">
+            <select name="" id="" wire:model="periodeID">
+                @foreach ($periodes as $item)
+                    <option value="{{  $item->id}}"> {{ $item->name }} </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
    <table class="table table-striped ">
     <thead>
         <tr>

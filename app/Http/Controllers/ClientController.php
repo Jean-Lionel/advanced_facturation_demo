@@ -48,8 +48,6 @@ class ClientController extends Controller
     public function abonne($id){
         $customer = Client::find($id);
         $compte = Compte::where('client_id' , $customer->id)->first();
-
-
         if(!$compte){
             Compte::create([
                 'name' => str_pad($customer->id, 4, '0', STR_PAD_LEFT),
@@ -58,7 +56,6 @@ class ClientController extends Controller
                 'client_id' => $customer->id
             ]);
         }
-
         return back();
     }
 
@@ -183,25 +180,26 @@ class ClientController extends Controller
         */
         public function update(Request $request, Client $client)
         {
-            //
-
             $request->validate([
-                'first_name' => 'required',
+                "client_type" => "required",
+                "vat_customer_payer" => "required",
+                "name" => "required",
+                "customer_TIN" => "nullable",
+                "telephone" => "nullable",
+                "addresse" => "nullable"
             ]);
 
+            dd($request->all());
             $client->update($request->all());
 
             return $this->index();
         }
 
-        /**
-        * Remove the specified resource from storage.
-        *
-        * @param  \App\Models\Client  $client
-        * @return \Illuminate\Http\Response
-        */
+       
         public function destroy(Client $client)
         {
             $client->delete();
+
+            return back();
         }
     }

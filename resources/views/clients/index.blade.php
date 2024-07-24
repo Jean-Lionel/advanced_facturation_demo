@@ -62,11 +62,15 @@
 
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
-{{--  					<a href="{{ route('clients.edit', $value) }}" class="btn btn-outline-info btn-sm mr-2">Modifier</a>--}}
+					{{--  <a href="{{ route('clients.edit', $value) }}" class="btn btn-outline-info btn-sm mr-2">Modifier</a>  --}}
 					<form class="form-delete" action="{{ route('clients.destroy' , $value) }}" style="display: inline;" method="POST">
 					{{ csrf_field() }}
 					{{ method_field('DELETE') }}
-					<button class="btn btn-outline-danger btn-sm delete_client">Supprimer</button>
+					<button class="btn btn-outline-danger btn-sm delete_client"
+
+					onclick="return confirm('Are you sure you want to delete this client ?')"
+					
+					>Supprimer</button>
                     @if(USE_ABONEMENT)
                     <a href="{{ route('clients_abones', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Abonée</a>
                     <a href="{{ route('make_commissionnaire', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Commissionnaire</a>
