@@ -34,9 +34,10 @@
 
                             </td>
                             <td>
-                                @if(!in_array($item['id'], $produitsRetournes->toArray(), true))
-                                 <button wire:click="saveQuantite({{ $key }}, {{ collect($item)  }})">Retour</button>
-                                @endif
+                                <button wire:click="saveQuantite({{ $key }}, {{ collect($item)  }})">Retour</button>
+                                {{--  @if(!in_array($item['id'], $produitsRetournes->toArray(), true))
+                              
+                                @endif  --}}
 
                             </td>
                         </tr>

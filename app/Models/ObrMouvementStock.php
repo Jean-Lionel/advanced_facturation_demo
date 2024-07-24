@@ -51,11 +51,10 @@ class ObrMouvementStock extends Model
     public function produit(){
         return $this->hasMany(Product::class, 'item_code');
     }
-    public static function saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_description = null, $item_movement_invoice_ref = null ){
-
+    public static function saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_description = null, $item_movement_invoice_ref = null , $is_single_retour = false){
+        // is_single_retour is used when you are using return product 
         Session::put('cancel_syncronize', false);
         $item_movement_date = now();
-
         $active_data = [
             'system_or_device_id' => env('OBR_USERNAME'),
             'item_code'=> $produit->id,
@@ -108,24 +107,25 @@ class ObrMouvementStock extends Model
             $mouvements = ObrMouvementStock::where('item_movement_invoice_ref', '=',$item_movement_invoice_ref)->where('item_movement_type', '=', 'SN')
                     ->where('item_code', $produit->id )
                     ->get();
-
-
+            
             foreach($mouvements as $mv){
                 $detail = ProductDetail::find($mv->item_product_detail_id);
+                // Quand c'est le retour d'un seul produit dans le stock 
+                $current_quantite = $mv->item_quantity;
+                if($is_single_retour){
+                    $current_quantite = $qte;
+                }
+               
                 if($detail != null){
-                    $detail->quantite_restant += $mv->item_quantity; // Ajouter la quantite qu'on avait enleve
+                    $detail->quantite_restant +=  $current_quantite; // Ajouter la quantite qu'on avait enleve
                     $detail->save();
-    
                     //dd( $detail);
-                    self::create( array_merge($active_data, [
-                        'item_quantity' =>   $mv->item_quantity,
+                   $r = self::create( array_merge($active_data, [
+                        'item_quantity' =>  $current_quantite  ,
                         'item_purchase_or_sale_price' => $mv->item_purchase_or_sale_price,
                         'item_product_detail_id' => $detail->id
                     ]));
                 }
-               
-
-
             }
         }
         else{
