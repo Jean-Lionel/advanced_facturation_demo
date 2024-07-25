@@ -1,6 +1,11 @@
 <div>
     @include('maisonLocation._header')
     <h5 class="mb-4">Historique des Paiements</h5>
+    <div class="row">
+        <div wire:loading>
+            @livewire('loading.checkout')
+          </div>
+    </div>
     {{--  <div class="mb-4">
         <input type="text" class="form-control" placeholder="Rechercher par nom de client..." wire:model.debounce.300ms="search">
     </div>  --}}

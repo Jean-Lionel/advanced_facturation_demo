@@ -1,6 +1,10 @@
 <div>
     {{-- Success is as dangerous as failure. --}}
-
+    <div class="row">
+        <div wire:loading>
+            @livewire('loading.checkout')
+          </div>
+    </div>
     <div class="row my-2">
         <input type="date" class="form-control mr-3 col-1" wire:model='startDate'>
         <input type="date" class="form-control mr-3 col-1" wire:model='endDate'>

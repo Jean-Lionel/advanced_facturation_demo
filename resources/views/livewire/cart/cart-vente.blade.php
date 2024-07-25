@@ -7,6 +7,11 @@
             box-shadow: 0 5px 15px 0 hsla(0, 0%,0%, 0,15);
         }
     </style>
+    <div class="row">
+        <div wire:loading>
+            @livewire('loading.checkout')
+          </div>
+    </div>
 
     <div class="row">
         <div class="col-md-2">

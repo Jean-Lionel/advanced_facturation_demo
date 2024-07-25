@@ -1,5 +1,10 @@
 <div>
     {{-- Be like water. --}}
+    <div class="row">
+        <div wire:loading>
+            @livewire('loading.checkout')
+          </div>
+    </div>
     <div>
         <div class="row">
             <p class="col-6">
