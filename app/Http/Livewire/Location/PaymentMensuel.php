@@ -40,7 +40,6 @@ class PaymentMensuel extends Component
     public function render()
     {
         $periodesPayment = PeriodePaimentLocation::latest()->take(3)->get();
-
         return view('livewire.location.payment-mensuel', [
             'periodesPayments' => $periodesPayment
         ]);
@@ -124,11 +123,14 @@ class PaymentMensuel extends Component
          //   dd( $client);
             // Montant Hors TVA 
             //creating order 
+            $prixVenteTvac =  prixVenteTvac($this->montant , ($this->maison->tax /100));
             $order = Order::create([
-                'amount' => round($this->maison->priceTTC),
+                // calculer le prix total tvac 
+                'amount' =>  $prixVenteTvac  , // round($this->maison->priceTTC),
                 'total_quantity' =>1,
                 'total_sacs' => 0,
-                'tax' => $this->maison->tax,
+                // calculer du TVA 
+                'tax' =>($prixVenteTvac - $this->montant), // $this->maison->tax, // erreur 
                 'type_paiement' => $this->typePaiement,
                 'amount_tax' => $this->montant, // Motant Hors tax 
                 'products'=> serialize($this->getProduct()),
