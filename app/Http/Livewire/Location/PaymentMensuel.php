@@ -69,7 +69,7 @@ class PaymentMensuel extends Component
             ->whereHas('clients')
             ->where('name', 'like', '%'. $this->houseNumber .'%')
             ->orwhere('description', '%'. $this->houseNumber .'%')
-            ->take(10)->get();
+            ->take(20)->get();
         }else{
             $this->maisonLocations = collect([]);
         }

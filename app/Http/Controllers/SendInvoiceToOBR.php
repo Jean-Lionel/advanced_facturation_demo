@@ -75,15 +75,13 @@ class SendInvoiceToOBR extends Controller
             "invoice_identifier" => $invoice_signature,
            "cn_motif" => $motif
         ]);
-
         $response = json_decode($req->body());
-
         ObrPointer::create([
             'order_id' =>   $invoice_id ,
             'invoice_signature' => $invoice_signature,
-            'status' => $response->success,
+            'status' => $response->success ?? "",
             'electronic_signature' => $invoice_signature,
-            'msg' =>  $response->msg,
+            'msg' =>  $response->msg ?? "",
             'result' => "X",
         ]);
         return $response;

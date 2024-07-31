@@ -133,10 +133,11 @@ class StockController extends Controller
         $orders =  Order::where('is_cancelled','=','0')
                             ->whereBetween('created_at',[$startDate,$endDate])
                             ->sortable()
-                            ->latest();
+                            ->latest()
+                            ->get();
 
         return view('journals.index', [
-            'orders' => $orders->paginate(10),
+            'orders' => $orders, //->paginate(10),
             'startDate' => $startDate,
             'endDate' => $endDate,
             'total_tva' => $orders->sum('tax'),
