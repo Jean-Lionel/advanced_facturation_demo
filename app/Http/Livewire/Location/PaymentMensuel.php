@@ -25,7 +25,7 @@ class PaymentMensuel extends Component
     public $periodePaymentValue;
     public $typePaiement;
     public $displayPayment = false;
-    
+
     protected $rules = [
         'payementDate' => 'required|date',
         'montant' => 'required',
@@ -36,7 +36,7 @@ class PaymentMensuel extends Component
     public function mount(){
         $this->canCreatePaymentPeriode();
     }
-    
+
     public function render()
     {
         $periodesPayment = PeriodePaimentLocation::latest()->take(3)->get();
@@ -45,13 +45,13 @@ class PaymentMensuel extends Component
         ]);
     }
 
-    // Check if you can create a new payment periode 
+    // Check if you can create a new payment periode
 
     private function canCreatePaymentPeriode(){
         $check = PeriodePaimentLocation::where('month', date('m'))
                                         ->where('year', date('Y'))
                                         ->first();
-        // case null create periode payment 
+        // case null create periode payment
         if(is_null($check)){
             PeriodePaimentLocation::create([
                 'month' => date('m'),
@@ -61,37 +61,37 @@ class PaymentMensuel extends Component
         }
     }
 
-    
-    
+
+
     public function updatedHouseNumber(){
         if(strlen($this->houseNumber)){
             $this->maisonLocations = MaisonLocation::with('clients')
             ->whereHas('clients')
             ->where('name', 'like', '%'. $this->houseNumber .'%')
             ->orwhere('description', '%'. $this->houseNumber .'%')
-            ->take(4)->get();
+            ->take(10)->get();
         }else{
             $this->maisonLocations = collect([]);
         }
     }
-    
+
     public function payMensuel($payement_id){
         //  dd($payement_id);
         $this->displayPayment =  true;
         $this->paymentID = $payement_id;
         $this->maison =  MaisonLocation::with('clients')->find($payement_id);
-        
-        
+
+
     }
-    
+
     public function savePayment(){
         $this->validate($this->rules);
         $currentOrderId = 0;
         try {
             //code...
             DB::beginTransaction();
-            // Creating Order 
-            // Checking if total amount of the periode has not orleady paid 
+            // Creating Order
+            // Checking if total amount of the periode has not orleady paid
            $totalAmount = PaymentLocationMensuel::where('periode_paiement_id', $this->periodePaymentValue)
                                             ->where('maisonlocation_id', $this->paymentID)
                                             ->sum('montant');
@@ -121,18 +121,18 @@ class PaymentMensuel extends Component
                 'vat_customer_payer'=> $this->maison->vatCustomerPayer,
             ]);
          //   dd( $client);
-            // Montant Hors TVA 
-            //creating order 
+            // Montant Hors TVA
+            //creating order
             $prixVenteTvac =  prixVenteTvac($this->montant , ($this->maison->tax /100));
             $order = Order::create([
-                // calculer le prix total tvac 
+                // calculer le prix total tvac
                 'amount' =>  $prixVenteTvac  , // round($this->maison->priceTTC),
                 'total_quantity' =>1,
                 'total_sacs' => 0,
-                // calculer du TVA 
-                'tax' =>($prixVenteTvac - $this->montant), // $this->maison->tax, // erreur 
+                // calculer du TVA
+                'tax' =>($prixVenteTvac - $this->montant), // $this->maison->tax, // erreur
                 'type_paiement' => $this->typePaiement,
-                'amount_tax' => $this->montant, // Motant Hors tax 
+                'amount_tax' => $this->montant, // Motant Hors tax
                 'products'=> serialize($this->getProduct()),
                 'client'=> $client->toJson() ,//  substr($this->maison->clientName ?? "" , 0,100) ,
                 'addresse_client'=> substr($this->maison->adresse ?? "" , 0,100) ,// $this->maison->adresse,
@@ -146,11 +146,11 @@ class PaymentMensuel extends Component
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
             $order->invoice_signature = $signature;
             $order->save();
-            
+
             $paiementM->order_id = $order->id;
             $paiementM->save();
             $currentOrderId = $order;
-            
+
             DB::commit();
         } catch (\Throwable $th) {
             //throw $th;
@@ -161,11 +161,11 @@ class PaymentMensuel extends Component
 
         return redirect()->to('orders/'.$currentOrderId->id);
     }
-    
+
     protected function getProduct(){
 
         $periode = PeriodePaimentLocation::find($this->periodePaymentValue);
-        
+
         $paidTime = "";
         if( $periode ){
             $paidTime = $periode->month . '/' . $periode->year;
@@ -188,7 +188,7 @@ class PaymentMensuel extends Component
             'item_price_wvat' => $this->maison->priceTTC,
             'item_total_amount' =>  $this->maison->priceTTC
         ];
-        
+
         return $products;
     }
 }
