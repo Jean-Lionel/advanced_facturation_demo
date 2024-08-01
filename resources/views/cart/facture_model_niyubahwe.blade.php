@@ -75,7 +75,7 @@
                     <p>Commune : <b>{{ $order->company->tp_address_commune ?? ""}}</b>, Quartier : {{ $order->company->tp_address_quartier }}</p>
                     <p>Avenue : <b>{{ $order->company->tp_address_avenue ?? ""}} </b></p>
                     Assujetti à la TVA : {{$order->company?->vat_taxpayer ? 'OUI' : 'NON'  }}<b>
-                        
+
                     </b>
 
                 </div>
@@ -139,10 +139,7 @@
 
                             <td class="adroite"><b>{{ getPrice($order->amount_tax) }}</b></td>
                         </tr>
-                        <tr>
-                            <td colspan="4">TVA </td>
-                            <td class="adroite"><b>{{ getPrice($order->tax) }}</b></td>
-                        </tr>
+
                         <tr>
                             <td colspan="4"><b>TOTAL TVAC</b></td>
                             {{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
@@ -246,7 +243,7 @@
                         e.preventDefault();
                         window.print();
                     })
-                    
+
 
                     const reciept = document.getElementById('print_reciept')
                     reciept.addEventListener('click',function(event){
