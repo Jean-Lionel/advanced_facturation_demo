@@ -13,7 +13,6 @@
     <meta name="theme-color" content="#ffffff">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
     <link rel="stylesheet" href="{{ asset('css/css/all.css')  }}" defer="defer">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('datatable/css/datatables.min.css') }}">
@@ -121,23 +120,18 @@
                     <li>
                         <a href="{{ route('maison-location.index') }}" class="{{ setActiveRoute('maison-location.*') }}" ><span class="fa fa-cubes"></span> Location</a>
                     </li>
-                        
                     @endif
-                  
-                    
                     <li>
                         <a href="{{ route('rapport') }}" class="{{ setActiveRoute('rapport') }}" ><span class="fa fa-chart-bar"></span> Rapport</a>
                     </li>
                     <li>
                         <a href="{{ route('stockes.journal') }}"  class="{{ setActiveRoute('stockes.*') }}" ><span class="fa fa-calendar"></span> Journal</a>
                     </li>
-                    
                     @if (USE_ABONEMENT)
                     <li>
                         <a href="{{ route('comptes.index') }}"  class="{{ setActiveRoute('comptes.*') }}" ><span class="fa fa-hand-holding-usd" aria-hidden="true"></span> Abonement</a>
                     </li>
                     @endif
-                    
                     <li>
                         <a href="{{ route('depenses.index') }}" class="{{ setActiveRoute('depenses.*') }}"><span class="fa fa-minus"></span> Depense</a>
                     </li>
@@ -145,7 +139,6 @@
                         <a href="{{ route('entreprises.index') }}" class="{{ setActiveRoute('entreprises.*') }}">
                             <span class="fa fa-building"></span> Entreprise</a>
                         </li>
-                        
                         <li>
                             <a href="{{ route('users.index') }}" class="{{ setActiveRoute('users.*') }}"><span class="fas fa-cogs"></span> Système</a>
                         </li>
@@ -156,7 +149,6 @@
                     </ul>
                     <div id="status" class="status"></div>
                     @endcan
-                    
                     <div class="footer">
                         
                     </div>
