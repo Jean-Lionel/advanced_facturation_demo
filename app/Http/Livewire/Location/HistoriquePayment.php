@@ -48,8 +48,6 @@ class HistoriquePayment extends Component
                 $query->whereBetween('created_at', [$this->startDate, $this->endDate]);
             }
         })
-        ->latest()->paginate();
-
-        
+        ->latest()->paginate(10);
     }
 }

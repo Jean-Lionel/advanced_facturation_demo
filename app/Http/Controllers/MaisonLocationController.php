@@ -12,7 +12,7 @@ class MaisonLocationController extends Controller
 
     public function index(Request $request)
     {
-        $maisonLocations = MaisonLocation::withCount('clients')->latest()->paginate();
+        $maisonLocations = MaisonLocation::withCount('clients')->latest()->paginate(10);
         return view('maisonLocation.index', compact('maisonLocations'));
     }
 

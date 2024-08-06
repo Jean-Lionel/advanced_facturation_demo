@@ -27,14 +27,13 @@ class RetourProduct extends Component
     private function filterProducts(){
         $this->produitsRetournes = \App\Models\RetourProduit::where('order_id', $this->order->id)->get()->map->product_id;
         $this->listProducts = $this->order->products;
-
     }
-
     public function saveQuantite($key, $item){
         try {
             # code...
             DB::beginTransaction();
             $qte = $this->listQuantite[$key] ?? 0;
+
             $description = $this->description[$key] ?? '';
             \App\Models\RetourProduit::create([
                 'product_id' => $item['id'],
@@ -45,18 +44,22 @@ class RetourProduct extends Component
                 'user_id' => auth()->user()->id,
             ]);
             $produit = Product::find($item['id']);
-            if($this->listQuantite[$key] > $item['quantite']){
+            if(  $qte > $item['quantite']){
                 throw new \Exception("La quantité retourné est supérieur à la quantité prise ", 1);
             }
             $produit->quantite += $qte;
             $produit->save();
-            ObrMouvementStock::saveMouvement( $produit, 'ER', $item['price'], $qte, $description, $this->order->id);
+          
+            ObrMouvementStock::saveMouvement( $produit, 'ER', $item['price'], $qte, $description, $this->order->id, true);
+          
             $this->filterProducts();
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
             dd($e);
         }
+
+        return redirect()->to('products');
 
     }
     public function render()

@@ -1,6 +1,11 @@
 <div>
 {{-- Be like water. --}}
 <div class="row">
+    <div wire:loading>
+        @livewire('loading.checkout')
+      </div>
+</div>
+<div class="row">
     <div class="col">
         <label >Du</label>
         <input type="date" wire:model="startDate"  class="form-control form-control-sm">

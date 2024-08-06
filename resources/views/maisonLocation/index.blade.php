@@ -64,7 +64,7 @@
 
 </div>
 
-<div class="col-md-12" style="height: 20px; overflow: hidden;">
+<div class="col-md-12" style="">
 		{{ $maisonLocations->links()}}
 </div>
 

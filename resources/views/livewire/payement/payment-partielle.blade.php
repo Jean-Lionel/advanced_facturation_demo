@@ -1,6 +1,10 @@
 <div>
     {{-- Care about people's approval and you will be their prisoner. --}}
-
+    <div class="row">
+        <div wire:loading>
+            @livewire('loading.checkout')
+          </div>
+    </div>
     <div class="row">
         <div class="col-md-6">
             Liste de ceux qui n ont pas encore payer la totalite 

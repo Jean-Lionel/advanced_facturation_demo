@@ -1,6 +1,10 @@
 <div>
     {{-- If you look to others for fulfillment, you will never truly be fulfilled. --}}
-
+<div class="row">
+    <div wire:loading>
+        @livewire('loading.checkout')
+      </div>
+</div>
 
    <div class="d-flex gap-3">
     <span>DU</span>

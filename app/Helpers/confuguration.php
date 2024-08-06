@@ -14,7 +14,7 @@ define('RAISON_ENTREPRISE_HEADER', 'ADVANCED FACTURATION');
 define('ARRONDIR_RESULTAT', true);
 define('USE_ABONEMENT', true);
 define('USE_LOCATION', false);
-define('USE_LOGO', true);
-define('USE_LOGO_NAME', true);
-define('LOGO_NAME', "galerie_ideal.jpg");
+define('USE_LOGO', false);
+define('USE_LOGO_NAME', false);
+define('LOGO_NAME', "logo.jpg"); // "galerie_ideal.jpg
 define('INVOICE_PREFIX', '');
