@@ -1,3 +1,12 @@
+
+
+<div class="text-right">
+	<button class="btn btn-info noprint" onclick="window.print()" >
+		<i class="fa fa-print" aria-hidden="true"></i>
+		Imprimer
+	</button>
+</div>
+
 <h5 class="text-center">Historique des ventes</h5>
 <div>
 	{{-- <form action="" class="form-group row">

@@ -25,7 +25,7 @@
                         value="{{ $endDate }}"
                         >
                     </div>
-                    <div class="col-6">
+                    <div class="col-6 noprint">
                         <button type="submit" class="btn btn-info btn-sm">
                             Ok
                         </button>
@@ -88,7 +88,7 @@
                     <th>
                         TVA
                     </th>
-					<th scope="col">Action</th>
+					<th scope="col" class="noprint">Action</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -115,7 +115,7 @@
                     <td>
                         {{ getPrice($order->tax ) }}
                     </td>
-					<td class="d-flex">
+					<td class="d-flex noprint" >
 						<a href="{{ route('orders.show', $order) }}" class="btn btn-sm btn-success mr-2" title="imprimer"> <i class="fa fa-print" ></i></a>
 
 {{--						<form action="{{ route('cancelFactures', $order) }}" method="post">--}}
