@@ -67,7 +67,7 @@
         </div>
     </div>
 
-    @if(USE_ABONEMENT)
+    @if(env('APP_USE_ABONEMENT', false))
     <div class="col-md-4">
         <div class="form-group">
             <label for="is_fournisseur">Définir Le Client Comme Fournisseur</label>

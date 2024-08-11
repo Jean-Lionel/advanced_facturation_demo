@@ -1,7 +1,7 @@
 
 <div>
     
-    @if(USE_ABONEMENT)
+    @if(env('APP_USE_ABONEMENT', false))
 
     <div class="row">
         <div class="col"> 

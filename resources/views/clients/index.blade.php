@@ -39,7 +39,7 @@
 				<th scope="col">TELEPHONE</th>
 				<th scope="col">NIF</th>
 				<th scope="col">Adresse</th>
-				@if (USE_ABONEMENT)
+				@if (env('APP_USE_ABONEMENT', false))
 				<th scope="col">Fournisseur</th>
 				<th>Abonnées</th>
 				@endif
@@ -66,7 +66,7 @@
 					{{ $value->addresse}}
 				</td>
 				
-				@if (USE_ABONEMENT)
+				@if (env('APP_USE_ABONEMENT', false))
 				<td>
 					{{ $value->is_fournisseur}}
 				</td>
@@ -84,7 +84,7 @@
 						onclick="return confirm('Are you sure you want to delete this client ?')"
 						
 						>Supprimer</button>
-						@if(USE_ABONEMENT)
+						@if(env('APP_USE_ABONEMENT', false))
 						<a href="{{ route('clients_abones', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Abonée</a>
 						<a href="{{ route('make_commissionnaire', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Commissionnaire</a>
 						
