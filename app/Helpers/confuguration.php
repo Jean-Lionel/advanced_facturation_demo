@@ -17,9 +17,5 @@ define('USE_LOCATION', env('APP_USE_LOCATION', false) );
 define('USE_LOGO', env('APP_USE_LOGO', false) );
 define('USE_LOGO_NAME', env('APP_USE_LOGO', false));
 define('LOGO_NAME', env('USE_LOGO_NAME', "logo.jpg") ); // "galerie_ideal.jpg
-define('USE_ABONEMENT', true);
-define('USE_LOCATION', false);
-define('USE_LOGO', false);
-define('USE_LOGO_NAME', false);
-define('LOGO_NAME', "logo.jpg"); // "galerie_ideal.jpg
+
 define('INVOICE_PREFIX', '');
