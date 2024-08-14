@@ -46,7 +46,7 @@ class SyncronizeToObr extends Command
             // send a special command for sending ORDER 
             $obr = new ObrDeclarationController();
             $response =   $obr->sendInvoinceToObr( $orderID );
-            $this->info( $response);
+            var_dump($response);
         }else{
             // syncronize all invoices  in the system  (not a single order)
             $t1 = time();
