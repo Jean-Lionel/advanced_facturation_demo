@@ -23,12 +23,18 @@
 
 </head>
 <body>
+
     <div class="container_body">
         <div class="noprint header-element">
             <a href="{{URL::previous() }}" class="noprint btn">Retour</a>
             <button id="printElement" class=" btn noprint">Imprimer</button>
             <button id="print_reciept"  class="noprint btn">Imprimer Reciept</button>
         </div>
+
+        @if ($order->is_cancelled)
+            @include('cart._partial')
+        @endif
+       
         <div class="main-content" id="printJS-form" >
             {{-- Entete --}}
             <header class="header-facture ">
@@ -166,7 +172,10 @@
 
                         <h6 class="invoice_signature"> {{$order->invoice_signature}}  </h6>
                         <h6>FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h6>
-
+                        @if ($order->is_cancelled)
+                           @include('cart._partial')
+                         @endif
+                   
                         <h5>A. Identification du vendeur</h5>
                         <p><b>{{$order->company->tp_name ?? ""}}</b></p>
                         <p>NIF : <b>{{$order->company->tp_TIN}}</b></p>

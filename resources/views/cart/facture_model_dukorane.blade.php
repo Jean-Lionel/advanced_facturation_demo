@@ -111,7 +111,9 @@
 </style>
 </head>
 <body>
-    
+    @if ($order->is_cancelled)
+    @include('cart._partial')
+  @endif
     <div class="invoice">
         <div class="no_print">
             <a href="{{ URL::previous() }}">Retour</a>

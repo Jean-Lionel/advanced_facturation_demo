@@ -29,6 +29,10 @@
             <button id="printElement" class=" btn noprint">Imprimer</button>
             <button id="print_reciept"  class="noprint btn">Imprimer Reciept</button>
         </div>
+
+        @if ($order->is_cancelled)
+        @include('cart._partial')
+      @endif
         <div class="main-content" id="printJS-form" >
             {{-- Entete --}}
             <header class="header-facture ">
