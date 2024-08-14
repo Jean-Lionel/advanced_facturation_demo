@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\ObrDeclarationController;
+use App\Http\Controllers\SyncronizeController;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class SyncronizeToObr extends Command
 {
@@ -12,7 +13,7 @@ class SyncronizeToObr extends Command
      *
      * @var string
      */
-    protected $signature = 'obr:send';
+    protected $signature = 'obr:send {orderID?}';
 
     /**
      * The console command description.
@@ -38,18 +39,38 @@ class SyncronizeToObr extends Command
      */
     public function handle()
     {
-
-        $items = range(0, 45);
-        $progressBar = $this->output->createProgressBar(count($items));
-
-        $progressBar->start();
-
-        foreach ($items as $item) {
-            sleep(1);
-            $progressBar->advance(1);
+       
+        $orderID = $this->argument('orderID');    
+        
+        if($orderID){
+            // send a special command for sending ORDER 
+            $obr = new ObrDeclarationController();
+            $response =   $obr->sendInvoinceToObr( $orderID );
+            $this->info( $response);
+        }else{
+            // syncronize all invoices  in the system  (not a single order)
+            $t1 = time();
+            $this->info( 'Start ----------------------------------------------------------------');
+            $syncronize = new SyncronizeController();
+            $resp = $syncronize->syncronizeInvoices();
+            $syncronize->syncronizeStock();
+           // $this->info( $resp);
+            $t2 = time();
+            $this->info( 'FINSHID ------------------in : '. ($t2 - $t1) .' s ---------------------');
         }
+      //  dump( $orderID);
 
-        $progressBar->finish();
+        // $items = range(0, 45);
+        // $progressBar = $this->output->createProgressBar(count($items));
+
+        // $progressBar->start();
+
+        // foreach ($items as $item) {
+        //     sleep(1);
+        //     $progressBar->advance(1);
+        // }
+
+        // $progressBar->finish();
 
         return 0;
     }
