@@ -82,7 +82,7 @@
 					<th scope="col">#</th>
 					<th scope="col">PRODUITS</th>
 					<th scope="col">@sortablelink('montant','MONTANT')</th>
-					<th scope="col">
+					<th scope="col" class="noprint">
 						@sortablelink('type_paiement', 'MODE DE PAIMENT')
 					</th>
                     <th>
@@ -108,10 +108,16 @@
 
 							<li class="text-center list-unstyled">{{ $order->created_at }}</li>
 
+							<li class="">
+                               Client :  <b>{{ $order->client->name ?? "" }}</b>
+                            </li>
+
+                            
 						</ul>
+                       
 					</td>
 					<td>{{ getPrice($order->amount )}}</td>
-					<td>{{ $order->type_paiement ?? ""}}</td>
+					<td class="noprint">{{ $order->type_paiement ?? ""}}</td>
                     <td>
                         {{ getPrice($order->tax ) }}
                     </td>
