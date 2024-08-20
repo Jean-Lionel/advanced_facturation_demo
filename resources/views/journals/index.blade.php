@@ -5,6 +5,14 @@
 @section('content')
 @include('products._header_product')
 
+<style>
+
+.numbers {
+    white-space: nowrap;
+}
+
+</style>
+
 <div class="row">
 
 	<div class="col-md-12">
@@ -30,9 +38,7 @@
                             Ok
                         </button>
                     </div>
-                   
-                    
-                    
+
                 </div>
             </form>
 
@@ -58,17 +64,17 @@
                     <table class="table table-sm table-striped">
                         <tr>
                             <th>MONTANT TOTAL DES FACTURE TVAC</th>
-                            <th>
-                               {{ getPrice($total_amount) }}
+                            <th class="numbers">
+                            {{ getPrice($total_amount) }}
                             </th>
                         </tr>
                         <tr>
                             <th>NOMBRE TOTAL POUR  TVA</th>
-                            <th>{{ getPrice($total_tva) }}</th>
+                            <th class="numbers">{{ getPrice($total_tva) }}</th>
                         </tr>
                         <tr>
                             <th>NOMBRE TOTAL POUR  HTVA</th>
-                            <th>{{ getPrice($total_amount_tax) }}</th>
+                            <th class="numbers">{{ getPrice($total_amount_tax) }}</th>
                         </tr>
                     </table>
                 </div>
@@ -99,7 +105,7 @@
 				<tr>
 					<th scope="row">{{ $order->id }}</th>
 
-					<td>
+					<td class="">
 						<ul class="">
 							@foreach($order->products as $product)
 							<li>{{ $product['name'] }} | Qte : {{ $product['quantite'] }} |
@@ -116,9 +122,9 @@
 						</ul>
                        
 					</td>
-					<td>{{ getPrice($order->amount )}}</td>
+					<td class="numbers">{{ getPrice($order->amount )}}</td>
 					<td class="noprint">{{ $order->type_paiement ?? ""}}</td>
-                    <td>
+                    <td class="numbers">
                         {{ getPrice($order->tax ) }}
                     </td>
 					<td class="d-flex noprint" >
