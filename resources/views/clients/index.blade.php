@@ -9,7 +9,7 @@
 	role="alert"
 	>
 	<h4 class="alert-heading">{{ session('error') }}</h4>
-	
+
 </div>
 @endif
 
@@ -29,7 +29,7 @@
 			</form>
 		</div>
 	</div>
-	
+
 	<table class="table table-sm">
 		<thead>
 			<tr>
@@ -40,7 +40,7 @@
 				<th scope="col">NIF</th>
 				<th scope="col">Adresse</th>
 				@if (USE_ABONEMENT)
-				<th scope="col">Fournisseur</th>
+				<th scope="col">Commissionnaire</th>
 				<th>Abonnées</th>
 				@endif
 				<th>Date</th>
@@ -48,7 +48,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			
+
 			@foreach ($clients as $value)
 			{{-- expr description  --}}
 			<tr>
@@ -61,18 +61,18 @@
 				<td>
 					{{ $value->customer_TIN}}
 				</td>
-				
+
 				<td>
 					{{ $value->addresse}}
 				</td>
-				
+
 				@if (USE_ABONEMENT)
-				<td>
-					{{ $value->is_fournisseur}}
+				<td class="text-center">
+					{{ $value->is_commissionaire?"YES":""}}
 				</td>
 				<td>{{ $value->compte->name  ?? "" }}</td>
 				@endif
-				
+
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
 					{{--  <a href="{{ route('clients.edit', $value) }}" class="btn btn-outline-info btn-sm mr-2">Modifier</a>  --}}
@@ -80,14 +80,14 @@
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}
 						<button class="btn btn-outline-danger btn-sm delete_client"
-						
+
 						onclick="return confirm('Are you sure you want to delete this client ?')"
-						
+
 						>Supprimer</button>
 						@if(USE_ABONEMENT)
 						<a href="{{ route('clients_abones', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Abonée</a>
 						<a href="{{ route('make_commissionnaire', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Commissionnaire</a>
-						
+
 						@endif
 					</form>
 				</td>

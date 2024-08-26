@@ -63,7 +63,7 @@
                         @foreach ($interets as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
-                            <td>{{ $item->order_id }}</td>
+                            <td class="text-center">{{ $item->order_id }}</td>
                             <td>{{ $item->commisionnaire()?->name }}</td>
                             <td>{{ $item->client()?->name }}</td>
                             <td class="text-right">{{ $item->montant }}</td>
