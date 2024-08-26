@@ -132,7 +132,7 @@ class ClientController extends Controller
 
                 }catch (\Exception $e){
 
-                    dd($e);
+                    // dd($e);
 
                     return redirect('clients/create')->with('message',  $request->customer_TIN . ' => pas de connection Internet le Nif ne peut pas etre verfier pour le moment ');
                 }

@@ -7,8 +7,8 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Compte ID</th>
-                    <th>Client ID</th>
+                    {{-- <th>Compte ID</th>
+                    <th>Client ID</th> --}}
                     <th>Mode de Paiement</th>
                     <th>Titre</th>
                     <th>Montant</th>
@@ -21,8 +21,8 @@
                 @foreach($historiques as $historique)
                 <tr>
                     <td>{{ $historique->id }}</td>
-                    <td>{{ $historique->compte_id }}</td>
-                    <td>{{ $historique->client_id }}</td>
+                    {{-- <td>{{ $historique->compte_id }}</td>
+                    <td>{{ $historique->client_id }}</td> --}}
                     <td>{{ $historique->mode_payement }}</td>
                     <td>{{ $historique->title }}</td>
                     <td>{{ $historique->montant }}</td>
