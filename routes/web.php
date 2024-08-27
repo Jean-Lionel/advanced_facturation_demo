@@ -82,6 +82,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('cancelFactures/{order_id}', [StockController::class,'cancelFactures'])->name('cancelFactures');
     Route::get('canceledInvoince', [StockController::class, 'canceledInvoince'])->name('canceledInvoince');
     Route::get('journal_history', [StockController::class ,'journal_history'])->name('journal_history');
+    Route::get('journal_sort_history', [StockController::class ,'journal_sort_history'])->name('journal_sort_history');
     Route::get('fiche_stock', [StockController::class ,'fiche_stock'])->name('fiche_stock');
     Route::get('mouvement_stock', [StockController::class ,'mouvement_stock'])->name('mouvement_stock');
     //Checkout Router PayMent
@@ -134,7 +135,7 @@ Route::group(['middleware' => ['auth']], function () {
                ->except([ 'edit', 'update', 'destroy','show','create']);
         Route::resource('All', App\Http\Controllers\ClientsNonPayeLoyersAllController::class)
                 ->except([ 'edit', 'update', 'destroy','show','create']);
-    }); 
+    });
     Route::view('clients_non_paye_loyers_all', 'location.non_paye_loyers_all')->name('clients_non_paye_loyers_all');
     Route::view('clients_half_paid', 'location.clients_half_paid')->name('clients_half_paid');
     Route::view('rapport_revenue','reports.rapport_revenue' )->name('rapport_revenue');
