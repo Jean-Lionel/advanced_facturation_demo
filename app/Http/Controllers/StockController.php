@@ -155,7 +155,10 @@ class StockController extends Controller
         $products = Product::latest()->paginate(20);
         return view('journals.history', compact('products'));
     }
-
+    public function journal_sort_history(){
+        $products = Product::latest()->get();
+        return view('journals.sort_history', compact('products'));
+    }
     public function rapport(){
 
         $start_date = request()->query('start_date');
