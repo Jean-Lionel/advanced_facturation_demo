@@ -6,6 +6,10 @@
     word-wrap: break-word;
 }
 
+.numbers {
+  white-space: nowrap;
+}
+
   .container {
 
     font-family: Arial, sans-serif;
