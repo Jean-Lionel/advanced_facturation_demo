@@ -82,7 +82,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('cancelFactures/{order_id}', [StockController::class,'cancelFactures'])->name('cancelFactures');
     Route::get('canceledInvoince', [StockController::class, 'canceledInvoince'])->name('canceledInvoince');
     Route::get('journal_history', [StockController::class ,'journal_history'])->name('journal_history');
-    Route::get('journal_sort_history', [StockController::class ,'journal_sort_history'])->name('journal_sort_history');
     Route::get('fiche_stock', [StockController::class ,'fiche_stock'])->name('fiche_stock');
     Route::get('mouvement_stock', [StockController::class ,'mouvement_stock'])->name('mouvement_stock');
     //Checkout Router PayMent
