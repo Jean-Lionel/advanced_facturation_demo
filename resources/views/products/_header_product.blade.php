@@ -20,6 +20,12 @@
             <span>Historique des Entres en stock</span>
         </a>
     </div>
+    <div>
+        <a href="{{ route('journal_sort_history') }}" class="{{ setActiveRoute('journal_sort_history') }}">
+            <span class="fa fa-file-archive"></span>
+            <span>Historique des Sortants en stock</span>
+        </a>
+    </div>
 
     <div>
         <a href="{{ route('mouvement_stock') }}" class="{{ setActiveRoute('mouvement_stock') }}">

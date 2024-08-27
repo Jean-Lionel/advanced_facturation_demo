@@ -22,16 +22,17 @@
 			</thead>
 			<tbody>
 
+                {{-- @dump($products) --}}
 
 				@foreach($products as $product)
 				<tr>
 					<td>{{ $product->id }}</td>
-					<td>{{ $product->name }}</td>
-					<td>{{ $product->quantite }}</td>
-					<td>{{ $product->price }}</td>
-					<td>{{ $product->date_expiration }}</td>
 					<td>{{ $product->created_at }}</td>
-					<td>{{ $product->created_at }}</td>
+					<td>{{ $product->id }}</td>
+					<td>{{ $product->company->tp_TIN }}</td>
+					<td>{{ $product->client->name }}</td>
+					<td>{{ $product->amount_tax }}</td>
+					<td>{{ $product->tax }}</td>
 				</tr>
 
 				@endforeach

@@ -156,9 +156,14 @@ class StockController extends Controller
         return view('journals.history', compact('products'));
     }
     public function journal_sort_history(){
-        $products = Product::latest()->get();
+        $products = Order::all();
+
+
+
         return view('journals.sort_history', compact('products'));
     }
+
+
     public function rapport(){
 
         $start_date = request()->query('start_date');
