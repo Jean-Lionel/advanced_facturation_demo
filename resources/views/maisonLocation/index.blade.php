@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 @include('maisonLocation._header')
 
@@ -18,8 +17,6 @@
 			</form>
 		</div>
 	</div>
-	
-
 	<table class="table table-sm">
 		<thead>
 			<tr>
@@ -34,7 +31,6 @@
 			</tr>
 		</thead>
 		<tbody>
-
 			@foreach ($maisonLocations as $value)
 			{{-- expr --}}
 			<tr>
@@ -42,11 +38,9 @@
 				<td>
 					{{ $value->name}}
 				</td>
-				
 				<td>
 					{{ $value->montant}}
 				</td>
-
 				<td>{{ $value->description }}</td>
 				<td>
 					{{ $value->clients_count}}
@@ -55,18 +49,14 @@
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
 					<a href="{{ route('maison-location.show', $value) }}" class="btn btn-outline-info btn-sm mr-2">Locataire</a>
+					<a href="{{ route('maison-location.edit', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Modifier</a>
 				</td>
 			</tr>
 			@endforeach
 		</tbody>
 	</table>
-
-
 </div>
-
 <div class="col-md-12" style="">
 		{{ $maisonLocations->links()}}
 </div>
-
-
 @endsection

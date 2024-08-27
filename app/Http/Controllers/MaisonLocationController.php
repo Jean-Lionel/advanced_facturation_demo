@@ -34,13 +34,10 @@ class MaisonLocationController extends Controller
         return view('maisonLocation.show', compact('maisonLocation'));
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\MaisonLocation $maisonLocation
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Request $request, MaisonLocation $maisonLocation)
     {
+       
         return view('maisonLocation.edit', compact('maisonLocation'));
     }
 
@@ -51,6 +48,7 @@ class MaisonLocationController extends Controller
      */
     public function update(MaisonLocationUpdateRequest $request, MaisonLocation $maisonLocation)
     {
+        dd($maisonLocation);
         $maisonLocation->update($request->validated());
 
         $request->session()->flash('maisonLocation.id', $maisonLocation->id);
