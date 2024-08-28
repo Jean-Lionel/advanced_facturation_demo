@@ -156,11 +156,26 @@ class StockController extends Controller
         return view('journals.history', compact('products'));
     }
     public function journal_sort_history(){
-        $products = Order::all();
+        $start_date = request()->query('start_date');
+        $end_date =  request()->query('end_date');
+        $products = Order::
+                    where(function($query) use($start_date, $end_date){
+                        if($start_date && $end_date){
+                            $query->whereBetween('created_at',[$start_date, $end_date]);
+                        }else{
+                            if($start_date){
+                                $query->whereDate('created_at','=',$start_date);
+                            }
+                            if($end_date){
+                                $query->whereDate('created_at','=',$end_date);
+                            }
+                        }
 
+                    })
+                    ->where('is_cancelled', '=',0)
+                    ->get();
 
-
-        return view('journals.sort_history', compact('products'));
+        return view('journals.sort_history', compact('products' , 'start_date', 'end_date'));
     }
 
 

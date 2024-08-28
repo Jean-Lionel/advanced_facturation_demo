@@ -6,7 +6,29 @@
 @include('products._header_product')
 
 <div class="col-md-12">
-		<h5 class="text-center">Historique des Sortans</h5>
+		<h5 class="text-center">Historique</h5>
+
+		<div>
+			<div class="card card-header">
+				<form  class="form">
+					<div class="d-flex gap-3">
+
+						<div>
+							Du
+							<input type="date"  value="{{ $start_date }}" name="start_date" >
+						</div>
+
+						<div>
+							Au
+							<input type="date"  value="{{ $end_date }}" name="end_date" >
+						</div>
+						<div>
+							<input type="submit" value="OK" class="btn btn-sm btn-warning">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
 		<table id="fiche_stock" class="table table-sm table-striped" style="width: 100%;">
 			<thead>

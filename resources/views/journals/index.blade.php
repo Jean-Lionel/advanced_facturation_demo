@@ -128,14 +128,11 @@
                         {{ getPrice($order->tax ) }}
                     </td>
 					<td class="d-flex noprint" >
+                     
+                    
 						<a href="{{ route('orders.show', $order) }}" class="btn btn-sm btn-success mr-2" title="imprimer"> <i class="fa fa-print" ></i></a>
 
-{{--						<form action="{{ route('cancelFactures', $order) }}" method="post">--}}
-{{--							@method("DELETE")--}}
-{{--							@csrf--}}
-{{--							<button type="submit" onclick="return confirm('êtez-vous sûr d\'annuler la facture?')" class="btn btn-danger btn-sm" title="Supprimer"> <i class="fa fa-minus" ></i> </button>--}}
-{{--							--}}
-{{--						</form>--}}
+
 					</td>
 
 				</tr>
