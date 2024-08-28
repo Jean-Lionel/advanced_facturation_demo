@@ -6,6 +6,7 @@ use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Client;
 use App\Models\Entreprise;
 use App\Models\Order;
+use App\Models\Proformat;
 use Livewire\Component;
 use DB;
 
@@ -50,11 +51,12 @@ class ServiceVente extends Component
         $company = Entreprise::currentEntreprise();
         //  dd($company);
         $this->validate($this->rules);
+      
         try{
-            DB::beginTransaction();
 
-            $products =  $this->extractCart();
-            $order = Order::create([
+            DB::beginTransaction();
+             $products =  $this->extractCart();
+             $orderData = [
                 'amount' => array_sum(array_values($this->pricesTVAC)),
                 'total_quantity' => count($this->table_length),
                 'total_sacs' => 0,
@@ -68,11 +70,17 @@ class ServiceVente extends Component
                 'date_facturation'=> now(),
                 'is_cancelled' => 0,
                 'company' =>  $company->toJson(),
-            ]);
-            $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
-            $order->invoice_signature = $signature;
-            $order->save();
-
+             ];
+             $order = null ;
+             if($this->typeFacture == 'FACTURE'){
+                $order = Order::create($orderData);
+                $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
+                $order->invoice_signature = $signature;
+                $order->save();
+             }else{
+                $order = Proformat::create($orderData);
+             }
+        
             DB::commit();
 
             return redirect()->to('orders/' . $order->id);

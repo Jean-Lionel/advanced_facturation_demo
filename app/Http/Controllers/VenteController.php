@@ -16,21 +16,15 @@ class VenteController extends Controller
 
     public function index(Request $request)
     {
-
         // $order = Order::latest()->first();
         // dump($order );
-
         if(env('OBR_CHECKCONNECTIVITY', false)){
             $obr = new SendInvoiceToOBR();
             dd($obr->getToken());
-
             // dump($obr->checkTin(('4000834368')));
             // dd($obr->getToken());
         }
-
-
         // dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
-
         $search = request()->get('search');
         $products = Product::where('quantite', '>', 1)
                     ->where('price', '>', 0)

@@ -18,7 +18,6 @@
 
     @endif
 
-
     <script>
         var alertList = document.querySelectorAll(".alert");
         alertList.forEach(function (alert) {
@@ -118,12 +117,15 @@
             </select>
             </div>
 
-            {{-- <label for="" class="mr-3">TYPE DE FACTURE</label>
-            <select required="" class="" wire:model="typeFacture" id="">
-                <option value="FACTURE">FACTURE</option>
-                <option value="PROFORMAT">PROFORMAT</option>
-            </select> --}}
+            @if (env('APP_CAN_PRINT_PROFORMAT', false))
+                <label for="" class="mr-3">TYPE DE FACTURE</label>
+                <select required="" class="" wire:model="typeFacture" id="">
+                    <option value="FACTURE">FACTURE</option>
+                    <option value="PROFORMAT">PROFORMAT</option>
+                </select>
+            @endif
 
+    
             <button class="btn btn-sm btn-primary ml-4"
             wire:click="saveValue"
             >
