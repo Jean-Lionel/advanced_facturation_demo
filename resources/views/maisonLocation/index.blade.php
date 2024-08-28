@@ -13,7 +13,10 @@
 		</div>
 		<div class="col-md-6">
 			<form action="{{ route('maison-location.index') }}" method="GET">
-				<input type="search" name="search" class="form-control form-control-sm" placeholder="Rechercher ici ">
+				<input type="search" name="search" class="form-control form-control-sm"
+				value="{{ $search }}"
+				
+				placeholder="Rechercher ici ">
 			</form>
 		</div>
 	</div>
@@ -43,7 +46,11 @@
 				</td>
 				<td>{{ $value->description }}</td>
 				<td>
-					{{ $value->clients_count}}
+					<ol>
+						@foreach ($value->clients as $item)
+							<li>{{ $item->name  }}</li>
+						@endforeach
+					</ol>
 				</td>
 				<th scope="col">{{$value->tax }}</th>
 				<td>{{ $value->created_at }}</td>
