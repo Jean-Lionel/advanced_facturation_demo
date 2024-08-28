@@ -12,7 +12,14 @@ class MaisonLocationController extends Controller
 
     public function index(Request $request)
     {
-        $maisonLocations = MaisonLocation::withCount('clients')->latest()->paginate(10);
+        $query = MaisonLocation::query();
+
+        if ($search = $request->input('search')) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $maisonLocations = $query->withCount('clients')->latest()->paginate(10);
+
         return view('maisonLocation.index', compact('maisonLocations'));
     }
 
@@ -37,7 +44,7 @@ class MaisonLocationController extends Controller
 
     public function edit(Request $request, MaisonLocation $maisonLocation)
     {
-       
+
         return view('maisonLocation.edit', compact('maisonLocation'));
     }
 

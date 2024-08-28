@@ -8,12 +8,12 @@
 			<a href="{{ route('maison-location.create') }}"
 			class="btn btn-primary btn-sm">Nouveau</a>
 			<h4 class="text-center">
-				Liste biens ou service à Louer 
+				Liste biens ou service à Louer
 			</h4>
 		</div>
 		<div class="col-md-6">
-			<form action="">
-				<input type="search" class="form-control form-control-sm" placeholder="Rechercher ici ">
+			<form action="{{ route('maison-location.index') }}" method="GET">
+				<input type="search" name="search" class="form-control form-control-sm" placeholder="Rechercher ici ">
 			</form>
 		</div>
 	</div>
