@@ -6,7 +6,6 @@ use App\Jobs\SyncroniseInvoice;
 use App\Models\Vente;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Order;
@@ -20,6 +19,7 @@ class VenteController extends Controller
         // dump($order );
         if(env('OBR_CHECKCONNECTIVITY', false)){
             $obr = new SendInvoiceToOBR();
+            dump($obr->getInvoice('4000004806/wsl400000480600187/20240417143348/000025'));
             dd($obr->getToken());
             // dump($obr->checkTin(('4000834368')));
             // dd($obr->getToken());

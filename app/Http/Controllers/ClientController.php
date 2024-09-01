@@ -15,8 +15,8 @@ class ClientController extends Controller
     {
         $model = new Client();
         $clients =  $model->getPaginateData();
-
-        return view('clients.index', compact('clients'));
+        $nombre_total_clients = Client::all()->count();
+        return view('clients.index', compact('clients', 'nombre_total_clients'));
     }
 
     public function commissionnaires(){

@@ -17,15 +17,6 @@ class SendInvoiceToOBR extends Controller
 
     public function __construct()
     {
-        //     $username = env('OBR_USERNAME', 'ws400000480600270');
-        // $password = env('OBR_PASSWORD', '_B_/BGv0');
-        //     $req =  Http::acceptJson()->post($this->baseUrl.'login/', [
-        //        'username' => $username,
-        //        'password' => $password
-        //    ]);
-        //     dd($req->body());
-        // 4002060640
-        // dump($this->checkTin("4001183237"));
         $this->baseUrl = env('OBR_PRODUCTION', false) == true ? 'https://ebms.obr.gov.bi:8443/ebms_api/' : 'https://ebms.obr.gov.bi:9443/ebms_api/';
     }
 

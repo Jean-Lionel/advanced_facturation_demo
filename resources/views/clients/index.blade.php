@@ -16,6 +16,9 @@
 </div>
 <div>
 	<div class="row">
+		<div class="col-12">
+			<h2>Le Nombre total des clients : <b>{{ $nombre_total_clients }}</b></h2>
+		</div>
 		<div class="col-md-6 d-flex justify-content-between">
 			<a href="{{ route('clients.create') }}"
 			class="btn btn-primary btn-sm">Ajouter</a>
@@ -79,15 +82,12 @@
 					<form class="form-delete" action="{{ route('clients.destroy' , $value) }}" style="display: inline;" method="POST">
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}
-						<button class="btn btn-outline-danger btn-sm delete_client"
-						
-						onclick="return confirm('Are you sure you want to delete this client ?')"
-						
+						<button class="btn btn-outline-danger btn-sm delete_client"	
+						onclick="return confirm('Are you sure you want to delete this client ?')"	
 						>Supprimer</button>
 						@if(env('APP_USE_ABONEMENT', false))
 						<a href="{{ route('clients_abones', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Abonée</a>
 						<a href="{{ route('make_commissionnaire', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Commissionnaire</a>
-						
 						@endif
 					</form>
 				</td>
