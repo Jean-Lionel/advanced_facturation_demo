@@ -61,7 +61,7 @@
                 </td>
                 <td>{{ $order->created_at }}</td>
                 <td class="bg-warning">
-                    @if ( !$order->obrPointer->msg)
+                    @if (isset($order->obrPointer->msg))
                     <span  >Verfié si vous avez une connection internet </span>
                     @endif
                 </td>
