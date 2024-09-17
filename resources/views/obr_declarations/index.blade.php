@@ -56,12 +56,13 @@
                             <span>{{ $element['quantite'] }}</span>
                             <span>{{ $element['price'] }}</span>
                         </li>
+                        <small>{{ $order->invoice_signature }}</small>
                         @endforeach
                     </ul>
                 </td>
                 <td>{{ $order->created_at }}</td>
                 <td class="bg-warning">
-                    @if (isset($order->obrPointer->msg))
+                    @if (!isset($order->obrPointer->msg))
                     <span  >Verfié si vous avez une connection internet </span>
                     @endif
                 </td>

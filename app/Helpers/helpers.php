@@ -26,6 +26,15 @@ function isInternetConnection(){
         return false;
     }
 }
+
+function convertTimestamp($timestamp) {
+    // Use DateTime class to parse the input string
+    $dateTime = DateTime::createFromFormat('YmdHis', $timestamp);
+    // Return the formatted date as 'YYYY-MM-DD hh:mm:ss'
+    return $dateTime->format('Y-m-d H:i:s');
+}
+
+
 function prixVenteHorsTva($price, $taux = 0.18){
     $res = $price / (1 + $taux );
     return ARRONDIR_RESULTAT ? round($res) : number_format($res, 2 );

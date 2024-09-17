@@ -8,7 +8,9 @@
         <table class="table"id="fiche_stock" >
             <thead>
                 <tr>
+                    
                     <th>Numero de la Facture</th>
+                    <th>Date</th>
                     <th>Signature</th>
                     <th>Message</th>
                     <th>Resultat</th>
@@ -19,6 +21,7 @@
                 @foreach ($logs as $item)
                 <tr @if($item->status == 0) class="bg-danger text-white" @endif>
                     <td>{{ $item->order_id }}</td>
+                    <td>{{ $item->created_at  }}</td>
                     <td>{{ $item->invoice_signature }}</td>
 
                     <td>{{ $item->msg }}</td>
