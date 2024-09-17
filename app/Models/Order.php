@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\InteretEnumValue;
 use App\Models\PaiementDette;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -74,6 +73,10 @@ protected $guarded = [];
 	{
 		return json_decode($v);
 	}
+
+    public function obrPointer(){
+        return $this->belongsTo(ObrPointer::class, 'id','order_id');
+    }
 	//products
 	public function getProductsAttribute($v)
 	{

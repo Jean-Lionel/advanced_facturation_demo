@@ -6,6 +6,11 @@
         <div class="col-6">
             <button class="btn btn-sm btn-primary" id="btn_syncronize">
                 <i class="fa fa-recycle"></i> Sycnronize</button>
+            <div id="loader_file">
+                <div class="spinner-border text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+            </div>
         </div>
         <div class="col-6">
             <h5>Facture en attente</h5>
@@ -22,6 +27,7 @@
                 <td>Product</td>
                 <td>Date</td>
                 <td>Motif </td>
+                <td>Erreur Externe </td>
                 <td>Status</td>
                 <th>
                     Action
@@ -55,7 +61,12 @@
                 </td>
                 <td>{{ $order->created_at }}</td>
                 <td class="bg-warning">
+                    @if ( !$order->obrPointer->msg)
                     <span  >Verfié si vous avez une connection internet </span>
+                    @endif
+                </td>
+                <td>
+                    {{ $order->obrPointer->msg ?? "" }}
                 </td>
                 <td @if ( $order->canceled_or_connection)
                     class="bg-danger"
@@ -80,17 +91,22 @@
     
     <script>
 
+        $('#loader_file').hide();
+
         $("#btn_syncronize").on("click", function(){
+            $('#loader_file').show();
             $.ajax({
                 url: "{{ route('syncronizeInvoices') }}",
                 type: 'GET',
                 data: {},
                 success: function(data){
                     alert("Success!");
+                    $('#loader_file').hide();
                 },
                 error: function(data){
                     alert("Success!");
                     console.log(data);
+                    $('#loader_file').hide();
                 }
             })
         });
