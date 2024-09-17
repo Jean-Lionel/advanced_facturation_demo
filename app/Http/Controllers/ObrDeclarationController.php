@@ -13,11 +13,32 @@ use App\Http\Controllers\SendInvoiceToOBR;
 
 class ObrDeclarationController extends Controller
 {
+
+    public function syncronizeInvoices(){
+
+        if(isInternetConnection()){
+            // check if creditial connection is available to OBR request
+            try {
+                //code...
+                $syncronize = new SyncronizeController();
+                $syncronize->syncronizeInvoices();
+                $syncronize->syncronizeStock();
+            } catch (\Throwable $th) {
+                return [
+                    "success" => false,
+                   // "msg" => $th->getMessage(),
+                ];
+            }
+        }else{
+            return [
+                "success" => false,
+                "msg" => "Pas de connection internet"
+            ];
+
+        }
+    }
     public function index()
     {
-        $order = Order::find(3);
-
-        $x = new SendInvoiceToOBR();
         $orders = Order::whereNull('envoye_obr')->latest()->get();
         return view('obr_declarations.index', [
             'orders' => $orders

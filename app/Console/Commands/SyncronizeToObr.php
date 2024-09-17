@@ -52,7 +52,7 @@ class SyncronizeToObr extends Command
             $t1 = time();
             $this->info( 'Start ----------------------------------------------------------------');
             $syncronize = new SyncronizeController();
-            $resp = $syncronize->syncronizeInvoices();
+            $syncronize->syncronizeInvoices();
             $syncronize->syncronizeStock();
            // $this->info( $resp);
             $t2 = time();

@@ -132,7 +132,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('non-paiement-location', App\Http\Controllers\NonPaymentLocationController::class);
     Route::prefix('/LocationMaison')->name('LocationMaison.')->group(function(){
         Route::resource('', App\Http\Controllers\ClientsNonPayeLoyersController::class)
-               ->except([ 'edit', 'update', 'destroy','show','create']);
+        ->except([ 'edit', 'update', 'destroy','show','create']);
         Route::resource('All', App\Http\Controllers\ClientsNonPayeLoyersAllController::class)
                 ->except([ 'edit', 'update', 'destroy','show','create']);
     });
@@ -140,6 +140,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('clients_half_paid', 'location.clients_half_paid')->name('clients_half_paid');
     Route::view('rapport_revenue','reports.rapport_revenue' )->name('rapport_revenue');
     Route::resource('client-history', App\Http\Controllers\ClientHistoryController::class);
+    Route::get('syncronizeInvoices', [ObrDeclarationController::class, 'syncronizeInvoices'])->name('syncronizeInvoices');
 });
 require __DIR__ . '/jetstream.php';
 

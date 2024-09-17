@@ -13,6 +13,14 @@
     text-align: center;
 }
 
+.nom_entreprise{
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #FFF;
+  padding: 2px 30px;
+}
 body {
   font-family: 'Lato', sans-serif;
   color: #4A4A4A;

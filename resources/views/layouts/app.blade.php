@@ -271,9 +271,7 @@
                         </div>`);
                         return result;
                     }
-                    
-                    
-                    
+
                     if(canSyncronize && !cancel_syncronize){
                         
                         let  limitedInterval =  setInterval(async () => {
@@ -305,8 +303,7 @@
                                 clearInterval(limitedInterval);
                                 console.log('interval cleared!');
                             }
-                        }, timeSyncronisation); // probably too often, try 30000 for every 30 second
-                        
+                        }, timeSyncronisation); // probably too often, try 30000 for every 30 second                        
                     }
                 </script>
                 

@@ -65,13 +65,11 @@ class SyncronizeController extends Controller
            $order_peding_ids = Order::whereNull('envoye_obr')
                                         ->whereNotIn('id', $excludes_ids)
                                         ->get()->map->id;
-
             foreach ($order_peding_ids as $item) {
                 try {
                     $response =   $obr->sendInvoinceToObr($item);
                 }catch (\Exception $e) {
                  //   var_dump("Error sending request Time out request ". $e->getMessage());
-
                     return response()->json(
                        [
                         'data' => [

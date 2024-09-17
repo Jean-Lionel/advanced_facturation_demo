@@ -21,8 +21,6 @@ class VenteController extends Controller
             $obr = new SendInvoiceToOBR();
             dump($obr->getInvoice('4000004806/wsl400000480600187/20240417143348/000025'));
             dd($obr->getToken());
-            // dump($obr->checkTin(('4000834368')));
-            // dd($obr->getToken());
         }
         // dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
         $search = request()->get('search');

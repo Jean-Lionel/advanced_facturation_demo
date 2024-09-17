@@ -1,4 +1,6 @@
 <?php
+
+use App\Models\Entreprise;
 use App\Models\MaisonLocation;
 use NumberToWords\NumberToWords;
 define('TAUX_TVA', [18,10,0]);
@@ -10,6 +12,10 @@ function getNumberToWord($number , $language='fr'){
     $numberTransformer = $numberToWords->getNumberTransformer($language);
     
    return  $numberTransformer->toWords($number);
+}
+
+function curentEntrpiseName(){
+    return Entreprise::currentEntreprise();
 }
 function isInternetConnection(){
     try{
