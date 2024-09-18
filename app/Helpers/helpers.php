@@ -10,9 +10,26 @@ function getNumberToWord($number , $language='fr'){
     $numberToWords = new NumberToWords();
     // build a new number transformer using the RFC 3066 language identifier
     $numberTransformer = $numberToWords->getNumberTransformer($language);
-    
-   return  $numberTransformer->toWords($number);
+    return  $numberTransformer->toWords($number);
 }
+
+
+function remplacerPremierePartie($chaine, $nouvelleValeur) {
+    // Séparer la chaîne par les slashs
+    $parties = explode('/', $chaine);
+    // Vérifier qu'il y a bien des parties à modifier
+    if (count($parties) > 1) {
+        // Remplacer la première partie par la nouvelle valeur
+        $parties[0] = $nouvelleValeur;
+        // Rejoindre les parties pour reformer la chaîne
+        return implode('/', $parties);
+    }
+    
+    // Retourner la chaîne d'origine si aucune modification n'a été faite
+    return $chaine;
+}
+
+
 
 function curentEntrpiseName(){
     return Entreprise::currentEntreprise();

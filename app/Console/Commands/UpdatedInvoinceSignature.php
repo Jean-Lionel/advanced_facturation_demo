@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Entreprise;
 use App\Models\Order;
 use Illuminate\Console\Command;
 
@@ -41,12 +42,19 @@ class UpdatedInvoinceSignature extends Command
     public function handle()
     {
         $orders = Order::whereNull('envoye_time')->get();
+
+        $company = Entreprise::currentEntreprise();
+
         foreach ($orders as $key =>$order){
             $items = explode('/', $order->invoice_signature );
             $order->created_at = convertTimestamp($items[2]);
+            $order->invoice_signature = remplacerPremierePartie($order->invoice_signature,  $company->tp_TIN);
+            $order->company = $company->toJson();
             $order->save();
-            dump($key);
+    
         }
+
+        dump("FINISHED");
         return 0;
     }
 }
