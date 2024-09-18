@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Kyslik\ColumnSortable\Sortable;
 
@@ -16,9 +17,6 @@ class Order extends Model
     use SoftDeletes;
     use Sortable;
 
-//    protected $fillable = ['amount',
-//'products','user_id','tax','amount_tax','client','type_paiement', 'total_quantity', 'total_sacs', 'addresse_client', 'date_facturation', 'is_cancelled', 'invoice_signature'];
-
 protected $guarded = [];
  public $sortable = ['amount',
 'products','user_id','tax','amount_tax','client','type_paiement', 'date_facturation', 'invoice_signature'];
@@ -27,6 +25,14 @@ protected $guarded = [];
 		parent::boot();
 		self::creating(function($model){
 			$model->user_id = Auth::user()->id ?? 1;
+            // add a new column invoice_currency on order if it doesn't already exist
+            // Check if the 'invoice_currency' column exists in the 'orders' table
+            if (!Schema::hasColumn('orders', 'invoice_currency')) {
+                // Add the 'invoice_currency' column if it doesn't exist
+                Schema::table('orders', function ($table) {
+                    $table->string('invoice_currency', 10)->nullable();
+                });
+            }
 
             Session::put('cancel_syncronize', false);
 		});

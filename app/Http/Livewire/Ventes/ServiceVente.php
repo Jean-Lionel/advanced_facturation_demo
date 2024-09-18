@@ -25,6 +25,7 @@ class ServiceVente extends Component
     public $customer;
     public $errorMessage;
     public $typePaiement;
+    public $invoice_currency = 'BIF';
     public $typeFacture = 'FACTURE';
     public function render()
     {
@@ -51,12 +52,10 @@ class ServiceVente extends Component
         $company = Entreprise::currentEntreprise();
         //  dd($company);
         $this->validate($this->rules);
-      
         try{
-
             DB::beginTransaction();
-             $products =  $this->extractCart();
-             $orderData = [
+            $products =  $this->extractCart();
+            $orderData = [
                 'amount' => array_sum(array_values($this->pricesTVAC)),
                 'total_quantity' => count($this->table_length),
                 'total_sacs' => 0,
@@ -69,6 +68,7 @@ class ServiceVente extends Component
                 'addresse_client'=> $this->customer->addresse,
                 'date_facturation'=> now(),
                 'is_cancelled' => 0,
+                'invoice_currency' => $this->invoice_currency,
                 'company' =>  $company->toJson(),
              ];
              $order = null ;

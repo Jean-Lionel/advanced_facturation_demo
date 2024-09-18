@@ -117,12 +117,24 @@
             </select>
             </div>
 
+            <div>
+                <label for="">TYPE DE MONNAIE</label>
+                <select wire:model="invoice_currency" name="invoice_currency" id="">
+                    @foreach (TYPE_MONNAIE as $item)
+                    <option value="{{   $item}}"> {{ $item }}</option>
+                @endforeach
+                </select>
+               
+            </div>
+
             @if (env('APP_CAN_PRINT_PROFORMAT', false))
-                <label for="" class="mr-3">TYPE DE FACTURE</label>
+                <div>
+                    <label for="" >TYPE DE FACTURE</label>
                 <select required="" class="" wire:model="typeFacture" id="">
                     <option value="FACTURE">FACTURE</option>
                     <option value="PROFORMAT">PROFORMAT</option>
                 </select>
+                </div>
             @endif
 
     

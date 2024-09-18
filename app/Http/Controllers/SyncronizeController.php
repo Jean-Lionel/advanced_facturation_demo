@@ -69,7 +69,7 @@ class SyncronizeController extends Controller
                 try {
                     $response =   $obr->sendInvoinceToObr($item);
                 }catch (\Exception $e) {
-                 //   var_dump("Error sending request Time out request ". $e->getMessage());
+          
                     return response()->json(
                        [
                         'data' => [
@@ -92,7 +92,6 @@ class SyncronizeController extends Controller
                     $obr = new SendInvoiceToOBR();
                     $response = $obr->cancelInvoice( $item2->invoice_signature ,  $item2->motif);
                     $order = Order::where('invoice_signature' ,'=', $item2->invoice_signature)->first();
-
                     if($order){
                         $order->is_cancelled = 1;
                         $order->save();
@@ -103,16 +102,10 @@ class SyncronizeController extends Controller
                     $current->save();
                     $item2->status = 1;
                     $item2->save();
-                    // var_dump("======= ". $item2->invoice_signature ."======ANNULATION DES FACTURE===================");
-                    // var_dump($response);
+                    
                     return $response;
                 } catch (\Throwable $e) {
-                    //throw $th;
-                    // var_dump('ERROR MESSAGE ' . $e->getMessage());
-                    // var_dump('CODE DE MESSAGE '. $e->getCode());
-                    // var_dump('FILE => ' . $e->getFile());
-                    // var_dump('LIGNE => ' . $e->getLine());
-
+               
                     return response()->json([
                         'success' => false,
                         'data' => [
@@ -127,11 +120,7 @@ class SyncronizeController extends Controller
 
             }
         }catch(\Exception $e){
-            // var_dump('ERROR MESSAGE ' . $e->getMessage());
-            // var_dump('CODE DE MESSAGE '. $e->getCode());
-            // var_dump('FILE => ' . $e->getFile());
-            // var_dump('LIGNE => ' . $e->getLine());
-            // var_dump($e->getTrace());
+          
             return response()->json([
                 'success' => false,
                 'data' => [
