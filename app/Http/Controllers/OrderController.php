@@ -47,11 +47,17 @@ class OrderController extends Controller
     {
         $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEME');
         $currentModelFacture = 'cart.facture_model_prothem';
+
         if ($modelFacture == 'MODEL_DUKORANE'){
             $currentModelFacture = 'cart.facture_model_dukorane';
         }
+
         if ($modelFacture == 'MODEL_NIYUBAHWE'){
             $currentModelFacture = 'cart.facture_model_niyubahwe';
+        }
+
+        if ($modelFacture == 'MODEL_EREFO_COMPANY'){
+            $currentModelFacture = 'cart.facture_model_erfo';
         }
         
 
