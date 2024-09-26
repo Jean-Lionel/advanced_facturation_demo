@@ -74,7 +74,7 @@
                 </div>
 
                 <div>
-                    <table class="no-break ">
+                    <table >
                         <thead>
                             <tr>
                                 <th>Articles</th>
