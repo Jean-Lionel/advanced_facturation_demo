@@ -46,13 +46,9 @@
                 </div>
                 @endif
                 <div style="width: 100%;">
-
                     <h3>{{ $order->company->tp_name ?? "" }} </h3>
-
-
                     {{-- <h3>{{COMPANY_DESCRIPTION}} </h3>
                     <h3>
-
                         {{BOITE_POSTAL}}
                     </h3>
                     <h3>
@@ -68,8 +64,6 @@
             {{-- Fin --}}
             <h3 class="text-center">FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }} </h3>
             {{-- SIDE A --}}
-
-
             <article class="identification_a">
                 <div>
                     <h5>A. Identification du vendeur</h5>
@@ -80,10 +74,8 @@
                     <p>BP: <b>{{ $order->company->tp_postal_number ?? "" }}</b> , Tél <b>{{ $order->company->tp_phone_number }}</b></p>
                     <p>Commune : <b>{{ $order->company->tp_address_commune ?? ""}}</b>, Quartier : {{ $order->company->tp_address_quartier }}</p>
                     <p>Avenue : <b>{{ $order->company->tp_address_avenue ?? ""}} </b></p>
-                    Assujetti à la TVA : {{$order->company?->vat_taxpayer ? 'OUI' : 'NON'  }}<b>
-                        
+                    Assujetti à la TVA : {{$order->company?->vat_taxpayer ? 'OUI' : 'NON'  }}<b>       
                     </b>
-
                 </div>
                 <div class="aling-right partie-droite">
                     <div>
@@ -142,7 +134,6 @@
                         @endforeach
                         <tr>
                             <td colspan="4">PVT HTVA </td>
-
                             <td class="adroite"><b>{{ getPrice($order->amount_tax) }}</b></td>
                         </tr>
                         <tr>
@@ -167,15 +158,13 @@
 
                 </div>
 
-                <div id="reciept" style="display: none;">
+                <div id="reciept" style="">
                     <div  class="container">
-
                         <h6 class="invoice_signature"> {{$order->invoice_signature}}  </h6>
                         <h6>FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h6>
                         @if ($order->is_cancelled)
                            @include('cart._partial')
                          @endif
-                   
                         <h5>A. Identification du vendeur</h5>
                         <p><b>{{$order->company->tp_name ?? ""}}</b></p>
                         <p>NIF : <b>{{$order->company->tp_TIN}}</b></p>
@@ -187,13 +176,12 @@
                         <p>Avenue : {{ $order->company->tp_address_quartier ?? ""}} </p>
                         <p>Centre Fiscal : <b>{{ $order->company->tp_fiscal_center }}</b></p>
                         <p>{{ "Secteur d'activité" }} : <b> {{ $order->company->tp_activity_sector }} </b></p>
-                        <p>Forme juridique : <b> {{ $order->company->tp_legal_form }} </b></p>
-
-
+                        <p>Forme juridique : </p>
+                        <p><b> {{ $order->company->tp_legal_form }} </b></p>
                         <h5>B. Client</h5>
                         <p>Nom et Prénom ou Raison Socail :</p>
                         <p>{{$order->client->name}}</p>
-
+                        <br>
                         <p>Résident à : {{ $order->addresse_client }}</p>
                         <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
                         <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
