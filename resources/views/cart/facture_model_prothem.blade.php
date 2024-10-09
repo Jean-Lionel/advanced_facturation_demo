@@ -158,7 +158,7 @@
 
                 </div>
 
-                <div id="reciept" style="">
+                <div id="reciept" style="display : none">
                     <div  class="container">
                         <h6 class="invoice_signature"> {{$order->invoice_signature}}  </h6>
                         <h6>FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h6>
