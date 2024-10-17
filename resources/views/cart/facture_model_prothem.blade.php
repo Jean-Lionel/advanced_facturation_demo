@@ -174,10 +174,11 @@
                         <p>Commune : {{ $order->company->tp_address_commune ?? ""}}, </p>
                         <p>Quartier : {{ $order->company->tp_address_quartier }}</p>
                         <p>Avenue : {{ $order->company->tp_address_quartier ?? ""}} </p>
-                        <p>Centre Fiscal : <b>{{ $order->company->tp_fiscal_center }}</b></p>
-                        <p>{{ "Secteur d'activité" }} : <b> {{ $order->company->tp_activity_sector }} </b></p>
+                        <p>Centre Fiscal : {{ $order->company->tp_fiscal_center }}</p>
+                        <p>{{ "Secteur d'activité" }} : </p>
+                        <p> {{ $order->company->tp_activity_sector }}</p>
                         <p>Forme juridique : </p>
-                        <p><b> {{ $order->company->tp_legal_form }} </b></p>
+                        <p> {{ $order->company->tp_legal_form }}</p>
                         <h5>B. Client</h5>
                         <p>Nom et Prénom ou Raison Socail :</p>
                         <p>{{$order->client->name}}</p>
@@ -206,8 +207,8 @@
                                         <td class="item_name"> {{ $product['name'] }}</td>
                                         {{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
                                         <td class="adroite" > {{ $product['quantite'] }}</td>
-                                        <td class="adroite nowrap"> {{ getPrice($product['price'] ) }}</td>
-                                        <td class="adroite nowrap"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
+                                        <td class="adroite "> {{ getPrice($product['price'] ) }}</td>
+                                        <td class="adroite "> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                                     </tr>
                                     @endforeach
                                     <tr>

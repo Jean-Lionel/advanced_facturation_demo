@@ -52,7 +52,7 @@ class SendInvoiceToOBR extends Controller
         $token = $this->getToken();
         $invoice_signature = trim($invoice_signature);
 
-        $arrayString =  explode('/', $invoice_signature);
+        $arrayString =  explode( '/', $invoice_signature);
         $invoice_id = end($arrayString);
 
         ObrRequestBody::create([
