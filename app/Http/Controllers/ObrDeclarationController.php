@@ -84,7 +84,6 @@ class ObrDeclarationController extends Controller
                 // dd($product);
                 try{
                     $product = Product::find($productItem['id']);
-
                     if($product ){
                         $product->quantite += $productItem['quantite'];
                         $product->save();
@@ -98,17 +97,14 @@ class ObrDeclarationController extends Controller
                         ]);
                         $current_price = $productItem['price_revient'] ;
                         ObrMouvementStock::saveMouvement( $product, 'ER',$current_price, $productItem['quantite'], $request->motif, $order->id);
-
                     }
-
 
                     // Enregistres les mouvements de stock correspondant pour la facture
 
                   //  $mouvements_enregistres = ObrMouvementStock
                     //
-
-
                 }catch(\Exception $e){
+                    dd( $e);
                 }
             }
         }

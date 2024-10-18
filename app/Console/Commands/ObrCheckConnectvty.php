@@ -19,7 +19,7 @@ class ObrCheckConnectvty extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Verfier que le serveur EMBS est accessible';
 
     /**
      * Create a new command instance.

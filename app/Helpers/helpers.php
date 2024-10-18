@@ -14,13 +14,13 @@ function getNumberToWord($number , $language='fr'){
 }
 
 
-function remplacerPremierePartie($chaine, $nouvelleValeur) {
+function remplacerPremierePartie($chaine, $nouvelleValeur , $key=0) {
     // Séparer la chaîne par les slashs
     $parties = explode('/', $chaine);
     // Vérifier qu'il y a bien des parties à modifier
     if (count($parties) > 1) {
         // Remplacer la première partie par la nouvelle valeur
-        $parties[0] = $nouvelleValeur;
+        $parties[$key] = $nouvelleValeur;
         // Rejoindre les parties pour reformer la chaîne
         return implode('/', $parties);
     }
