@@ -213,7 +213,6 @@
                                     @endforeach
                                     <tr>
                                         <td colspan="4">PVT HTVA </td>
-
                                         <td class="adroite nowrap"><b>{{ getPrice($order->amount_tax) }}</b></td>
                                     </tr>
                                     <tr>

@@ -53,10 +53,10 @@ protected $guarded = [];
                     'commissionaire_id' => $model->commissionaire_id,
                     'client_id' => $model->client_id,
                     'partage' => [
-                        'Informaticien' => ($montant *15 / 100),
-                        'Client' => ($montant * 5 / 100),
-                        'Commisionnaire' => ($montant * 5  / 100),
-                        'Entreprise' => ($montant * 75  / 100),
+                        'Informaticien' => ($montant * PARTAGE_INFORMATICIEN / 100),
+                        'Client' => ($montant * PARTAGE_CLIENT / 100),
+                        'Commisionnaire' => ($montant * PARTAGE_COMMISSIONNAIRE  / 100),
+                        'Entreprise' => ($montant * PARTAGE_ENTREPRISE  / 100),
                     ]
 
                 ]),

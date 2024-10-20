@@ -15,16 +15,11 @@
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    width: 80mm;
-    padding: 2px;
+    width: 90mm;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    .text-center{
-        text-align: center !important;
-    }
-    .text-center{
-        text-align: center ;
-    }
+    background-color: green !important;
+    
 
     h1 {
         font-size: var(--font-size);
@@ -40,10 +35,7 @@
         width: 100%;
         border-collapse: collapse;
       }
-      td,th, tr{
-        font-size: var(--font-size);
-        border: 2px #000000 dotted;
-      }
+    
       td.nowrap{
        white-space: nowrap;
       }
@@ -54,5 +46,11 @@
 
     }
   }
+
+  .text-center{
+    text-align: center !important;
+}
+
+
 
 

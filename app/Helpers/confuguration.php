@@ -20,3 +20,10 @@ define('LOGO_NAME', env('USE_LOGO_NAME', "logo.jpg") ); // "galerie_ideal.jpg
 define('INVOICE_PREFIX', '');
 
 define( 'TYPE_MONNAIE', ['BIF', 'USD', 'EUR']);
+
+// define partage for
+
+define(  'PARTAGE_INFORMATICIEN', 15);
+define(  'PARTAGE_CLIENT', 2.5);
+define(  'PARTAGE_COMMISSIONNAIRE', 2.5);
+define(  'PARTAGE_ENTREPRISE',  80);
