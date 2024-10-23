@@ -1,7 +1,7 @@
 <?php
 
 // Variable pour la syncronisation des donnees dans OBR
-define('CAN_SYNCRONISE', value: true);
+define('CAN_SYNCRONISE',  true);
 define('TIME_OUT_SYNCRONISATION', (3 * 1000)); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_STOCK', true); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_INVOICE', true); // Seconde de Syncronisation dans OBR
@@ -18,11 +18,8 @@ define('USE_LOGO', env('APP_USE_LOGO', false) );
 define('USE_LOGO_NAME', env('APP_USE_LOGO', false));
 define('LOGO_NAME', env('USE_LOGO_NAME', "logo.jpg") ); // "galerie_ideal.jpg
 define('INVOICE_PREFIX', '');
-
 define( 'TYPE_MONNAIE', ['BIF', 'USD', 'EUR']);
-
 // define partage for
-
 define(  'PARTAGE_INFORMATICIEN', 15);
 define(  'PARTAGE_CLIENT', 2.5);
 define(  'PARTAGE_COMMISSIONNAIRE', 2.5);

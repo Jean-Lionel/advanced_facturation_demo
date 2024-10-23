@@ -196,8 +196,6 @@
                 </tr>
             </tbody>
         </table>
-        
-        
         <p class="amount">Nous disons  {{ getNumberToWord($order->amount) }} francs Burundais.</p>
         <hr>
         {{ $order->invoice_signature ?? "" }}

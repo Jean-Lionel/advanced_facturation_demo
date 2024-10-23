@@ -8,7 +8,6 @@
     <script src="{{ asset('js/print.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/prothem.css') }}">
     <link rel="stylesheet" href="{{ asset('css/reciept.css') }}">
-
     <style>
         .item_name{
             width: 47%;
@@ -127,7 +126,7 @@
                             <td class="item_name"> {{ $product['name'] }}</td>
                             {{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
                             <td class="adroite" style="width: 40px;"> {{ $product['quantite'] }}
-                                 {{ $product['unite_mesure'] ?? ""}}</td>
+                            {{ $product['unite_mesure'] ?? ""}}</td>
                             <td class="adroite"> {{ getPrice($product['price'] ) }}</td>
                             <td class="adroite"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                         </tr>
@@ -187,7 +186,6 @@
                         <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
                         <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
                         <h5>Doit pour ce qui suit : </h5>
-
                         <div>
                             <table>
                                 <thead>
