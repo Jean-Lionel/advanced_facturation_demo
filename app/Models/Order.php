@@ -25,12 +25,21 @@ protected $guarded = [];
 		parent::boot();
 		self::creating(function($model){
 			$model->user_id = Auth::user()->id ?? 1;
+			$model->client_id = $model->client->id ?? 0;
+			$model->invoice_type = $model->invoice_type ??  'FN';
             // add a new column invoice_currency on order if it doesn't already exist
             // Check if the 'invoice_currency' column exists in the 'orders' table
             if (!Schema::hasColumn('orders', 'invoice_currency')) {
                 // Add the 'invoice_currency' column if it doesn't exist
                 Schema::table('orders', function ($table) {
                     $table->string('invoice_currency', 10)->nullable();
+                });
+            }
+           // "invoice_type" => "FN",
+            if (!Schema::hasColumn('orders', 'invoice_type')) {
+                // Add the 'invoice_currency' column if it doesn't exist
+                Schema::table('orders', function ($table) {
+                    $table->string('invoice_type', 10)->nullable();
                 });
             }
 
@@ -41,6 +50,7 @@ protected $guarded = [];
             $model->user_id = Auth::user()->id ?? 1;
             Session::put('cancel_syncronize', false);
         });
+
 
         self::created(function($model){
             $montant = collect($model->products)->pluck('interet_total')->sum();
@@ -64,6 +74,10 @@ protected $guarded = [];
         });
 	}
 
+    
+    public function client(){
+            return $this->belongsTo(Client::class);
+    }
 
 
 	public function details(){

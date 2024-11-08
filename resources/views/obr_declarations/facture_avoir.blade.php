@@ -1,6 +1,9 @@
-
 @extends('layouts.app')
+
 @section('content')
 @include("ventes._header")
-@livewire('ventes.service-vente')
-@stop
+
+<div>
+    @livewire('facture-avoir')
+</div>
+@endsection

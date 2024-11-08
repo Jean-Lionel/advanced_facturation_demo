@@ -32,7 +32,10 @@
 			{{-- expr --}}
 			<tr>
 				<td>{{$order->id}}</td>
-				<td>{{$order->invoice_signature}}</td>
+				<td>
+				{{$order->invoice_signature}}
+			
+			</td>
 				<td>{{ $order->client->name }}</td>
 				<td>{{ $order->amount }}</td>
 				<td>{{ $order->tax }}</td>

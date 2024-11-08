@@ -142,6 +142,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('rapport_revenue','reports.rapport_revenue' )->name('rapport_revenue');
     Route::resource('client-history', App\Http\Controllers\ClientHistoryController::class);
     Route::get('syncronizeInvoices', [ObrDeclarationController::class, 'syncronizeInvoices'])->name('syncronizeInvoices');
+    Route::get('facture.avoir', [ObrDeclarationController::class, 'factureAvoir'])->name('facture.avoir');
 });
 require __DIR__ . '/jetstream.php';
 

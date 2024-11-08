@@ -37,6 +37,10 @@ class ObrDeclarationController extends Controller
 
         }
     }
+
+    public function factureAvoir(){
+        return view('obr_declarations.facture_avoir');
+    }
     public function index()
     {
         $orders = Order::whereNull('envoye_obr')->latest()->get();
@@ -218,12 +222,10 @@ class ObrDeclarationController extends Controller
 
         $invoice_date = date_format($d, 'Y-m-d H:i:s');
         $invoice_signature_date = date_format($invoice_signature_date, 'Y-m-d H:i:s');
-
         $invoinces_items = [];
 
         foreach ($order->products as $key => $product) {
             // code...
-
             $invoinces_items[] = [
                 "item_designation" => $product['name'],
                 "item_quantity" => $product['quantite'],
@@ -238,7 +240,6 @@ class ObrDeclarationController extends Controller
                 "item_ott_tax" => $product['item_tsce_tax'] ?? 0,
             ];
         }
-
         //Check A valide customer_TIN
         $customer_TIN = "";
         if (isset($order->client->customer_TIN)) {
@@ -249,7 +250,6 @@ class ObrDeclarationController extends Controller
                 $customer_TIN = $order->client->customer_TIN;
             }
         }
-
         $invoince = [
             "invoice_number" => $invoice_number,
             "invoice_date" => $invoice_date,
@@ -274,7 +274,7 @@ class ObrDeclarationController extends Controller
             "customer_TIN" => $customer_TIN,
             "customer_address" => $order->client->addresse ?? "",
             "vat_customer_payer" => $order->client->vat_customer_payer ?? "",
-            "invoice_type" => "FN",
+            "invoice_type" =>   $order->invoice_type ?? "FN",
             "cancelled_invoice_ref" => "",
             //yyyyMMddHHmmss
             "invoice_signature" => $invoice_signature,

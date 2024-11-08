@@ -60,6 +60,16 @@ function prixVenteTvac($price, $taux = 0.18){
     $res = $price * (1 + $taux );
     return ARRONDIR_RESULTAT ? round($res) : number_format($res, 2 );
 }
+
+function calculerTauxTVA($prixHT, $montantTVA) {
+    if ($prixHT <= 0) {
+        return "Erreur : Le prix HT doit être supérieur à 0";
+    }
+    // Calcul du taux de TVA
+    $tauxTVA = ($montantTVA / $prixHT) * 100;
+    // Arrondir à 2 décimales
+    return round($tauxTVA, 2);
+}
 function getPrice($price)
 {
     $price = floatval($price);

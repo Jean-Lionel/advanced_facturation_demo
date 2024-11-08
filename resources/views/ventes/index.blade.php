@@ -1,16 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<div>
-    <div class="row">
-        <div class="col-md-4 d-flex justify-content-between">
-            <h4 class="text-center">
-                <a href="{{ route('ventes.create') }}">Facturation des Services</a>
-            </h4>
-        </div>
-
-    </div>
-</div>
+@include("ventes._header")
 
 <div class="row container-fluid">
 
