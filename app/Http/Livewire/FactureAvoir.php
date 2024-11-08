@@ -51,23 +51,22 @@ class FactureAvoir extends Component
 
         try {
             DB::beginTransaction();
-
             // Créer la facture d'avoir
             $avoir = new Order();
-         
             $avoir->amount_tax = -$this->montantAvoir;
-
+            $avoir->invoice_type = 'FA'; // Facture d'Avoir
             $taux_tva = calculerTauxTVA($this->originalFacture->amount_tax, $this->originalFacture->tax);
+            if(!is_numeric( $taux_tva )){
+                throw new \Exception($taux_tva);
+            }
             // $avoir->amount_tax = -($this->montantAvoir * $taux_tva / 100);
-            
             $avoir->tax = -($this->montantAvoir * $taux_tva / 100);
             $avoir->amount =  $avoir->amount_tax + $avoir->tax ;
             $avoir->total_quantity = $this->calculateTotalQuantity();
             $avoir->total_sacs = $this->calculateTotalSacs();
             // amount_tax calcule du Nouveau TVA 
-            
             $avoir->type_paiement = $this->originalFacture->type_paiement;
-            $avoir->type_facture = 'FA'; // Facture d'Avoir
+            $avoir->type_facture = $this->originalFacture->type_facture;
             $avoir->products = serialize($this->getSelectedProducts());
             $avoir->company = json_encode($this->originalFacture->company);
             $avoir->client =json_encode($this->originalFacture->client) ;
@@ -84,6 +83,7 @@ class FactureAvoir extends Component
           // dd($avoir);
             $avoir->save();
             $avoir->invoice_signature = SendInvoiceToOBR::getInvoinceSignature($avoir->id, $avoir->created_at);
+         
             $avoir->save();
             // Mettre à jour la facture originale
          //   $this->originalFacture->is_cancelled = true;
@@ -95,7 +95,7 @@ class FactureAvoir extends Component
             return redirect()->route('orders.show',$avoir->id);
 
         } catch (\Exception $e) {
-            dd($e);
+          //  dd($e);
             DB::rollback();
             session()->flash('error', 'Erreur lors de la création de la facture d\'avoir: ' . $e->getMessage());
         }
