@@ -18,6 +18,7 @@ class FactureAvoir extends Component
     public $motifAvoir = '';
     public $products = [];
     public $selectedProducts = [];
+    public $choosedProducts = [];
     
     protected $rules = [
         'selectedFacture' => 'required',
@@ -34,6 +35,13 @@ class FactureAvoir extends Component
             $this->originalFacture = null;
             $this->products = [];
         }
+    }
+
+    public function updatedSelectedProducts(){
+      
+
+        $this->choosedProducts = collect($this->products)
+        ->whereIn('id', $this->selectedProducts)->toArray();
     }
 
     public function selectFacture($factureId)
@@ -113,7 +121,7 @@ class FactureAvoir extends Component
 
     private function getSelectedProducts()
     {
-     
+    
         return collect($this->products)
             ->whereIn('id', $this->selectedProducts)
             ->map(function($product) {

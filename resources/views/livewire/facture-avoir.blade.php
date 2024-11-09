@@ -23,8 +23,7 @@
             <!-- Recherche de facture -->
             <div class="form-group">
                 <label>Rechercher une facture</label>
-                <input type="text" class="form-control" wire:model.debounce.300ms="search" 
-                       placeholder="Numéro de facture ou nom du client">
+                <input type="text" class="form-control" wire:model.debounce.300ms="search" placeholder="Numéro de facture ou nom du client">
                 
                 @if(!empty($search))
                     <div class="list-group mt-2">
@@ -71,6 +70,36 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <h4>Modification  de la facture d'Avoir</h4>
+                    <div class="table-responsive">
+                       <table class="table">
+                       <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Quantité</th>
+                                    <th>Prix</th>
+                                    <th>Total</th>
+                                    <th>Sélectionner</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($choosedProducts as $product)
+                                    <tr>
+                                        <td> {{$product['name'] }}  </td>
+                                        <td> {{ $product['quantite'] ?? "" }} </td>
+                                        <td> {{ $product['price'] ?? "" }}</td>
+                                        <td> {{ $product['item_price_nvat'] ?? "" }} </td>
+                                        <td>
+                                            <input type="checkbox" 
+                                                   wire:model="selectedProducts" 
+                                                   value="{{ $product['id'] ?? "" }}">
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                       </table> 
                     </div>
 
                     <div class="form-group mt-4">
