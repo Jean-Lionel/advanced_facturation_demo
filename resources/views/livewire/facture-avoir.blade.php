@@ -5,9 +5,7 @@
         </div>
         
         <div class="card-body">
-        <div class="alert alert-danger">
-                    {{ $errors }}
-                </div>
+        
             @if (session()->has('message'))
                 <div class="alert alert-success">
                     {{ session('message') }}
@@ -26,7 +24,7 @@
                 <input type="text" class="form-control" wire:model.debounce.300ms="search" placeholder="Numéro de facture ou nom du client">
                 
                 @if(!empty($search))
-                    <div class="list-group mt-2">
+                    <div class="mt-2 list-group">
                         @foreach($factures as $facture)
                             <button type="button" 
                                     class="list-group-item list-group-item-action"
@@ -117,7 +115,7 @@
                        </table> 
                     </div>
 
-                    <!-- <div class="form-group mt-4">
+                    <!-- <div class="mt-4 form-group">
                         <label>Montant de l'avoir</label>
                         <input type="number" 
                                class="form-control" 
@@ -135,7 +133,7 @@
                         @error('motifAvoir') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
 
-                    <button class="btn btn-primary mt-3" 
+                    <button class="mt-3 btn btn-primary" 
                             wire:click="createAvoir"
                             wire:loading.attr="disabled">
                         <span wire:loading wire:target="createAvoir">

@@ -1,14 +1,10 @@
 <?php
-
 namespace App\Http\Livewire;
 
 use App\Http\Controllers\SendInvoiceToOBR;
 use Livewire\Component;
 use App\Models\Order;
-
 use Illuminate\Support\Facades\DB;
-use PhpOffice\PhpSpreadsheet\Document\Security;
-
 class FactureAvoir extends Component
 {
     public $search = '';
@@ -31,7 +27,6 @@ class FactureAvoir extends Component
 
     public function updatedSearch()
     {
-  
         if (empty($this->search)) {
             $this->selectedFacture = null;
             $this->originalFacture = null;
@@ -49,9 +44,7 @@ class FactureAvoir extends Component
         $this->productsProductsPrices = collect($this->selectedProducts)->mapWithKeys(function ($product, $key) {
             return [$product => $this->choosedProducts[$key]['price']];
         });
-
        // dd($this->productsQuantities , $this->productsProductsPrices);
-
     }
 
     public function selectFacture($factureId)
@@ -71,24 +64,31 @@ class FactureAvoir extends Component
             // Créer la facture d'avoir         
             $avoir = new Order();
             $taux_tva = calculerTauxTVA($this->originalFacture->amount_tax, $this->originalFacture->tax);
-        
             $b = $this->getSelectedProducts($taux_tva) ;// serialize();
-            dd($b); 
-            $avoir->amount_tax = -$this->montantAvoir;
+            $avoir->products = serialize( $b);
+                      //             PVT HTVA	1 . 142 . 000,00
+            $price_hors_tva = collect($b)->sum('item_price_nvat');
+            // TVA	205 . 560,00
+            $price_tva = collect($b)->sum('vat');
+            // TOTAL TVAC
+            $total_tvac = collect($b)->sum('item_price_wvat');
+            // Check if the total amount abs is not greater than the total amount
+            if(abs($total_tvac) >  abs($this->originalFacture->amount) ){
+                throw new \Exception("Le montant de la facture d’avoir ne doit pas être supérieur au montant de la facture dont il fait objet");
+            }
+            $avoir->amount_tax = $price_hors_tva;
             $avoir->invoice_type = 'FA'; // Facture d'Avoir
-            
             if(!is_numeric( $taux_tva )){
                 throw new \Exception($taux_tva);
             }
             // $avoir->amount_tax = -($this->montantAvoir * $taux_tva / 100);
-            $avoir->tax = -($this->montantAvoir * $taux_tva / 100);
-            $avoir->amount =  $avoir->amount_tax + $avoir->tax ;
+            $avoir->tax = $price_tva;
+            $avoir->amount =   $total_tvac;
             $avoir->total_quantity = $this->calculateTotalQuantity();
             $avoir->total_sacs = $this->calculateTotalSacs();
             // amount_tax calcule du Nouveau TVA 
             $avoir->type_paiement = $this->originalFacture->type_paiement;
             $avoir->type_facture = $this->originalFacture->type_facture;
-          
             $avoir->company = json_encode($this->originalFacture->company);
             $avoir->client =json_encode($this->originalFacture->client) ;
            // $avoir->canceled_or_connection = $this->originalFacture->invoice_signature;
@@ -101,6 +101,9 @@ class FactureAvoir extends Component
             $avoir->envoye_obr = false;
             $avoir->invoice_currency = $this->originalFacture->invoice_currency;
             $avoir->date_facturation = now();
+            $avoir->invoice_ref = $this->originalFacture->invoice_signature;
+            $avoir->cn_motif = $this->motifAvoir;
+            
           // dd($avoir);
             $avoir->save();
             $avoir->invoice_signature = SendInvoiceToOBR::getInvoinceSignature($avoir->id, $avoir->created_at);
@@ -114,7 +117,7 @@ class FactureAvoir extends Component
             return redirect()->route('orders.show',$avoir->id);
 
         } catch (\Exception $e) {
-          //  dd($e);
+          //dd($e);
             DB::rollback();
             session()->flash('error', 'Erreur lors de la création de la facture d\'avoir: ' . $e->getMessage());
         }
@@ -141,7 +144,7 @@ class FactureAvoir extends Component
                 $product['price'] = $this->productsProductsPrices[$product['id']];
                 $product['quantite'] =  $this->productsQuantities[$product['id']];
                 $product['item_price_nvat'] =    $item_price_nvat ;
-                //$product['item_price_wvat'] = $item_price_wvat  ;
+                $product['item_price_wvat'] = $item_price_nvat +  $item_price_wvat ;
                 $product['vat'] = $item_price_wvat  ;
                 $product['item_total_amount'] =  $item_price_nvat +  $item_price_wvat ; // Addition
                 return $product;
@@ -161,7 +164,7 @@ class FactureAvoir extends Component
             })
             ->with('client')
             ->latest()
-            ->take(5)
+            ->take(1)
             ->get();
 
         return view('livewire.facture-avoir', [
