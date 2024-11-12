@@ -19,10 +19,12 @@ class FactureAvoir extends Component
     public $products = [];
     public $selectedProducts = [];
     public $choosedProducts = [];
+    public $productsQuantities = [];
+    public $productsProductsPrices = [];
     
     protected $rules = [
         'selectedFacture' => 'required',
-        'montantAvoir' => 'required|numeric|gt:0',
+      //  'montantAvoir' => 'required|numeric|gt:0',
         'motifAvoir' => 'required|string|min:3',
         'selectedProducts' => 'required|array|min:1',
     ];
@@ -38,10 +40,18 @@ class FactureAvoir extends Component
     }
 
     public function updatedSelectedProducts(){
-      
-
         $this->choosedProducts = collect($this->products)
         ->whereIn('id', $this->selectedProducts)->toArray();
+
+        $this->productsQuantities = collect($this->selectedProducts)->mapWithKeys(function ($product, $key) {
+            return [$product => $this->choosedProducts[$key]['quantite']];
+        });
+        $this->productsProductsPrices = collect($this->selectedProducts)->mapWithKeys(function ($product, $key) {
+            return [$product => $this->choosedProducts[$key]['price']];
+        });
+
+       // dd($this->productsQuantities , $this->productsProductsPrices);
+
     }
 
     public function selectFacture($factureId)
@@ -56,14 +66,17 @@ class FactureAvoir extends Component
     {
 
         $this->validate();
-
         try {
             DB::beginTransaction();
-            // Créer la facture d'avoir
+            // Créer la facture d'avoir         
             $avoir = new Order();
+            $taux_tva = calculerTauxTVA($this->originalFacture->amount_tax, $this->originalFacture->tax);
+        
+            $b = $this->getSelectedProducts($taux_tva) ;// serialize();
+            dd($b); 
             $avoir->amount_tax = -$this->montantAvoir;
             $avoir->invoice_type = 'FA'; // Facture d'Avoir
-            $taux_tva = calculerTauxTVA($this->originalFacture->amount_tax, $this->originalFacture->tax);
+            
             if(!is_numeric( $taux_tva )){
                 throw new \Exception($taux_tva);
             }
@@ -75,7 +88,7 @@ class FactureAvoir extends Component
             // amount_tax calcule du Nouveau TVA 
             $avoir->type_paiement = $this->originalFacture->type_paiement;
             $avoir->type_facture = $this->originalFacture->type_facture;
-            $avoir->products = serialize($this->getSelectedProducts());
+          
             $avoir->company = json_encode($this->originalFacture->company);
             $avoir->client =json_encode($this->originalFacture->client) ;
            // $avoir->canceled_or_connection = $this->originalFacture->invoice_signature;
@@ -96,9 +109,7 @@ class FactureAvoir extends Component
             // Mettre à jour la facture originale
          //   $this->originalFacture->is_cancelled = true;
             $this->originalFacture->save();
-
             DB::commit();
-
             session()->flash('message', 'Facture d\'avoir créée avec succès.');
             return redirect()->route('orders.show',$avoir->id);
 
@@ -119,14 +130,20 @@ class FactureAvoir extends Component
         return collect($this->selectedProducts)->sum('sacs');
     }
 
-    private function getSelectedProducts()
+    private function getSelectedProducts($tax = 18)
     {
-    
+      
         return collect($this->products)
             ->whereIn('id', $this->selectedProducts)
-            ->map(function($product) {
-                $product['price'] = -abs($product['price']);
-                $product['item_price_nvat'] = -abs($product['item_price_nvat']);
+            ->map(function($product) use($tax) {
+                $item_price_nvat = ( $this->productsProductsPrices[$product['id']] *  $this->productsQuantities[$product['id']]);
+                $item_price_wvat = ($item_price_nvat *  $tax /  100); 
+                $product['price'] = $this->productsProductsPrices[$product['id']];
+                $product['quantite'] =  $this->productsQuantities[$product['id']];
+                $product['item_price_nvat'] =    $item_price_nvat ;
+                //$product['item_price_wvat'] = $item_price_wvat  ;
+                $product['vat'] = $item_price_wvat  ;
+                $product['item_total_amount'] =  $item_price_nvat +  $item_price_wvat ; // Addition
                 return $product;
             })
             ->toArray();

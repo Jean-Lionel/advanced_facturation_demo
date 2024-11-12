@@ -88,9 +88,24 @@
                                 @foreach($choosedProducts as $product)
                                     <tr>
                                         <td> {{$product['name'] }}  </td>
-                                        <td> {{ $product['quantite'] ?? "" }} </td>
-                                        <td> {{ $product['price'] ?? "" }}</td>
-                                        <td> {{ $product['item_price_nvat'] ?? "" }} </td>
+                                        <td> 
+                                        {{ $product['quantite'] ?? "" }} <br>   
+                                        <input type="number" wire:model="productsQuantities.{{$product['id']}}"
+                                        value="{{ $product['quantite'] }}"
+                                         step="0.01"
+                                       
+                                        >
+                                    </td>
+                                        <td> {{ $product['price'] ?? "" }}  <br>   
+                                        <input type="number" wire:model="productsProductsPrices.{{$product['id']}}"
+                                        value="{{ $product['price'] }}"
+                                        step="0.01"
+                                        >
+                                        </td>
+                                        <td> {{ getPrice($product['item_price_nvat'] ?? "")  }} <br>
+                                        {{getPrice( $productsQuantities[$product['id']] * $productsProductsPrices[$product['id']])  }}
+
+                                        </td>
                                         <td>
                                             <input type="checkbox" 
                                                    wire:model="selectedProducts" 
@@ -102,7 +117,7 @@
                        </table> 
                     </div>
 
-                    <div class="form-group mt-4">
+                    <!-- <div class="form-group mt-4">
                         <label>Montant de l'avoir</label>
                         <input type="number" 
                                class="form-control" 
@@ -110,7 +125,7 @@
                                step="0.01"
                                max="{{ $originalFacture->amount }}">
                         @error('montantAvoir') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label>Motif de l'avoir</label>

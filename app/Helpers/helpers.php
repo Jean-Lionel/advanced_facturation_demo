@@ -13,7 +13,6 @@ function getNumberToWord($number , $language='fr'){
     return  $numberTransformer->toWords($number);
 }
 
-
 function remplacerPremierePartie($chaine, $nouvelleValeur , $key=0) {
     // Séparer la chaîne par les slashs
     $parties = explode('/', $chaine);
@@ -24,12 +23,9 @@ function remplacerPremierePartie($chaine, $nouvelleValeur , $key=0) {
         // Rejoindre les parties pour reformer la chaîne
         return implode('/', $parties);
     }
-    
     // Retourner la chaîne d'origine si aucune modification n'a été faite
     return $chaine;
 }
-
-
 
 function curentEntrpiseName(){
     return Entreprise::currentEntreprise();
@@ -116,8 +112,6 @@ function isValideNumber($number){
         return false;
     }
 }
-
-
 function getMaisonById($id){
     return MaisonLocation::find($id);
 }
