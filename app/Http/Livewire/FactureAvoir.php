@@ -2,8 +2,10 @@
 namespace App\Http\Livewire;
 
 use App\Http\Controllers\SendInvoiceToOBR;
+use App\Models\ObrMouvementStock;
 use Livewire\Component;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 class FactureAvoir extends Component
 {
@@ -133,9 +135,19 @@ class FactureAvoir extends Component
         return collect($this->selectedProducts)->sum('sacs');
     }
 
+    // This will be implemented when it will be mendatory
+    public function updateMouvementStock(){
+        // saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_description = null, $item_movement_invoice_ref = null , $is_single_retour = false);
+
+        // $productsList = Product::whereIn('id', $this->selectedProducts)->get();
+        // foreach ($productsList as $product){
+        //     ObrMouvementStock::saveMouvement($product, 'ER', );
+        // }
+    }
+
     private function getSelectedProducts($tax = 18)
     {
-      
+
         return collect($this->products)
             ->whereIn('id', $this->selectedProducts)
             ->map(function($product) use($tax) {

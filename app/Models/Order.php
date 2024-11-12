@@ -106,7 +106,6 @@ protected $guarded = [];
         return collect($this->products)->pluck('interet_total')->sum();
     }
     public function getCompanyAttribute($v){
-
         return json_decode($v) ?  json_decode($v) : Entreprise::currentEntreprise();
     }
 
