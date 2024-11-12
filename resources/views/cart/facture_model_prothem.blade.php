@@ -74,7 +74,7 @@
                     <p>Commune : <b>{{ $order->company->tp_address_commune ?? ""}}</b>, Quartier : {{ $order->company->tp_address_quartier }}</p>
                     <p>Avenue : <b>{{ $order->company->tp_address_avenue ?? ""}} </b></p>
                    <p>   Assujetti à la TVA : {{$order->company?->vat_taxpayer ? 'OUI' : 'NON'  }}</p>
-                   <p>  Type de Facture : {{$order->invoice_type  }}</p>
+                   <p>  Type de Facture : {{$order->invoice_type ?? "FN"  }}</p>
                 </div>
                 <div class="aling-right partie-droite">
                     <div>
@@ -146,9 +146,16 @@
                             <td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
                         </tbody>
                     </table>
-                    {{-- <h4>Mention Obligatoire</h4>
-                        <h4>NB: Les non assujettis à la TVA ne remplissent pas les deux dernières lignes</h4> --}}
-                        <br>
+                    <br>
+                       <div>
+                            Nous disons <b> {{ getNumberToWord($order->amount) }}
+                            FBU .</b>
+                       </div> 
+                       @if($order->invoice_type == 'FA')
+                   <div>
+                   <b> Motif </b> : {{ $order->cn_motif }} .
+                   </div>
+                   @endif
                         <h4 class="text-center"> {{$order->invoice_signature}}</h4>
                         <div class="element-center">
                             {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
