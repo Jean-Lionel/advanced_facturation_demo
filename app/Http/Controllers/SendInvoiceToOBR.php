@@ -46,7 +46,6 @@ class SendInvoiceToOBR extends Controller
     }
 
 
-
     public function cancelInvoice($invoice_signature, $motif)
     {
         $token = $this->getToken();
@@ -83,10 +82,13 @@ class SendInvoiceToOBR extends Controller
     {
         $token = $this->getToken();
        // https://ebms.obr.gov.bi:9443/ebms_api
-        ObrRequestBody::create([
+       $order =  ObrRequestBody::create([
             'invoice_id' => $invoince['invoice_number'],
             'request_body' => json_encode($invoince),
         ]);
+
+        //dd($order);
+       
         $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'addInvoice_confirm/', $invoince);
         return json_decode($req->body());
     }

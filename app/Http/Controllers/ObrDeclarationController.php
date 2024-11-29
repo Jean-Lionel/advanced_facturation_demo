@@ -161,6 +161,9 @@ class ObrDeclarationController extends Controller
         $company = Entreprise::currentEntreprise();
         $invoince = $this->generateInvoince($order, $company, $invoince_id, $invoice_signature, $order->created_at);
         $response = null;
+      
+
+       // die($invoince);
         try {
             $response = $obr->addInvoice($invoince);
         } catch (\Exception $e) {
@@ -276,6 +279,7 @@ class ObrDeclarationController extends Controller
             "vat_customer_payer" => $order->client->vat_customer_payer ?? "",
             "invoice_type" =>   $order->invoice_type ?? "FN",
             "cancelled_invoice_ref" => "",
+            "invoice_ref" => $order->invoice_ref,
             //yyyyMMddHHmmss
             "invoice_signature" => $invoice_signature,
             "invoice_identifier" => $invoice_signature,
