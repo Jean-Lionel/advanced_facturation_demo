@@ -6,13 +6,6 @@
         
         <div class="card-body">
             <!-- Loading Overlay -->
-            <div wire:loading.delay class="bg-white opacity-75 position-absolute w-100 h-100" style="top: 0; left: 0; z-index: 1000;">
-                <div class="d-flex justify-content-center align-items-center h-100">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="sr-only">Chargement...</span>
-                    </div>
-                </div>
-            </div>
 
             @if (session()->has('message'))
                 <div class="alert alert-success">
@@ -31,7 +24,7 @@
                 <label>Rechercher une facture de caution</label>
                 <input type="text" 
                        class="form-control" 
-                       wire:model.debounce.300ms="search" 
+                       wire:model="search" 
                        placeholder="Numéro de facture ou nom du client">
                 
                 @if(!empty($search))
@@ -58,7 +51,7 @@
             @if($selectedFacture)
                 <div class="mt-4">
                     <div class="alert alert-info">
-                        <strong>Client:</strong> {{ json_decode($originalFacture->client)->name ?? 'N/A' }}<br>
+                        <strong>Client:</strong> {{ $originalFacture->client->name ?? "" }}<br>
                         <strong>Facture originale:</strong> {{ $originalFacture->invoice_signature }}<br>
                         <strong>Date:</strong> {{ $originalFacture->created_at->format('d/m/Y') }}<br>
                         <strong>Montant total:</strong> {{ number_format($originalFacture->amount, 2) }}
