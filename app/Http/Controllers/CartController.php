@@ -141,7 +141,7 @@ class CartController extends Controller
         $quatite = request()->get('qty');
         $qte = 1;
         if(floatval($quatite) != 0){
-            $qte =  intval($quatite);
+            $qte =  floatval($quatite);
         }
         $cart = Cart::update($rowId, $qte );
        // $taux_pourcentage = request()->get('current_tva') ?? 18;
