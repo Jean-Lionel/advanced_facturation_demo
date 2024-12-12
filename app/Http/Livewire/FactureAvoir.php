@@ -17,9 +17,12 @@ class FactureAvoir extends Component
     public $choosedProducts = [];
     public $productsQuantities = [];
     public $productsProductsPrices = [];
+    public $choosedFacture = "";
+    public $typeFactureListe = ["FA" => "Facture d'Avoir", "RC" => "Remboursement Caution"];
     
     protected $rules = [
         'selectedFacture' => 'required',
+        'choosedFacture' => 'required',
       //  'montantAvoir' => 'required|numeric|gt:0',
         'motifAvoir' => 'required|string|min:3',
         'selectedProducts' => 'required|array|min:1',
@@ -77,7 +80,7 @@ class FactureAvoir extends Component
                 throw new \Exception("Le montant de la facture d’avoir ne doit pas être supérieur au montant de la facture dont il fait objet");
             }
             $avoir->amount_tax = $price_hors_tva;
-            $avoir->invoice_type = 'FA'; // Facture d'Avoir
+            $avoir->invoice_type = $this->choosedFacture; //'FA'; // Facture d'Avoir
             if(!is_numeric( $taux_tva )){
                 throw new \Exception($taux_tva);
             }

@@ -151,7 +151,7 @@
                             Nous disons <b> {{ getNumberToWord($order->amount) }}
                             FBU .</b>
                        </div> 
-                       @if($order->invoice_type == 'FA')
+                       @if($order->invoice_type != 'FN')
                    <div>
                    <b> Motif </b> : {{ $order->cn_motif }} .
                    </div>

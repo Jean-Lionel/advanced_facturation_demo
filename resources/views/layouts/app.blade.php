@@ -98,7 +98,7 @@
             <h1><a href="" class="logo">
                 <img src="{{ asset('img/'. env('USE_LOGO_NAME', 'logo.jpg')) }}" class="img-thumbnail"  alt="">
             </a></h1>
-            <ul class="list-unstyled components mb-5">
+            <ul class="mb-5 list-unstyled components">
                 @can('is-vente')
                 <li >
                     <a href="{{ route('ventes.index') }}" class="{{ setActiveRoute('ventes.*') }}">
@@ -157,25 +157,28 @@
                 <!-- Page Content  -->
                 <div id="content" class="p-0 p-md-6">
                     
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0">
+                    <nav class="mb-0 navbar navbar-expand-lg navbar-light bg-light">
                         <div class="container-fluid">
                             
                             {{-- <button type="button" id="sidebarCollapse" class="btn btn-primary">
                                 <i class="fa fa-bars"></i>
                                 <span class="sr-only">Toggle Menu</span>
                             </button> --}}
-                            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <button class="ml-auto btn btn-dark d-inline-block d-lg-none" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <i class="fa fa-bars"></i>
                             </button>
                             
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                <h5>{{ auth()->user()->company()->tp_name ?? "" }}</h5>
-                                <ul class="nav navbar-nav ml-auto">
+                                <h5>
+                                <i class="fas fa-industry"></i>
+                               
+                                {{ auth()->user()->company()->tp_name ?? "" }}</h5>
+                                <ul class="ml-auto nav navbar-nav">
                                     <li>
                                         <img src="{{ asset('img/'.  env('USE_LOGO_NAME', 'logo.jpg')) }}" class="img-thumbnail"  alt="" style="width:40px; border-radius: 50%;">
                                     </li>
                                     <li>
-                                        <h5 class="mr-4 mt-2 d-flex">
+                                        <h5 class="mt-2 mr-4 d-flex">
                                             <span>{{ Auth::user()->name }}</span>
                                         </h5>
                                     </li>
@@ -184,7 +187,7 @@
                                             <i class="fa fa-shopping-cart text-lg-center"></i> <span class="badge badge-light">{{ Cart::count()}}</span>
                                         </a>
                                     </li>
-                                    <li class="nav-item ml-2">
+                                    <li class="ml-2 nav-item">
                                         <form action="{{ route('logout') }}" method="post">
                                             @csrf
                                             @method('POST')

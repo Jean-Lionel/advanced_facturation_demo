@@ -39,6 +39,7 @@ class ObrDeclarationController extends Controller
     }
 
     public function factureAvoir(){
+       
         return view('obr_declarations.facture_avoir');
     }
     public function remboursementCaution(){

@@ -4,6 +4,6 @@
 @include("ventes._header")
 
 <div>
-    @livewire('remboursement-caution')
+    @livewire('facture-avoir')
 </div>
 @endsection

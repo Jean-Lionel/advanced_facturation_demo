@@ -2,19 +2,23 @@
     <div class="row">
         <div class="col-md-4 d-flex justify-content-between">
             <h4 class="text-center {{ request()->routeIs('ventes.create') ? 'active' : '' }}">
-                <a href="{{ route('ventes.create') }}">Facturation des Services</a>
+           
+                <a href="{{ route('ventes.create') }}">
+                <i class="fas fa-file-invoice"></i> 
+                    Facturation des Services</a>
             </h4>
         </div>
-        <div class="col-md-4 d-flex justify-content-between">
+        <div class="col-md-6 d-flex justify-content-between">
             <h4 class="text-center {{ request()->routeIs('facture.avoir') ? 'active' : '' }}">
-                <a href="{{ route('facture.avoir') }}">Facture d'Avoir</a>
+                <a href="{{ route('facture.avoir') }}">
+                <i class="fas fa-money-bill"></i>  Facture d'Avoir et Remboursement Caution</a>
             </h4>
         </div>
-        <div class="col-md-4 d-flex justify-content-between">
+        <!-- <div class="col-md-4 d-flex justify-content-between">
             <h4 class="text-center {{ request()->routeIs('facture.remboursement_caution') ? 'active' : '' }}">
-                <a href="{{ route('facture.remboursement_caution') }}">Facture d'Avoir</a>
+                <a href="{{ route('facture.remboursement_caution') }}">Remboursement Caution</a>
             </h4>
-        </div>
+        </div> -->
     </div>
 </div>
 
