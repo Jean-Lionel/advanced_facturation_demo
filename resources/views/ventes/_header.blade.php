@@ -10,6 +10,11 @@
                 <a href="{{ route('facture.avoir') }}">Facture d'Avoir</a>
             </h4>
         </div>
+        <div class="col-md-4 d-flex justify-content-between">
+            <h4 class="text-center {{ request()->routeIs('facture.remboursement_caution') ? 'active' : '' }}">
+                <a href="{{ route('facture.remboursement_caution') }}">Facture d'Avoir</a>
+            </h4>
+        </div>
     </div>
 </div>
 

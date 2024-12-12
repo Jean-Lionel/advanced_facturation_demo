@@ -7,7 +7,7 @@
         <div class="container">
 
             <div class="row">
-                <div class="col-lg-12 p-1 bg-white rounded shadow-sm mb-1">
+                <div class="p-1 mb-1 bg-white rounded shadow-sm col-lg-12">
                     <div class="table-responsive">
                         <table class="table table-sm">
                             <thead>
@@ -70,7 +70,9 @@
                                             <input type="number" class="price_input" data-product="{{ $product->rowId }}"
                                             value="{{ $product->price }}"
                                             data-tva="{{ $product->model->taux_tva }}"
-                                            class="form-control">
+                                            class="form-control"
+                                            min="0" value="0" step="any"
+                                            >
                                         </th>
                                         <th>
                                             <span id="price_tvac_{{ $product->rowId }}" >{{ $product->model->price_tvac  }}</span>
@@ -81,20 +83,24 @@
                                             {{--                    <b>Kg/Sac</b>--}}
                                             {{--                  </td>--}}
 
-                                            <td class="border-0 align-middle">
+                                            <td class="align-middle border-0">
 
                                                 <input type="number"
                                                 value="{{$product->qty}}"
-
-                                                data-id="{{ $product->rowId }}" class="quantite quantite_select" min="1" max="{{$product->model->quantite }}" >
+                                                data-id="{{ $product->rowId }}" class="quantite quantite_select" min="1" max="{{$product->model->quantite }}"
+                                                step="any"
+                                                >
 
                                             </td>
 
                                             <th>
-                                                <span id="{{ $product->rowId }}">{{ getPrice($product->subtotal())  }}</span>
+                                                <span id="{{ $product->rowId }}">
+                                                {{ getPrice($product->subtotal())  }}
+                                            
+                                            </span>
                                             </th>
 
-                                            <td class="border-0 align-middle">
+                                            <td class="align-middle border-0">
 
                                                 <form action="{{ route('cart.destroy',$product->rowId) }}" method="post">
                                                     @csrf
@@ -112,16 +118,16 @@
                             <!-- End -->
                         </div>
                     </div>
-                    <div class="row py-2 p-1 bg-white rounded shadow-sm">
+                    <div class="p-1 py-2 bg-white rounded shadow-sm row">
                         <div class="col-lg-6">
-                            <div class="bg-light rounded-pill px-1 py-1 text-uppercase font-weight-bold">INFORMATION DU CLIENT</div>
+                            <div class="px-1 py-1 bg-light rounded-pill text-uppercase font-weight-bold">INFORMATION DU CLIENT</div>
                             <div class="p-1">
                                 {{$errors}}
                                 <form action="{{ route('payement') }}" method="post">
 
                                     {{--  <input type="hidden" name="currentTva" value="{{ $currentTva }}">  --}}
                                     <div class="form-group">
-                                        <input type="text" id="chercherClient" name="chercherClient" placeholder="Recherche Ici" class="form-control border-2 form-control-sm">
+                                        <input type="text" id="chercherClient" name="chercherClient" placeholder="Recherche Ici" class="border-2 form-control form-control-sm">
                                     </div>
                                     <div class="d-flex justify-content-between">
 
@@ -150,20 +156,20 @@
                                     @method('post')
                                     <div class="row">
                                         <div class="form-group col-md-6">
-                                            <input  disabled type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
+                                            <input  disabled type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="border-2 form-control">
                                         </div>
 
                                         <div class="form-group col-md-6">
-                                            <input  disabled name="telephone" id="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="form-control border-2">
+                                            <input  disabled name="telephone" id="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="border-2 form-control">
                                         </div>
 
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-6">
-                                            <input  disabled id="customer_TIN" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="form-control border-2">
+                                            <input  disabled id="customer_TIN" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="border-2 form-control">
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <input  disabled id="addresse_client"  placeholder="Adresse du client" aria-describedby="button-addon3" class="form-control border-2">
+                                            <input  disabled id="addresse_client"  placeholder="Adresse du client" aria-describedby="button-addon3" class="border-2 form-control">
                                             <span id="search_response"></span>
                                         </div>
                                     </div>
@@ -180,33 +186,33 @@
 
                                     <div class="form-group">
                                         <input type="hidden" name="commissionaire_id" id="selectedCommisionnaire">
-                                        <input type="text"  id="commissionaire_id" placeholder="PORTEUR" aria-describedby="button-addon3" class=" border-2">
+                                        <input type="text"  id="commissionaire_id" placeholder="PORTEUR" aria-describedby="button-addon3" class="border-2 ">
                                     </div>
-                                    <button type="submit" class="btn btn-dark rounded-pill py-2 btn-block">Valider</button>
+                                    <button type="submit" class="py-2 btn btn-dark rounded-pill btn-block">Valider</button>
                                 </form>
-                                {{--  <div class="input-group mb-4 border rounded-pill p-2">
-                                    <input type="text" placeholder="Apply coupon" aria-describedby="button-addon3" class="form-control border-0">
-                                    <div class="input-group-append border-0">
-                                        <button id="button-addon3" type="button" class="btn btn-dark px-4 rounded-pill"><i class="fa fa-gift mr-2"></i>Enregistrer</button>
+                                {{--  <div class="p-2 mb-4 border input-group rounded-pill">
+                                    <input type="text" placeholder="Apply coupon" aria-describedby="button-addon3" class="border-0 form-control">
+                                    <div class="border-0 input-group-append">
+                                        <button id="button-addon3" type="button" class="px-4 btn btn-dark rounded-pill"><i class="mr-2 fa fa-gift"></i>Enregistrer</button>
                                     </div>
                                 </div> --}}
                             </div>
-                            <div class="bg-light rounded-pill px-1 py-1 text-uppercase font-weight-bold">Instructions pour le client</div>
+                            <div class="px-1 py-1 bg-light rounded-pill text-uppercase font-weight-bold">Instructions pour le client</div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="bg-light rounded-pill px-1 py-1 text-uppercase font-weight-bold">Déscription  </div>
+                            <div class="px-1 py-1 bg-light rounded-pill text-uppercase font-weight-bold">Déscription  </div>
                             <div class="p-2">
-                                <ul class="list-unstyled mb-2">
-                                    <li class="d-flex justify-content-between py-2 border-bottom"><strong class="text-muted">PHTVA </strong>
+                                <ul class="mb-2 list-unstyled">
+                                    <li class="py-2 d-flex justify-content-between border-bottom"><strong class="text-muted">PHTVA </strong>
                                         <h5 id="prix_hors_tva" class="font-weight-bold">
                                             <span>{{getPrice(Cart::subtotal())}}</span>
                                         </h5>
                                     </li>
-                                    <li class="d-flex justify-content-between py-2 border-bottom"><strong class="text-muted">TVA</strong>
+                                    <li class="py-2 d-flex justify-content-between border-bottom"><strong class="text-muted">TVA</strong>
                                         <h5 id="prix_hors_tax" class="font-weight-bold">
                                             {{ getPrice(Cart::tax()) }}
                                         </h5></li>
-                                        <li class="d-flex justify-content-between py-2 border-bottom"><strong class="text-muted">Total</strong>
+                                        <li class="py-2 d-flex justify-content-between border-bottom"><strong class="text-muted">Total</strong>
                                             <h5 class="font-weight-bold">
                                                 <b id="total_montant">{{ getPrice(Cart::total()) }}</b>
                                             </h5>

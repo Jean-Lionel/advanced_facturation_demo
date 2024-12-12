@@ -41,6 +41,9 @@ class ObrDeclarationController extends Controller
     public function factureAvoir(){
         return view('obr_declarations.facture_avoir');
     }
+    public function remboursementCaution(){
+        return view('obr_declarations.remboursementCaution');
+    }
     public function index()
     {
         $orders = Order::whereNull('envoye_obr')->latest()->get();
