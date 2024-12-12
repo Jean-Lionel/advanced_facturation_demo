@@ -23,7 +23,7 @@
                 <div class="row">
                     <div class="col-6">
                         <span>DU</span>
-                        <input type="date" class="form-control  form-control-sm" name="startDate"
+                        <input type="date" class="form-control form-control-sm" name="startDate"
                         value="{{ $startDate }}"
                         >
                     </div>
@@ -43,7 +43,7 @@
             </form>
 
             <div class=" col-4">
-                <div class="d-flex gap-3">
+                <div class="gap-3 d-flex">
                     <table class="table table-sm table-striped">
                         <tr>
                             <th>DATE</th>
@@ -60,7 +60,7 @@
 
             </div>
             <div class=" col-4">
-                <div class="d-flex gap-3">
+                <div class="gap-3 d-flex">
                     <table class="table table-sm table-striped">
                         <tr>
                             <th>MONTANT TOTAL DES FACTURE TVAC</th>
@@ -90,6 +90,9 @@
 					<th scope="col">@sortablelink('montant','MONTANT')</th>
 					<th scope="col" class="noprint">
 						@sortablelink('type_paiement', 'MODE DE PAIMENT')
+					</th>
+					<th scope="col" class="noprint">
+                    TYPE DE FACTURE
 					</th>
                     <th>
                         TVA
@@ -124,13 +127,14 @@
 					</td>
 					<td class="numbers">{{ getPrice($order->amount )}}</td>
 					<td class="noprint">{{ $order->type_paiement ?? ""}}</td>
+					<td class="noprint">{{ $order->invoice_type ?? ""}}</td>
                     <td class="numbers">
                         {{ getPrice($order->tax ) }}
                     </td>
 					<td class="d-flex noprint" >
                      
                     
-						<a href="{{ route('orders.show', $order) }}" class="btn btn-sm btn-success mr-2" title="imprimer"> <i class="fa fa-print" ></i></a>
+						<a href="{{ route('orders.show', $order) }}" class="mr-2 btn btn-sm btn-success" title="imprimer"> <i class="fa fa-print" ></i></a>
 
 
 					</td>
