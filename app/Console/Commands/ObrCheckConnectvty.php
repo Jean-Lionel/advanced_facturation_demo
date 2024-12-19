@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Controllers\SendInvoiceToOBR;
 use Illuminate\Console\Command;
+use App\Models\ObrCofiguration;
 
 class ObrCheckConnectvty extends Command
 {
@@ -39,6 +40,7 @@ class ObrCheckConnectvty extends Command
      */
     public function handle()
     {
+        ObrCofiguration::saveConfiguration();
         $obr = new SendInvoiceToOBR();
         dump($obr->getToken());
         return 0;
