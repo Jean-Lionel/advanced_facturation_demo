@@ -13,6 +13,10 @@ function getNumberToWord($number , $language='fr'){
     return  $numberTransformer->toWords($number);
 }
 
+function getInvoiceNumber($invoince_id){
+    return INVOICE_PREFIX.str_pad($invoince_id, 6, "0", STR_PAD_LEFT);
+}
+
 function remplacerPremierePartie($chaine, $nouvelleValeur , $key=0) {
     // Séparer la chaîne par les slashs
     $parties = explode('/', $chaine);

@@ -163,6 +163,8 @@ class ObrDeclarationController extends Controller
             $invoice_signature = SendInvoiceToOBR::getInvoinceSignature($order->id, $order->created_at);
         }
         $company = Entreprise::currentEntreprise();
+        // Modification de l'id de l'invoice
+        $invoince_id = getInvoiceNumber($invoince_id);
         $invoince = $this->generateInvoince($order, $company, $invoince_id, $invoice_signature, $order->created_at);
         $response = null;
       
@@ -172,6 +174,7 @@ class ObrDeclarationController extends Controller
             $response = $obr->addInvoice($invoince);
         } catch (\Exception $e) {
             return response()->json([
+                'error' => $e->getMessage(),
                 'success' => false,
                 'msg' => "Vérifier que votre ordinateur est connecté"
             ]);
@@ -258,6 +261,7 @@ class ObrDeclarationController extends Controller
             }
         }
         $invoince = [
+            "invoice_id" => $order->id,
             "invoice_number" => $invoice_number,
             "invoice_date" => $invoice_date,
             "tp_type" => $company->tp_type,
