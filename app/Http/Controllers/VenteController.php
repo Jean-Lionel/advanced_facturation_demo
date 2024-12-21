@@ -32,7 +32,7 @@ class VenteController extends Controller
                         ->orWhere('code_product', 'like', '%' . $search . '%')
                         ->orWhere('price', 'like', '%' . $search . '%')
                         ->orWhere('unite_mesure', 'like', '%' . $search . '%');
-                    })->latest()->take(6)->get();
+                    })->latest()->take(10)->get();
         // SyncroniseInvoice::dispatch(1);
 
         //dd($products[0]->priceHorsTva);
