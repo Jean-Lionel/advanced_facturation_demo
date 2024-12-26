@@ -28,6 +28,7 @@ class ObrCofiguration extends Model
                 'obr_password' => env('OBR_PASSWORD'),
                 'obr_production' => env('OBR_PRODUCTION'),
                 'obr_model_facture' => env('OBR_MODEL_FACTURE'),
+                'entreprise' => (Entreprise::currentEntreprise())->toArray(),
             ]),
 
         ]);
