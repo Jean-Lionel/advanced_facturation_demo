@@ -88,10 +88,12 @@ class ObrDeclarationController extends Controller
         //    dd($request->cancel_amount);
         $order = Order::where('invoice_signature', '=',$request->invoice_signature)->first();
         if($request->cancel_amount){
+            dd($order->products );
             foreach($order->products as $productItem){
                 // dd($product);
                 try{
                     $product = Product::find($productItem['id']);
+                   
                     if($product ){
                         $product->quantite += $productItem['quantite'];
                         $product->save();
@@ -103,7 +105,7 @@ class ObrDeclarationController extends Controller
                             'description' => $request->motif,
                             'user_id' => auth()->user()->id,
                         ]);
-                        $current_price = $productItem['price_revient'] ;
+                        $current_price = $productItem['price_revient'] ?? 0 ;
                         ObrMouvementStock::saveMouvement( $product, 'ER',$current_price, $productItem['quantite'], $request->motif, $order->id);
                     }
 
@@ -112,7 +114,8 @@ class ObrDeclarationController extends Controller
                   //  $mouvements_enregistres = ObrMouvementStock
                     //
                 }catch(\Exception $e){
-                    dd( $e);
+                    return $e->getMessage();
+                   // dd( $e);
                 }
             }
         }

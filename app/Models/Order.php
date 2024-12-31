@@ -94,6 +94,10 @@ protected $guarded = [];
 		return json_decode($v);
 	}
 
+    public function concelInvoice(){
+        return $this->hasOne(CanceledInvoince::class, 'order_id');
+    }
+
     public function obrPointer(){
         return $this->belongsTo(ObrPointer::class, 'id','order_id');
     }
