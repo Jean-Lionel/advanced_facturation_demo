@@ -61,7 +61,7 @@
 
             </header>
             {{-- Fin --}}
-            <h3 class="text-center">FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }} </h3>
+            <h3 class="text-center">FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y à H:i:s') }} </h3>
             {{-- SIDE A --}}
             <article class="identification_a">
                 <div>
