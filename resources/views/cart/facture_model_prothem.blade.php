@@ -135,15 +135,20 @@
                             <td colspan="4">PVT HTVA </td>
                             <td class="adroite"><b>{{ getPrice($order->amount_tax) }}</b></td>
                         </tr>
-                        <tr>
-                            <td colspan="4">TVA </td>
-                            <td class="adroite"><b>{{ getPrice($order->tax) }}</b></td>
-                        </tr>
-                        <tr>
-                            <td colspan="4"><b>TOTAL TVAC</b></td>
-                            {{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
-                            <td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
-                            <td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
+
+                        @if ($order->tax != 0)
+                            
+                            <tr>
+                                <td colspan="4">TVA </td>
+                                <td class="adroite"><b>{{ getPrice($order->tax) }}</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><b>TOTAL TVAC</b></td>
+                                {{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
+                                <td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
+                                <td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
+                            </tr>
+                        @endif
                         </tbody>
                     </table>
                     <br>
@@ -161,7 +166,6 @@
                             {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
                         </div>
                     </article>
-
                 </div>
 
                 <div id="reciept" style="display : none">
