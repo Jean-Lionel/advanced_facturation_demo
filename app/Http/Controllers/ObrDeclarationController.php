@@ -56,7 +56,7 @@ class ObrDeclarationController extends Controller
     public function hostory()
     {
         $order_id = request()->query('order_id');
-        $orders = Order::whereNotNull('envoye_obr')
+        $orders = Order::with(['concelInvoice'])->whereNotNull('envoye_obr')
         ->where( function($query) use ($order_id){
             if(isset($order_id) ){
                 $query->where('id', $order_id);
@@ -88,12 +88,11 @@ class ObrDeclarationController extends Controller
         //    dd($request->cancel_amount);
         $order = Order::where('invoice_signature', '=',$request->invoice_signature)->first();
         if($request->cancel_amount){
-            dd($order->products );
+          //  dd($order->products );
             foreach($order->products as $productItem){
                 // dd($product);
                 try{
                     $product = Product::find($productItem['id']);
-                   
                     if($product ){
                         $product->quantite += $productItem['quantite'];
                         $product->save();
@@ -119,18 +118,21 @@ class ObrDeclarationController extends Controller
                 }
             }
         }
+         // Add to pading table
+        $cancelInvoice = CanceledInvoince::create([
+            'motif' => $request->motif,
+            'invoice_signature' => $request->invoice_signature,
+            'created_at' => now(),
+            'status' => false,
+            'order_id' => $order->id,
+        ]);
         if(!isInternetConnection() || !CAN_SYNCRONISE){
-            // Add to pading table
-            CanceledInvoince::create([
-                'motif' => $request->motif,
-                'invoice_signature' => $request->invoice_signature,
-                'created_at' => now(),
-                'status' => false,
-                'order_id' => $order->id,
-            ]);
+           
             $order->canceled_or_connection = 'ANNULEE HORS CONNECTION';
             $order->is_cancelled = true;
             $order->save();
+            $cancelInvoice->status = false;
+            $cancelInvoice->save();
             return response()->json([
                 'success' => true,
                 'msg' => 'la Facture a été annulée.',
@@ -142,6 +144,8 @@ class ObrDeclarationController extends Controller
                 $response = $obr->cancelInvoice($request->invoice_signature , $request->motif);
                 $order = Order::find($request->order_id);
                 $order->is_cancelled = true;
+                $cancelInvoice->status = true;
+                $cancelInvoice->save();
                 $order->save();
                 return $response;
             } catch (\Exception $e) {
