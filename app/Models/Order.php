@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\PaiementDette;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,24 +24,17 @@ protected $guarded = [];
 
 	public static function boot(){
 		parent::boot();
+
 		self::creating(function($model){
 			$model->user_id = Auth::user()->id ?? 1;
 			$model->client_id = $model->client->id ?? 0;
 			$model->invoice_type = $model->invoice_type ??  'FN';
-            // add a new column invoice_currency on order if it doesn't already exist
-            // Check if the 'invoice_currency' column exists in the 'orders' table
-            if (!Schema::hasColumn('orders', 'invoice_currency')) {
-                // Add the 'invoice_currency' column if it doesn't exist
-                Schema::table('orders', function ($table) {
-                    $table->string('invoice_currency', 10)->nullable();
-                });
-            }
-           // "invoice_type" => "FN",
-            if (!Schema::hasColumn('orders', 'invoice_type')) {
-                // Add the 'invoice_currency' column if it doesn't exist
-                Schema::table('orders', function ($table) {
-                    $table->string('invoice_type', 10)->nullable();
-                });
+            try {
+                //code...
+                self::checkCanCreateNewRecord();
+                self::updateDatabases();
+            } catch (\Throwable $th) {
+                throw new \Exception($th->getMessage());
             }
 
             Session::put('cancel_syncronize', false);
@@ -50,7 +44,6 @@ protected $guarded = [];
             $model->user_id = Auth::user()->id ?? 1;
             Session::put('cancel_syncronize', false);
         });
-
 
         self::created(function($model){
             $montant = collect($model->products)->pluck('interet_total')->sum();
@@ -115,5 +108,41 @@ protected $guarded = [];
 
     public function commissionaire(){
         return $this->belongsTo(Client::class , 'commissionaire_id');
+    }
+
+    private static function updateDatabases(){
+         // add a new column invoice_currency on order if it doesn't already exist
+            // Check if the 'invoice_currency' column exists in the 'orders' table
+            if (!Schema::hasColumn('orders', 'invoice_currency')) {
+                // Add the 'invoice_currency' column if it doesn't exist
+                Schema::table('orders', function ($table) {
+                    $table->string('invoice_currency', 10)->nullable();
+                });
+            }
+           // "invoice_type" => "FN",
+            if (!Schema::hasColumn('orders', 'invoice_type')) {
+                // Add the 'invoice_currency' column if it doesn't exist
+                Schema::table('orders', function ($table) {
+                    $table->string('invoice_type', 10)->nullable();
+                });
+            }
+          
+    }
+
+
+    private static function checkCanCreateNewRecord(){
+        $lastRecord = self::where('user_id', auth()->id())
+        ->latest()
+        ->first();
+        if ($lastRecord) {
+            // Calculer le temps écoulé depuis le dernier enregistrement
+            $timeElapsed = Carbon::parse($lastRecord->created_at)->diffInSeconds(Carbon::now());
+            // Si moins d'une minute s'est écoulée
+            if ($timeElapsed < TEMPS_GENERATION_FACTURE) {
+                $remainingTime = TEMPS_GENERATION_FACTURE - $timeElapsed;
+                throw new \Exception("Veuillez attendre encore {$remainingTime} secondes avant de créer un nouvel enregistrement.");
+            }
+        }
+        return true;
     }
 }
