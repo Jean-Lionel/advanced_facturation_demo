@@ -23,7 +23,7 @@
             <tbody>
                 @foreach($historiques as $historique)
                 <tr>
-                    <td>{{ $h$count }}</td>
+                    <td>{{ $count }}</td>
                     {{-- <td>{{ $historique->compte_id }}</td>
                     <td>{{ $historique->client_id }}</td> --}}
                     <td>{{ $historique->mode_payement }}</td>
