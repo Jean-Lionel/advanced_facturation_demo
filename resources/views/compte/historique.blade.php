@@ -2,6 +2,9 @@
 
 @section('content')
 <div class="container">
+    @php
+        $count = 1;
+    @endphp
     <h3 class="text-center mb-4">Historique</h3>
     <table id="historique-table" class="table table-striped">
             <thead>
@@ -20,7 +23,7 @@
             <tbody>
                 @foreach($historiques as $historique)
                 <tr>
-                    <td>{{ $historique->id }}</td>
+                    <td>{{ $h$count }}</td>
                     {{-- <td>{{ $historique->compte_id }}</td>
                     <td>{{ $historique->client_id }}</td> --}}
                     <td>{{ $historique->mode_payement }}</td>
@@ -30,6 +33,9 @@
                     <td>{{ $historique->user->name }}</td>
                     <td>{{ $historique->created_at->format('d/m/Y H:i') }}</td>
                 </tr>
+                @php
+                    $count++;
+                @endphp
                 @endforeach
             </tbody>
         </table>

@@ -30,7 +30,7 @@ class CompteController extends Controller
 
     // View de historique des transaction
     public function historique(Request $request,$id){
-        $historiques = BienvenuHistorique::where('client_id', $id)->get();
+        $historiques = BienvenuHistorique::where('client_id', $id)->latest()->get();
         return view('compte.historique', compact('historiques'));
     }
 
