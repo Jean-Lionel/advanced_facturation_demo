@@ -44,6 +44,9 @@
                 @endforeach
             </tbody>
         </table> --}}
+        @php
+            $count = 1;
+        @endphp
 
         <div class="row">
             <div class="col-lg-8 col-md-12">
@@ -62,7 +65,7 @@
                     <tbody>
                         @foreach ($interets as $item)
                         <tr>
-                            <td>{{ $item->id }}</td>
+                            <td>{{ $count }}</td>
                             <td class="text-center">{{ $item->order_id }}</td>
                             <td>{{ $item->commisionnaire()?->name }}</td>
                             <td>{{ $item->client()?->name }}</td>
@@ -78,6 +81,9 @@
                             </td>
                             <td>{{ $item->created_at}}</td>
                         </tr>
+                        @php
+                            $count++;
+                        @endphp
                         @endforeach
                     </tbody>
                 </table>
