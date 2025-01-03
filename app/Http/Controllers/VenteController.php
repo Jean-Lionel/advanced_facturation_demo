@@ -6,7 +6,6 @@ use App\Jobs\SyncroniseInvoice;
 use App\Models\Vente;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Order;
@@ -16,21 +15,14 @@ class VenteController extends Controller
 
     public function index(Request $request)
     {
-
         // $order = Order::latest()->first();
         // dump($order );
-
         if(env('OBR_CHECKCONNECTIVITY', false)){
             $obr = new SendInvoiceToOBR();
+            dump($obr->getInvoice('4000004806/wsl400000480600187/20240417143348/000025'));
             dd($obr->getToken());
-
-            // dump($obr->checkTin(('4000834368')));
-            // dd($obr->getToken());
         }
-
-
         // dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
-
         $search = request()->get('search');
         $products = Product::where('quantite', '>', 1)
                     ->where('price', '>', 0)
@@ -40,7 +32,7 @@ class VenteController extends Controller
                         ->orWhere('code_product', 'like', '%' . $search . '%')
                         ->orWhere('price', 'like', '%' . $search . '%')
                         ->orWhere('unite_mesure', 'like', '%' . $search . '%');
-                    })->latest()->take(6)->get();
+                    })->latest()->take(10)->get();
         // SyncroniseInvoice::dispatch(1);
 
         //dd($products[0]->priceHorsTva);

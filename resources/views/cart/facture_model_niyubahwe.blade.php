@@ -29,13 +29,18 @@
             <button id="printElement" class=" btn noprint">Imprimer</button>
             <button id="print_reciept"  class="noprint btn">Imprimer Reciept</button>
         </div>
+
+        @if ($order->is_cancelled)
+        @include('cart._partial')
+      @endif
         <div class="main-content" id="printJS-form" >
             {{-- Entete --}}
             <header class="header-facture ">
-                @if (USE_LOGO_NAME)
+            
+                @if (env('APP_USE_LOGO', false))
                 <div>
                     <div >
-                        <img class="img_logo" src="{{asset('img/'.  LOGO_NAME)}}" alt="">
+                        <img class="img_logo" src="{{asset('img/'.   env('USE_LOGO_NAME', 'logo.jpg'))}}" alt="">
                     </div>
                 </div>
                 @endif

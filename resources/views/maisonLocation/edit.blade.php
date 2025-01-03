@@ -1,16 +1,13 @@
 @extends('layouts.app')
-
-
 @section('content')
 
 @include('products._header_product')
 
+<div>
+	@livewire('maison-location.update', [
+		'maisonLocation' => $maisonLocation 
+	])
+</div>
 
-
-<form action="{{ route('categories.update', $category) }}" method="post">
-	@method('put')
-
-	@include('categories._form',['btnMessage' => 'Modifier'])
-</form>
 
 @endsection

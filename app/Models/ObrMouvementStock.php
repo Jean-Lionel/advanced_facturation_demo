@@ -115,7 +115,6 @@ class ObrMouvementStock extends Model
                 if($is_single_retour){
                     $current_quantite = $qte;
                 }
-               
                 if($detail != null){
                     $detail->quantite_restant +=  $current_quantite; // Ajouter la quantite qu'on avait enleve
                     $detail->save();

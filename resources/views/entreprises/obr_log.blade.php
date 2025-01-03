@@ -5,10 +5,12 @@
 <div>
 	@include('entreprises.header')
 	<div>
-        <table class="table"id="fiche_stock" >
+        <table class="table table-stripped" id="fiche_stock" >
             <thead>
                 <tr>
+                    
                     <th>Numero de la Facture</th>
+                    {{--  <th>Date</th>  --}}
                     <th>Signature</th>
                     <th>Message</th>
                     <th>Resultat</th>
@@ -18,10 +20,16 @@
             <tbody>
                 @foreach ($logs as $item)
                 <tr @if($item->status == 0) class="bg-danger text-white" @endif>
-                    <td>{{ $item->order_id }}</td>
-                    <td>{{ $item->invoice_signature }}</td>
+                    <td>{{ $item->order_id }}
+                    </td>
+                    
+                    <td>{{ $item->invoice_signature }}
+                       
+                    </td>
 
-                    <td>{{ $item->msg }}</td>
+                    <td>{{ $item->msg }}
+                        <br> <span> <b>Date : </b> <small> {{ $item->created_at  }} </small> <span>
+                    </td>
                     <td>
 
                         @if ( $item->result)

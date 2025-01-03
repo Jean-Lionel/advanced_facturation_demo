@@ -22,6 +22,9 @@ class CreateOrdersTable extends Migration
             $table->double('amount_tax',60,2);
             $table->string('type_paiement');
             $table->string('type_facture')->nullable();
+            //invoice_currency            $table->string('invoice_currency')->nullable();
+            $table->string('invoice_currency')->nullable();
+            $table->string('invoice_type')->nullable();
             $table->text('products');
             $table->text('company')->nullable();
             $table->text('client')->nullable();

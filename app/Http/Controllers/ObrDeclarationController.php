@@ -13,11 +13,40 @@ use App\Http\Controllers\SendInvoiceToOBR;
 
 class ObrDeclarationController extends Controller
 {
+
+    public function syncronizeInvoices(){
+
+        if(isInternetConnection()){
+            // check if creditial connection is available to OBR request
+            try {
+                //code...
+                $syncronize = new SyncronizeController();
+                $syncronize->syncronizeInvoices();
+                $syncronize->syncronizeStock();
+            } catch (\Throwable $th) {
+                return [
+                    "success" => false,
+                   // "msg" => $th->getMessage(),
+                ];
+            }
+        }else{
+            return [
+                "success" => false,
+                "msg" => "Pas de connection internet"
+            ];
+
+        }
+    }
+
+    public function factureAvoir(){
+       
+        return view('obr_declarations.facture_avoir');
+    }
+    public function remboursementCaution(){
+        return view('obr_declarations.remboursementCaution');
+    }
     public function index()
     {
-        $order = Order::find(3);
-
-        $x = new SendInvoiceToOBR();
         $orders = Order::whereNull('envoye_obr')->latest()->get();
         return view('obr_declarations.index', [
             'orders' => $orders
@@ -27,7 +56,7 @@ class ObrDeclarationController extends Controller
     public function hostory()
     {
         $order_id = request()->query('order_id');
-        $orders = Order::whereNotNull('envoye_obr')
+        $orders = Order::with(['concelInvoice'])->whereNotNull('envoye_obr')
         ->where( function($query) use ($order_id){
             if(isset($order_id) ){
                 $query->where('id', $order_id);
@@ -59,11 +88,11 @@ class ObrDeclarationController extends Controller
         //    dd($request->cancel_amount);
         $order = Order::where('invoice_signature', '=',$request->invoice_signature)->first();
         if($request->cancel_amount){
+          //  dd($order->products );
             foreach($order->products as $productItem){
                 // dd($product);
                 try{
                     $product = Product::find($productItem['id']);
-
                     if($product ){
                         $product->quantite += $productItem['quantite'];
                         $product->save();
@@ -75,34 +104,35 @@ class ObrDeclarationController extends Controller
                             'description' => $request->motif,
                             'user_id' => auth()->user()->id,
                         ]);
-                        $current_price = $productItem['price_revient'] ;
+                        $current_price = $productItem['price_revient'] ?? 0 ;
                         ObrMouvementStock::saveMouvement( $product, 'ER',$current_price, $productItem['quantite'], $request->motif, $order->id);
-
                     }
-
 
                     // Enregistres les mouvements de stock correspondant pour la facture
 
                   //  $mouvements_enregistres = ObrMouvementStock
                     //
-
-
                 }catch(\Exception $e){
+                    return $e->getMessage();
+                   // dd( $e);
                 }
             }
         }
+         // Add to pading table
+        $cancelInvoice = CanceledInvoince::create([
+            'motif' => $request->motif,
+            'invoice_signature' => $request->invoice_signature,
+            'created_at' => now(),
+            'status' => false,
+            'order_id' => $order->id,
+        ]);
         if(!isInternetConnection() || !CAN_SYNCRONISE){
-            // Add to pading table
-            CanceledInvoince::create([
-                'motif' => $request->motif,
-                'invoice_signature' => $request->invoice_signature,
-                'created_at' => now(),
-                'status' => false,
-                'order_id' => $order->id,
-            ]);
+           
             $order->canceled_or_connection = 'ANNULEE HORS CONNECTION';
             $order->is_cancelled = true;
             $order->save();
+            $cancelInvoice->status = false;
+            $cancelInvoice->save();
             return response()->json([
                 'success' => true,
                 'msg' => 'la Facture a été annulée.',
@@ -114,6 +144,8 @@ class ObrDeclarationController extends Controller
                 $response = $obr->cancelInvoice($request->invoice_signature , $request->motif);
                 $order = Order::find($request->order_id);
                 $order->is_cancelled = true;
+                $cancelInvoice->status = true;
+                $cancelInvoice->save();
                 $order->save();
                 return $response;
             } catch (\Exception $e) {
@@ -138,12 +170,18 @@ class ObrDeclarationController extends Controller
             $invoice_signature = SendInvoiceToOBR::getInvoinceSignature($order->id, $order->created_at);
         }
         $company = Entreprise::currentEntreprise();
+        // Modification de l'id de l'invoice
+        $invoince_id = getInvoiceNumber($invoince_id);
         $invoince = $this->generateInvoince($order, $company, $invoince_id, $invoice_signature, $order->created_at);
         $response = null;
+      
+
+       // die($invoince);
         try {
             $response = $obr->addInvoice($invoince);
         } catch (\Exception $e) {
             return response()->json([
+                'error' => $e->getMessage(),
                 'success' => false,
                 'msg' => "Vérifier que votre ordinateur est connecté"
             ]);
@@ -201,12 +239,10 @@ class ObrDeclarationController extends Controller
 
         $invoice_date = date_format($d, 'Y-m-d H:i:s');
         $invoice_signature_date = date_format($invoice_signature_date, 'Y-m-d H:i:s');
-
         $invoinces_items = [];
 
         foreach ($order->products as $key => $product) {
             // code...
-
             $invoinces_items[] = [
                 "item_designation" => $product['name'],
                 "item_quantity" => $product['quantite'],
@@ -221,7 +257,6 @@ class ObrDeclarationController extends Controller
                 "item_ott_tax" => $product['item_tsce_tax'] ?? 0,
             ];
         }
-
         //Check A valide customer_TIN
         $customer_TIN = "";
         if (isset($order->client->customer_TIN)) {
@@ -232,8 +267,8 @@ class ObrDeclarationController extends Controller
                 $customer_TIN = $order->client->customer_TIN;
             }
         }
-
         $invoince = [
+            "invoice_id" => $order->id,
             "invoice_number" => $invoice_number,
             "invoice_date" => $invoice_date,
             "tp_type" => $company->tp_type,
@@ -257,8 +292,9 @@ class ObrDeclarationController extends Controller
             "customer_TIN" => $customer_TIN,
             "customer_address" => $order->client->addresse ?? "",
             "vat_customer_payer" => $order->client->vat_customer_payer ?? "",
-            "invoice_type" => "FN",
+            "invoice_type" =>   $order->invoice_type ?? "FN",
             "cancelled_invoice_ref" => "",
+            "invoice_ref" => $order->invoice_ref,
             //yyyyMMddHHmmss
             "invoice_signature" => $invoice_signature,
             "invoice_identifier" => $invoice_signature,

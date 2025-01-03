@@ -4,7 +4,7 @@
 
 @section('content')
 
-@if(USE_ABONEMENT)
+@if(env('APP_USE_ABONEMENT', false))
 @include('journals._header_file')
 @endif
 

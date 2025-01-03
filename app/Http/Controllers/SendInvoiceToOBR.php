@@ -17,15 +17,6 @@ class SendInvoiceToOBR extends Controller
 
     public function __construct()
     {
-        //     $username = env('OBR_USERNAME', 'ws400000480600270');
-        // $password = env('OBR_PASSWORD', '_B_/BGv0');
-        //     $req =  Http::acceptJson()->post($this->baseUrl.'login/', [
-        //        'username' => $username,
-        //        'password' => $password
-        //    ]);
-        //     dd($req->body());
-        // 4002060640
-        // dump($this->checkTin("4001183237"));
         $this->baseUrl = env('OBR_PRODUCTION', false) == true ? 'https://ebms.obr.gov.bi:8443/ebms_api/' : 'https://ebms.obr.gov.bi:9443/ebms_api/';
     }
 
@@ -55,13 +46,12 @@ class SendInvoiceToOBR extends Controller
     }
 
 
-
     public function cancelInvoice($invoice_signature, $motif)
     {
         $token = $this->getToken();
         $invoice_signature = trim($invoice_signature);
 
-        $arrayString =  explode('/', $invoice_signature);
+        $arrayString =  explode( '/', $invoice_signature);
         $invoice_id = end($arrayString);
 
         ObrRequestBody::create([
@@ -92,10 +82,13 @@ class SendInvoiceToOBR extends Controller
     {
         $token = $this->getToken();
        // https://ebms.obr.gov.bi:9443/ebms_api
-        ObrRequestBody::create([
-            'invoice_id' => $invoince['invoice_number'],
+       $order =  ObrRequestBody::create([
+            'invoice_id' => $invoince['invoice_id'],
             'request_body' => json_encode($invoince),
         ]);
+
+        //dd($order);
+       
         $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'addInvoice_confirm/', $invoince);
         return json_decode($req->body());
     }
@@ -112,15 +105,16 @@ class SendInvoiceToOBR extends Controller
 //
 //    }
 
+
     public static function getInvoinceSignature($invoince_id, $created_at)
     {
         $company = Entreprise::latest()->first();
-        $invoice_number = str_pad($invoince_id, 6, "0", STR_PAD_LEFT);
+        $invoice_number = getInvoiceNumber($invoince_id);
         $d = date_create($created_at);
         $date_facturation = date_format($d, 'YmdHis');
 
         $invoice_signature = $company->tp_TIN . "/" . env('OBR_USERNAME')
-            . "/" . $date_facturation . "/" .INVOICE_PREFIX. $invoice_number;
+            . "/" . $date_facturation . "/" . $invoice_number;
 
         return $invoice_signature;
 

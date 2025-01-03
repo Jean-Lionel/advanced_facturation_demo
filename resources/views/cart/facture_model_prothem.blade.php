@@ -8,7 +8,6 @@
     <script src="{{ asset('js/print.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/prothem.css') }}">
     <link rel="stylesheet" href="{{ asset('css/reciept.css') }}">
-
     <style>
         .item_name{
             width: 47%;
@@ -23,30 +22,32 @@
 
 </head>
 <body>
+
     <div class="container_body">
         <div class="noprint header-element">
             <a href="{{URL::previous() }}" class="noprint btn">Retour</a>
             <button id="printElement" class=" btn noprint">Imprimer</button>
             <button id="print_reciept"  class="noprint btn">Imprimer Reciept</button>
         </div>
+
+        @if ($order->is_cancelled)
+            @include('cart._partial')
+        @endif
+       
         <div class="main-content" id="printJS-form" >
             {{-- Entete --}}
             <header class="header-facture ">
-                @if (USE_LOGO_NAME)
+                @if (env('APP_USE_LOGO', false))
                 <div>
                     <div >
-                        <img class="img_logo" src="{{asset('img/'.  LOGO_NAME)}}" alt="">
+                        <img class="img_logo" src="{{asset('img/'.   env('USE_LOGO_NAME', 'logo.jpg'))}}" alt="">
                     </div>
                 </div>
                 @endif
                 <div style="width: 100%;">
-
                     <h3>{{ $order->company->tp_name ?? "" }} </h3>
-
-
                     {{-- <h3>{{COMPANY_DESCRIPTION}} </h3>
                     <h3>
-
                         {{BOITE_POSTAL}}
                     </h3>
                     <h3>
@@ -60,10 +61,8 @@
 
             </header>
             {{-- Fin --}}
-            <h3 class="text-center">FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y') }} </h3>
+            <h3 class="text-center">FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y à H:i:s') }} </h3>
             {{-- SIDE A --}}
-
-
             <article class="identification_a">
                 <div>
                     <h5>A. Identification du vendeur</h5>
@@ -74,10 +73,8 @@
                     <p>BP: <b>{{ $order->company->tp_postal_number ?? "" }}</b> , Tél <b>{{ $order->company->tp_phone_number }}</b></p>
                     <p>Commune : <b>{{ $order->company->tp_address_commune ?? ""}}</b>, Quartier : {{ $order->company->tp_address_quartier }}</p>
                     <p>Avenue : <b>{{ $order->company->tp_address_avenue ?? ""}} </b></p>
-                    Assujetti à la TVA : {{$order->company?->vat_taxpayer ? 'OUI' : 'NON'  }}<b>
-                        
-                    </b>
-
+                   <p>   Assujetti à la TVA : {{$order->company?->vat_taxpayer ? 'OUI' : 'NON'  }}</p>
+                   <p>  Type de Facture : {{$order->invoice_type ?? "FN"  }}</p>
                 </div>
                 <div class="aling-right partie-droite">
                     <div>
@@ -129,44 +126,55 @@
                             <td class="item_name"> {{ $product['name'] }}</td>
                             {{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
                             <td class="adroite" style="width: 40px;"> {{ $product['quantite'] }}
-                                 {{ $product['unite_mesure'] ?? ""}}</td>
+                            {{ $product['unite_mesure'] ?? ""}}</td>
                             <td class="adroite"> {{ getPrice($product['price'] ) }}</td>
                             <td class="adroite"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                         </tr>
                         @endforeach
                         <tr>
                             <td colspan="4">PVT HTVA </td>
-
                             <td class="adroite"><b>{{ getPrice($order->amount_tax) }}</b></td>
                         </tr>
-                        <tr>
-                            <td colspan="4">TVA </td>
-                            <td class="adroite"><b>{{ getPrice($order->tax) }}</b></td>
-                        </tr>
-                        <tr>
-                            <td colspan="4"><b>TOTAL TVAC</b></td>
-                            {{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
-                            <td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
-                            <td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
+
+                        @if ($order->tax != 0)
+                            
+                            <tr>
+                                <td colspan="4">TVA </td>
+                                <td class="adroite"><b>{{ getPrice($order->tax) }}</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><b>TOTAL TVAC</b></td>
+                                {{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
+                                <td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
+                                <td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
+                            </tr>
+                        @endif
                         </tbody>
                     </table>
-                    {{-- <h4>Mention Obligatoire</h4>
-                        <h4>NB: Les non assujettis à la TVA ne remplissent pas les deux dernières lignes</h4> --}}
-                        <br>
+                    <br>
+                       <div>
+                            Nous disons <b> {{ getNumberToWord($order->amount) }}
+                            FBU .</b>
+                       </div> 
+                       @if($order->invoice_type != 'FN')
+                   <div>
+                   <b> Motif </b> : {{ $order->cn_motif }} .
+                   </div>
+                   @endif
                         <h4 class="text-center"> {{$order->invoice_signature}}</h4>
                         <div class="element-center">
                             {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
                         </div>
                     </article>
-
                 </div>
 
-                <div id="reciept" style="display: none;">
+                <div id="reciept" style="display : none">
                     <div  class="container">
-
                         <h6 class="invoice_signature"> {{$order->invoice_signature}}  </h6>
                         <h6>FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h6>
-
+                        @if ($order->is_cancelled)
+                           @include('cart._partial')
+                         @endif
                         <h5>A. Identification du vendeur</h5>
                         <p><b>{{$order->company->tp_name ?? ""}}</b></p>
                         <p>NIF : <b>{{$order->company->tp_TIN}}</b></p>
@@ -176,20 +184,19 @@
                         <p>Commune : {{ $order->company->tp_address_commune ?? ""}}, </p>
                         <p>Quartier : {{ $order->company->tp_address_quartier }}</p>
                         <p>Avenue : {{ $order->company->tp_address_quartier ?? ""}} </p>
-                        <p>Centre Fiscal : <b>{{ $order->company->tp_fiscal_center }}</b></p>
-                        <p>{{ "Secteur d'activité" }} : <b> {{ $order->company->tp_activity_sector }} </b></p>
-                        <p>Forme juridique : <b> {{ $order->company->tp_legal_form }} </b></p>
-
-
+                        <p>Centre Fiscal : {{ $order->company->tp_fiscal_center }}</p>
+                        <p>{{ "Secteur d'activité" }} : </p>
+                        <p> {{ $order->company->tp_activity_sector }}</p>
+                        <p>Forme juridique : </p>
+                        <p> {{ $order->company->tp_legal_form }}</p>
                         <h5>B. Client</h5>
                         <p>Nom et Prénom ou Raison Socail :</p>
                         <p>{{$order->client->name}}</p>
-
+                        <br>
                         <p>Résident à : {{ $order->addresse_client }}</p>
                         <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
                         <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
                         <h5>Doit pour ce qui suit : </h5>
-
                         <div>
                             <table>
                                 <thead>
@@ -209,13 +216,12 @@
                                         <td class="item_name"> {{ $product['name'] }}</td>
                                         {{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
                                         <td class="adroite" > {{ $product['quantite'] }}</td>
-                                        <td class="adroite nowrap"> {{ getPrice($product['price'] ) }}</td>
-                                        <td class="adroite nowrap"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
+                                        <td class="adroite "> {{ getPrice($product['price'] ) }}</td>
+                                        <td class="adroite "> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                                     </tr>
                                     @endforeach
                                     <tr>
                                         <td colspan="4">PVT HTVA </td>
-
                                         <td class="adroite nowrap"><b>{{ getPrice($order->amount_tax) }}</b></td>
                                     </tr>
                                     <tr>

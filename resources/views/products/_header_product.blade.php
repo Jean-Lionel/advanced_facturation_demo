@@ -21,7 +21,6 @@
         </a>
     </div>
 
-
     <div>
         <a href="{{ route('mouvement_stock') }}" class="{{ setActiveRoute('mouvement_stock') }}">
             <span class="fa fa-file-archive"></span>

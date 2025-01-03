@@ -10,17 +10,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 class ClientController extends Controller
 {
-
     public function index()
     {
         $model = new Client();
         $clients =  $model->getPaginateData();
-
-        return view('clients.index', compact('clients'));
+        $nombre_total_clients = Client::all()->count();
+        return view('clients.index', compact('clients', 'nombre_total_clients'));
     }
 
     public function commissionnaires(){
-
         $model = new Client();
         $additionalCondition = [['column' => 'is_commissionaire', 'operator' => '<>', 'value' => null],];
         $clients =  $model->getPaginateData($additionalCondition);
@@ -61,7 +59,6 @@ class ClientController extends Controller
         return back();
     }
 
-
     public function create()
     {
         return view('clients.create');
@@ -91,7 +88,6 @@ class ClientController extends Controller
         ]);
     }
 
-
     public function store(Request $request)
     {
 
@@ -111,7 +107,6 @@ class ClientController extends Controller
         $customer_OBR = '';
         if($request->customer_TIN){
             $check =  Client::where("customer_TIN", $request->customer_TIN)->first();
-            // dd( $check);
             if($check){
                 $errorMessage = 'Le Client existe deja  '. $request->customer_TIN . ' => '.  $check->name . ' CUSTOMER ID '. $check->id;
                 return redirect('clients/create')->with('message',  $errorMessage);
@@ -123,20 +118,16 @@ class ClientController extends Controller
                     return redirect('clients/create')->with('message',  $request->customer_TIN . ' => '. $response->msg);
                 }
                 // }else{
-
                     //     return redirect('clients/create')->with('message',  ' NIF EST OBLIGATOIRE POUR LES PERSONNES MORALE ');
                     // }
-
                     // ['result']['taxpayer'][0]['tp_name']
                     $customer_OBR = $response->result->taxpayer[0]->tp_name;
-
                 }catch (\Exception $e){
 
                     // dd($e);
 
                     return redirect('clients/create')->with('message',  $request->customer_TIN . ' => pas de connection Internet le Nif ne peut pas etre verfier pour le moment ');
                 }
-
             }
             $data =  $request->all();
             if($customer_OBR){
@@ -144,11 +135,9 @@ class ClientController extends Controller
                     'name' => $customer_OBR
                 ]);
             }
-
             Client::create( $data );
             return $this->index();
         }
-
         /**
         * Display the specified resource.
         *
@@ -160,26 +149,11 @@ class ClientController extends Controller
             //
         }
 
-        /**
-        * Show the form for editing the specified resource.
-        *
-        * @param  \App\Models\Client  $client
-        * @return \Illuminate\Http\Response
-        */
         public function edit(Client $client)
         {
-            //
-
             return view('clients.edit', compact('client'));
         }
 
-        /**
-        * Update the specified resource in storage.
-        *
-        * @param  \Illuminate\Http\Request  $request
-        * @param  \App\Models\Client  $client
-        * @return \Illuminate\Http\Response
-        */
         public function update(Request $request, Client $client)
         {
             $request->validate([

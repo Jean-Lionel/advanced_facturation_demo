@@ -6,6 +6,7 @@ use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Client;
 use App\Models\Entreprise;
 use App\Models\Order;
+use App\Models\Proformat;
 use Livewire\Component;
 use DB;
 
@@ -24,6 +25,7 @@ class ServiceVente extends Component
     public $customer;
     public $errorMessage;
     public $typePaiement;
+    public $invoice_currency = 'BIF';
     public $typeFacture = 'FACTURE';
     public function render()
     {
@@ -52,9 +54,8 @@ class ServiceVente extends Component
         $this->validate($this->rules);
         try{
             DB::beginTransaction();
-
             $products =  $this->extractCart();
-            $order = Order::create([
+            $orderData = [
                 'amount' => array_sum(array_values($this->pricesTVAC)),
                 'total_quantity' => count($this->table_length),
                 'total_sacs' => 0,
@@ -67,12 +68,19 @@ class ServiceVente extends Component
                 'addresse_client'=> $this->customer->addresse,
                 'date_facturation'=> now(),
                 'is_cancelled' => 0,
+                'invoice_currency' => $this->invoice_currency,
                 'company' =>  $company->toJson(),
-            ]);
-            $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
-            $order->invoice_signature = $signature;
-            $order->save();
-
+             ];
+             $order = null ;
+             if($this->typeFacture == 'FACTURE'){
+                $order = Order::create($orderData);
+                $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
+                $order->invoice_signature = $signature;
+                $order->save();
+             }else{
+                $order = Proformat::create($orderData);
+             }
+        
             DB::commit();
 
             return redirect()->to('orders/' . $order->id);
@@ -134,7 +142,7 @@ class ServiceVente extends Component
             $v = ($this->prices[$key] * $this->quantite[$key]) * ($this->taxes[$key] ?? 18 )/100;
             $prix_hors_tva =  $this->prices[$key] * $this->quantite[$key];
             $products[] = [
-                'id' => $key,
+                'id' =>'ITEM_'. $key,
                 'name' => $this->description[$key],
                 'rowId' => "SERVICE_FACTURATION",
                 'price' => $this->prices[$key],

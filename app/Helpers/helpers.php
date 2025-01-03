@@ -1,4 +1,6 @@
 <?php
+
+use App\Models\Entreprise;
 use App\Models\MaisonLocation;
 use NumberToWords\NumberToWords;
 define('TAUX_TVA', [18,10,0]);
@@ -8,8 +10,29 @@ function getNumberToWord($number , $language='fr'){
     $numberToWords = new NumberToWords();
     // build a new number transformer using the RFC 3066 language identifier
     $numberTransformer = $numberToWords->getNumberTransformer($language);
-    
-   return  $numberTransformer->toWords($number);
+    return  $numberTransformer->toWords($number);
+}
+
+function getInvoiceNumber($invoince_id){
+    return INVOICE_PREFIX.str_pad($invoince_id, 6, "0", STR_PAD_LEFT);
+}
+
+function remplacerPremierePartie($chaine, $nouvelleValeur , $key=0) {
+    // Séparer la chaîne par les slashs
+    $parties = explode('/', $chaine);
+    // Vérifier qu'il y a bien des parties à modifier
+    if (count($parties) > 1) {
+        // Remplacer la première partie par la nouvelle valeur
+        $parties[$key] = $nouvelleValeur;
+        // Rejoindre les parties pour reformer la chaîne
+        return implode('/', $parties);
+    }
+    // Retourner la chaîne d'origine si aucune modification n'a été faite
+    return $chaine;
+}
+
+function curentEntrpiseName(){
+    return Entreprise::currentEntreprise();
 }
 function isInternetConnection(){
     try{
@@ -20,6 +43,15 @@ function isInternetConnection(){
         return false;
     }
 }
+
+function convertTimestamp($timestamp) {
+    // Use DateTime class to parse the input string
+    $dateTime = DateTime::createFromFormat('YmdHis', $timestamp);
+    // Return the formatted date as 'YYYY-MM-DD hh:mm:ss'
+    return $dateTime->format('Y-m-d H:i:s');
+}
+
+
 function prixVenteHorsTva($price, $taux = 0.18){
     $res = $price / (1 + $taux );
     return ARRONDIR_RESULTAT ? round($res) : number_format($res, 2 );
@@ -27,6 +59,16 @@ function prixVenteHorsTva($price, $taux = 0.18){
 function prixVenteTvac($price, $taux = 0.18){
     $res = $price * (1 + $taux );
     return ARRONDIR_RESULTAT ? round($res) : number_format($res, 2 );
+}
+
+function calculerTauxTVA($prixHT, $montantTVA) {
+    if ($prixHT <= 0) {
+        return "Erreur : Le prix HT doit être supérieur à 0";
+    }
+    // Calcul du taux de TVA
+    $tauxTVA = ($montantTVA / $prixHT) * 100;
+    // Arrondir à 2 décimales
+    return round($tauxTVA, 2);
 }
 function getPrice($price)
 {
@@ -74,8 +116,6 @@ function isValideNumber($number){
         return false;
     }
 }
-
-
 function getMaisonById($id){
     return MaisonLocation::find($id);
 }

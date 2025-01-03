@@ -111,7 +111,9 @@
 </style>
 </head>
 <body>
-    
+    @if ($order->is_cancelled)
+    @include('cart._partial')
+  @endif
     <div class="invoice">
         <div class="no_print">
             <a href="{{ URL::previous() }}">Retour</a>
@@ -194,8 +196,6 @@
                 </tr>
             </tbody>
         </table>
-        
-        
         <p class="amount">Nous disons  {{ getNumberToWord($order->amount) }} francs Burundais.</p>
         <hr>
         {{ $order->invoice_signature ?? "" }}

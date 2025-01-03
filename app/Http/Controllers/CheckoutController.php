@@ -193,11 +193,10 @@ class CheckoutController extends Controller
         $products = [];
         foreach (Cart::content() as $item) {
             $v = ($item->price * $item->qty) * $item->taxRate /100;
-            $prix_hors_tva =  ($item->price * $item->qty);
+           // $prix_hors_tva =  ($item->price * $item->qty);
             $prix_hors_tva =  ($item->price * $item->qty);
             $interet_unitaire =  ( $item->price - $item->model->price_max );
             $interet_total =  $interet_unitaire * $item->qty;
-
             $products[] = [
                 'id' => $item->id,
                 'name' => $item->name,

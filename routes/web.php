@@ -82,6 +82,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('cancelFactures/{order_id}', [StockController::class,'cancelFactures'])->name('cancelFactures');
     Route::get('canceledInvoince', [StockController::class, 'canceledInvoince'])->name('canceledInvoince');
     Route::get('journal_history', [StockController::class ,'journal_history'])->name('journal_history');
+    Route::get('journal_sort_history', [StockController::class ,'journal_sort_history'])->name('journal_sort_history');
     Route::get('fiche_stock', [StockController::class ,'fiche_stock'])->name('fiche_stock');
     Route::get('mouvement_stock', [StockController::class ,'mouvement_stock'])->name('mouvement_stock');
     //Checkout Router PayMent
@@ -131,7 +132,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('non-paiement-location', App\Http\Controllers\NonPaymentLocationController::class);
     Route::prefix('/LocationMaison')->name('LocationMaison.')->group(function(){
         Route::resource('', App\Http\Controllers\ClientsNonPayeLoyersController::class)
-               ->except([ 'edit', 'update', 'destroy','show','create']);
+        ->except([ 'edit', 'update', 'destroy','show','create']);
         Route::resource('All', App\Http\Controllers\ClientsNonPayeLoyersAllController::class)
                 ->except([ 'edit', 'update', 'destroy','show','create']);
     });
@@ -139,6 +140,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('clients_half_paid', 'location.clients_half_paid')->name('clients_half_paid');
     Route::view('rapport_revenue','reports.rapport_revenue' )->name('rapport_revenue');
     Route::resource('client-history', App\Http\Controllers\ClientHistoryController::class);
+    Route::get('syncronizeInvoices', [ObrDeclarationController::class, 'syncronizeInvoices'])->name('syncronizeInvoices');
+    Route::get('facture.avoir', [ObrDeclarationController::class, 'factureAvoir'])->name('facture.avoir');
+    Route::get('facture.remboursement_caution', [ObrDeclarationController::class, 'remboursementCaution'])->name('facture.remboursement_caution');
 });
 require __DIR__ . '/jetstream.php';
 
