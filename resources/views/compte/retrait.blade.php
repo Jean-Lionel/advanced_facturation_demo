@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-group">
                     <label for="montant">MONTANT</label>
-                    <input type="number" class=" form-control form-control-sm" id="montant" name="montant" min="1000"
+                    <input type="number" class=" form-control form-control-sm" id="montant" name="montant"
                         required>
                     {!! $errors->first('montant', '<small class="help-block invalid-feedback">:message</small>') !!}
 
@@ -41,8 +41,7 @@
                 </select>
             </div>
             <input type="text" class="form-control" value="{{ $compte->id }}" name="id" id="validationCustom04" hidden required>
-            <input type="text" class="form-control" value="DEPOT" name="operation" id="operation" hidden required>
-
+            <input type="text" class="form-control" value="RETRAIT" name="operation" id="operation" hidden required>
             <div class="col-md-4">
                 <button type="submit" id="validate"
                     class="btn btn-info rounded-pill py-2 btn-block col-6">Valider</button>
@@ -56,6 +55,7 @@
 <script>
 $("#validate").on("click", function(e) {
     e.preventDefault();
+
 
     $.ajax({
         url: 'route('

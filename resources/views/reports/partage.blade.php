@@ -103,7 +103,7 @@
                         <th >{{ $informaticienTotal }}</th>
                     </tr>
                 </table>
-                <h5>Commissionnaires</h5>
+                {{-- <h5>Commissionnaires</h5>
                 <table class="table table-striped">
                         @foreach($commissionnaireTotals as $id => $total)
                             <tr>
@@ -121,7 +121,7 @@
                                 <td>{{ $total }}</td>
                             </tr>
                         @endforeach
-                </table>
+                </table> --}}
 
 
             </div>

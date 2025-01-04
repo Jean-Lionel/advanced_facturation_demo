@@ -111,7 +111,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('save_import_data', [ImportDataController::class, 'save'])->name('save_import_data');
     Route::get('clients_abones/{id}', [ClientController ::class, 'abonne'] )->name('clients_abones');
     //recharge le compte
-    Route::get('recharge/{id}', [CompteController::class , 'recharge'] )->name('recharge');
+    Route::get('recharge/{compte}', [CompteController::class , 'recharge'] )->name('recharge');
+    //retrait de compte
+    Route::get('retrait/{compte}', [CompteController::class , 'retrait'] )->name('retrait');
     Route::get('historique/{id}', [CompteController::class , 'historique'])->name('historique');
     Route::post('updatecompte', [CompteController::class, 'updatecompte'])->name('updatecompte');
     Route::resource('bienvenu-historique', BienvenuHistoriqueController::class);

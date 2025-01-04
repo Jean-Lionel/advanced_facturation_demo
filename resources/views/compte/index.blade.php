@@ -32,7 +32,7 @@
                 <th scope="col">Adresse</th>
                 <th scope="col">Solde</th>
                 <th scope="col">Date</th>
-                <th colspan="2">Action</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -55,8 +55,10 @@
 
                 <td>{{ $value->created_at }}</td>
                 <td class="d-flex justify-content-around">
-                    <a href="{{ route('recharge',$value->compte->id) }}" class="btn btn-outline-info btn-sm
-                    mr-2">Recharger compte</a>
+                    <a href="{{ route('recharge',$value->compte) }}" class="btn btn-outline-info btn-sm
+                    mr-2">Recharger</a>
+                    <a href="{{ route('retrait',$value->compte) }}" class="btn btn-outline-warning btn-sm
+                        mr-2">Retrait</a>
                     <a href="{{ route('historique', $value) }}" class="btn btn-outline-success btn-sm
                     mr-2">Historique</a>
                 </td>

@@ -3,7 +3,7 @@
 <head>
     <title>{{ auth()->user()->company()->tp_name ?? "" }}</title>
     <meta charset="utf-8">
-    
+
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -27,7 +27,7 @@
             /*background: #009a41;*/
             background: #5c3fd8;
         }
-        
+
         .status {
             position: fixed;
             bottom: 0;
@@ -59,13 +59,13 @@
             html, body {
                 width: 210mm;
                 height: 297mm;
-                
+
             }
         }
         .fixTableHead {
             overflow-y: auto;
             height: 80vh;
-            
+
             thead th {
                 position: sticky;
                 top: 0;
@@ -82,17 +82,17 @@
                 background: #ABDD93;
             }
         }
-        
+
         .contenu_principal{
             width: 98%;
             margin: auto;
         }
-        
+
     </style>
-    
+
 </head>
 <body>
-    
+
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar" class="active noprint" >
             <h1><a href="" class="logo">
@@ -150,16 +150,16 @@
                     <div id="status" class="status"></div>
                     @endcan
                     <div class="footer">
-                        
+
                     </div>
                 </nav>
-                
+
                 <!-- Page Content  -->
                 <div id="content" class="p-0 p-md-6">
-                    
+
                     <nav class="mb-0 navbar navbar-expand-lg navbar-light bg-light">
                         <div class="container-fluid">
-                            
+
                             {{-- <button type="button" id="sidebarCollapse" class="btn btn-primary">
                                 <i class="fa fa-bars"></i>
                                 <span class="sr-only">Toggle Menu</span>
@@ -167,11 +167,11 @@
                             <button class="ml-auto btn btn-dark d-inline-block d-lg-none" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <i class="fa fa-bars"></i>
                             </button>
-                            
+
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <h5>
                                 <i class="fas fa-industry"></i>
-                               
+
                                 {{ auth()->user()->company()->tp_name ?? "" }}</h5>
                                 <ul class="ml-auto nav navbar-nav">
                                     <li>
@@ -193,10 +193,10 @@
                                             @method('POST')
                                             <button type="submit" class="btn btn-dark btn-sm rounded-bottom">
                                                 <i class="fa fa-power-off fa-2x" aria-hidden="true" title=" Se deconnecter"></i>
-                                                
+
                                             </form>
                                         </li>
-                                        
+
                                         {{--  <li class="nav-item">
                                             <a class="nav-link" href="{{ route('stockes.index') }}">Stocke</a>
                                         </li> --}}
@@ -204,9 +204,9 @@
                                 </div>
                             </div>
                         </nav>
-                        
+
                         <div class="container-fluid">
-                            
+
                             <div>
                                 @if (session('success'))
                                 {{-- expr --}}
@@ -220,18 +220,18 @@
                                 @if (session('error'))
                                 {{-- expr --}}
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <strong>SUCCESS</strong> {{ session('error')}}
+                                    <strong>ERROR</strong> {{ session('error')}}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 @endif
                             </div>
-                            
+
                             <div class="contenu_principal">
                                 @yield('content')
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -263,7 +263,7 @@
                     };
                     const updateInternetStatus = async () => {
                         const result = await checkOnlineStatus();
-                        
+
                         const statusDisplay = document.getElementById("status");
                         statusDisplay.innerHTML = result ? ( `
                         <div class="avatar">
@@ -276,7 +276,7 @@
                     }
 
                     if(canSyncronize && !cancel_syncronize){
-                        
+
                         let  limitedInterval =  setInterval(async () => {
                             const result = await updateInternetStatus();
                             console.log(result);
@@ -306,10 +306,9 @@
                                 clearInterval(limitedInterval);
                                 console.log('interval cleared!');
                             }
-                        }, timeSyncronisation); // probably too often, try 30000 for every 30 second                        
+                        }, timeSyncronisation); // probably too often, try 30000 for every 30 second
                     }
                 </script>
-                
+
             </body>
             </html>
-            
