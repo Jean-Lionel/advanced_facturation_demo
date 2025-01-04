@@ -2,9 +2,11 @@
 
 @section('content')
 <div>
-    <div>
-        @include('compte._header')
-    </div>
+    @if (env('APP_USE_ABONEMENT', false))
+        <div>
+            @include('compte._header')
+        </div>
+    @endif
     <div class="row">
         <div class="col-md-6 d-flex justify-content-between">
 

@@ -22,7 +22,7 @@ class ClientController extends Controller
         $model = new Client();
         $additionalCondition = [['column' => 'is_commissionaire', 'operator' => '<>', 'value' => null],];
         $clients =  $model->getPaginateData($additionalCondition);
-        return view('clients.commissionnaires', compact('clients'));
+        return view('clients.commisionnaire_list', compact('clients'));
     }
 
     public function load_commission(){

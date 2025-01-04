@@ -3,6 +3,11 @@
 @section('content')
 
 <div>
+    @if (env('APP_USE_ABONEMENT', false))
+        <div>
+            @include('compte._header')
+        </div>
+    @endif
 	@if (session('error'))
 	<div
 	class="alert alert-primary"
