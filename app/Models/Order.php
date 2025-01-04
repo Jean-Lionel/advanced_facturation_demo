@@ -46,6 +46,10 @@ protected $guarded = [];
         });
 
         self::created(function($model){
+            \DB::Transaction(function() use ($model){
+                if(env('APP_USE_ABONEMENT',false)){
+
+
             $montant = collect($model->products)->pluck('interet_total')->sum();
             OrderInteret::create([
                 'order_id' => $model->id,
@@ -64,10 +68,49 @@ protected $guarded = [];
 
                 ]),
             ]);
+            // Mettre a jour le compte du commistionnaire et du clients
+            if($model->commissionaire_id){
+                $commissionaire = Client::find($model->commissionaire_id);
+                $comm_interet = $montant * PARTAGE_COMMISSIONNAIRE  / 100;
+
+                $montantActuel = $commissionaire->compte->montant;
+                $MontTotal = $montantActuel + $comm_interet;
+                $commissionaire->compte->update(['montant' => $MontTotal]);
+                // Historique du compte
+                BienvenuHistorique::create([
+                    'compte_id'=>$commissionaire->compte->id,
+                    'client_id'=>$model->commissionaire_id,
+                    'mode_payement'=>"Compte",
+                    'title'=>'Intéret',
+                    'montant'=>$comm_interet,
+                    'description'=>"Montant d'interet partage de {$comm_interet}",
+                ]);
+            }
+            if($model->client_id){
+                $client = Client::find($model->client_id);
+                $client_interet = $montant * PARTAGE_CLIENT / 100;
+
+                $montantActuel = $client->compte->montant;
+                $MontTotal = $montantActuel + $client_interet;
+                $client->compte->update(['montant' => $MontTotal]);
+                // Historique du compte
+                BienvenuHistorique::create([
+                    'compte_id'=>$client->compte->id,
+                    'client_id'=>$model->client_id,
+                    'mode_payement'=>"Compte",
+                    'title'=>'Intéret',
+                    'montant'=>$client_interet,
+                    'description'=>"Montant d'interet partage de {$client_interet}",
+                ]);
+            }
+                }
+            });
+
+
         });
 	}
 
-    
+
     public function client(){
             return $this->belongsTo(Client::class);
     }
@@ -126,7 +169,7 @@ protected $guarded = [];
                     $table->string('invoice_type', 10)->nullable();
                 });
             }
-          
+
     }
 
 

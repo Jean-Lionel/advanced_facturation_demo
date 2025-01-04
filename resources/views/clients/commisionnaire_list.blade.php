@@ -17,13 +17,13 @@
 <div>
 	<div class="row">
 		<div class="col-12">
-			<h2>Le Nombre total des clients : <b>{{ $nombre_total_clients }}</b></h2>
+			<h2>Le Nombre total des Commissionnaires : <b>{{ $nombre_total_clients }}</b></h2>
 		</div>
 		<div class="col-md-6 d-flex justify-content-between">
 			<a href="{{ route('clients.create') }}"
 			class="btn btn-primary btn-sm">Ajouter</a>
 			<h4 class="text-center">
-				Liste des clients
+				Liste des Commissionnaires
 			</h4>
 		</div>
 		<div class="col-md-6">
@@ -45,7 +45,7 @@
 				@if (env('APP_USE_ABONEMENT', false))
                 <th scope="col">Commissionnaire</th>
 				<th scope="col">Fournisseur</th>
-				<th>Abonnées</th>
+				<th>Compte</th>
 				@endif
 				<th>Date</th>
 				<th scope="col">Action</th>
@@ -76,7 +76,7 @@
 				<td>
 					{{ $value->is_fournisseur}}
 				</td>
-				<td>{{ $value->compte->name  ?? "" }}</td>
+				<td>{{ $value->compte->montant  ?? "" }}</td>
 				@endif
 
 				<td>{{ $value->created_at }}</td>

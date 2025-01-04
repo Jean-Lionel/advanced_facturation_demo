@@ -48,7 +48,7 @@ class CompteController extends Controller
         $compte = Compte::find($id);
         $montantActuel = $compte->montant;
         $MontTotal = $montantActuel + $montant;
-        Compte::where('id', $id)->update(['montant' => $MontTotal]);
+        $compte->update(['montant' => $MontTotal]);
 
 
         BienvenuHistorique::create([
@@ -60,8 +60,7 @@ class CompteController extends Controller
             'description'=>"Recharge de {$montant}",
         ]);
 
-        $clients = Client::with('compte')->whereHas('compte')->latest()->paginate(20);
-        return view('compte.index', compact('clients'));
+        return redirect()->route('compte.index');
     }
 
 
