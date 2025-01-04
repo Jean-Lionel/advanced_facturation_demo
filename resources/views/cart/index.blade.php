@@ -96,7 +96,7 @@
                                             <th>
                                                 <span id="{{ $product->rowId }}">
                                                 {{ getPrice($product->subtotal())  }}
-                                            
+
                                             </span>
                                             </th>
 
@@ -183,11 +183,13 @@
                                             <option value="4">autres</option>
                                         </select>
                                     </div>
+                                    @if (env('APP_USE_ABONEMENT', false))
+                                        <div class="form-group">
+                                            <input type="hidden" name="commissionaire_id" id="selectedCommisionnaire">
+                                            <input type="text" class="form-control" id="commissionaire_id" placeholder="PORTEUR" aria-describedby="button-addon3" class="border-2 ">
+                                        </div>
+                                    @endif
 
-                                    <div class="form-group">
-                                        <input type="hidden" name="commissionaire_id" id="selectedCommisionnaire">
-                                        <input type="text"  id="commissionaire_id" placeholder="PORTEUR" aria-describedby="button-addon3" class="border-2 ">
-                                    </div>
                                     <button type="submit" class="py-2 btn btn-dark rounded-pill btn-block">Valider</button>
                                 </form>
                                 {{--  <div class="p-2 mb-4 border input-group rounded-pill">

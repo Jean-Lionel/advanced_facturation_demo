@@ -68,10 +68,10 @@ class CompteController extends Controller
 
         if ($request->operation == "RETRAIT") {
             $title = 'Retrait';
-            $description = 'Retrait du montant de '. $montant.'au client '. $compte->client->name;
+            $description = 'Retrait du montant de '. $montant.' au client '. $compte->client->name;
         }else{
             $title = 'Depot';
-            $description = 'Depot du montant de '. $montant.'au client '. $compte->client->name;
+            $description = 'Depot du montant de '. $montant.' au client '. $compte->client->name;
         }
 
         BienvenuHistorique::create([
