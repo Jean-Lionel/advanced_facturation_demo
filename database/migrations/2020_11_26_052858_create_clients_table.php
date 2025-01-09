@@ -29,7 +29,7 @@ class CreateClientsTable extends Migration
             $table->string('vat_customer_payer')->nullable();
             $table->string('user_id')->nullable();
             $table->string('commissionnaire_id')->nullable();
-            $table->text('description')->nullable();
+            // $table->text('description')->nullable(); //Existe deja
             $table->timestamps();
             $table->softDeletes();
         });
