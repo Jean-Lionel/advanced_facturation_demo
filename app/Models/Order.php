@@ -49,7 +49,6 @@ protected $guarded = [];
             \DB::Transaction(function() use ($model){
                 if(env('APP_USE_ABONEMENT',false)){
 
-
             $montant = collect($model->products)->pluck('interet_total')->sum();
             OrderInteret::create([
                 'order_id' => $model->id,

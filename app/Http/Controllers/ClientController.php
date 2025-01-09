@@ -96,7 +96,7 @@ class ClientController extends Controller
             "vat_customer_payer" => "required",
             "name" => "required",
             "customer_TIN" => "nullable|unique:clients,customer_TIN",
-            "telephone" => "nullable", // |unique:clients,telephone
+            "telephone" => "nullable|unique:clients", // |unique:clients,telephone
             "addresse" => "nullable"
         ]);
         // Check if Tin does not exist in database

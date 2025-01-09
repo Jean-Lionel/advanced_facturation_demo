@@ -67,6 +67,12 @@ class CheckoutController extends Controller
             $company = Entreprise::currentEntreprise();
           //  dd($company);
             $tax = Cart::tax();
+            
+            if($request->commissionaire_id && $client->commissionnaire_id == null ){
+                $client->commissionnaire_id = $request->commissionaire_id;
+                //dd( $client->commissionnaire_id);
+                $client->save();
+            }
 
             $order = Order::create([
                 'amount' => round( $tax  + Cart::subtotal()),
@@ -81,7 +87,7 @@ class CheckoutController extends Controller
                 'date_facturation'=> now(),
                 'is_cancelled' => 0,
                 'client_id' => $request->client_id,
-                'commissionaire_id' => $request->commissionaire_id ?? null,
+                'commissionaire_id' =>  $client->commissionnaire_id ?? null,
                 'company' =>  $company->toJson(),
             ]);
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);

@@ -28,6 +28,8 @@ class CreateClientsTable extends Migration
             //Si le client est assujetti à la TVA Valeur : « 0 » ou « 1 »
             $table->string('vat_customer_payer')->nullable();
             $table->string('user_id')->nullable();
+            $table->string('commissionnaire_id')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
