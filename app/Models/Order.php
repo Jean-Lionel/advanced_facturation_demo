@@ -89,8 +89,9 @@ protected $guarded = [];
             }
             if($model->client_id){
                 $client = Client::find($model->client_id);
-                $client_interet = $montant * PARTAGE_CLIENT / 100;
+                if($client->compte){
 
+                $client_interet = $montant * PARTAGE_CLIENT / 100;
                 $montantActuel = $client->compte->montant;
                 $MontTotal = $montantActuel + $client_interet;
                 $client->compte->update(['montant' => $MontTotal]);
@@ -103,6 +104,7 @@ protected $guarded = [];
                     'montant'=>$client_interet,
                     'description'=>"Montant d'interet partage de {$client_interet}",
                 ]);
+            }
             }
                 }
             });
