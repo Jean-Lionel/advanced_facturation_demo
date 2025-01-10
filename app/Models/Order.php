@@ -70,9 +70,9 @@ protected $guarded = [];
             // Mettre a jour le compte du commistionnaire et du clients
             if($model->commissionaire_id){
                 $commissionaire = Client::find($model->commissionaire_id);
+                if( $commissionaire ){
                 $comm_interet = $montant * PARTAGE_COMMISSIONNAIRE  / 100;
-
-                $montantActuel = $commissionaire->compte?->montant ?? 0;
+                $montantActuel =  $commissionaire ? $commissionaire->compte?->montant : 0;
                 $MontTotal = $montantActuel + $comm_interet;
                 $commissionaire->compte->update(['montant' => $MontTotal]);
                 // Historique du compte
@@ -84,6 +84,8 @@ protected $guarded = [];
                     'montant'=>$comm_interet,
                     'description'=>"Montant d'interet partage de {$comm_interet}",
                 ]);
+
+            }
             }
             if($model->client_id){
                 $client = Client::find($model->client_id);
