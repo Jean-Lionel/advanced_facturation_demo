@@ -72,7 +72,7 @@ protected $guarded = [];
                 $commissionaire = Client::find($model->commissionaire_id);
                 $comm_interet = $montant * PARTAGE_COMMISSIONNAIRE  / 100;
 
-                $montantActuel = $commissionaire->compte->montant;
+                $montantActuel = $commissionaire->compte->montant ?? 0;
                 $MontTotal = $montantActuel + $comm_interet;
                 $commissionaire->compte->update(['montant' => $MontTotal]);
                 // Historique du compte
