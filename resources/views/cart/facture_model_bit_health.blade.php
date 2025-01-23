@@ -77,17 +77,23 @@ Email : {{EMAIL_ENTREPRISE}}, WebSite: {{WEBSITE_ENTREPRISE}}
 <p>  Type de Facture : {{$order->invoice_type ?? "FN"  }}</p>
 </div>
 <div>
-<p>Cordonnées bancaires</p>
-<p>Titulaire <strong>B@IT HEALTH</strong></p>
-<p>Compte bif n°: <strong>19232720101-36</strong></p>
-<p>Banque: <b>BANCOBU</b></p>
-</div>
+
 <div class="aling-right partie-droite">
 <div>
-<b> </b>
+<br><br><br>
 <p>Centre Fiscal : <b>{{ $order->company->tp_fiscal_center }}</b></p>
 <p>{{ "Secteur d'activité" }} : <b> {{ $order->company->tp_activity_sector }} </b></p>
 <p>Forme juridique : <b> {{ $order->company->tp_legal_form }} </b></p>
+
+
+
+<br>
+<hr>
+
+<i>Cordonnées bancaires</i>
+<p>Titulaire : <strong>B@IT HEALTH</strong></p>
+<p>Compte bif n°: <strong>19232720101-36</strong></p>
+<p>Banque: <b>BANCOBU</b></p>
 </div>
 
 </div>
