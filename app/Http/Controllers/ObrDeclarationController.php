@@ -263,7 +263,7 @@ class ObrDeclarationController extends Controller
             // code...
             $obr = new SendInvoiceToOBR();
             $response = $obr->checkTin($order->client->customer_TIN);
-            if ($response->success) {
+            if (isset($response->success) && $response->success) {
                 $customer_TIN = $order->client->customer_TIN;
             }
         }
