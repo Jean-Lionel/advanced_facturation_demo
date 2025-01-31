@@ -110,12 +110,21 @@ function setActiveRoute($route){
 }
 
 function isValideNumber($number){
-    if (is_numeric($number)) {
-        return true;
-    } else {
-        return false;
-    }
+    return is_numeric($number);
 }
 function getMaisonById($id){
     return MaisonLocation::find($id);
+}
+
+function sub_letters($text, $limit = 50, $ellipsis = '...') {
+    $text = trim($text);
+    if (mb_strlen($text) <= $limit) {
+        return $text; // Return original text if within the limit
+    }    // Cut the text at the limit
+    $truncated = mb_substr($text, 0, $limit);
+    // Find last space to avoid breaking words
+    if (($lastSpace = mb_strrpos($truncated, ' ')) !== false) {
+        $truncated = mb_substr($truncated, 0, $lastSpace);
+    }
+    return $truncated . $ellipsis;
 }

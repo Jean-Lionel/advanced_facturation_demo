@@ -15,11 +15,10 @@
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    width: 90mm;
+    width: 80mm;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    background-color: green !important;
-    
+    background-color: green !important; 
 
     h1 {
         font-size: var(--font-size);
@@ -49,6 +48,11 @@
 
   .text-center{
     text-align: center !important;
+}
+.total_payment{
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
 

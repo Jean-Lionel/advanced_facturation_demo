@@ -13,6 +13,24 @@
     text-transform: uppercase;
 }
 
+
+@media print {
+        @page {
+          size: 80mm auto;
+          margin: 0;
+        }
+        body {
+          font-family: "Courier New", monospace;
+          font-size: 12px;
+          line-height: 1.2;
+          text-align: left;
+          width: 80mm;
+          margin: 0 auto;
+        }
+      }
+
+     
+
 </style>
 
 <div class="watermark">

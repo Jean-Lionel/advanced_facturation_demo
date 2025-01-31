@@ -168,7 +168,7 @@
                     </article>
                 </div>
 
-                <div id="reciept" style="display : none">
+                <div id="reciept" style="">
                     <div  class="container">
                         <h6 class="invoice_signature"> {{$order->invoice_signature}}  </h6>
                         <h6>FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h6>
@@ -200,11 +200,9 @@
                         <div>
                             <table>
                                 <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>{{ "Produits" }}</th>
-                                        {{-- <th>Nbre de sacs</th> --}}
-                                        <th>Qté</th>
+                                    <tr class="adroite">
+
+                                        <th>{{ "Article" }}</th>
                                         <th>PU</th>
                                         <th>PV-HTVA</th>
                                     </tr>
@@ -212,30 +210,41 @@
                                 <tbody>
                                     @foreach($order->products as $key=> $product)
                                     <tr>
-                                        <td>{{ $key +1 }}</td>
-                                        <td class="item_name"> {{ $product['name'] }}</td>
-                                        {{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
-                                        <td class="adroite" > {{ $product['quantite'] }}</td>
+                                        <td>{{ $product['quantite'] }} X {{ sub_letters($product['name'], 10) }} </td>
                                         <td class="adroite "> {{ getPrice($product['price'] ) }}</td>
                                         <td class="adroite "> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                                     </tr>
                                     @endforeach
-                                    <tr>
-                                        <td colspan="4">PVT HTVA </td>
-                                        <td class="adroite nowrap"><b>{{ getPrice($order->amount_tax) }}</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4">TVA </td>
-                                        <td class="adroite"><b>{{ getPrice($order->tax) }}</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4"><b>TOTAL TVAC</b></td>
-                                        {{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
-                                        <td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
-                                        <td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
-                                    </tr>
+                                    
                                     </tbody>
                                 </table>
+
+                                <div>
+                                    <div class="total_payment">
+                                        <div> PVT HTVA: </div>
+                                        <div> 
+                                         &nbsp; &nbsp;
+                                        {{ getPrice($order->amount_tax) }} </div>
+                                    </div>
+                                    <div class="total_payment">
+                                        <div> TVA: </div>
+                                        <div> 
+                                         &nbsp; &nbsp;
+                                        {{ getPrice($order->amount_tax) }} </div>
+                                    </div>
+                                    <div class="total_payment">
+                                        <div> TOTAL TVAC: </div>
+                                        <div> 
+                                             &nbsp; &nbsp;
+                                        {{ getPrice($order->amount) }}
+                                    </div>
+                                    </div>
+     
+      </div>
+
+      <div class="line"></div>
+
+      <div class="center bold">=== MERCI !! ===</div>
                                 <hr>
                                 <h6 class="text-center">==== MERCI !! ===</h6>
                                 <br>
