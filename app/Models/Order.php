@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
@@ -29,6 +30,14 @@ protected $guarded = [];
 			$model->user_id = Auth::user()->id ?? 1;
 			$model->client_id = $model->client->id ?? 0;
 			$model->invoice_type = $model->invoice_type ??  'FN';
+
+            // Checking the last inserted id of the invoice
+            $lastInsertedId = self::latest()->first();
+            if ($lastInsertedId) {
+                $model->id = $lastInsertedId->id + 1;
+            } else {
+                $model->invoice_number = 1;
+            }
             try {
                 //code...
                 self::checkCanCreateNewRecord();
@@ -46,70 +55,7 @@ protected $guarded = [];
         });
 
         self::created(function($model){
-            \DB::Transaction(function() use ($model){
-                if(env('APP_USE_ABONEMENT',false)){
-
-            $montant = collect($model->products)->pluck('interet_total')->sum();
-            OrderInteret::create([
-                'order_id' => $model->id,
-                'user_id' => $model->user_id,
-                'montant' => $montant ,
-                'description' => json_encode([
-                    'type' => 'VENTE',
-                    'commissionaire_id' => $model->commissionaire_id,
-                    'client_id' => $model->client_id,
-                    'partage' => [
-                        'Informaticien' => ($montant * PARTAGE_INFORMATICIEN / 100),
-                        'Client' => ($montant * PARTAGE_CLIENT / 100),
-                        'Commisionnaire' => ($montant * PARTAGE_COMMISSIONNAIRE  / 100),
-                        'Entreprise' => ($montant * PARTAGE_ENTREPRISE  / 100),
-                    ]
-
-                ]),
-            ]);
-            // Mettre a jour le compte du commistionnaire et du clients
-            if($model->commissionaire_id){
-                $commissionaire = Client::find($model->commissionaire_id);
-                if( $commissionaire ){
-                $comm_interet = $montant * PARTAGE_COMMISSIONNAIRE  / 100;
-                $montantActuel =  $commissionaire ? $commissionaire->compte?->montant : 0;
-                $MontTotal = $montantActuel + $comm_interet;
-                $commissionaire->compte->update(['montant' => $MontTotal]);
-                // Historique du compte
-                BienvenuHistorique::create([
-                    'compte_id'=>$commissionaire->compte->id,
-                    'client_id'=>$model->commissionaire_id,
-                    'mode_payement'=>"Compte",
-                    'title'=>'Intéret',
-                    'montant'=>$comm_interet,
-                    'description'=>"Montant d'interet partage de {$comm_interet}",
-                ]);
-
-            }
-            }
-            if($model->client_id){
-                $client = Client::find($model->client_id);
-                if($client->compte){
-
-                $client_interet = $montant * PARTAGE_CLIENT / 100;
-                $montantActuel = $client->compte->montant;
-                $MontTotal = $montantActuel + $client_interet;
-                $client->compte->update(['montant' => $MontTotal]);
-                // Historique du compte
-                BienvenuHistorique::create([
-                    'compte_id'=>$client->compte->id,
-                    'client_id'=>$model->client_id,
-                    'mode_payement'=>"Compte",
-                    'title'=>'Intéret',
-                    'montant'=>$client_interet,
-                    'description'=>"Montant d'interet partage de {$client_interet}",
-                ]);
-            }
-            }
-                }
-            });
-
-
+            self::update_use_abonement($model);
         });
 	}
 
@@ -172,6 +118,72 @@ protected $guarded = [];
                     $table->string('invoice_type', 10)->nullable();
                 });
             }
+
+    }
+
+    private static function update_use_abonement($model){
+        DB::Transaction(function() use ($model){
+            if(env('APP_USE_ABONEMENT',false)){
+
+        $montant = collect($model->products)->pluck('interet_total')->sum();
+        OrderInteret::create([
+            'order_id' => $model->id,
+            'user_id' => $model->user_id,
+            'montant' => $montant ,
+            'description' => json_encode([
+                'type' => 'VENTE',
+                'commissionaire_id' => $model->commissionaire_id,
+                'client_id' => $model->client_id,
+                'partage' => [
+                    'Informaticien' => ($montant * PARTAGE_INFORMATICIEN / 100),
+                    'Client' => ($montant * PARTAGE_CLIENT / 100),
+                    'Commisionnaire' => ($montant * PARTAGE_COMMISSIONNAIRE  / 100),
+                    'Entreprise' => ($montant * PARTAGE_ENTREPRISE  / 100),
+                ]
+
+            ]),
+        ]);
+        // Mettre a jour le compte du commistionnaire et du clients
+        if($model->commissionaire_id){
+            $commissionaire = Client::find($model->commissionaire_id);
+            if( $commissionaire ){
+            $comm_interet = $montant * PARTAGE_COMMISSIONNAIRE  / 100;
+            $montantActuel =  $commissionaire ? $commissionaire->compte?->montant : 0;
+            $MontTotal = $montantActuel + $comm_interet;
+            $commissionaire->compte->update(['montant' => $MontTotal]);
+            // Historique du compte
+            BienvenuHistorique::create([
+                'compte_id'=>$commissionaire->compte->id,
+                'client_id'=>$model->commissionaire_id,
+                'mode_payement'=>"Compte",
+                'title'=>'Intéret',
+                'montant'=>$comm_interet,
+                'description'=>"Montant d'interet partage de {$comm_interet}",
+            ]);
+
+        }
+        }
+        if($model->client_id){
+            $client = Client::find($model->client_id);
+            if($client->compte){
+
+            $client_interet = $montant * PARTAGE_CLIENT / 100;
+            $montantActuel = $client->compte->montant;
+            $MontTotal = $montantActuel + $client_interet;
+            $client->compte->update(['montant' => $MontTotal]);
+            // Historique du compte
+            BienvenuHistorique::create([
+                'compte_id'=>$client->compte->id,
+                'client_id'=>$model->client_id,
+                'mode_payement'=>"Compte",
+                'title'=>'Intéret',
+                'montant'=>$client_interet,
+                'description'=>"Montant d'interet partage de {$client_interet}",
+            ]);
+        }
+        }
+            }
+        });
 
     }
 
