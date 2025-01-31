@@ -104,7 +104,7 @@ class FactureAvoir extends Component
             $avoir->envoye_obr = false;
             $avoir->invoice_currency = $this->originalFacture->invoice_currency;
             $avoir->date_facturation = now();
-            $avoir->invoice_ref = $this->originalFacture->id;
+            $avoir->invoice_ref = getInvoiceNumber($this->originalFacture->id);
             //$avoir->invoice_ref = $this->originalFacture->invoice_signature;
             $avoir->cn_motif = $this->motifAvoir;
             
