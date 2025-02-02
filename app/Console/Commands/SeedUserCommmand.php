@@ -47,9 +47,8 @@ class SeedUserCommmand extends Command
             $user->name = 'Lionel';
             $user->email = 'nijeanlionel@gmail.com';
             $user->password = bcrypt('Advanced@2025');
-            $user->roles()->sync([1,2,3,4]);
             $user->save();
-
+            $user->roles()->sync([1,2,3,4]);
             // Adding Admin role
             $this->info('User lion created successfully');
         } else {
