@@ -101,7 +101,7 @@ class FactureAvoir extends Component
             $avoir->commissionaire_id = $this->originalFacture->commissionaire_id;
             $avoir->maison_id = $this->originalFacture->maison_id;
             $avoir->is_cancelled = false;
-            $avoir->envoye_obr = false;
+            $avoir->envoye_obr = null;
             $avoir->invoice_currency = $this->originalFacture->invoice_currency;
             $avoir->date_facturation = now();
             $avoir->invoice_ref = getInvoiceNumber($this->originalFacture->id);

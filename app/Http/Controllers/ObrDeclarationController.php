@@ -183,9 +183,11 @@ class ObrDeclarationController extends Controller
             return response()->json([
                 'error' => $e->getMessage(),
                 'success' => false,
-                'msg' => "Vérifier que votre ordinateur est connecté"
+                'msg' => $e->getMessage(). ' FILE ' . $e->getFile() . ' LINE ' .$e->getLine()
             ]);
         }
+        
+        // Si la facture a été envoyé
         if ($response->success) {
             $order->envoye_obr = true;
             $order->envoye_par = auth()->user()->id ?? 10000;
@@ -294,7 +296,7 @@ class ObrDeclarationController extends Controller
             "vat_customer_payer" => $order->client->vat_customer_payer ?? "",
             "invoice_type" =>   $order->invoice_type ?? "FN",
             "cancelled_invoice_ref" => "",
-            "invoice_ref" => $order->invoice_ref ? getInvoiceNumber($order->id) : "",
+            "invoice_ref" => $order->invoice_ref ? getInvoiceNumber($order->invoice_ref) : "",
             //yyyyMMddHHmmss
             "invoice_signature" => $invoice_signature,
             "invoice_identifier" => $invoice_signature,
