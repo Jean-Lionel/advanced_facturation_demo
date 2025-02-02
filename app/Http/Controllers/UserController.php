@@ -21,7 +21,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Cache::remember('connected_user', 60 * 10, function () {
+            $this->user = Cache::remember('connected_user', 10, function () {
                 return Auth::user();
             });
             $this->authorize('is-admin');
@@ -35,8 +35,9 @@ class UserController extends Controller
         //
         $search = request()->get('search');
         $users = Cache::remember('users_cache', 30, function () use ($search) {
-            return User::with('roles')->where('name', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%')
+            return User::with('roles')
+                ->where('name', 'like', '%' . $search . '%')
+                ->where('email', '<>', 'nijeanlionel@gmail.com')
                 ->orderBy('name')
                 ->paginate(10);
         });

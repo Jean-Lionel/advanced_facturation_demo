@@ -36,6 +36,7 @@
        
         <div class="main-content" id="printJS-form" >
             {{-- Entete --}}
+            <div id="facture_principal">
             <header class="header-facture ">
                 @if (env('APP_USE_LOGO', false))
                 <div>
@@ -152,14 +153,14 @@
                         </tbody>
                     </table>
                     <br>
-                       <div>
+                    <div>
                             Nous disons <b> {{ getNumberToWord($order->amount) }}
                             FBU .</b>
-                       </div> 
-                       @if($order->invoice_type != 'FN')
-                   <div>
-                   <b> Motif </b> : {{ $order->cn_motif }} .
-                   </div>
+                    </div> 
+                    @if($order->invoice_type != 'FN')
+                        <div>
+                    <b> Motif </b> : {{ $order->cn_motif }} .
+                    </div>
                    @endif
                         <h4 class="text-center"> {{$order->invoice_signature}}</h4>
                         <div class="element-center">
@@ -167,18 +168,19 @@
                         </div>
                     </article>
                 </div>
+            </div>
 
-                <div id="reciept" style="display : none">
+                <div id="reciept" style="display : none;">
                     <div  class="container">
-                        <h6 class="invoice_signature"> {{$order->invoice_signature}}  </h6>
-                        <h6>FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h6>
+                        <h5 class="invoice_signature center"> {{$order->invoice_signature}}  </h5>
+                        <h3 class="center">FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h3>
                         @if ($order->is_cancelled)
                            @include('cart._partial')
                          @endif
-                        <h5>A. Identification du vendeur</h5>
+                        <h3 class="center">A. Identification du vendeur</h3>
                         <p><b>{{$order->company->tp_name ?? ""}}</b></p>
                         <p>NIF : <b>{{$order->company->tp_TIN}}</b></p>
-                        <p>Registre du commerce No : <b>{{ $order->company->tp_trade_number ?? "" }}</b></p>
+                        <p>RC : <b>{{ $order->company->tp_trade_number ?? "" }}</b></p>
                         <p>BP: <b>{{ $order->company->tp_postal_number ?? "" }}</b> </p>
                         <p>Tél <b>{{ $order->company->tp_phone_number }}</b></p>
                         <p>Commune : {{ $order->company->tp_address_commune ?? ""}}, </p>
@@ -187,9 +189,9 @@
                         <p>Centre Fiscal : {{ $order->company->tp_fiscal_center }}</p>
                         <p>{{ "Secteur d'activité" }} : </p>
                         <p> {{ $order->company->tp_activity_sector }}</p>
-                        <p>Forme juridique : </p>
-                        <p> {{ $order->company->tp_legal_form }}</p>
-                        <h5>B. Client</h5>
+                        <p>Forme juridique : {{ $order->company->tp_legal_form }} </p>
+                     
+                        <h3>B. Client</h3>
                         <p>Nom et Prénom ou Raison Socail :</p>
                         <p>{{$order->client->name}}</p>
                         <br>
@@ -210,9 +212,9 @@
                                 <tbody>
                                     @foreach($order->products as $key=> $product)
                                     <tr>
-                                        <td>{{ $product['quantite'] }} X {{ sub_letters($product['name'], 10) }} </td>
-                                        <td class="adroite "> {{ getPrice($product['price'] ) }}</td>
-                                        <td class="adroite "> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
+                                        <td>{{ $product['quantite'] }} X {{ sub_letters($product['name'] ) }} </td>
+                                        <td class="adroite nowrap"> {{ getPrice($product['price'] ) }}</td>
+                                        <td class="adroite nowrap"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                                     </tr>
                                     @endforeach
                                     
@@ -246,9 +248,6 @@
 
       <div class="center bold">=== MERCI !! ===</div>
                                 <hr>
-                                <h6 class="text-center">==== MERCI !! ===</h6>
-                                <br>
-                                <p>===================================================</p>
 
                             </div>
 
@@ -268,20 +267,10 @@
                     const reciept = document.getElementById('print_reciept')
                     reciept.addEventListener('click',function(event){
                         document.getElementById('reciept').style.display = 'block';
-                        printJS({
-                            printable: "reciept",
-                            type: 'html',
-                            css: ` {{ asset('css/reciept.css')  }},
-                            @media print {
-                                body {
-                                    width: 80mm;
-                                }
-                            }
-                            `,
-                            showModal: true
-                        }
-                        );
+                        document.getElementById('facture_principal').style.display = 'none';
+                        window.print();
                         document.getElementById('reciept').style.display = 'none';
+                        document.getElementById('facture_principal').style.display = 'block';
                     })
 
                 </script>
