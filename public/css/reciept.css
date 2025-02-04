@@ -53,5 +53,8 @@ h1,h5,h6{
     padding: 0;
 }
 
-
-
+@media print {
+  .cut-section {
+      break-after: always; /* Force une coupure après cet élément */
+  }
+}

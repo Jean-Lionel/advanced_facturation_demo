@@ -247,7 +247,9 @@
 
       <div class="center bold">=== MERCI !! ===</div>
                                 <hr>
-
+                                <div class="cut-section">
+                                </div>  
+                                
                             </div>
 
                         </div>
