@@ -25,6 +25,7 @@ class CreateOrdersTable extends Migration
             //invoice_currency            $table->string('invoice_currency')->nullable();
             $table->string('invoice_currency')->nullable();
             $table->string('invoice_type')->nullable();
+            $table->string('invoice_number')->nullable();
             $table->text('products');
             $table->text('company')->nullable();
             $table->text('client')->nullable();
