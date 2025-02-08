@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Compte;
+use DateTime;
 
 class CheckoutController extends Controller
 {
@@ -193,7 +194,7 @@ class CheckoutController extends Controller
                 'code_product' => $item->model->code_product,
                 'name' => $item->name,
                 'unite_mesure' => $item->model->unite_mesure,
-                'date_expiration' => $item->model->date_expiration,
+                'date_expiration' => $item->model->date_expiration??new DateTime('today'),
                 'order_id' => $order_id,
                 'embalage' => $item->embalage
 
