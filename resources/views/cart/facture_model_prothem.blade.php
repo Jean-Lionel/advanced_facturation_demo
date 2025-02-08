@@ -231,7 +231,7 @@
                                         <div> TVA: </div>
                                         <div> 
                                          &nbsp; &nbsp;
-                                        {{ getPrice($order->amount_tax) }} </div>
+                                        {{  getPrice($order->tax) }}</div>
                                     </div>
                                     <div class="total_payment">
                                         <div> TOTAL TVAC: </div>
@@ -247,7 +247,9 @@
 
       <div class="center bold">=== MERCI !! ===</div>
                                 <hr>
-
+                                <div class="cut-section">
+                                </div>  
+                                
                             </div>
 
                         </div>
