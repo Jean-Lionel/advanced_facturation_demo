@@ -89,7 +89,14 @@ protected $guarded = [];
 	//products
 	public function getProductsAttribute($v)
 	{
-		return unserialize($v);
+        try {
+            //code...
+            return unserialize($v);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return [];
+        }
+		
 	}
     public function getInteretAttribute(){
         return collect($this->products)->pluck('interet_total')->sum();
