@@ -91,7 +91,8 @@ protected $guarded = [];
 	{
         try {
             //code...
-            return unserialize($v);
+            $data = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $v);
+            return unserialize($data);
         } catch (\Throwable $th) {
             //throw $th;
             dump($v);
