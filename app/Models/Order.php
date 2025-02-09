@@ -94,6 +94,8 @@ protected $guarded = [];
             return unserialize($v);
         } catch (\Throwable $th) {
             //throw $th;
+            dump($v);
+            dump($th->getMessage());
             return [];
         }
 		
