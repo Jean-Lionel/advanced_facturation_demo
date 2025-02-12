@@ -89,17 +89,7 @@ protected $guarded = [];
 	//products
 	public function getProductsAttribute($v)
 	{
-        try {
-            //code...
-            $data = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $v);
-            return unserialize($data);
-        } catch (\Throwable $th) {
-            //throw $th;
-            dump($v);
-            dump($th->getMessage());
-            return [];
-        }
-		
+		return unserialize($v);
 	}
     public function getInteretAttribute(){
         return collect($this->products)->pluck('interet_total')->sum();

@@ -222,23 +222,18 @@
 
                                 <div>
                                     <div class="total_payment">
-                                        <div> PVT HTVA: </div>
-                                        <div> 
-                                         &nbsp; &nbsp;
-                                        {{ getPrice($order->amount_tax) }} </div>
+                                        <div> P.HTVA: {{ getPrice($order->amount_tax) }} </div>
+                                       
                                     </div>
                                     <div class="total_payment">
-                                        <div> TVA: </div>
-                                        <div> 
-                                         &nbsp; &nbsp;
-                                        {{  getPrice($order->tax) }}</div>
+                                        <div> TVA:  {{  getPrice($order->tax) }}</div>
+                                        
                                     </div>
                                     <div class="total_payment">
-                                        <div> TOTAL TVAC: </div>
-                                        <div> 
-                                             &nbsp; &nbsp;
-                                        {{ getPrice($order->amount) }}
-                                    </div>
+                                        <div> T.TVAC: 
+                                            {{ getPrice($order->amount) }}
+                                        </div>
+                                        
                                     </div>
      
       </div>
