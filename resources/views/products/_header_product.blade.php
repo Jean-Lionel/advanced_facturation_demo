@@ -28,7 +28,7 @@
         </a>
     </div>
 
-    @if(env('APP_CAN_USE_MULTI_STOCK'))
+    @if(env('APP_CAN_USE_MULTI_STOCK', false))
 
     <div>
         <a href="{{ route('stockes.index') }}" class="{{ setActiveRoute('stockes.*') }}">
@@ -41,7 +41,7 @@
             <span class="fas fa fa-exchange-alt"></span>
             <span>Liste des stocks</span>
         </a>
-    </div>  
+    </div>
     @endif
     <div>
         <a href="{{ route('bar_code') }}" class="{{ setActiveRoute('bar_code') }}">

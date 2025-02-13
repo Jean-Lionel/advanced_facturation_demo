@@ -60,7 +60,7 @@
                         <i class="fas fa-shopping-cart"></i>
                         Commandes
                     </a>
-					<a href="" class="mr-2 btn btn-outline-warning btn-sm">
+					<a href="{{ route('stocke.useradd',$value)}}" class="mr-2 btn btn-outline-warning btn-sm">
 					<i class="fas fa-users"></i>
 						Utilisateurs
 					</a>

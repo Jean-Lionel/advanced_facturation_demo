@@ -11,6 +11,8 @@ use App\Models\PaiementDette;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\Stocke;
+use App\Models\StockerUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -270,5 +272,23 @@ class StockController extends Controller
         return view('products.bon_entre', compact('s_date', 'e_date','products','action'));
     }
 
+    function stockeAddUser(Stocke $stocke){
+        $users = User::all();
+        $userstockes = $stocke->users();
+        return view('stocks._add_user',compact(['stocke','users','userstockes']));
+    }
+
+    function stockeAddUserPost(Request $request, Stocke $stocke){
+        // $stocke->users()->attach($request->user);
+        StockerUser::create([
+
+        ]);
+        return redirect()->route('stocke.useradd', $stocke);
+    }
+
+    function stockeUserRemove(Stocke $stocke, User $user){
+        $stocke->users()->detach($user);
+        return redirect()->route('stocke.useradd', $stocke);
+    }
 
 }

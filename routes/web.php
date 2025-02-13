@@ -145,6 +145,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('syncronizeInvoices', [ObrDeclarationController::class, 'syncronizeInvoices'])->name('syncronizeInvoices');
     Route::get('facture.avoir', [ObrDeclarationController::class, 'factureAvoir'])->name('facture.avoir');
     Route::get('facture.remboursement_caution', [ObrDeclarationController::class, 'remboursementCaution'])->name('facture.remboursement_caution');
+
+    // association de l'utisateur au stocks
+    Route::get('stocke.useradd/{stocke}',[StockController::class,'stockeAddUser'])->name('stocke.useradd');
+    Route::post('stocke.useradd/{stocke}',[StockController::class,'stockeAddUserPost'])->name('stocke.useraddPost');
+    Route::post('stocke.userremove/{stocke}/{user}',[StockController::class,'stockeUserRemove'])->name('stocke.userremove');
 });
 require __DIR__ . '/jetstream.php';
 
