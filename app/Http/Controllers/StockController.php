@@ -271,7 +271,7 @@ class StockController extends Controller
     public function stockeAddUser(Stocke $stocke){
         $users = User::all();
         $userstockes = StockerUser::where('stock_id', $stocke->id)->get();
-        
+
         return view('stocks._add_user',compact(['stocke','users','userstockes']));
     }
 
@@ -287,12 +287,12 @@ class StockController extends Controller
                 'stock_id' => $request->stock_id,
             ]);
         }
-        
+
         return redirect()->route('stocke.useradd', $stocke);
     }
 
-    public function stockeUserRemove(Stocke $stocke, User $user){
-        $stocke->users()->detach($user);
+    public function stockeUserRemove(StockerUser $stocke) {
+        $stocke->delete();
         return redirect()->route('stocke.useradd', $stocke);
     }
 

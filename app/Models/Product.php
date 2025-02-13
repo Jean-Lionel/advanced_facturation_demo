@@ -82,6 +82,9 @@ class Product extends MyModel
         //});
     }
 
-
+    public function productStocks()
+    {
+        return $this->hasMany(ProductStock::class);
+    }
 
 }
