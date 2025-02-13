@@ -29,13 +29,15 @@
     </div>
 
     @if(env('APP_CAN_USE_MULTI_STOCK', false))
+    @can('is-admin')
+        <div>
+            <a href="{{ route('stockes.index') }}" class="{{ setActiveRoute('stockes.*') }}">
+                <span class="fas fa fa-bookmark"></span>
+                <span>Liste des stocks</span>
+            </a>
+        </div>
+    @endcan
 
-    <div>
-        <a href="{{ route('stockes.index') }}" class="{{ setActiveRoute('stockes.*') }}">
-            <span class="fas fa fa-bookmark"></span>
-            <span>Liste des stocks</span>
-        </a>
-    </div>
     {{-- <div>
         <a href="{{ route('product_stock.index') }}" class="{{ setActiveRoute('product_stock.*') }}">
             <span class="fas fa fa-exchange-alt"></span>
