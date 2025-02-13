@@ -34,6 +34,8 @@ class ProductController extends Controller
         $this->authorize('view', Product::class);
         $search = request()->get('search');
         $category = request()->get('category');
+
+        // AFFICHAGE DES PRODUITS DONT LE STOCK EST ASSOCIER 
         $query = Product::with(['category' , 'mouvements'])->latest()
                         ->where(function($query) use ($search) {
                             if($search){

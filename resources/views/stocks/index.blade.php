@@ -60,6 +60,10 @@
                         <i class="fas fa-shopping-cart"></i>
                         Commandes
                     </a>
+					<a href="" class="mr-2 btn btn-outline-warning btn-sm">
+					<i class="fas fa-users"></i>
+						Utilisateurs
+					</a>
 
 					{{--  <form class="form-delete" action="{{ route('stockes.destroy' , $value) }}" style="display: inline;" method="POST">
 					{{ csrf_field() }}

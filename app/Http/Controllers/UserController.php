@@ -20,27 +20,19 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware(function ($request, $next) {
-            $this->user = Cache::remember('connected_user', 10, function () {
-                return Auth::user();
-            });
-            $this->authorize('is-admin');
-
-            return $next($request);
-        });
+    
+        //$this->authorize('is-admin');
 
     }
     public function index()
     {
         //
         $search = request()->get('search');
-        $users = Cache::remember('users_cache', 30, function () use ($search) {
-            return User::with('roles')
-                ->where('name', 'like', '%' . $search . '%')
-                ->where('email', '<>', 'nijeanlionel@gmail.com')
-                ->orderBy('name')
-                ->paginate(10);
-        });
+        $users = User::with('roles')
+        ->where('name', 'like', '%' . $search . '%')
+        ->where('email', '<>', 'nijeanlionel@gmail.com')
+        ->orderBy('name')
+        ->paginate(10);
 
         return view('users.index', compact('users', 'search'));
     }
