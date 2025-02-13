@@ -13,6 +13,7 @@
             </h4>
             <form class="form-inline" action="" method="post">
                 @csrf
+                <input type="hidden" name="stock_id" value="{{ $stocke->id }}">
                 <div class="form-group mx-sm-3 mb-2">
                     <select class="form-select" name="user_id" aria-label="Default select example">
                         <option selected>Selectionne l'utilisateur</option>

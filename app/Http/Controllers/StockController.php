@@ -256,11 +256,7 @@ class StockController extends Controller
         return view('journals.rapport',
         compact('venteJournaliere','end_date', 'start_date','labels','vente_date','montant_total', 'data','totalDette','service_Date'));
     }
-
-
-
     public function bonEntre(){
-
         $s_date =  request()->query('s_date');
         $e_date =  request()->query('e_date');
         $action =  request()->query('action');
@@ -272,21 +268,30 @@ class StockController extends Controller
         return view('products.bon_entre', compact('s_date', 'e_date','products','action'));
     }
 
-    function stockeAddUser(Stocke $stocke){
+    public function stockeAddUser(Stocke $stocke){
         $users = User::all();
-        $userstockes = $stocke->users();
+        $userstockes = StockerUser::where('stock_id', $stocke->id)->get();
+        
         return view('stocks._add_user',compact(['stocke','users','userstockes']));
     }
 
-    function stockeAddUserPost(Request $request, Stocke $stocke){
+    public function stockeAddUserPost(Request $request, Stocke $stocke){
         // $stocke->users()->attach($request->user);
-        StockerUser::create([
-
-        ]);
+        //dd($request->all());
+        //Check if user is already
+        $check = StockerUser::where('user_id',$request->user_id)
+                            ->where('stock_id', $request->stock_id)->first();
+        if(!$check){
+            StockerUser::create([
+                'user_id' => $request->user_id,
+                'stock_id' => $request->stock_id,
+            ]);
+        }
+        
         return redirect()->route('stocke.useradd', $stocke);
     }
 
-    function stockeUserRemove(Stocke $stocke, User $user){
+    public function stockeUserRemove(Stocke $stocke, User $user){
         $stocke->users()->detach($user);
         return redirect()->route('stocke.useradd', $stocke);
     }
