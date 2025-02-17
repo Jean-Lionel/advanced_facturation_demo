@@ -118,12 +118,12 @@
 							<li class="text-center list-unstyled">{{ $order->created_at }}</li>
 
 							<li class="">
-                               Client :  <b>{{ $order->client->name ?? "" }}</b>
+                               Client :  <b>{{ $order->client->name ?? "" }}</b> &nbsp; &nbsp; &nbsp; Vendu par : <b>{{ $order->user->name ?? "" }}</b
                             </li>
 
-                            
+
 						</ul>
-                       
+
 					</td>
 					<td class="numbers">{{ getPrice($order->amount )}}</td>
 					<td class="noprint">{{ $order->type_paiement ?? ""}}</td>
@@ -132,8 +132,8 @@
                         {{ getPrice($order->tax ) }}
                     </td>
 					<td class="d-flex noprint" >
-                     
-                    
+
+
 						<a href="{{ route('orders.show', $order) }}" class="mr-2 btn btn-sm btn-success" title="imprimer"> <i class="fa fa-print" ></i></a>
 
 
