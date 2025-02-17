@@ -54,13 +54,13 @@
                 </td>
 
 
-				<td class="d-flex justify-content-around">
+				<td>
 
-					<form class="form-delete" action="{{ route('depenses.destroy' , $value) }}" style="display: inline;" method="POST">
-					{{ csrf_field() }}
-					{{ method_field('DELETE') }}
-					<button class="btn btn-outline-danger btn-sm delete_client">Supprimer</button>
-				</form>
+                    <button class="btn btn-outline-danger btn-sm" onclick="confirmDelete(event, {{ $value->id }})">Supprimer</button>
+                    <form id="delete-form-{{ $value->id }}" action="{{ route('depenses.destroy', $value) }}" method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
 
 
 				</td>
@@ -79,4 +79,14 @@
 </div>
 
 
+@endsection
+@section('javascript')
+<script>
+    function confirmDelete(event, id) {
+        event.preventDefault();
+        if (confirm('Êtes-vous sûr de vouloir supprimer cette dépense ?')) {
+            document.getElementById('delete-form-' + id).submit();
+        }
+    }
+    </script>
 @endsection

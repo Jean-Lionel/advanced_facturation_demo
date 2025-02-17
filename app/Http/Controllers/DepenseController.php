@@ -113,5 +113,9 @@ class DepenseController extends Controller
     public function destroy(Depense $depense)
     {
         //
+
+        $depense->delete();
+
+        return $this->index();
     }
 }
