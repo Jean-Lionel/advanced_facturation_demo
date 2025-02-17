@@ -7,7 +7,7 @@
 
 
 		<div class="col-md-6 d-flex justify-content-between">
-			<a href="{{ route('depenses.create') }}" 
+			<a href="{{ route('depenses.create') }}"
 			class="btn btn-primary btn-sm">Ajouter</a>
 			<h4 class="text-center">
 				Tout les depenses
@@ -19,7 +19,7 @@
 			</form>
 		</div>
 	</div>
-	
+
 	<table class="table table-sm">
 		<thead>
 			<tr>
@@ -27,6 +27,8 @@
 				<th scope="col">Action</th>
 				<th scope="col">Momtant</th>
 				<th scope="col">Date</th>
+                <th scope="col">Description</th>
+                <th scope="col">Fait par</th>
 				<th scope="col">Action</th>
 			</tr>
 		</thead>
@@ -44,10 +46,16 @@
 				<td>
 					{{ $value->created_at}}
 				</td>
+                <td>
+                    {{ $value->description}}
+                </td>
+                <td>
+                    {{ $value->user->name}}
+                </td>
 
-			
+
 				<td class="d-flex justify-content-around">
-				
+
 					<form class="form-delete" action="{{ route('depenses.destroy' , $value) }}" style="display: inline;" method="POST">
 					{{ csrf_field() }}
 					{{ method_field('DELETE') }}
@@ -63,7 +71,7 @@
 		</tbody>
 	</table>
 
-	
+
 </div>
 
 <div class="col-md-12" style="height: 20px; overflow: hidden;">
