@@ -151,6 +151,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('stocke.useradd/{stocke}',[StockController::class,'stockeAddUserPost'])->name('stocke.useraddPost');
     Route::delete('stocke.userremove/{stocke}', [StockController::class, 'stockeUserRemove'])->name('stocke.userremove');
 
+    Route::get('facture.credit', [StockController::class ,'FactureCredit'])->name('facture.credit');
+
+
 });
 require __DIR__ . '/jetstream.php';
 

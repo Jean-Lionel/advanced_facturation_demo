@@ -126,7 +126,7 @@
 
 					</td>
 					<td class="numbers">{{ getPrice($order->amount )}}</td>
-					<td class="noprint">{{ $order->type_paiement ?? ""}}</td>
+					<td class="noprint">{{ $order->type_paiement ? TYPE_PAYMENT[$order->type_paiement]: ""}}</td>
 					<td class="noprint">{{ $order->invoice_type ?? ""}}</td>
                     <td class="numbers">
                         {{ getPrice($order->tax ) }}

@@ -296,4 +296,29 @@ class StockController extends Controller
         return redirect()->route('stocke.useradd', $stocke);
     }
 
+    public function FactureCredit(){
+        $startDate = request()->query('startDate') ;
+        $endDate = request()->query('endDate') ;
+        $query = Order::query();
+
+        if ($startDate && $endDate ) {
+            $query->whereBetween('created_at',[$startDate,$endDate]);
+        }
+        $orders =  $query->where('is_cancelled','=','0')
+                            ->where('type_paiement','=','3')
+                            ->sortable()
+                            ->latest()
+                            ->get();
+
+        return view('journals.index', [
+            'orders' => $orders, //->paginate(10),
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'total_tva' => $orders->sum('tax'),
+            'total_facture' => $orders->count(),
+            'total_amount' => $orders->sum('amount'),
+            'total_amount_tax' => $orders->sum('amount_tax'),
+        ] );
+    }
+
 }
