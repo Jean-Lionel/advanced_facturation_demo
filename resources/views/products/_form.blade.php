@@ -85,14 +85,16 @@
 
             <select name="taux_tva" id="taux_tva" class="form-control">
                 @foreach (TAUX_TVA as $tva)
-                    <option value="{{ old('taux_tva') ?? $product->taux_tva?? $tva }}"
-                        @if ((isset($product) && $product->taux_tva == $tva))
+                    <option value="{{ $tva }}"
+                        @if (old('taux_tva', $product->taux_tva ?? '') == $tva)
                             selected
                         @endif>
                         {{ $tva }}
                     </option>
                 @endforeach
             </select>
+
+
             {!! $errors->first('taux_tva', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
