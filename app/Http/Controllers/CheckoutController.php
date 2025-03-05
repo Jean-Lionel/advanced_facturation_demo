@@ -153,7 +153,14 @@ class CheckoutController extends Controller
 //                Session::flash('error', $e->getMessage());
 //            }
 
-            return view('cart.facture_model_prothem', compact('order'));
+            $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEME');
+            $currentModelFacture = 'cart.facture_model_prothem';
+
+            if($modelFacture == 'MODEL_SOCOFAUMA'){
+                $currentModelFacture = 'cart.facture_model_socofauma';
+            }
+
+            return view($currentModelFacture, compact('order'));
         }
     }
 

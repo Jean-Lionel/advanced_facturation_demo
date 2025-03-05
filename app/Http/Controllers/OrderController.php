@@ -63,6 +63,9 @@ class OrderController extends Controller
         if ($modelFacture == 'FACTURE_MODEL_BIT_HEALTH'){
             $currentModelFacture = 'cart.facture_model_bit_health';
         }
+        if($modelFacture == 'MODEL_SOCOFAUMA'){
+            $currentModelFacture = 'cart.facture_model_socofauma';
+        }
 
 
         return view( $currentModelFacture ,compact('order'));
