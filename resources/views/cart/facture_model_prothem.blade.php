@@ -173,8 +173,13 @@
                 <div id="reciept" style="display : none;">
                     <div  class="container">
                         <h5 class="invoice_signature center"> {{$order->invoice_signature}}  </h5>
-                        <h3 class="center">FACTURE N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h3>
-                        <h3 class="center" >{{TYPE_PAYMENT[$order->type_paiement]  }}</h3>
+                        <h3 class="center">FACTURE 
+                        @if ($order->type_paiement == 3  )
+                        {{TYPE_PAYMENT[$order->type_paiement]  }}
+                        @endif
+                            
+                        N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h3>
+                        
                         @if ($order->is_cancelled)
                            @include('cart._partial')
                          @endif
