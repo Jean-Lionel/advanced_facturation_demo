@@ -51,6 +51,13 @@ protected $guarded = [];
 
         self::updating(function($model){
             $model->user_id = Auth::user()->id ?? 1;
+
+            try {
+                self::updateDatabases();
+            } catch (\Throwable $th) {
+                throw new \Exception($th->getMessage());
+            }
+
             Session::put('cancel_syncronize', false);
         });
 
@@ -111,11 +118,17 @@ protected $guarded = [];
                     $table->string('invoice_currency', 10)->nullable();
                 });
             }
-           // "invoice_type" => "FN",
+            // "invoice_type" => "FN",
             if (!Schema::hasColumn('orders', 'invoice_type')) {
                 // Add the 'invoice_currency' column if it doesn't exist
                 Schema::table('orders', function ($table) {
                     $table->string('invoice_type', 10)->nullable();
+                });
+            }
+            if (!Schema::hasColumn('orders', 'update_info')) {
+                // Add the 'update_info' column if it doesn't exist
+                Schema::table('orders', function ($table) {
+                    $table->text('update_info')->nullable();
                 });
             }
 

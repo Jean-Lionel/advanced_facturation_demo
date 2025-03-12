@@ -37,6 +37,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('maison_id')->nullable();
             //Creditial for OBR
             $table->boolean('is_cancelled')->nullable();
+            $table->text('update_info')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

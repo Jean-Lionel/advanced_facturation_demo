@@ -135,6 +135,18 @@
 
 
 						<a href="{{ route('orders.show', $order) }}" class="mr-2 btn btn-sm btn-success" title="imprimer"> <i class="fa fa-print" ></i></a>
+                        @if ($order->type_paiement == 3)
+                        <form action="{{ route('facture.payer', $order) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-sm btn-warning" title="Valider le paiement">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 17l-5-5m5 0l5 5L22 7m-10 5l5-5"/>
+                                </svg>
+                            </button>
+                        </form>
+
+                        @endif
 
 
 					</td>

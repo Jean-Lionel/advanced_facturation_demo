@@ -334,5 +334,42 @@ class StockController extends Controller
             'total_amount_tax' => $orders->sum('amount_tax'),
         ] );
     }
+    public function FacturePayer(Order $order)
+    {
+        DB::beginTransaction();
+
+        try {
+            $oldValues = $order->getOriginal();
+
+
+            if ($order->update_info) {
+                $existingUpdates = json_decode($order->update_info, true);
+                $existingUpdates[] = [
+                    'updated_at' => now(),
+                    'old_values' => $oldValues,
+                ];
+                $order->update_info = json_encode($existingUpdates);
+            } else {
+                $order->update_info = json_encode([
+                    [
+                        'updated_at' => now(),
+                        'old_values' => $oldValues,
+                    ]
+                ]);
+            }
+
+            $order->type_paiement = 1;
+            $order->save();
+
+            DB::commit();
+
+            return redirect()->route('facture.credit');
+        }catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+    }
+
 
 }
