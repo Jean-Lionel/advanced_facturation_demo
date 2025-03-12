@@ -130,18 +130,31 @@ class StockController extends Controller
     }
 
     public function journal(){
-        $startDate = request()->query('startDate') ?? Carbon::now()->format('Y-m-d');
-        $endDate = request()->query('endDate') ?? Carbon::now()->addDays(1)->format('Y-m-d');
+        $start_date = request()->query('startDate') ?? Carbon::now()->format('Y-m-d');
+        $end_date = request()->query('endDate') ?? Carbon::now()->addDays(1)->format('Y-m-d');
         $orders =  Order::where('is_cancelled','=','0')
-                            ->whereBetween('created_at',[$startDate,$endDate])
+                                ->where(function($query) use($start_date, $end_date){
+                                if($start_date && $end_date){
+                                    $query->whereDate('created_at', '>=' , $start_date)
+                                        ->whereDate('created_at','<=', $end_date);
+                                }else{
+                                    if($start_date){
+                                        $query->whereDate('created_at','=',$start_date);
+                                    }
+                                    if($end_date){
+                                        $query->whereDate('created_at','=',$end_date);
+                                    }
+                                }
+
+                            })
                             ->sortable()
                             ->latest()
                             ->get();
 
         return view('journals.index', [
             'orders' => $orders, //->paginate(10),
-            'startDate' => $startDate,
-            'endDate' => $endDate,
+            'startDate' => $start_date,
+            'endDate' => $end_date,
             'total_tva' => $orders->sum('tax'),
             'total_facture' => $orders->count(),
             'total_amount' => $orders->sum('amount'),
@@ -163,7 +176,8 @@ class StockController extends Controller
         $products = Order::
                     where(function($query) use($start_date, $end_date){
                         if($start_date && $end_date){
-                            $query->whereBetween('created_at',[$start_date, $end_date]);
+                            $query->whereDate('created_at', '>=' , $start_date)
+                                  ->whereDate('created_at','<=', $end_date);
                         }else{
                             if($start_date){
                                 $query->whereDate('created_at','=',$start_date);

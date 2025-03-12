@@ -4,11 +4,7 @@
 
 <div>
     @include('products._header_product')
-
-
 	<div class="row">
-
-
 		<div class="col-md-6 d-flex justify-content-between">
 			<a href="{{ route('stockes.create') }}"
 			class="btn btn-primary btn-sm">Nouveau stock</a>

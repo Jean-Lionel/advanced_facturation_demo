@@ -75,6 +75,7 @@
                     <p>Avenue : <b>{{ $order->company->tp_address_avenue ?? ""}} </b></p>
                    <p>   Assujetti à la TVA : {{$order->company?->vat_taxpayer ? 'OUI' : 'NON'  }}</p>
                    <p>  Type de Facture : {{$order->invoice_type ?? "FN"  }}</p>
+                   <p>  Mode de Paiment :  <b>{{TYPE_PAYMENT[$order->type_paiement]  }}</b> </p>
                 </div>
                 <div class="aling-right partie-droite">
                     <div>

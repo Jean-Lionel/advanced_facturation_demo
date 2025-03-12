@@ -17,6 +17,7 @@ class CreateStockerUsersTable extends Migration
             $table->id();
             $table->foreignId("user_id")->nullable();
             $table->foreignId("stock_id")->nullable();
+            $table->text("description")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
