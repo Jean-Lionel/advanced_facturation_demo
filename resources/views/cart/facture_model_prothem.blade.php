@@ -190,6 +190,7 @@
                         <p>{{ "Secteur d'activité" }} : </p>
                         <p> {{ $order->company->tp_activity_sector }}</p>
                         <p>Forme juridique : {{ $order->company->tp_legal_form }} </p>
+                        <p>  Mode de Paiment :  <b>{{TYPE_PAYMENT[$order->type_paiement]  }}</b> </p>
                      
                         <h3>B. Client</h3>
                         <p>Nom et Prénom ou Raison Socail :</p>
