@@ -4,11 +4,7 @@
 
 <div>
     @include('products._header_product')
-
-
 	<div class="row">
-
-
 		<div class="col-md-6 d-flex justify-content-between">
 			<a href="{{ route('stockes.create') }}"
 			class="btn btn-primary btn-sm">Nouveau stock</a>
@@ -60,6 +56,10 @@
                         <i class="fas fa-shopping-cart"></i>
                         Commandes
                     </a>
+					<a href="{{ route('stocke.useradd',$value)}}" class="mr-2 btn btn-outline-warning btn-sm">
+					<i class="fas fa-users"></i>
+						Utilisateurs
+					</a>
 
 					{{--  <form class="form-delete" action="{{ route('stockes.destroy' , $value) }}" style="display: inline;" method="POST">
 					{{ csrf_field() }}

@@ -2,10 +2,21 @@
 
 <div class="text-right">
 	<div>
-		<a href="{{ route('journal_sort_history') }}" class="{{ setActiveRoute('journal_sort_history') }}">
+        <a href="{{ route('facture.credit') }}" class="{{ setActiveRoute('journal_sort_history') }}">
+			<span class="fa fa-file"></span>
+			<span>Facture à Crédit </span>
+		</a>
+		
+        <a href="{{ route('facture.credit') }}" class="{{ setActiveRoute('journal_sort_history') }}">
+			<span class="fa fa-file"></span>
+			<span>Impression Multiple des factures </span>
+		</a>
+
+		<a class="mx-4"  href="{{ route('journal_sort_history') }}" class="{{ setActiveRoute('journal_sort_history') }}">
 			<span class="fa fa-file-archive"></span>
 			<span>Historique de Facture </span>
 		</a>
+
 	</div>
 	<button class="btn btn-info noprint" onclick="window.print()" >
 		<i class="fa fa-print" aria-hidden="true"></i>

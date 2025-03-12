@@ -23,18 +23,25 @@ class CompteController extends Controller
     }
 
     // View formulaire de recharge
-    public function recharge($id){
+    public function recharge($compte){
 
-        return view('compte.recharge')->with('id', $id);
+        $compte = Compte::find($compte);
+        return view('compte.recharge')->with('compte', $compte);
+    }
+    public function retrait($compte){
+
+        $compte = Compte::find($compte);
+        return view('compte.retrait')->with('compte', $compte);
     }
 
     // View de historique des transaction
     public function historique(Request $request,$id){
-        $historiques = BienvenuHistorique::where('client_id', $id)->get();
+        $historiques = BienvenuHistorique::where('client_id', $id)->latest()->get();
         return view('compte.historique', compact('historiques'));
     }
 
     public function updatecompte(Request $request){
+
 
         $request->validate([
             "montant" => "required",
@@ -47,21 +54,36 @@ class CompteController extends Controller
         $id= $request->id;
         $compte = Compte::find($id);
         $montantActuel = $compte->montant;
-        $MontTotal = $montantActuel + $montant;
-        Compte::where('id', $id)->update(['montant' => $MontTotal]);
+        if($request->operation == "RETRAIT" ){
+            if($montantActuel < $montant){
+                return redirect()->route('retrait', ['compte' => $compte])->with('error', 'Le montant est insuffisant, Il vous reste '. $montantActuel);
+            }
+            $montantActuel -= $montant;
+        }else{
+            $montantActuel += $montant;
+        }
 
+        $MontTotal = $montantActuel;
+        $compte->update(['montant' => $MontTotal]);
+
+        if ($request->operation == "RETRAIT") {
+            $title = 'Retrait';
+            $description = 'Retrait du montant de '. $montant.' au client '. $compte->client->name;
+        }else{
+            $title = 'Depot';
+            $description = 'Depot du montant de '. $montant.' au client '. $compte->client->name;
+        }
 
         BienvenuHistorique::create([
             'compte_id'=>$id,
             'client_id'=>$compte->client_id,
             'mode_payement'=>$modePaiement,
-            'title'=>'Depot',
+            'title'=>$title,
             'montant'=>$montant,
-            'description'=>"Recharge de {$montant}",
+            'description'=>$description,
         ]);
 
-        $clients = Client::with('compte')->whereHas('compte')->latest()->paginate(20);
-        return view('compte.index', compact('clients'));
+        return redirect()->route('compte.index');
     }
 
 

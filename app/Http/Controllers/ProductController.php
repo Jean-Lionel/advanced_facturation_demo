@@ -34,7 +34,34 @@ class ProductController extends Controller
         $this->authorize('view', Product::class);
         $search = request()->get('search');
         $category = request()->get('category');
-        $query = Product::with(['category' , 'mouvements'])->latest()
+
+        // AFFICHAGE DES PRODUITS DONT LE STOCK EST ASSOCIER
+
+        $userId = auth()->id();
+
+        $query = null;
+        if(env('APP_CAN_USE_MULTI_STOCK', false)){
+            $query = Product::with(['category', 'mouvements'])
+            ->whereHas('productStocks', function ($query) use ($userId) {
+                $query->whereIn('stock_id', function ($subQuery) use ($userId) {
+                    $subQuery->select('stock_id')
+                            ->from('stocker_users')
+                            ->where('user_id', $userId);
+                });
+            })
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('code_product', 'like', '%' . $search . '%')
+                        ->orWhere('date_expiration', 'like', '%' . $search . '%')
+                        ->orWhere('unite_mesure', 'like', '%' . $search . '%')
+                        ->orWhere('marque', 'like', '%' . $search . '%');
+                });
+            })
+            ->orderBy('quantite', 'asc')
+            ->latest() ;
+        }else{
+            $query = Product::with(['category' , 'mouvements'])->latest()
                         ->where(function($query) use ($search) {
                             if($search){
                                 $query->where('name','like', '%'.$search.'%')
@@ -47,6 +74,9 @@ class ProductController extends Controller
                         })
                         ->orderBy('quantite','asc')
                         ;
+        }
+
+
          $products = [];
         if(  $category == 'STOCK VIDE'){
             $products = $query->where('quantite', 0)->latest()->paginate();

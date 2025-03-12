@@ -55,4 +55,7 @@ class BienvenuHistorique extends Model
     {
         return $this->belongsTo(Client::class);
     }
+    public function user(){
+        return $this->belongsTo(\App\Models\User::class);
+    }
 }

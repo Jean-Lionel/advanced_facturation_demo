@@ -3,13 +3,18 @@
 @section('content')
 
 <div>
+    @if (env('APP_USE_ABONEMENT', false))
+        <div>
+            @include('compte._header')
+        </div>
+    @endif
 	@if (session('error'))
 	<div
 	class="alert alert-primary"
 	role="alert"
 	>
 	<h4 class="alert-heading">{{ session('error') }}</h4>
-	
+
 </div>
 @endif
 
@@ -32,7 +37,7 @@
 			</form>
 		</div>
 	</div>
-	
+
 	<table class="table table-sm">
 		<thead>
 			<tr>
@@ -43,6 +48,7 @@
 				<th scope="col">NIF</th>
 				<th scope="col">Adresse</th>
 				@if (env('APP_USE_ABONEMENT', false))
+                <th scope="col">Commissionnaire</th>
 				<th scope="col">Fournisseur</th>
 				<th>Abonnées</th>
 				@endif
@@ -51,7 +57,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			
+
 			@foreach ($clients as $value)
 			{{-- expr description  --}}
 			<tr>
@@ -64,30 +70,37 @@
 				<td>
 					{{ $value->customer_TIN}}
 				</td>
-				
+
 				<td>
 					{{ $value->addresse}}
 				</td>
-				
+
 				@if (env('APP_USE_ABONEMENT', false))
+                <td>
+                    {{ $value->is_commissionaire ? "on" : "" }}</td>
 				<td>
 					{{ $value->is_fournisseur}}
 				</td>
 				<td>{{ $value->compte->name  ?? "" }}</td>
 				@endif
-				
+
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
 					{{--  <a href="{{ route('clients.edit', $value) }}" class="btn btn-outline-info btn-sm mr-2">Modifier</a>  --}}
 					<form class="form-delete" action="{{ route('clients.destroy' , $value) }}" style="display: inline;" method="POST">
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}
-						<button class="btn btn-outline-danger btn-sm delete_client"	
-						onclick="return confirm('Are you sure you want to delete this client ?')"	
+						<button class="btn btn-outline-danger btn-sm delete_client"
+
+						onclick="return confirm('Are you sure you want to delete this client ?')"
+
+						<button class="btn btn-outline-danger btn-sm delete_client"
+						onclick="return confirm('Are you sure you want to delete this client ?')"
 						>Supprimer</button>
 						@if(env('APP_USE_ABONEMENT', false))
 						<a href="{{ route('clients_abones', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Abonée</a>
 						<a href="{{ route('make_commissionnaire', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Commissionnaire</a>
+
 						@endif
 					</form>
 				</td>

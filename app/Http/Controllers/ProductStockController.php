@@ -42,6 +42,7 @@ class ProductStockController extends Controller
 
     public function show( $productStock)
     {
+       
         return view('productStock.show', compact('productStock'));
     }
 

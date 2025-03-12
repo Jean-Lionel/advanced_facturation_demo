@@ -1,9 +1,10 @@
 :root{
-    --font-size : 5px;
+    --font-size : 8px;
 }
 .invoice_signature{
-    font-size: 20px;
+    
     word-wrap: break-word;
+
 }
 
 .numbers {
@@ -11,29 +12,20 @@
 }
 
   .container {
-
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    width: 90mm;
+    font-family: Consolas,    "Lucida Console";
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 80mm;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    background-color: green !important;
-    
 
     h1 {
-        font-size: var(--font-size);
         text-align: center;
-        line-height: var(--font-size);
       }
-      p,b {
-        font-size: var(--font-size);
-        text-align: justify;
-      }
-
       table{
-        width: 100%;
+        width: 80mm;
         border-collapse: collapse;
+        font-size: 13px;
       }
     
       td.nowrap{
@@ -47,10 +39,22 @@
     }
   }
 
-  .text-center{
+  .text-center  , .center{
     text-align: center !important;
 }
+.total_payment{
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+}
 
+h1,h5,h6{
+    margin: 0;
+    padding: 0;
+}
 
-
-
+@media print {
+  .cut-section {
+      break-after: always; /* Force une coupure après cet élément */
+  }
+}

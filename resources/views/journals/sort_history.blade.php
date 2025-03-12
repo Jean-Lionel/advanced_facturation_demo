@@ -38,6 +38,7 @@
 					<th scope="col">No FACTURE</th>
 					<th scope="col">NIF FOURNISSEUR</th>
 					<th scope="col">NOM DU CLIENT</th>
+					<th scope="col">NIF DU CLIENT</th>
 					<th scope="col">MHTVA</th>
 					<th scope="col">TVA COLL 1</th>
 				</tr>
@@ -53,6 +54,7 @@
 					<td>{{ $product->id }}</td>
 					<td>{{ $product->company->tp_TIN }}</td>
 					<td>{{ $product->client->name }}</td>
+					<td>{{ $product->client->customer_TIN ?? "" }}</td>
 					<td>{{ $product->amount_tax }}</td>
 					<td>{{ $product->tax }}</td>
 				</tr>

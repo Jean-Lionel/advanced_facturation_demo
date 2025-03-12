@@ -24,7 +24,7 @@ class VenteController extends Controller
         }
         // dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
         $search = request()->get('search');
-        $products = Product::where('quantite', '>', 1)
+        $products = Product::where('quantite', '>', 0)
                     ->where('price', '>', 0)
                     ->whereNotIn('id', Cart::content()->map->id)
                     ->where(function ($query) use ($search) {
@@ -32,7 +32,7 @@ class VenteController extends Controller
                         ->orWhere('code_product', 'like', '%' . $search . '%')
                         ->orWhere('price', 'like', '%' . $search . '%')
                         ->orWhere('unite_mesure', 'like', '%' . $search . '%');
-                    })->latest()->take(6)->get();
+                    })->latest()->take(10)->get();
         // SyncroniseInvoice::dispatch(1);
 
         //dd($products[0]->priceHorsTva);

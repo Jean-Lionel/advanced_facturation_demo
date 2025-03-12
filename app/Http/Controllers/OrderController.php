@@ -21,7 +21,7 @@ class OrderController extends Controller
             $product = $value->products;
         }
     }
-    
+
     /**
     * Show the form for creating a new resource.
     *
@@ -31,7 +31,7 @@ class OrderController extends Controller
     {
         //
     }
-    
+
     /**
     * Store a newly created resource in storage.
     *
@@ -42,7 +42,7 @@ class OrderController extends Controller
     {
         //
     }
-    
+
     public function show(Order $order)
     {
         $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEME');
@@ -59,12 +59,18 @@ class OrderController extends Controller
         if ($modelFacture == 'MODEL_EREFO_COMPANY'){
             $currentModelFacture = 'cart.facture_model_erfo';
         }
-        
+
+        if ($modelFacture == 'FACTURE_MODEL_BIT_HEALTH'){
+            $currentModelFacture = 'cart.facture_model_bit_health';
+        }
+        if($modelFacture == 'MODEL_SOCOFAUMA'){
+            $currentModelFacture = 'cart.facture_model_socofauma';
+        }
 
 
         return view( $currentModelFacture ,compact('order'));
     }
-    
+
     /**
     * Show the form for editing the specified resource.
     *
@@ -75,7 +81,7 @@ class OrderController extends Controller
     {
         //
     }
-    
+
     /**
     * Update the specified resource in storage.
     *
@@ -87,7 +93,7 @@ class OrderController extends Controller
     {
         //
     }
-    
+
     /**
     * Remove the specified resource from storage.
     *
@@ -96,7 +102,7 @@ class OrderController extends Controller
     */
     public function destroy(Order $order)
     {
-        
+
         try {
             DB::beginTransaction();
             foreach ($order->details as $value) {
@@ -106,22 +112,22 @@ class OrderController extends Controller
             }
             //$order->details->delete();
             // dd($order->dette);
-            
+
             if($order->dette){
-                
+
                 $order->dette->delete();
             }
-            
+
             $order->delete();
-            
+
             DB::commit();
-            
+
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);
             Session::flash('error', "Une erreur s'est produite");
         }
-        
+
         return back();
     }
 }

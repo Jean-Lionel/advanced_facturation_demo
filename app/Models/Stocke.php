@@ -18,4 +18,7 @@ class Stocke extends MyModel
     public function stockProducts(){
         return $this->hasMany(ProductStock::class, 'stock_id');
     }
+    public function users(){
+        return $this->hasMany(StockerUser::class, 'user_id');
+    }
 }

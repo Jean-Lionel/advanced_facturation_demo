@@ -1,7 +1,7 @@
 <?php
 
 // Variable pour la syncronisation des donnees dans OBR
-define('CAN_SYNCRONISE',  true);
+define('CAN_SYNCRONISE', env('OBR_CAN_SYNCRONISE', true)  );
 define('TIME_OUT_SYNCRONISATION', (3 * 1000)); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_STOCK', true); // Seconde de Syncronisation dans OBR
 define('CAN_SYNCRONISE_INVOICE', true); // Seconde de Syncronisation dans OBR
@@ -24,3 +24,5 @@ define(  'PARTAGE_INFORMATICIEN', 15);
 define(  'PARTAGE_CLIENT', 2.5);
 define(  'PARTAGE_COMMISSIONNAIRE', 2.5);
 define(  'PARTAGE_ENTREPRISE',  80);
+define(  'TEMPS_GENERATION_FACTURE',  env('OBR_TEMPS_GENERATION_FACTURE', 60)  );
+

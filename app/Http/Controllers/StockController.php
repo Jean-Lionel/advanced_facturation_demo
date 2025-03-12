@@ -11,6 +11,8 @@ use App\Models\PaiementDette;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\Stocke;
+use App\Models\StockerUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -128,18 +130,31 @@ class StockController extends Controller
     }
 
     public function journal(){
-        $startDate = request()->query('startDate') ?? Carbon::now()->format('Y-m-d');
-        $endDate = request()->query('endDate') ?? Carbon::now()->addDays(1)->format('Y-m-d');
+        $start_date = request()->query('startDate') ?? Carbon::now()->format('Y-m-d');
+        $end_date = request()->query('endDate') ?? Carbon::now()->addDays(1)->format('Y-m-d');
         $orders =  Order::where('is_cancelled','=','0')
-                            ->whereBetween('created_at',[$startDate,$endDate])
+                                ->where(function($query) use($start_date, $end_date){
+                                if($start_date && $end_date){
+                                    $query->whereDate('created_at', '>=' , $start_date)
+                                        ->whereDate('created_at','<=', $end_date);
+                                }else{
+                                    if($start_date){
+                                        $query->whereDate('created_at','=',$start_date);
+                                    }
+                                    if($end_date){
+                                        $query->whereDate('created_at','=',$end_date);
+                                    }
+                                }
+
+                            })
                             ->sortable()
                             ->latest()
                             ->get();
 
         return view('journals.index', [
             'orders' => $orders, //->paginate(10),
-            'startDate' => $startDate,
-            'endDate' => $endDate,
+            'startDate' => $start_date,
+            'endDate' => $end_date,
             'total_tva' => $orders->sum('tax'),
             'total_facture' => $orders->count(),
             'total_amount' => $orders->sum('amount'),
@@ -161,7 +176,8 @@ class StockController extends Controller
         $products = Order::
                     where(function($query) use($start_date, $end_date){
                         if($start_date && $end_date){
-                            $query->whereBetween('created_at',[$start_date, $end_date]);
+                            $query->whereDate('created_at', '>=' , $start_date)
+                                  ->whereDate('created_at','<=', $end_date);
                         }else{
                             if($start_date){
                                 $query->whereDate('created_at','=',$start_date);
@@ -177,6 +193,7 @@ class StockController extends Controller
 
         return view('journals.sort_history', compact('products' , 'start_date', 'end_date'));
     }
+
 
 
     public function rapport(){
@@ -253,11 +270,7 @@ class StockController extends Controller
         return view('journals.rapport',
         compact('venteJournaliere','end_date', 'start_date','labels','vente_date','montant_total', 'data','totalDette','service_Date'));
     }
-
-
-
     public function bonEntre(){
-
         $s_date =  request()->query('s_date');
         $e_date =  request()->query('e_date');
         $action =  request()->query('action');
@@ -269,5 +282,57 @@ class StockController extends Controller
         return view('products.bon_entre', compact('s_date', 'e_date','products','action'));
     }
 
+    public function stockeAddUser(Stocke $stocke){
+        $users = User::all();
+        $userstockes = StockerUser::where('stock_id', $stocke->id)->get();
+
+        return view('stocks._add_user',compact(['stocke','users','userstockes']));
+    }
+
+    public function stockeAddUserPost(Request $request, Stocke $stocke){
+        // $stocke->users()->attach($request->user);
+        //dd($request->all());
+        //Check if user is already
+        $check = StockerUser::where('user_id',$request->user_id)
+                            ->where('stock_id', $request->stock_id)->first();
+        if(!$check){
+            StockerUser::create([
+                'user_id' => $request->user_id,
+                'stock_id' => $request->stock_id,
+            ]);
+        }
+
+        return redirect()->route('stocke.useradd', $stocke);
+    }
+
+    public function stockeUserRemove(StockerUser $stocke) {
+        $stocke->delete();
+        return redirect()->route('stocke.useradd', $stocke);
+    }
+
+    public function FactureCredit(){
+        $startDate = request()->query('startDate') ;
+        $endDate = request()->query('endDate') ;
+        $query = Order::query();
+
+        if ($startDate && $endDate ) {
+            $query->whereBetween('created_at',[$startDate,$endDate]);
+        }
+        $orders =  $query->where('is_cancelled','=','0')
+                            ->where('type_paiement','=','3')
+                            ->sortable()
+                            ->latest()
+                            ->get();
+
+        return view('journals.index', [
+            'orders' => $orders, //->paginate(10),
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'total_tva' => $orders->sum('tax'),
+            'total_facture' => $orders->count(),
+            'total_amount' => $orders->sum('amount'),
+            'total_amount_tax' => $orders->sum('amount_tax'),
+        ] );
+    }
 
 }

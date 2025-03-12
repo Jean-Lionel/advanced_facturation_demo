@@ -22,7 +22,7 @@ class ClientController extends Controller
         $model = new Client();
         $additionalCondition = [['column' => 'is_commissionaire', 'operator' => '<>', 'value' => null],];
         $clients =  $model->getPaginateData($additionalCondition);
-        return view('clients.commissionnaires', compact('clients'));
+        return view('clients.commisionnaire_list', compact('clients'));
     }
 
     public function load_commission(){
@@ -96,7 +96,7 @@ class ClientController extends Controller
             "vat_customer_payer" => "required",
             "name" => "required",
             "customer_TIN" => "nullable|unique:clients,customer_TIN",
-            "telephone" => "nullable", // |unique:clients,telephone
+            "telephone" => "nullable|unique:clients", // |unique:clients,telephone
             "addresse" => "nullable"
         ]);
         // Check if Tin does not exist in database
@@ -123,6 +123,9 @@ class ClientController extends Controller
                     // ['result']['taxpayer'][0]['tp_name']
                     $customer_OBR = $response->result->taxpayer[0]->tp_name;
                 }catch (\Exception $e){
+
+                    // dd($e);
+
                     return redirect('clients/create')->with('message',  $request->customer_TIN . ' => pas de connection Internet le Nif ne peut pas etre verfier pour le moment ');
                 }
             }

@@ -40,6 +40,17 @@
 
             @if($selectedFacture)
                 <div class="mt-4">
+                    <div class="form-group">
+                        Choisisser le Type de Facture: 
+                    <select name="choosedFacture" wire:model="choosedFacture"  class="form-control">
+                        @foreach ($typeFactureListe as $key => $v)
+                            <option value="{{$key}}">{{$v}}</option>
+                        @endforeach
+                    </select>
+                    @error("choosedFacture")
+                        <span class="text-danger"> {{$message}}</span>
+                    @enderror
+                    </div>
                     <h4>Détails de la facture originale</h4>
                     <div class="table-responsive">
                         <table class="table">

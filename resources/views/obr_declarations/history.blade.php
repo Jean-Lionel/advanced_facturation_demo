@@ -34,18 +34,26 @@
 				<td>{{$order->id}}</td>
 				<td>
 				{{$order->invoice_signature}}
+				@if (isset($order->concelInvoice->motif) )
+					{{-- expr --}}
+					<br>
+					<small class="text-danger"> Motif d'annulation : 
+						<i>{{ $order->concelInvoice->motif ?? ""}}</i> </small>
+				@endif
 			
-			</td>
+				</td>
 				<td>{{ $order->client->name }}</td>
 				<td>{{ $order->amount }}</td>
 				<td>{{ $order->tax }}</td>
 				<td>{{ $order->created_at }}</td>
-                <td
+                <td>
+			
                     @if($order->is_cancelled)
-                        class="bg-danger"
-                        @endif>
-                        @if($order->is_cancelled)
-                        Annulée
+					<span class="bg-danger">
+					Annulée
+					</span>
+                    
+                       
                     @endif
 
                     @if(!$order->is_cancelled)

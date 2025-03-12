@@ -101,8 +101,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('syncronize_customer',[CompteController::class, 'syncronize_customer'] )->name('syncronize_customer');
     Route::resource('product_stock', ProductStockController::class);
     Route::get('rapport_detail', [RapportController::class , 'rapport_detail'])->name('rapport_detail');
-    Route::get('partage_interet', [RapportController::class , 'parta
-    ge_interet'])->name('partage_interet');
+    Route::get('partage_interet', [RapportController::class , 'partage_interet'])->name('partage_interet');
     Route::resource('commande', App\Http\Controllers\CommandeController::class);
     Route::get('bon_commande', [CommandeController::class, 'bon_commande'])->name('bon_commande');
     Route::resource('commande-detail', App\Http\Controllers\CommandeDetailController::class);
@@ -112,7 +111,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('save_import_data', [ImportDataController::class, 'save'])->name('save_import_data');
     Route::get('clients_abones/{id}', [ClientController ::class, 'abonne'] )->name('clients_abones');
     //recharge le compte
-    Route::get('recharge/{id}', [CompteController::class , 'recharge'] )->name('recharge');
+    Route::get('recharge/{compte}', [CompteController::class , 'recharge'] )->name('recharge');
+    //retrait de compte
+    Route::get('retrait/{compte}', [CompteController::class , 'retrait'] )->name('retrait');
     Route::get('historique/{id}', [CompteController::class , 'historique'])->name('historique');
     Route::post('updatecompte', [CompteController::class, 'updatecompte'])->name('updatecompte');
     Route::resource('bienvenu-historique', BienvenuHistoriqueController::class);
@@ -143,6 +144,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('client-history', App\Http\Controllers\ClientHistoryController::class);
     Route::get('syncronizeInvoices', [ObrDeclarationController::class, 'syncronizeInvoices'])->name('syncronizeInvoices');
     Route::get('facture.avoir', [ObrDeclarationController::class, 'factureAvoir'])->name('facture.avoir');
+    Route::get('facture.remboursement_caution', [ObrDeclarationController::class, 'remboursementCaution'])->name('facture.remboursement_caution');
+
+    // association de l'utisateur au stocks
+    Route::get('stocke.useradd/{stocke}',[StockController::class,'stockeAddUser'])->name('stocke.useradd');
+    Route::post('stocke.useradd/{stocke}',[StockController::class,'stockeAddUserPost'])->name('stocke.useraddPost');
+    Route::delete('stocke.userremove/{stocke}', [StockController::class, 'stockeUserRemove'])->name('stocke.userremove');
+
+    Route::get('facture.credit', [StockController::class ,'FactureCredit'])->name('facture.credit');
+
+
 });
 require __DIR__ . '/jetstream.php';
 

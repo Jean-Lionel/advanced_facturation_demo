@@ -142,7 +142,7 @@ class ServiceVente extends Component
             $v = ($this->prices[$key] * $this->quantite[$key]) * ($this->taxes[$key] ?? 18 )/100;
             $prix_hors_tva =  $this->prices[$key] * $this->quantite[$key];
             $products[] = [
-                'id' => $key,
+                'id' =>'ITEM_'. $key,
                 'name' => $this->description[$key],
                 'rowId' => "SERVICE_FACTURATION",
                 'price' => $this->prices[$key],

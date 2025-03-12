@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
+use App\Models\Compte;
+use DateTime;
 
 class CheckoutController extends Controller
 {
@@ -43,6 +45,8 @@ class CheckoutController extends Controller
             Session::flash('error', 'Un produit de votre panier ne se trouve plus en stock.');
             return redirect()->route('panier.index');
         }
+        // Do this before
+
 
         $order = null;
         try {
@@ -61,12 +65,31 @@ class CheckoutController extends Controller
                     'vat_customer_payer' => $request->vat_customer_payer ? 1 : 0,
                 ]);
             }
+            // create compte if there doesn't exist
+
+            if(env('APP_USE_ABONEMENT',false)){
+                if(!$client->compte){
+                    Compte::create([
+                        'name' => str_pad($client->id, 4, '0', STR_PAD_LEFT),
+                        'montant' => 0,
+                        'is_active' => true,
+                        'client_id' => $client->id
+                    ]);
+                }
+            }
+
             $cartInfo = $this->extractCart();
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
             $oder_signuture = "";
             $company = Entreprise::currentEntreprise();
           //  dd($company);
             $tax = Cart::tax();
+
+            if($request->commissionaire_id && $client->commissionnaire_id == null ){
+                $client->commissionnaire_id = $request->commissionaire_id;
+                //dd( $client->commissionnaire_id);
+                $client->save();
+            }
 
             $order = Order::create([
                 'amount' => round( $tax  + Cart::subtotal()),
@@ -81,7 +104,7 @@ class CheckoutController extends Controller
                 'date_facturation'=> now(),
                 'is_cancelled' => 0,
                 'client_id' => $request->client_id,
-                'commissionaire_id' => $request->commissionaire_id ?? null,
+                'commissionaire_id' =>  $client->commissionnaire_id ?? null,
                 'company' =>  $company->toJson(),
             ]);
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
@@ -130,7 +153,14 @@ class CheckoutController extends Controller
 //                Session::flash('error', $e->getMessage());
 //            }
 
-            return view('cart.facture_model_prothem', compact('order'));
+            $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEME');
+            $currentModelFacture = 'cart.facture_model_prothem';
+
+            if($modelFacture == 'MODEL_SOCOFAUMA'){
+                $currentModelFacture = 'cart.facture_model_socofauma';
+            }
+
+            return view($currentModelFacture, compact('order'));
         }
     }
 
@@ -171,7 +201,7 @@ class CheckoutController extends Controller
                 'code_product' => $item->model->code_product,
                 'name' => $item->name,
                 'unite_mesure' => $item->model->unite_mesure,
-                'date_expiration' => $item->model->date_expiration,
+                'date_expiration' => $item->model->date_expiration??new DateTime('today'),
                 'order_id' => $order_id,
                 'embalage' => $item->embalage
 
@@ -193,11 +223,10 @@ class CheckoutController extends Controller
         $products = [];
         foreach (Cart::content() as $item) {
             $v = ($item->price * $item->qty) * $item->taxRate /100;
-            $prix_hors_tva =  ($item->price * $item->qty);
+           // $prix_hors_tva =  ($item->price * $item->qty);
             $prix_hors_tva =  ($item->price * $item->qty);
             $interet_unitaire =  ( $item->price - $item->model->price_max );
             $interet_total =  $interet_unitaire * $item->qty;
-
             $products[] = [
                 'id' => $item->id,
                 'name' => $item->name,

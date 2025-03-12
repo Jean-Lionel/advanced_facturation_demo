@@ -17,9 +17,12 @@ class FactureAvoir extends Component
     public $choosedProducts = [];
     public $productsQuantities = [];
     public $productsProductsPrices = [];
+    public $choosedFacture = "";
+    public $typeFactureListe = ["FA" => "Facture d'Avoir", "RC" => "Remboursement Caution"];
     
     protected $rules = [
         'selectedFacture' => 'required',
+        'choosedFacture' => 'required',
       //  'montantAvoir' => 'required|numeric|gt:0',
         'motifAvoir' => 'required|string|min:3',
         'selectedProducts' => 'required|array|min:1',
@@ -77,7 +80,7 @@ class FactureAvoir extends Component
                 throw new \Exception("Le montant de la facture d’avoir ne doit pas être supérieur au montant de la facture dont il fait objet");
             }
             $avoir->amount_tax = $price_hors_tva;
-            $avoir->invoice_type = 'FA'; // Facture d'Avoir
+            $avoir->invoice_type = $this->choosedFacture; //'FA'; // Facture d'Avoir
             if(!is_numeric( $taux_tva )){
                 throw new \Exception($taux_tva);
             }
@@ -98,10 +101,11 @@ class FactureAvoir extends Component
             $avoir->commissionaire_id = $this->originalFacture->commissionaire_id;
             $avoir->maison_id = $this->originalFacture->maison_id;
             $avoir->is_cancelled = false;
-            $avoir->envoye_obr = false;
+            $avoir->envoye_obr = null;
             $avoir->invoice_currency = $this->originalFacture->invoice_currency;
             $avoir->date_facturation = now();
-            $avoir->invoice_ref = $this->originalFacture->invoice_signature;
+            $avoir->invoice_ref = getInvoiceNumber($this->originalFacture->id);
+            //$avoir->invoice_ref = $this->originalFacture->invoice_signature;
             $avoir->cn_motif = $this->motifAvoir;
             
           // dd($avoir);
@@ -133,9 +137,19 @@ class FactureAvoir extends Component
         return collect($this->selectedProducts)->sum('sacs');
     }
 
+    // This will be implemented when it will be mendatory
+    public function updateMouvementStock(){
+        // saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_description = null, $item_movement_invoice_ref = null , $is_single_retour = false);
+
+        // $productsList = Product::whereIn('id', $this->selectedProducts)->get();
+        // foreach ($productsList as $product){
+        //     ObrMouvementStock::saveMouvement($product, 'ER', );
+        // }
+    }
+
     private function getSelectedProducts($tax = 18)
     {
-      
+
         return collect($this->products)
             ->whereIn('id', $this->selectedProducts)
             ->map(function($product) use($tax) {
