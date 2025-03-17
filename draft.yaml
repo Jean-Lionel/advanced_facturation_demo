@@ -1,13 +1,13 @@
 models:
-  ClientHistory:
+  Api/TeamMember:
     user_id: id foreign:users
-    client_id: id foreign:clients
-    content: text 
+    name: string 
+    description: text nullable 
     SoftDeletes
 
-seeders: ClientHistory
+seeders: Api/TeamMember
 
 controllers:
-  ClientHistory:
-    resource: web
+  Team:
+    resource: api
 
