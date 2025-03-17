@@ -1,8 +1,3 @@
-## MAGASIN APP
-
-This app can do more things 
-
-
 # Advanced Facturation
 
 **Advanced Facturation** is a powerful and user-friendly invoicing software developed by **Advanced IT and Research Burundi**. It integrates various APIs, including those from the **Office Burundais des Recettes (OBR)**, for seamless e-invoicing and tax declaration.
