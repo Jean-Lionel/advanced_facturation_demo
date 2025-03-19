@@ -20,7 +20,7 @@ class CreateTransactionsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('member_id')->constrained();
             $table->foreignId('transaction_type_id')->constrained();
-            $table->float('montant');
+            $table->double('montant', 64,4);
             $table->text('description')->nullable();
             $table->date('date_transaction');
             $table->timestamps();

@@ -7,94 +7,10 @@ servers:
   -
     url: 'http://localhost'
 paths:
-  /api/user:
-    get:
-      summary: ''
-      operationId: getApiUser
-      description: ''
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  data:
-                    -
-                      id: 1
-                      name: 'JEAN LIONEL'
-                      email: nijeanlionel@gmail.com
-                      email_verified_at: '2025-01-28T11:46:36.000000Z'
-                      two_factor_secret: null
-                      two_factor_recovery_codes: null
-                      current_team_id: null
-                      profile_photo_path: null
-                    -
-                      id: 2
-                      name: 'Poissonnerie Nouvelle'
-                      email: poissonnerienouvelle@gmail.com
-                      email_verified_at: null
-                      two_factor_secret: null
-                      two_factor_recovery_codes: null
-                      current_team_id: null
-                      profile_photo_path: null
-                properties:
-                  data:
-                    type: array
-                    example:
-                      -
-                        id: 1
-                        name: 'JEAN LIONEL'
-                        email: nijeanlionel@gmail.com
-                        email_verified_at: '2025-01-28T11:46:36.000000Z'
-                        two_factor_secret: null
-                        two_factor_recovery_codes: null
-                        current_team_id: null
-                        profile_photo_path: null
-                      -
-                        id: 2
-                        name: 'Poissonnerie Nouvelle'
-                        email: poissonnerienouvelle@gmail.com
-                        email_verified_at: null
-                        two_factor_secret: null
-                        two_factor_recovery_codes: null
-                        current_team_id: null
-                        profile_photo_path: null
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: 'JEAN LIONEL'
-                        email:
-                          type: string
-                          example: nijeanlionel@gmail.com
-                        email_verified_at:
-                          type: string
-                          example: '2025-01-28T11:46:36.000000Z'
-                        two_factor_secret:
-                          type: string
-                          example: null
-                        two_factor_recovery_codes:
-                          type: string
-                          example: null
-                        current_team_id:
-                          type: string
-                          example: null
-                        profile_photo_path:
-                          type: string
-                          example: null
-      tags:
-        - Endpoints
-      security: []
+  /api/register:
     post:
       summary: ''
-      operationId: postApiUser
+      operationId: postApiRegister
       description: ''
       parameters: []
       responses: {  }
@@ -109,51 +25,51 @@ paths:
               properties:
                 name:
                   type: string
-                  description: ''
-                  example: non
+                  description: 'Must not be greater than 255 characters.'
+                  example: tvazgcbnfh
                   nullable: false
                 email:
                   type: string
-                  description: 'Must be a valid email address.'
-                  example: heidenreich.gustave@example.org
+                  description: 'Must be a valid email address. Must not be greater than 255 characters.'
+                  example: shanna11@example.org
                   nullable: false
-                email_verified_at:
+                password:
                   type: string
-                  description: ''
-                  example: null
+                  description: 'Must be at least 8 characters.'
+                  example: '3}"4''|s/[<A#y''WG=o'
+                  nullable: false
+              required:
+                - name
+                - email
+                - password
+      security: []
+  /api/login:
+    post:
+      summary: ''
+      operationId: postApiLogin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: coby.sporer@example.com
                   nullable: false
                 password:
                   type: string
                   description: ''
-                  example: sint
-                  nullable: false
-                two_factor_secret:
-                  type: string
-                  description: ''
-                  example: aperiam
-                  nullable: false
-                two_factor_recovery_codes:
-                  type: string
-                  description: ''
-                  example: aut
-                  nullable: false
-                remember_token:
-                  type: string
-                  description: 'Must not be greater than 100 characters.'
-                  example: akjmsmjfx
-                  nullable: false
-                current_team_id:
-                  type: integer
-                  description: ''
-                  example: 9
-                  nullable: false
-                profile_photo_path:
-                  type: string
-                  description: ''
-                  example: consectetur
+                  example: ..e_;uh0G(
                   nullable: false
               required:
-                - name
                 - email
                 - password
       security: []
@@ -164,78 +80,46 @@ paths:
       description: ''
       parameters: []
       responses:
-        500:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: 'Server Error'
+                  message: Unauthenticated.
                 properties:
                   message:
                     type: string
-                    example: 'Server Error'
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
-  '/api/user/{id}':
+  /api/users:
     get:
       summary: ''
-      operationId: getApiUserId
+      operationId: getApiUsers
       description: ''
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  data:
-                    id: 1
-                    name: 'JEAN LIONEL'
-                    email: nijeanlionel@gmail.com
-                    email_verified_at: '2025-01-28T11:46:36.000000Z'
-                    two_factor_secret: null
-                    two_factor_recovery_codes: null
-                    current_team_id: null
-                    profile_photo_path: null
+                  message: Unauthenticated.
                 properties:
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      name:
-                        type: string
-                        example: 'JEAN LIONEL'
-                      email:
-                        type: string
-                        example: nijeanlionel@gmail.com
-                      email_verified_at:
-                        type: string
-                        example: '2025-01-28T11:46:36.000000Z'
-                      two_factor_secret:
-                        type: string
-                        example: null
-                      two_factor_recovery_codes:
-                        type: string
-                        example: null
-                      current_team_id:
-                        type: string
-                        example: null
-                      profile_photo_path:
-                        type: string
-                        example: null
+                  message:
+                    type: string
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
-    put:
+    post:
       summary: ''
-      operationId: putApiUserId
+      operationId: postApiUsers
       description: ''
       parameters: []
       responses: {  }
@@ -251,12 +135,12 @@ paths:
                 name:
                   type: string
                   description: ''
-                  example: quia
+                  example: aperiam
                   nullable: false
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: isaiah.heidenreich@example.org
+                  example: dejah84@example.com
                   nullable: false
                 email_verified_at:
                   type: string
@@ -266,32 +150,119 @@ paths:
                 password:
                   type: string
                   description: ''
-                  example: voluptatibus
+                  example: doloribus
                   nullable: false
                 two_factor_secret:
                   type: string
                   description: ''
-                  example: qui
+                  example: corporis
                   nullable: false
                 two_factor_recovery_codes:
                   type: string
                   description: ''
-                  example: animi
+                  example: et
                   nullable: false
                 remember_token:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: igcztpdtmbwylbcyfbynb
+                  example: ciprw
                   nullable: false
                 current_team_id:
                   type: integer
                   description: ''
-                  example: 7
+                  example: 3
                   nullable: false
                 profile_photo_path:
                   type: string
                   description: ''
-                  example: culpa
+                  example: veniam
+                  nullable: false
+              required:
+                - name
+                - email
+                - password
+      security: []
+  '/api/users/{id}':
+    get:
+      summary: ''
+      operationId: getApiUsersId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiUsersId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: qui
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: elbert83@example.com
+                  nullable: false
+                email_verified_at:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: false
+                password:
+                  type: string
+                  description: ''
+                  example: doloribus
+                  nullable: false
+                two_factor_secret:
+                  type: string
+                  description: ''
+                  example: perferendis
+                  nullable: false
+                two_factor_recovery_codes:
+                  type: string
+                  description: ''
+                  example: saepe
+                  nullable: false
+                remember_token:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: qynczeszcjjnhjvhgdwpgbqfb
+                  nullable: false
+                current_team_id:
+                  type: integer
+                  description: ''
+                  example: 15
+                  nullable: false
+                profile_photo_path:
+                  type: string
+                  description: ''
+                  example: quo
                   nullable: false
               required:
                 - name
@@ -300,7 +271,7 @@ paths:
       security: []
     delete:
       summary: ''
-      operationId: deleteApiUserId
+      operationId: deleteApiUsersId
       description: ''
       parameters: []
       responses: {  }
@@ -316,31 +287,31 @@ paths:
         required: true
         schema:
           type: integer
-  /api/organisation:
+  /api/organisations:
     get:
       summary: ''
-      operationId: getApiOrganisation
+      operationId: getApiOrganisations
       description: ''
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  data: []
+                  message: Unauthenticated.
                 properties:
-                  data:
-                    type: array
-                    example: []
+                  message:
+                    type: string
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
     post:
       summary: ''
-      operationId: postApiOrganisation
+      operationId: postApiOrganisations
       description: ''
       parameters: []
       responses: {  }
@@ -356,47 +327,47 @@ paths:
                 user_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the users table.'
-                  example: 16
+                  example: 10
                   nullable: false
                 name:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: zfzihikoz
+                  example: nzncwyccxnylabqgfyib
                   nullable: false
                 description:
                   type: string
                   description: ''
-                  example: 'Quidem nesciunt eaque pariatur sed.'
+                  example: 'Praesentium illo nemo quia inventore.'
                   nullable: false
               required:
                 - user_id
                 - name
       security: []
-  '/api/organisation/{id}':
+  '/api/organisations/{id}':
     get:
       summary: ''
-      operationId: getApiOrganisationId
+      operationId: getApiOrganisationsId
       description: ''
       parameters: []
       responses:
-        404:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: 'No query results for model [App\Models\Organisation] 3'
+                  message: Unauthenticated.
                 properties:
                   message:
                     type: string
-                    example: 'No query results for model [App\Models\Organisation] 3'
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
     put:
       summary: ''
-      operationId: putApiOrganisationId
+      operationId: putApiOrganisationsId
       description: ''
       parameters: []
       responses: {  }
@@ -412,17 +383,17 @@ paths:
                 user_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the users table.'
-                  example: 20
+                  example: 15
                   nullable: false
                 name:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: nptnjar
+                  example: fxmhuhmmvlanowedlwhf
                   nullable: false
                 description:
                   type: string
                   description: ''
-                  example: 'Quo quia harum aperiam dolor in enim.'
+                  example: 'Accusantium laborum in et nesciunt.'
                   nullable: false
               required:
                 - user_id
@@ -430,7 +401,7 @@ paths:
       security: []
     delete:
       summary: ''
-      operationId: deleteApiOrganisationId
+      operationId: deleteApiOrganisationsId
       description: ''
       parameters: []
       responses: {  }
@@ -442,35 +413,35 @@ paths:
         in: path
         name: id
         description: 'The ID of the organisation.'
-        example: 3
+        example: 1
         required: true
         schema:
           type: integer
-  /api/member:
+  /api/members:
     get:
       summary: ''
-      operationId: getApiMember
+      operationId: getApiMembers
       description: ''
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  data: []
+                  message: Unauthenticated.
                 properties:
-                  data:
-                    type: array
-                    example: []
+                  message:
+                    type: string
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
     post:
       summary: ''
-      operationId: postApiMember
+      operationId: postApiMembers
       description: ''
       parameters: []
       responses: {  }
@@ -486,130 +457,32 @@ paths:
                 firstname:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: xtplhqzibgyxqttlmyhvfuh
+                  example: jynvcqnmxxoiaxazsjx
                   nullable: false
                 last_name:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: euxerdlwvjukxjxwe
+                  example: gy
                   nullable: false
                 email:
                   type: string
                   description: 'Must be a valid email address. Must not be greater than 100 characters.'
-                  example: olson.elliott@example.com
+                  example: sdurgan@example.com
                   nullable: false
                 title:
                   type: string
                   description: 'Must not be greater than 50 characters.'
-                  example: u
+                  example: potsshnjpaewzcfgpmf
                   nullable: false
                 profile_image:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: wrkisyefjocmbclqkn
+                  example: tommdalihtthnl
                   nullable: false
                 phone:
                   type: string
                   description: 'Must not be greater than 30 characters.'
-                  example: bhgnfzmgrrpccdxcndaonhv
-                  nullable: false
-                address:
-                  type: string
-                  description: ''
-                  example: possimus
-                  nullable: false
-                description:
-                  type: string
-                  description: ''
-                  example: 'Error ullam aut et.'
-                  nullable: false
-                is_active:
-                  type: string
-                  description: ''
-                  example: doloremque
-                  nullable: false
-                organisation_id:
-                  type: integer
-                  description: 'The <code>id</code> of an existing record in the organisations table.'
-                  example: 3
-                  nullable: false
-                user_id:
-                  type: integer
-                  description: 'The <code>id</code> of an existing record in the users table.'
-                  example: 20
-                  nullable: false
-              required:
-                - last_name
-                - email
-                - title
-                - is_active
-      security: []
-  '/api/member/{id}':
-    get:
-      summary: ''
-      operationId: getApiMemberId
-      description: ''
-      parameters: []
-      responses:
-        404:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: 'No query results for model [App\Models\Member] 3'
-                properties:
-                  message:
-                    type: string
-                    example: 'No query results for model [App\Models\Member] 3'
-      tags:
-        - Endpoints
-      security: []
-    put:
-      summary: ''
-      operationId: putApiMemberId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                firstname:
-                  type: string
-                  description: 'Must not be greater than 100 characters.'
-                  example: uibh
-                  nullable: false
-                last_name:
-                  type: string
-                  description: 'Must not be greater than 100 characters.'
-                  example: uxvb
-                  nullable: false
-                email:
-                  type: string
-                  description: 'Must be a valid email address. Must not be greater than 100 characters.'
-                  example: aondricka@example.net
-                  nullable: false
-                title:
-                  type: string
-                  description: 'Must not be greater than 50 characters.'
-                  example: tcgadywgg
-                  nullable: false
-                profile_image:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: wxugimpbqsdffsiuq
-                  nullable: false
-                phone:
-                  type: string
-                  description: 'Must not be greater than 30 characters.'
-                  example: mgrrbdgeqoqoqaozmxgignsat
+                  example: ytzzqzhdgb
                   nullable: false
                 address:
                   type: string
@@ -619,12 +492,12 @@ paths:
                 description:
                   type: string
                   description: ''
-                  example: 'Debitis id cum in quia error at iusto.'
+                  example: 'A et dolores voluptate velit sed autem et.'
                   nullable: false
                 is_active:
                   type: string
                   description: ''
-                  example: facilis
+                  example: eos
                   nullable: false
                 organisation_id:
                   type: integer
@@ -634,7 +507,105 @@ paths:
                 user_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the users table.'
-                  example: 13
+                  example: 3
+                  nullable: false
+              required:
+                - last_name
+                - email
+                - title
+                - is_active
+      security: []
+  '/api/members/{id}':
+    get:
+      summary: ''
+      operationId: getApiMembersId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiMembersId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstname:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: jsydhqjiaknw
+                  nullable: false
+                last_name:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: qcaapdbuibr
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 100 characters.'
+                  example: mdavis@example.com
+                  nullable: false
+                title:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: ubfmltjmdqbyrcn
+                  nullable: false
+                profile_image:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: bf
+                  nullable: false
+                phone:
+                  type: string
+                  description: 'Must not be greater than 30 characters.'
+                  example: nkveoowuxekvocnlperbsh
+                  nullable: false
+                address:
+                  type: string
+                  description: ''
+                  example: asperiores
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Cum repellendus praesentium quibusdam quod recusandae accusantium.'
+                  nullable: false
+                is_active:
+                  type: string
+                  description: ''
+                  example: illo
+                  nullable: false
+                organisation_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the organisations table.'
+                  example: 11
+                  nullable: false
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 19
                   nullable: false
               required:
                 - last_name
@@ -644,7 +615,7 @@ paths:
       security: []
     delete:
       summary: ''
-      operationId: deleteApiMemberId
+      operationId: deleteApiMembersId
       description: ''
       parameters: []
       responses: {  }
@@ -656,35 +627,35 @@ paths:
         in: path
         name: id
         description: 'The ID of the member.'
-        example: 3
+        example: 1
         required: true
         schema:
           type: integer
-  /api/transaction-type:
+  /api/transaction_types:
     get:
       summary: ''
-      operationId: getApiTransactionType
+      operationId: getApiTransaction_types
       description: ''
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  data: []
+                  message: Unauthenticated.
                 properties:
-                  data:
-                    type: array
-                    example: []
+                  message:
+                    type: string
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
     post:
       summary: ''
-      operationId: postApiTransactionType
+      operationId: postApiTransaction_types
       description: ''
       parameters: []
       responses: {  }
@@ -700,47 +671,47 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: mqvgdkghzppibudbcngm
+                  example: mosv
                   nullable: false
                 description:
                   type: string
                   description: ''
-                  example: 'Facere in architecto beatae eum.'
+                  example: 'Voluptatibus ut optio ut aut doloremque natus maxime aut.'
                   nullable: false
                 user_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the users table.'
-                  example: 9
+                  example: 16
                   nullable: false
               required:
                 - name
                 - user_id
       security: []
-  '/api/transaction-type/{id}':
+  '/api/transaction_types/{id}':
     get:
       summary: ''
-      operationId: getApiTransactionTypeId
+      operationId: getApiTransaction_typesId
       description: ''
       parameters: []
       responses:
-        404:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: 'No query results for model [App\Models\TransactionType] 4'
+                  message: Unauthenticated.
                 properties:
                   message:
                     type: string
-                    example: 'No query results for model [App\Models\TransactionType] 4'
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
     put:
       summary: ''
-      operationId: putApiTransactionTypeId
+      operationId: putApiTransaction_typesId
       description: ''
       parameters: []
       responses: {  }
@@ -756,17 +727,17 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 100 characters.'
-                  example: fatqoy
+                  example: dhlz
                   nullable: false
                 description:
                   type: string
                   description: ''
-                  example: 'Accusamus aspernatur et et perspiciatis ipsum nemo.'
+                  example: 'Quos libero maxime eaque numquam.'
                   nullable: false
                 user_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the users table.'
-                  example: 20
+                  example: 11
                   nullable: false
               required:
                 - name
@@ -774,7 +745,7 @@ paths:
       security: []
     delete:
       summary: ''
-      operationId: deleteApiTransactionTypeId
+      operationId: deleteApiTransaction_typesId
       description: ''
       parameters: []
       responses: {  }
@@ -786,35 +757,35 @@ paths:
         in: path
         name: id
         description: 'The ID of the transaction type.'
-        example: 4
+        example: 3
         required: true
         schema:
           type: integer
-  /api/transaction:
+  /api/transactions:
     get:
       summary: ''
-      operationId: getApiTransaction
+      operationId: getApiTransactions
       description: ''
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  data: []
+                  message: Unauthenticated.
                 properties:
-                  data:
-                    type: array
-                    example: []
+                  message:
+                    type: string
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
     post:
       summary: ''
-      operationId: postApiTransaction
+      operationId: postApiTransactions
       description: ''
       parameters: []
       responses: {  }
@@ -835,27 +806,27 @@ paths:
                 member_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the members table.'
-                  example: 13
+                  example: 5
                   nullable: false
                 transaction_type_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the transaction_types table.'
-                  example: 11
+                  example: 13
                   nullable: false
                 montant:
                   type: number
                   description: ''
-                  example: 2894607.1128925
+                  example: 30167910.157569
                   nullable: false
                 description:
                   type: string
                   description: ''
-                  example: 'Esse nam magni officiis.'
+                  example: 'Fuga accusantium et fugiat eos iure ullam non.'
                   nullable: false
                 date_transaction:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2025-03-19T08:40:58'
+                  example: '2025-03-19T09:13:33'
                   nullable: false
               required:
                 - user_id
@@ -864,31 +835,31 @@ paths:
                 - montant
                 - date_transaction
       security: []
-  '/api/transaction/{id}':
+  '/api/transactions/{id}':
     get:
       summary: ''
-      operationId: getApiTransactionId
+      operationId: getApiTransactionsId
       description: ''
       parameters: []
       responses:
-        404:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: 'No query results for model [App\Models\Transaction] 8'
+                  message: Unauthenticated.
                 properties:
                   message:
                     type: string
-                    example: 'No query results for model [App\Models\Transaction] 8'
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
     put:
       summary: ''
-      operationId: putApiTransactionId
+      operationId: putApiTransactionsId
       description: ''
       parameters: []
       responses: {  }
@@ -904,32 +875,32 @@ paths:
                 user_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the users table.'
-                  example: 6
+                  example: 4
                   nullable: false
                 member_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the members table.'
-                  example: 7
+                  example: 11
                   nullable: false
                 transaction_type_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the transaction_types table.'
-                  example: 1
+                  example: 4
                   nullable: false
                 montant:
                   type: number
                   description: ''
-                  example: 1223.89
+                  example: 7817.16
                   nullable: false
                 description:
                   type: string
                   description: ''
-                  example: 'Omnis dolorum doloremque minus qui.'
+                  example: 'Sit rem dignissimos voluptate et ipsa ut.'
                   nullable: false
                 date_transaction:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2025-03-19T08:40:58'
+                  example: '2025-03-19T09:13:33'
                   nullable: false
               required:
                 - user_id
@@ -940,7 +911,7 @@ paths:
       security: []
     delete:
       summary: ''
-      operationId: deleteApiTransactionId
+      operationId: deleteApiTransactionsId
       description: ''
       parameters: []
       responses: {  }
@@ -952,35 +923,35 @@ paths:
         in: path
         name: id
         description: 'The ID of the transaction.'
-        example: 8
+        example: 9
         required: true
         schema:
           type: integer
-  /api/transaction-file:
+  /api/transaction_files:
     get:
       summary: ''
-      operationId: getApiTransactionFile
+      operationId: getApiTransaction_files
       description: ''
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  data: []
+                  message: Unauthenticated.
                 properties:
-                  data:
-                    type: array
-                    example: []
+                  message:
+                    type: string
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
     post:
       summary: ''
-      operationId: postApiTransactionFile
+      operationId: postApiTransaction_files
       description: ''
       parameters: []
       responses: {  }
@@ -996,22 +967,22 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: zjb
+                  example: ihflmwtd
                   nullable: false
                 file_url:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: 'http://www.mante.info/eos-neque-dolorem-est-sed-quam-asperiores'
+                  example: 'http://www.gerhold.com/'
                   nullable: false
                 user_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the users table.'
-                  example: 17
+                  example: 19
                   nullable: false
                 transaction_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the transactions table.'
-                  example: 15
+                  example: 18
                   nullable: false
               required:
                 - name
@@ -1019,31 +990,31 @@ paths:
                 - user_id
                 - transaction_id
       security: []
-  '/api/transaction-file/{id}':
+  '/api/transaction_files/{id}':
     get:
       summary: ''
-      operationId: getApiTransactionFileId
+      operationId: getApiTransaction_filesId
       description: ''
       parameters: []
       responses:
-        404:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: 'No query results for model [App\Models\TransactionFile] 10'
+                  message: Unauthenticated.
                 properties:
                   message:
                     type: string
-                    example: 'No query results for model [App\Models\TransactionFile] 10'
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
     put:
       summary: ''
-      operationId: putApiTransactionFileId
+      operationId: putApiTransaction_filesId
       description: ''
       parameters: []
       responses: {  }
@@ -1059,22 +1030,22 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: ywndcuxfafyslnw
+                  example: tynjexrxkydepp
                   nullable: false
                 file_url:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: 'http://www.muller.com/'
+                  example: 'http://jacobs.com/deleniti-tenetur-dolorum-et-commodi'
                   nullable: false
                 user_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the users table.'
-                  example: 19
+                  example: 11
                   nullable: false
                 transaction_id:
                   type: integer
                   description: 'The <code>id</code> of an existing record in the transactions table.'
-                  example: 19
+                  example: 9
                   nullable: false
               required:
                 - name
@@ -1084,7 +1055,7 @@ paths:
       security: []
     delete:
       summary: ''
-      operationId: deleteApiTransactionFileId
+      operationId: deleteApiTransaction_filesId
       description: ''
       parameters: []
       responses: {  }
@@ -1096,35 +1067,35 @@ paths:
         in: path
         name: id
         description: 'The ID of the transaction file.'
-        example: 10
+        example: 13
         required: true
         schema:
           type: integer
-  /api/notification:
+  /api/notifications:
     get:
       summary: ''
-      operationId: getApiNotification
+      operationId: getApiNotifications
       description: ''
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  data: []
+                  message: Unauthenticated.
                 properties:
-                  data:
-                    type: array
-                    example: []
+                  message:
+                    type: string
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
     post:
       summary: ''
-      operationId: postApiNotification
+      operationId: postApiNotifications
       description: ''
       parameters: []
       responses: {  }
@@ -1145,22 +1116,22 @@ paths:
                 message:
                   type: string
                   description: ''
-                  example: maiores
+                  example: sint
                   nullable: false
                 description:
                   type: string
                   description: ''
-                  example: 'Et cum rem ad est est omnis.'
+                  example: 'Voluptas enim rerum rerum et est omnis voluptates tenetur.'
                   nullable: false
                 is_read:
                   type: string
                   description: ''
-                  example: commodi
+                  example: veniam
                   nullable: false
                 status:
                   type: string
                   description: 'Must not be greater than 50 characters.'
-                  example: mhxbaglrpzwdtalnlfv
+                  example: ewqzyrj
                   nullable: false
               required:
                 - user_id
@@ -1168,31 +1139,31 @@ paths:
                 - is_read
                 - status
       security: []
-  '/api/notification/{id}':
+  '/api/notifications/{id}':
     get:
       summary: ''
-      operationId: getApiNotificationId
+      operationId: getApiNotificationsId
       description: ''
       parameters: []
       responses:
-        404:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: 'No query results for model [App\Models\Notification] 14'
+                  message: Unauthenticated.
                 properties:
                   message:
                     type: string
-                    example: 'No query results for model [App\Models\Notification] 14'
+                    example: Unauthenticated.
       tags:
         - Endpoints
       security: []
     put:
       summary: ''
-      operationId: putApiNotificationId
+      operationId: putApiNotificationsId
       description: ''
       parameters: []
       responses: {  }
@@ -1213,22 +1184,22 @@ paths:
                 message:
                   type: string
                   description: ''
-                  example: fugiat
+                  example: ducimus
                   nullable: false
                 description:
                   type: string
                   description: ''
-                  example: 'Cum non perspiciatis aut iusto ut dolorum consequatur ratione.'
+                  example: 'Ea molestiae magnam vel earum id numquam.'
                   nullable: false
                 is_read:
                   type: string
                   description: ''
-                  example: quisquam
+                  example: cupiditate
                   nullable: false
                 status:
                   type: string
                   description: 'Must not be greater than 50 characters.'
-                  example: ouefnfd
+                  example: qhadwmsy
                   nullable: false
               required:
                 - user_id
@@ -1238,7 +1209,7 @@ paths:
       security: []
     delete:
       summary: ''
-      operationId: deleteApiNotificationId
+      operationId: deleteApiNotificationsId
       description: ''
       parameters: []
       responses: {  }
@@ -1250,10 +1221,42 @@ paths:
         in: path
         name: id
         description: 'The ID of the notification.'
-        example: 14
+        example: 8
         required: true
         schema:
           type: integer
+  /api/logout:
+    post:
+      summary: ''
+      operationId: postApiLogout
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/user:
+    get:
+      summary: ''
+      operationId: getApiUser
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
 tags:
   -
     name: Endpoints

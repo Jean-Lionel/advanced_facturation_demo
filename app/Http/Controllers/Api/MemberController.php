@@ -10,6 +10,7 @@ use App\Http\Resources\Api\MemberResource;
 use App\Models\Member;
 use Illuminate\Http\Request;
 
+
 class MemberController extends Controller
 {
     /**

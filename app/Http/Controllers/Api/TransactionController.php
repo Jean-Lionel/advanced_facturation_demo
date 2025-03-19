@@ -18,9 +18,9 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
-        $transactions = Transaction::all();
+        $transactions = Transaction::with(['transactionType'])->latest()->paginate();
 
-        return new TransactionCollection($transactions);
+        return $transactions;
     }
 
     /**

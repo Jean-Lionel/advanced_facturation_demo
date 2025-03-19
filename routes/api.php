@@ -23,13 +23,13 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('clients', [CacheAdvancedController::class, 'clients']);
-    Route::apiResource('user', App\Http\Controllers\Api\UserController::class);
-    Route::apiResource('organisation', App\Http\Controllers\Api\OrganisationController::class);
-    Route::apiResource('member', App\Http\Controllers\Api\MemberController::class);
-    Route::apiResource('transaction-type', App\Http\Controllers\Api\TransactionTypeController::class);
-    Route::apiResource('transaction', App\Http\Controllers\Api\TransactionController::class);
-    Route::apiResource('transaction-file', App\Http\Controllers\Api\TransactionFileController::class);
-    Route::apiResource('notification', App\Http\Controllers\Api\NotificationController::class);
+    Route::apiResource('users', App\Http\Controllers\Api\UserController::class);
+    Route::apiResource('organisations', App\Http\Controllers\Api\OrganisationController::class);
+    Route::apiResource('members', App\Http\Controllers\Api\MemberController::class);
+    Route::apiResource('transaction_types', App\Http\Controllers\Api\TransactionTypeController::class);
+    Route::apiResource('transactions', App\Http\Controllers\Api\TransactionController::class);
+    Route::apiResource('transaction_files', App\Http\Controllers\Api\TransactionFileController::class);
+    Route::apiResource('notifications', App\Http\Controllers\Api\NotificationController::class);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
 });
