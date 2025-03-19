@@ -52,19 +52,5 @@ class TransactionFile extends Model
         return $this->belongsTo(Transaction::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function transaction()
-    {
-        return $this->belongsTo(Transaction::class);
-    }
+ 
 }

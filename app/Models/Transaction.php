@@ -65,29 +65,6 @@ class Transaction extends Model
         return $this->belongsTo(TransactionType::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function member()
-    {
-        return $this->belongsTo(Member::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function transactionType()
-    {
-        return $this->belongsTo(TransactionType::class);
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

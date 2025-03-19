@@ -60,22 +60,8 @@ class Member extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function organisation()
-    {
-        return $this->belongsTo(Organisation::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
+   
+   
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

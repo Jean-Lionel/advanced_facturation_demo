@@ -25,7 +25,5 @@ Route::apiResource('organisation', App\Http\Controllers\Api\OrganisationControll
 Route::apiResource('member', App\Http\Controllers\Api\MemberController::class);
 Route::apiResource('transaction-type', App\Http\Controllers\Api\TransactionTypeController::class);
 Route::apiResource('transaction', App\Http\Controllers\Api\TransactionController::class);
-
 Route::apiResource('transaction-file', App\Http\Controllers\Api\TransactionFileController::class);
-
 Route::apiResource('notification', App\Http\Controllers\Api\NotificationController::class);

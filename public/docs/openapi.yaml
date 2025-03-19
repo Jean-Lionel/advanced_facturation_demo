@@ -1,0 +1,1260 @@
+openapi: 3.0.3
+info:
+  title: 'ENTREPRISE X '
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+paths:
+  /api/user:
+    get:
+      summary: ''
+      operationId: getApiUser
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      name: 'JEAN LIONEL'
+                      email: nijeanlionel@gmail.com
+                      email_verified_at: '2025-01-28T11:46:36.000000Z'
+                      two_factor_secret: null
+                      two_factor_recovery_codes: null
+                      current_team_id: null
+                      profile_photo_path: null
+                    -
+                      id: 2
+                      name: 'Poissonnerie Nouvelle'
+                      email: poissonnerienouvelle@gmail.com
+                      email_verified_at: null
+                      two_factor_secret: null
+                      two_factor_recovery_codes: null
+                      current_team_id: null
+                      profile_photo_path: null
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'JEAN LIONEL'
+                        email: nijeanlionel@gmail.com
+                        email_verified_at: '2025-01-28T11:46:36.000000Z'
+                        two_factor_secret: null
+                        two_factor_recovery_codes: null
+                        current_team_id: null
+                        profile_photo_path: null
+                      -
+                        id: 2
+                        name: 'Poissonnerie Nouvelle'
+                        email: poissonnerienouvelle@gmail.com
+                        email_verified_at: null
+                        two_factor_secret: null
+                        two_factor_recovery_codes: null
+                        current_team_id: null
+                        profile_photo_path: null
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'JEAN LIONEL'
+                        email:
+                          type: string
+                          example: nijeanlionel@gmail.com
+                        email_verified_at:
+                          type: string
+                          example: '2025-01-28T11:46:36.000000Z'
+                        two_factor_secret:
+                          type: string
+                          example: null
+                        two_factor_recovery_codes:
+                          type: string
+                          example: null
+                        current_team_id:
+                          type: string
+                          example: null
+                        profile_photo_path:
+                          type: string
+                          example: null
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: non
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: heidenreich.gustave@example.org
+                  nullable: false
+                email_verified_at:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: false
+                password:
+                  type: string
+                  description: ''
+                  example: sint
+                  nullable: false
+                two_factor_secret:
+                  type: string
+                  description: ''
+                  example: aperiam
+                  nullable: false
+                two_factor_recovery_codes:
+                  type: string
+                  description: ''
+                  example: aut
+                  nullable: false
+                remember_token:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: akjmsmjfx
+                  nullable: false
+                current_team_id:
+                  type: integer
+                  description: ''
+                  example: 9
+                  nullable: false
+                profile_photo_path:
+                  type: string
+                  description: ''
+                  example: consectetur
+                  nullable: false
+              required:
+                - name
+                - email
+                - password
+      security: []
+  /api/clients:
+    get:
+      summary: ''
+      operationId: getApiClients
+      description: ''
+      parameters: []
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - Endpoints
+      security: []
+  '/api/user/{id}':
+    get:
+      summary: ''
+      operationId: getApiUserId
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    name: 'JEAN LIONEL'
+                    email: nijeanlionel@gmail.com
+                    email_verified_at: '2025-01-28T11:46:36.000000Z'
+                    two_factor_secret: null
+                    two_factor_recovery_codes: null
+                    current_team_id: null
+                    profile_photo_path: null
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'JEAN LIONEL'
+                      email:
+                        type: string
+                        example: nijeanlionel@gmail.com
+                      email_verified_at:
+                        type: string
+                        example: '2025-01-28T11:46:36.000000Z'
+                      two_factor_secret:
+                        type: string
+                        example: null
+                      two_factor_recovery_codes:
+                        type: string
+                        example: null
+                      current_team_id:
+                        type: string
+                        example: null
+                      profile_photo_path:
+                        type: string
+                        example: null
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiUserId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: quia
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: isaiah.heidenreich@example.org
+                  nullable: false
+                email_verified_at:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: false
+                password:
+                  type: string
+                  description: ''
+                  example: voluptatibus
+                  nullable: false
+                two_factor_secret:
+                  type: string
+                  description: ''
+                  example: qui
+                  nullable: false
+                two_factor_recovery_codes:
+                  type: string
+                  description: ''
+                  example: animi
+                  nullable: false
+                remember_token:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: igcztpdtmbwylbcyfbynb
+                  nullable: false
+                current_team_id:
+                  type: integer
+                  description: ''
+                  example: 7
+                  nullable: false
+                profile_photo_path:
+                  type: string
+                  description: ''
+                  example: culpa
+                  nullable: false
+              required:
+                - name
+                - email
+                - password
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiUserId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the user.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/organisation:
+    get:
+      summary: ''
+      operationId: getApiOrganisation
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: []
+                properties:
+                  data:
+                    type: array
+                    example: []
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiOrganisation
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 16
+                  nullable: false
+                name:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: zfzihikoz
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Quidem nesciunt eaque pariatur sed.'
+                  nullable: false
+              required:
+                - user_id
+                - name
+      security: []
+  '/api/organisation/{id}':
+    get:
+      summary: ''
+      operationId: getApiOrganisationId
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Organisation] 3'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Organisation] 3'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiOrganisationId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 20
+                  nullable: false
+                name:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: nptnjar
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Quo quia harum aperiam dolor in enim.'
+                  nullable: false
+              required:
+                - user_id
+                - name
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiOrganisationId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the organisation.'
+        example: 3
+        required: true
+        schema:
+          type: integer
+  /api/member:
+    get:
+      summary: ''
+      operationId: getApiMember
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: []
+                properties:
+                  data:
+                    type: array
+                    example: []
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiMember
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstname:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: xtplhqzibgyxqttlmyhvfuh
+                  nullable: false
+                last_name:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: euxerdlwvjukxjxwe
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 100 characters.'
+                  example: olson.elliott@example.com
+                  nullable: false
+                title:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: u
+                  nullable: false
+                profile_image:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: wrkisyefjocmbclqkn
+                  nullable: false
+                phone:
+                  type: string
+                  description: 'Must not be greater than 30 characters.'
+                  example: bhgnfzmgrrpccdxcndaonhv
+                  nullable: false
+                address:
+                  type: string
+                  description: ''
+                  example: possimus
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Error ullam aut et.'
+                  nullable: false
+                is_active:
+                  type: string
+                  description: ''
+                  example: doloremque
+                  nullable: false
+                organisation_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the organisations table.'
+                  example: 3
+                  nullable: false
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 20
+                  nullable: false
+              required:
+                - last_name
+                - email
+                - title
+                - is_active
+      security: []
+  '/api/member/{id}':
+    get:
+      summary: ''
+      operationId: getApiMemberId
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Member] 3'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Member] 3'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiMemberId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstname:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: uibh
+                  nullable: false
+                last_name:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: uxvb
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 100 characters.'
+                  example: aondricka@example.net
+                  nullable: false
+                title:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: tcgadywgg
+                  nullable: false
+                profile_image:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: wxugimpbqsdffsiuq
+                  nullable: false
+                phone:
+                  type: string
+                  description: 'Must not be greater than 30 characters.'
+                  example: mgrrbdgeqoqoqaozmxgignsat
+                  nullable: false
+                address:
+                  type: string
+                  description: ''
+                  example: sed
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Debitis id cum in quia error at iusto.'
+                  nullable: false
+                is_active:
+                  type: string
+                  description: ''
+                  example: facilis
+                  nullable: false
+                organisation_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the organisations table.'
+                  example: 2
+                  nullable: false
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 13
+                  nullable: false
+              required:
+                - last_name
+                - email
+                - title
+                - is_active
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiMemberId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the member.'
+        example: 3
+        required: true
+        schema:
+          type: integer
+  /api/transaction-type:
+    get:
+      summary: ''
+      operationId: getApiTransactionType
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: []
+                properties:
+                  data:
+                    type: array
+                    example: []
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiTransactionType
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: mqvgdkghzppibudbcngm
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Facere in architecto beatae eum.'
+                  nullable: false
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 9
+                  nullable: false
+              required:
+                - name
+                - user_id
+      security: []
+  '/api/transaction-type/{id}':
+    get:
+      summary: ''
+      operationId: getApiTransactionTypeId
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\TransactionType] 4'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\TransactionType] 4'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiTransactionTypeId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: fatqoy
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Accusamus aspernatur et et perspiciatis ipsum nemo.'
+                  nullable: false
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 20
+                  nullable: false
+              required:
+                - name
+                - user_id
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiTransactionTypeId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the transaction type.'
+        example: 4
+        required: true
+        schema:
+          type: integer
+  /api/transaction:
+    get:
+      summary: ''
+      operationId: getApiTransaction
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: []
+                properties:
+                  data:
+                    type: array
+                    example: []
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiTransaction
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 12
+                  nullable: false
+                member_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the members table.'
+                  example: 13
+                  nullable: false
+                transaction_type_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the transaction_types table.'
+                  example: 11
+                  nullable: false
+                montant:
+                  type: number
+                  description: ''
+                  example: 2894607.1128925
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Esse nam magni officiis.'
+                  nullable: false
+                date_transaction:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2025-03-19T08:40:58'
+                  nullable: false
+              required:
+                - user_id
+                - member_id
+                - transaction_type_id
+                - montant
+                - date_transaction
+      security: []
+  '/api/transaction/{id}':
+    get:
+      summary: ''
+      operationId: getApiTransactionId
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Transaction] 8'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Transaction] 8'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiTransactionId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 6
+                  nullable: false
+                member_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the members table.'
+                  example: 7
+                  nullable: false
+                transaction_type_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the transaction_types table.'
+                  example: 1
+                  nullable: false
+                montant:
+                  type: number
+                  description: ''
+                  example: 1223.89
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Omnis dolorum doloremque minus qui.'
+                  nullable: false
+                date_transaction:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2025-03-19T08:40:58'
+                  nullable: false
+              required:
+                - user_id
+                - member_id
+                - transaction_type_id
+                - montant
+                - date_transaction
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiTransactionId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the transaction.'
+        example: 8
+        required: true
+        schema:
+          type: integer
+  /api/transaction-file:
+    get:
+      summary: ''
+      operationId: getApiTransactionFile
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: []
+                properties:
+                  data:
+                    type: array
+                    example: []
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiTransactionFile
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: zjb
+                  nullable: false
+                file_url:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'http://www.mante.info/eos-neque-dolorem-est-sed-quam-asperiores'
+                  nullable: false
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 17
+                  nullable: false
+                transaction_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the transactions table.'
+                  example: 15
+                  nullable: false
+              required:
+                - name
+                - file_url
+                - user_id
+                - transaction_id
+      security: []
+  '/api/transaction-file/{id}':
+    get:
+      summary: ''
+      operationId: getApiTransactionFileId
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\TransactionFile] 10'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\TransactionFile] 10'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiTransactionFileId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: ywndcuxfafyslnw
+                  nullable: false
+                file_url:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'http://www.muller.com/'
+                  nullable: false
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 19
+                  nullable: false
+                transaction_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the transactions table.'
+                  example: 19
+                  nullable: false
+              required:
+                - name
+                - file_url
+                - user_id
+                - transaction_id
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiTransactionFileId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the transaction file.'
+        example: 10
+        required: true
+        schema:
+          type: integer
+  /api/notification:
+    get:
+      summary: ''
+      operationId: getApiNotification
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: []
+                properties:
+                  data:
+                    type: array
+                    example: []
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiNotification
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 16
+                  nullable: false
+                message:
+                  type: string
+                  description: ''
+                  example: maiores
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Et cum rem ad est est omnis.'
+                  nullable: false
+                is_read:
+                  type: string
+                  description: ''
+                  example: commodi
+                  nullable: false
+                status:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: mhxbaglrpzwdtalnlfv
+                  nullable: false
+              required:
+                - user_id
+                - message
+                - is_read
+                - status
+      security: []
+  '/api/notification/{id}':
+    get:
+      summary: ''
+      operationId: getApiNotificationId
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Notification] 14'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Notification] 14'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiNotificationId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: 3
+                  nullable: false
+                message:
+                  type: string
+                  description: ''
+                  example: fugiat
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Cum non perspiciatis aut iusto ut dolorum consequatur ratione.'
+                  nullable: false
+                is_read:
+                  type: string
+                  description: ''
+                  example: quisquam
+                  nullable: false
+                status:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: ouefnfd
+                  nullable: false
+              required:
+                - user_id
+                - message
+                - is_read
+                - status
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiNotificationId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the notification.'
+        example: 14
+        required: true
+        schema:
+          type: integer
+tags:
+  -
+    name: Endpoints
+    description: ''
