@@ -1,13 +1,100 @@
 models:
-  ClientHistory:
+  Organisation:
+    id: id
     user_id: id foreign:users
-    client_id: id foreign:clients
-    content: text 
-    SoftDeletes
+    name: string:100
+    description: text nullable
+    timestamps: true
+    relationships:
+      belongsTo: User
+      belongsToMany: Member
 
-seeders: ClientHistory
+  Member:
+    id: id
+    firstname: string:100 nullable
+    last_name: string:100
+    email: string:100 unique
+    title: string:50
+    profile_image: string:255 nullable
+    phone: string:30 nullable
+    address: text nullable
+    description: text nullable
+    is_active: boolean default:true
+    organisation_id: id foreign:organisations nullable
+    user_id: id foreign:users nullable
+    timestamps: true
+    relationships:
+      belongsTo: Organisation, User
+      belongsToMany: Organisation
+
+  OrganisationMember:
+    id: id
+    organisation_id: id foreign:organisations
+    member_id: id foreign:members
+    timestamps: false
+    relationships:
+      belongsTo: Organisation, Member
+
+  TransactionType:
+    id: id
+    name: string:100
+    description: text nullable
+    user_id: id foreign:users
+    timestamps: true
+    relationships:
+      belongsTo: User
+      hasMany: Transaction
+
+  Transaction:
+    id: id
+    user_id: id foreign:users
+    member_id: id foreign:members
+    transaction_type_id: id foreign:transaction_types
+    montant: float
+    description: text nullable
+    date_transaction: date
+    timestamps: true
+    relationships:
+      belongsTo: User, Member, TransactionType
+      hasMany: TransactionFile
+
+  TransactionFile:
+    id: id
+    name: string:255
+    file_url: string:255
+    user_id: id foreign:users
+    transaction_id: id foreign:transactions
+    timestamps: true
+    relationships:
+      belongsTo: User, Transaction
+
+  Notification:
+    id: id
+    user_id: id foreign:users
+    message: text
+    description: text nullable
+    is_read: boolean default:false
+    status: string:50
+    timestamps: true
+    relationships:
+      belongsTo: User
+
+seeders:
+  - User
+  - TransactionType
 
 controllers:
-  ClientHistory:
-    resource: web
-
+  Api/User:
+    resource: api
+  Api/Organisation:
+    resource: api
+  Api/Member:
+    resource: api
+  Api/TransactionType:
+    resource: api
+  Api/Transaction:
+    resource: api
+  Api/TransactionFile:
+    resource: api
+  Api/Notification:
+    resource: api

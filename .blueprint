@@ -1,18 +1,71 @@
 created:
-    - app/Http/Controllers/ClientHistoryController.php
-    - database/factories/ClientHistoryFactory.php
-    - database/migrations/2024_07_24_054302_create_client_histories_table.php
-    - app/Models/ClientHistory.php
-    - database/seeders/ClientHistorySeeder.php
-    - tests/Feature/Http/Controllers/ClientHistoryControllerTest.php
-    - app/Http/Requests/ClientHistoryStoreRequest.php
-    - app/Http/Requests/ClientHistoryUpdateRequest.php
-    - resources/views/clientHistory/index.blade.php
-    - resources/views/clientHistory/create.blade.php
-    - resources/views/clientHistory/show.blade.php
-    - resources/views/clientHistory/edit.blade.php
+    - app/Http/Controllers/Api/UserController.php
+    - app/Http/Controllers/Api/OrganisationController.php
+    - app/Http/Controllers/Api/MemberController.php
+    - app/Http/Controllers/Api/TransactionTypeController.php
+    - app/Http/Controllers/Api/TransactionController.php
+    - app/Http/Controllers/Api/TransactionFileController.php
+    - app/Http/Controllers/Api/NotificationController.php
+    - database/factories/OrganisationFactory.php
+    - database/factories/MemberFactory.php
+    - database/factories/OrganisationMemberFactory.php
+    - database/factories/TransactionTypeFactory.php
+    - database/factories/TransactionFactory.php
+    - database/factories/TransactionFileFactory.php
+    - database/factories/NotificationFactory.php
+    - database/migrations/2025_03_19_081153_create_organisations_table.php
+    - database/migrations/2025_03_19_081154_create_members_table.php
+    - database/migrations/2025_03_19_081155_create_organisation_members_table.php
+    - database/migrations/2025_03_19_081156_create_transaction_types_table.php
+    - database/migrations/2025_03_19_081157_create_transactions_table.php
+    - database/migrations/2025_03_19_081158_create_transaction_files_table.php
+    - database/migrations/2025_03_19_081159_create_notifications_table.php
+    - database/migrations/2025_03_19_081200_create_member_organisation_table.php
+    - app/Models/Organisation.php
+    - app/Models/Member.php
+    - app/Models/OrganisationMember.php
+    - app/Models/TransactionType.php
+    - app/Models/Transaction.php
+    - app/Models/TransactionFile.php
+    - app/Models/Notification.php
+    - database/seeders/UserTransactionTypeSeeder.php
+    - tests/Feature/Http/Controllers/Api/UserControllerTest.php
+    - tests/Feature/Http/Controllers/Api/OrganisationControllerTest.php
+    - tests/Feature/Http/Controllers/Api/MemberControllerTest.php
+    - tests/Feature/Http/Controllers/Api/TransactionTypeControllerTest.php
+    - tests/Feature/Http/Controllers/Api/TransactionControllerTest.php
+    - tests/Feature/Http/Controllers/Api/TransactionFileControllerTest.php
+    - tests/Feature/Http/Controllers/Api/NotificationControllerTest.php
+    - app/Http/Requests/Api/UserStoreRequest.php
+    - app/Http/Requests/Api/UserUpdateRequest.php
+    - app/Http/Requests/Api/OrganisationStoreRequest.php
+    - app/Http/Requests/Api/OrganisationUpdateRequest.php
+    - app/Http/Requests/Api/MemberStoreRequest.php
+    - app/Http/Requests/Api/MemberUpdateRequest.php
+    - app/Http/Requests/Api/TransactionTypeStoreRequest.php
+    - app/Http/Requests/Api/TransactionTypeUpdateRequest.php
+    - app/Http/Requests/Api/TransactionStoreRequest.php
+    - app/Http/Requests/Api/TransactionUpdateRequest.php
+    - app/Http/Requests/Api/TransactionFileStoreRequest.php
+    - app/Http/Requests/Api/TransactionFileUpdateRequest.php
+    - app/Http/Requests/Api/NotificationStoreRequest.php
+    - app/Http/Requests/Api/NotificationUpdateRequest.php
+    - app/Http/Resources/Api/UserCollection.php
+    - app/Http/Resources/Api/UserResource.php
+    - app/Http/Resources/Api/OrganisationCollection.php
+    - app/Http/Resources/Api/OrganisationResource.php
+    - app/Http/Resources/Api/MemberCollection.php
+    - app/Http/Resources/Api/MemberResource.php
+    - app/Http/Resources/Api/TransactionTypeCollection.php
+    - app/Http/Resources/Api/TransactionTypeResource.php
+    - app/Http/Resources/Api/TransactionCollection.php
+    - app/Http/Resources/Api/TransactionResource.php
+    - app/Http/Resources/Api/TransactionFileCollection.php
+    - app/Http/Resources/Api/TransactionFileResource.php
+    - app/Http/Resources/Api/NotificationCollection.php
+    - app/Http/Resources/Api/NotificationResource.php
 updated:
-    - routes/web.php
+    - routes/api.php
 models:
     CanceledInvoince: { order_id: integer, invoice_signature: text, motif: text, status: string }
     Cart: {  }
@@ -59,3 +112,10 @@ models:
     PaymentLocationMensuel: { user_id: 'id foreign:users', maisonlocation_id: 'id foreign:maison_locations', description: 'text nullable', montant: 'double default:0', date_paiement: 'date nullable', softdeletes: SoftDeletes }
     PeriodePaimentLocation: { user_id: 'id foreign:users', year: 'string nullable', month: 'string nullable', status: 'string nullable', softdeletes: SoftDeletes }
     ClientHistory: { user_id: 'id foreign:users', client_id: 'id foreign:clients', content: text, softdeletes: SoftDeletes }
+    Organisation: { id: id, user_id: 'id foreign:users', name: 'string:100', description: 'text nullable', timestamps: timestamps, relationships: { belongsTo: User, belongsToMany: Member } }
+    Member: { id: id, firstname: 'string:100 nullable', last_name: 'string:100', email: 'string:100 unique', title: 'string:50', profile_image: 'string:255 nullable', phone: 'string:30 nullable', address: 'text nullable', description: 'text nullable', is_active: 'boolean default:true', organisation_id: 'id foreign:organisations nullable', user_id: 'id foreign:users nullable', timestamps: timestamps, relationships: { belongsTo: 'Organisation, User', belongsToMany: Organisation } }
+    OrganisationMember: { id: id, organisation_id: 'id foreign:organisations', member_id: 'id foreign:members', timestamps: false, relationships: { belongsTo: 'Organisation, Member' } }
+    TransactionType: { id: id, name: 'string:100', description: 'text nullable', user_id: 'id foreign:users', timestamps: timestamps, relationships: { belongsTo: User, hasMany: Transaction } }
+    Transaction: { id: id, user_id: 'id foreign:users', member_id: 'id foreign:members', transaction_type_id: 'id foreign:transaction_types', montant: float, description: 'text nullable', date_transaction: date, timestamps: timestamps, relationships: { belongsTo: 'User, Member, TransactionType', hasMany: TransactionFile } }
+    TransactionFile: { id: id, name: 'string:255', file_url: 'string:255', user_id: 'id foreign:users', transaction_id: 'id foreign:transactions', timestamps: timestamps, relationships: { belongsTo: 'User, Transaction' } }
+    Notification: { id: id, user_id: 'id foreign:users', message: text, description: 'text nullable', is_read: 'boolean default:false', status: 'string:50', timestamps: timestamps, relationships: { belongsTo: User } }

@@ -20,3 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('clients', [CacheAdvancedController::class, 'clients']);
+Route::apiResource('user', App\Http\Controllers\Api\UserController::class);
+Route::apiResource('organisation', App\Http\Controllers\Api\OrganisationController::class);
+Route::apiResource('member', App\Http\Controllers\Api\MemberController::class);
+Route::apiResource('transaction-type', App\Http\Controllers\Api\TransactionTypeController::class);
+Route::apiResource('transaction', App\Http\Controllers\Api\TransactionController::class);
+
+Route::apiResource('transaction-file', App\Http\Controllers\Api\TransactionFileController::class);
+
+Route::apiResource('notification', App\Http\Controllers\Api\NotificationController::class);
