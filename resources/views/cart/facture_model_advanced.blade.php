@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facture - {{ $order->company->tp_name }}</title>
+    <title>Facture - {{ $order->company->tp_name }} - {{ $order->id }}</title>
     <style>
         :root {
             --primary-color: #0D69B3;

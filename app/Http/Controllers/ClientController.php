@@ -100,12 +100,11 @@ class ClientController extends Controller
             "addresse" => "nullable"
         ]);
         // Check if Tin does not exist in database
-
-        if($request->client_type === 'PERSONNE MORAL' && $request->customer_TIN ==""){
+        if($request->client_type === 'PERSONNE MORAL' && $request->customer_TIN =="" && env('OBR_REQUIRE_SYNC')){
             return redirect('clients/create')->with('message', 'NIF EST OBLIGATOIRE POUR LES PERSONNES MORALE ');
         }
         $customer_OBR = '';
-        if($request->customer_TIN){
+        if($request->customer_TIN  && env('OBR_REQUIRE_SYNC')){
             $check =  Client::where("customer_TIN", $request->customer_TIN)->first();
             if($check){
                 $errorMessage = 'Le Client existe deja  '. $request->customer_TIN . ' => '.  $check->name . ' CUSTOMER ID '. $check->id;
