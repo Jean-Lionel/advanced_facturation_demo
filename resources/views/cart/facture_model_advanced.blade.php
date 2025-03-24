@@ -68,7 +68,7 @@
 
         .hr-footer {
             position: absolute;
-            bottom: 40px;
+            bottom: 80px;
             left: 20px;
             right: 20px;
             border: 3px solid var(--primary-color);
