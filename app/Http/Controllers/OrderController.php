@@ -6,6 +6,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -48,7 +49,7 @@ class OrderController extends Controller
         $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEME');
         $currentModelFacture = 'cart.facture_model_prothem';
         if($modelFacture){
-            $currentModelFacture = 'cart.facture_' . $modelFacture;
+            $currentModelFacture = 'cart.facture_' . Str::lower($modelFacture) ;
         }
         return view( $currentModelFacture ,compact('order'));
     }
