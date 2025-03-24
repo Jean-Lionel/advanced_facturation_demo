@@ -357,7 +357,7 @@
             <div class="company-info-footer">
                <div> Site web : {{ $order->company->tp_website ?? "" }}</div>
                <div> Email : {{ $order->company->tp_email ?? "" }}</div>
-               <div> Tél : {{ $order->company->tp_phone_number ?? "" }}</div>
+               <div> Tél : <br>      {{ $order->company->tp_phone_number ?? "" }}</div>
                <div> Banque : {{ $order->company->tp_bank ?? "" }}</div>
                <div> Numero compte : {{ $order->company->tp_account_number ?? "" }}</div>
             </div>
