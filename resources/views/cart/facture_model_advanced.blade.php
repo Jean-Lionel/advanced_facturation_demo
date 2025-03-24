@@ -350,7 +350,7 @@
 
         <div class="footer">
             <div class="payment-info">
-                <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount)}} de FBU</p>
+                <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount)}}  FBU</p>
                 <h4 class="text-center payment-info-text">MERCI DE NOUS FAIRE CONFIANCE !!!</h4>
             </div>
             <hr class="hr-footer">
