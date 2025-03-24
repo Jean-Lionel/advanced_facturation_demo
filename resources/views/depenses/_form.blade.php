@@ -3,7 +3,7 @@
 <div class="row">
 
 	<div class="col-md-12">
-		<h5 class="text-left">Nouveau Produit</h5>
+		<h5 class="text-left">Nouveau Depense</h5>
 	</div>
 
 	<div class="col-md-4">

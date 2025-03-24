@@ -66,7 +66,9 @@ class OrderController extends Controller
         if($modelFacture == 'MODEL_SOCOFAUMA'){
             $currentModelFacture = 'cart.facture_model_socofauma';
         }
-
+        if($modelFacture == 'MODEL_ADVANCED'){
+            $currentModelFacture = 'cart.facture_model_advanced';
+        }
 
         return view( $currentModelFacture ,compact('order'));
     }
