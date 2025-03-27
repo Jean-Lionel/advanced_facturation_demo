@@ -146,7 +146,7 @@ class ServiceVente extends Component
     private function extractCart(){
         $products = [];
         foreach ($this->table_length as $key) {
-            $v = ($this->prices[$key] * $this->quantite[$key]) * ($this->taxes[$key] ?? 18 )/100;
+            $v = ($this->prices[$key] * $this->quantite[$key]) * ($this->taxes[$key]  )/100;
             $prix_hors_tva =  $this->prices[$key] * $this->quantite[$key];
             $products[] = [
                 'id' =>'ITEM_'. $key,
