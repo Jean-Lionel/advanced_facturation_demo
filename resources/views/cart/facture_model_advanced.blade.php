@@ -353,6 +353,18 @@
                 <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount_tax)}}  FBU</p>
                 <h4 class="text-center payment-info-text">MERCI DE NOUS FAIRE CONFIANCE !!!</h4>
             </div>
+            @if($order->type_facture == "PROFORMAT")
+            <div>
+            Modalités de paiement <br>
+            - Acompte : 50 % à la signature du contrat <br>
+            - Solde : à la livraison de l’application <br>
+            - Mode de paiement : Virement bancaire / Espèces / Mobile Money <br>
+            - Validité de l’offre <br>
+            <i>Cette facture proforma est valable pour une période de 30 jours à compter de la date d’émission.</i>
+
+            </div>
+            @endif
+
             <hr class="hr-footer">
             <div class="company-info-footer">
                <div> Site web : <br> {{ $order->company->tp_website ?? "" }}</div>
