@@ -110,7 +110,8 @@ class ServiceVente extends Component
         foreach($this->prices as $key => $price ){
             if(isset($price) && is_numeric($price)  && isset($this->quantite[$key])   && is_numeric($this->quantite[$key])){
                 $this->pricesHorTva[$key] = floatval($this->quantite[$key]) * floatval($price) ;
-                $this->tvas[$key] = floatval($this->pricesHorTva[$key]) *  floatval($this->taxes[$key] ?? 18) / 100;
+                $this->tvas[$key] = floatval($this->pricesHorTva[$key]) *
+                 floatval($this->taxes[$key] ) / 100;
                 $this->pricesTVAC[$key] =   floatval($this->pricesHorTva[$key]) + floatval($this->tvas[$key]);
             }
         }
