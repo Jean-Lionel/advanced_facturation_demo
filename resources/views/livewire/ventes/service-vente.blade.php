@@ -124,7 +124,7 @@
                     <option value="{{   $item}}"> {{ $item }}</option>
                 @endforeach
                 </select>
-               
+
             </div>
 
             @if (env('APP_CAN_PRINT_PROFORMAT', false))
@@ -137,8 +137,8 @@
                 </div>
             @endif
 
-    
-            <button class="btn btn-sm btn-primary ml-4"
+
+            <button class="ml-4 btn btn-sm btn-primary"
             wire:click="saveValue"
             >
             <span class="fa fa-file"></span>
