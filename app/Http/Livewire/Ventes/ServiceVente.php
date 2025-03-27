@@ -109,9 +109,9 @@ class ServiceVente extends Component
     public function updateUI(){
         foreach($this->prices as $key => $price ){
             if(isset($price) && is_numeric($price)  && isset($this->quantite[$key])   && is_numeric($this->quantite[$key])){
-                $this->pricesHorTva[$key] = floatval($this->quantite[$key]) * floatval($price) ;
+                $this->pricesHorTva[$key] = floatval($this->quantite[$key] ?? 0) * floatval($price) ;
                 $this->tvas[$key] = floatval($this->pricesHorTva[$key]) *
-                 floatval($this->taxes[$key] ) / 100;
+                 floatval($this->taxes[$key] ?? 0) / 100;
                 $this->pricesTVAC[$key] =   floatval($this->pricesHorTva[$key]) + floatval($this->tvas[$key]);
             }
         }
@@ -146,7 +146,7 @@ class ServiceVente extends Component
     private function extractCart(){
         $products = [];
         foreach ($this->table_length as $key) {
-            $v = ($this->prices[$key] * $this->quantite[$key]) * ($this->taxes[$key]  )/100;
+            $v = ($this->prices[$key] * $this->quantite[$key]) * ($this->taxes[$key] ?? 0  )/100;
             $prix_hors_tva =  $this->prices[$key] * $this->quantite[$key];
             $products[] = [
                 'id' =>'ITEM_'. $key,
