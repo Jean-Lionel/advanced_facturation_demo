@@ -18,6 +18,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaiementDetteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductStockController;
+use App\Http\Controllers\ProformatController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StockController;
@@ -154,6 +155,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('facture/credit', [StockController::class ,'FactureCredit'])->name('facture.credit');
     Route::put('facture/payer/{order}', [StockController::class ,'FacturePayer'])->name('facture.payer');
+    // proformat
+    Route::resource('proformats', ProformatController::class);
 
 
 });

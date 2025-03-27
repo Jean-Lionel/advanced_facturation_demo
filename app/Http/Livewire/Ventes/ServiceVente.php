@@ -80,10 +80,10 @@ class ServiceVente extends Component
              }else{
                 $order = Proformat::create($orderData);
              }
-        
+
             DB::commit();
 
-            return redirect()->to('orders/' . $order->id);
+            return $this->typeFacture == 'FACTURE' ? redirect()->to('orders/' . $order->id) : redirect()->to('proformats/' . $order->id);
 
         }catch(\Exception $e){
             DB::rollBack();

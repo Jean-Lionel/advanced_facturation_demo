@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facture - {{ $order->company->tp_name }} - {{ $order->id }}</title>
+    <title>{{ $order->type_facture }} - {{ $order->company->tp_name ?? "" }} - {{ $order->id }}</title>
     <style>
         :root {
             --primary-color: #0D69B3;
@@ -292,7 +292,7 @@
                 </div>
             </div>
             <div class="invoice-details">
-                <h1>FACTURE</h1>
+                <h1>{{ $order->type_facture ?? "FACTURE" }}</h1>
                 <p>N°: {{ getInvoiceNumber($order->id)  }}</p>
                 <p>Date: {{  $order->date_facturation }}</p>
                <!--  <p>Signature: {{ $order->invoice_signature }}</p> -->
@@ -337,29 +337,29 @@
                     <td><strong>Montant Total</strong></td>
                     <td>{{ number_format($order->amount_tax, 2) }}</td>
                 </tr>
-                <tr>
+               <!--  <tr>
                     <td><strong>Tax</strong></td>
                     <td>{{ number_format($order->tax, 2) }}</td>
                 </tr>
                 <tr>
                     <td><strong>Montant Total</strong></td>
                     <td>{{ number_format($order->amount, 2) }}</td>
-                </tr>
+                </tr> -->
             </table>
         </div>
 
         <div class="footer">
             <div class="payment-info">
-                <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount)}}  FBU</p>
+                <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount_tax)}}  FBU</p>
                 <h4 class="text-center payment-info-text">MERCI DE NOUS FAIRE CONFIANCE !!!</h4>
             </div>
             <hr class="hr-footer">
             <div class="company-info-footer">
-               <div> Site web : {{ $order->company->tp_website ?? "" }}</div>
-               <div> Email : {{ $order->company->tp_email ?? "" }}</div>
-               <div> Tél : <br>      {{ $order->company->tp_phone_number ?? "" }}</div>
-               <div> Banque : {{ $order->company->tp_bank ?? "" }}</div>
-               <div> Numero compte : {{ $order->company->tp_account_number ?? "" }}</div>
+               <div> Site web : <br> {{ $order->company->tp_website ?? "" }}</div>
+               <div> Email : <br> {{ $order->company->tp_email ?? "" }}</div>
+               <div> Tél :  <br> {!! $order->company->tp_phone_number ?? "" !!}</div>
+               <div> Banque : <br> {{ $order->company->tp_bank ?? "" }}</div>
+               <div> Numéro compte : <br> {{ $order->company->tp_account_number ?? "" }}</div>
             </div>
 
         </div>

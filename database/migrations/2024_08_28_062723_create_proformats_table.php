@@ -36,8 +36,9 @@ class CreateProformatsTable extends Migration
             $table->string('envoye_obr')->nullable();
             $table->string('envoye_par')->nullable();
             $table->string('envoye_time')->nullable();
+            $table->string('invoice_currency')->nullable();
             $table->string('invoice_signature')->nullable();
-            $table->date('date_facturation')->nullable();  
+            $table->date('date_facturation')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
