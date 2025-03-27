@@ -28,7 +28,7 @@
 	</button>
 </div>
 
-<h5 class="text-center">Historique des ventes</h5>
+<h5 class="text-center">Historique</h5>
 <div>
 	{{-- <form action="" class="form-group row">
 		<div class="col-sm-6">
