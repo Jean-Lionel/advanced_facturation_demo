@@ -17,7 +17,6 @@
 
 	<div class="col-md-12">
 		@include('journals.header')
-
         <div class="row">
             <form action="" class="col-4">
                 <div class="row">
@@ -42,7 +41,7 @@
                 </div>
             </form>
 
-            <div class=" col-4">
+            <div class="col-4">
                 <div class="gap-3 d-flex">
                     <table class="table table-sm table-striped">
                         <tr>
@@ -59,7 +58,7 @@
                 </div>
 
             </div>
-            <div class=" col-4">
+            <div class="col-4">
                 <div class="gap-3 d-flex">
                     <table class="table table-sm table-striped">
                         <tr>
@@ -82,7 +81,7 @@
             </div>
         </div>
 
-		<table class="table table-sm ">
+		<table class="table table-sm">
 			<thead class="table-dark">
 				<tr>
 					<th scope="col">#</th>

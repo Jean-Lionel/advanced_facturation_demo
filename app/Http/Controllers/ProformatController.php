@@ -16,7 +16,8 @@ class ProformatController extends Controller
      */
     public function index()
     {
-        //
+        $proformats = Proformat::all();
+        return view('proformats.index', compact('proformats'));
     }
 
     /**
