@@ -136,7 +136,9 @@
                         </tr>
                         @endforeach
                         <tr>
-                            <td colspan="4">PVT HTVA </td>
+                            <td colspan="4">
+                            {{ $order->tax != 0 ? "PVT HTVA" : "TOTAL" }}
+                            </td>
                             <td class="adroite"><b>{{ getPrice($order->amount_tax) }}</b></td>
                         </tr>
 
