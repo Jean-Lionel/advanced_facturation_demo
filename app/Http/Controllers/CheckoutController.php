@@ -103,6 +103,8 @@ class CheckoutController extends Controller
                 'client'=> $client->toJson(),
                 'addresse_client'=> $client->addresse,
                 'date_facturation'=> now(),
+                'invoice_currency' => $request->invoice_currency,
+                'type_facture' => 'FACTURE',
                 'is_cancelled' => 0,
                 'client_id' => $request->client_id,
                 'commissionaire_id' =>  $client->commissionnaire_id ?? null,

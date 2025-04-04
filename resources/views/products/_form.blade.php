@@ -81,8 +81,6 @@
     <div class="col-md-2">
         <div class="form-group">
             <label for="price">TAUX DE TVA </label>
-
-
             <select name="taux_tva" id="taux_tva" class="form-control">
                 @foreach (TAUX_TVA as $tva)
                     <option value="{{ $tva }}"
