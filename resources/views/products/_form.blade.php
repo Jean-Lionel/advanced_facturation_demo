@@ -63,7 +63,7 @@
             <label for="price_min">PRIX D ACHAT</label>
             <input type="text"
             step="any"
-            class="form-control {{$errors->has('price_min') ?  'is-valid' : 'is-invalid'  }}" id="price_min" name="price_min" value="{{ old('price_min') ?? $product->price_min?? ' ' }}">
+            class="form-control " id="price_min" name="price_min" value="{{ old('price_min') ?? $product->price_min?? ' ' }}">
 
             {!! $errors->first('price_min', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
