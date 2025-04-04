@@ -150,7 +150,9 @@
                                 <td colspan="4"><b>TOTAL TVAC</b></td>
                                 {{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
                                 <td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
-                                <td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
+                                <td class="adroite"><b>{{ getPrice($order->amount) }}
+                                {{ $order->invoice_currency ?? 'FBU' }}
+                                </b></td>
                             </tr>
                         @endif
                         </tbody>
@@ -158,14 +160,14 @@
                     <br>
                     <div>
                             Nous disons <b> {{ getNumberToWord($order->amount) }}
-                            FBU .</b>
+                            {{ $order->invoice_currency ?? 'FBU' }} .</b>
                     </div>
                     @if($order->invoice_type != 'FN')
                         <div>
                     <b> Motif </b> : {{ $order->cn_motif }} .
                     </div>
                    @endif
-                   
+
                         <h4 class="text-center"> {{$order->invoice_signature}}</h4>
                         <div class="element-center">
                             {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
