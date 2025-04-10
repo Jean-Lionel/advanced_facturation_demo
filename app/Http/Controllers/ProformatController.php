@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Proformat;
 use App\Http\Requests\StoreProformatRequest;
 use App\Http\Requests\UpdateProformatRequest;
+use Illuminate\Support\Str;
 
 class ProformatController extends Controller
 {
@@ -15,7 +16,8 @@ class ProformatController extends Controller
      */
     public function index()
     {
-        //
+        $proformats = Proformat::all();
+        return view('proformats.index', compact('proformats'));
     }
 
     /**
@@ -47,7 +49,13 @@ class ProformatController extends Controller
      */
     public function show(Proformat $proformat)
     {
-        //
+        $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEME');
+        $currentModelFacture = 'cart.facture_model_prothem';
+        if($modelFacture){
+            $currentModelFacture = 'cart.facture_' . Str::lower($modelFacture);
+        }
+        $order = $proformat;
+        return view( $currentModelFacture ,compact('order'));
     }
 
     /**

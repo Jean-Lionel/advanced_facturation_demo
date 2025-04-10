@@ -56,7 +56,7 @@
                 </td>
                 <td>
                     <select class="form-control form-control-sm" wire:model="taxes.{{ $key }}">
-                        @foreach ([18,10,4,0] as $v )
+                        @foreach ([0,4,10,18] as $v )
                         <option value="{{ $v }}" @if ( isset($taxes[$key]) and $v == $taxes[$key])
                         selected
                         @endif> {{ $v }} %</option>
@@ -124,7 +124,7 @@
                     <option value="{{   $item}}"> {{ $item }}</option>
                 @endforeach
                 </select>
-               
+
             </div>
 
             @if (env('APP_CAN_PRINT_PROFORMAT', false))
@@ -137,8 +137,8 @@
                 </div>
             @endif
 
-    
-            <button class="btn btn-sm btn-primary ml-4"
+
+            <button class="ml-4 btn btn-sm btn-primary"
             wire:click="saveValue"
             >
             <span class="fa fa-file"></span>

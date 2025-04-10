@@ -118,12 +118,13 @@
                             <!-- End -->
                         </div>
                     </div>
+                    <form action="{{ route('payement') }}" method="post">
                     <div class="p-1 py-2 bg-white rounded shadow-sm row">
                         <div class="col-lg-6">
                             <div class="px-1 py-1 bg-light rounded-pill text-uppercase font-weight-bold">INFORMATION DU CLIENT</div>
                             <div class="p-1">
                                 {{$errors}}
-                                <form action="{{ route('payement') }}" method="post">
+
 
                                     {{--  <input type="hidden" name="currentTva" value="{{ $currentTva }}">  --}}
                                     <div class="form-group">
@@ -191,7 +192,7 @@
                                     @endif
 
                                     <button type="submit" class="py-2 btn btn-dark rounded-pill btn-block">Valider</button>
-                                </form>
+
                                 {{--  <div class="p-2 mb-4 border input-group rounded-pill">
                                     <input type="text" placeholder="Apply coupon" aria-describedby="button-addon3" class="border-0 form-control">
                                     <div class="border-0 input-group-append">
@@ -205,6 +206,15 @@
                             <div class="px-1 py-1 bg-light rounded-pill text-uppercase font-weight-bold">Déscription  </div>
                             <div class="p-2">
                                 <ul class="mb-2 list-unstyled">
+                                    <li class="py-2 d-flex justify-content-between border-bottom"><strong class="text-muted">MONNAIE DE PAIEMENT </strong>
+                                        <h5 id="prix_hors_tva" class="font-weight-bold">
+                                           <select name="invoice_currency" id="">
+                                            @foreach(TYPE_MONNAIE as $currency)
+                                                <option value="{{ $currency }}">{{ $currency }}</option>
+                                            @endforeach
+                                           </select>
+                                        </h5>
+                                    </li>
                                     <li class="py-2 d-flex justify-content-between border-bottom"><strong class="text-muted">PHTVA </strong>
                                         <h5 id="prix_hors_tva" class="font-weight-bold">
                                             <span>{{getPrice(Cart::subtotal())}}</span>
@@ -224,6 +234,7 @@
                             </div>
                         </div>
                     </div>
+                    </form>
                 </div>
 
 

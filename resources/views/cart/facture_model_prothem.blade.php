@@ -25,18 +25,18 @@
     <div class="container_body">
         <div class="noprint header-element">
             <a href="{{URL::previous() }}" class="noprint btn">Retour</a>
-            <button id="printElement" class=" btn noprint">Imprimer</button>
+            <button id="printElement" class="btn noprint">Imprimer</button>
             <button id="print_reciept"  class="noprint btn">Imprimer Reciept</button>
         </div>
 
         @if ($order->is_cancelled)
             @include('cart._partial')
         @endif
-       
+
         <div class="main-content" id="printJS-form" >
             {{-- Entete --}}
             <div id="facture_principal">
-            <header class="header-facture ">
+            <header class="header-facture">
                 @if (env('APP_USE_LOGO', false))
                 <div>
                     <div >
@@ -136,12 +136,14 @@
                         </tr>
                         @endforeach
                         <tr>
-                            <td colspan="4">PVT HTVA </td>
+                            <td colspan="4">
+                            {{ $order->tax != 0 ? "PVT HTVA" : "TOTAL" }}
+                            </td>
                             <td class="adroite"><b>{{ getPrice($order->amount_tax) }}</b></td>
                         </tr>
 
                         @if ($order->tax != 0)
-                            
+
                             <tr>
                                 <td colspan="4">TVA </td>
                                 <td class="adroite"><b>{{ getPrice($order->tax) }}</b></td>
@@ -150,7 +152,9 @@
                                 <td colspan="4"><b>TOTAL TVAC</b></td>
                                 {{-- <td class="adroite"><b>{{ $order->total_sacs}}</b></td>
                                 <td class="adroite"><b>{{ $order->total_quantity}}</b></td> --}}
-                                <td class="adroite"><b>{{ getPrice($order->amount) }}</b></td>
+                                <td class="adroite"><b>{{ getPrice($order->amount) }}
+                                {{ $order->invoice_currency ?? 'FBU' }}
+                                </b></td>
                             </tr>
                         @endif
                         </tbody>
@@ -158,13 +162,14 @@
                     <br>
                     <div>
                             Nous disons <b> {{ getNumberToWord($order->amount) }}
-                            FBU .</b>
-                    </div> 
+                            {{ $order->invoice_currency ?? 'FBU' }} .</b>
+                    </div>
                     @if($order->invoice_type != 'FN')
                         <div>
                     <b> Motif </b> : {{ $order->cn_motif }} .
                     </div>
                    @endif
+
                         <h4 class="text-center"> {{$order->invoice_signature}}</h4>
                         <div class="element-center">
                             {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
@@ -176,13 +181,13 @@
                 <div id="reciept" style="display : none;">
                     <div  class="container">
                         <h5 class="invoice_signature center"> {{$order->invoice_signature}}  </h5>
-                        <h3 class="center">FACTURE 
+                        <h3 class="center">FACTURE
                         @if ($order->type_paiement == 3  )
                         {{TYPE_PAYMENT[$order->type_paiement]  }}
                         @endif
-                            
+
                         N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h3>
-                        
+
                         @if ($order->is_cancelled)
                            @include('cart._partial')
                          @endif
@@ -200,7 +205,7 @@
                         <p> {{ $order->company->tp_activity_sector }}</p>
                         <p>Forme juridique : {{ $order->company->tp_legal_form }} </p>
                         <p>  Mode de Paiment :  <b>{{TYPE_PAYMENT[$order->type_paiement]  }}</b> </p>
-                     
+
                         <h3>B. Client</h3>
                         <p>Nom et Prénom ou Raison Socail :</p>
                         <p>{{$order->client->name}}</p>
@@ -227,26 +232,26 @@
                                         <td class="adroite nowrap"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                                     </tr>
                                     @endforeach
-                                    
+
                                     </tbody>
                                 </table>
 
                                 <div>
                                     <div class="total_payment">
                                         <div> P.HTVA: {{ getPrice($order->amount_tax) }} </div>
-                                       
+
                                     </div>
                                     <div class="total_payment">
                                         <div> TVA:  {{  getPrice($order->tax) }}</div>
-                                        
+
                                     </div>
                                     <div class="total_payment">
-                                        <div> T.TVAC: 
+                                        <div> T.TVAC:
                                             {{ getPrice($order->amount) }}
                                         </div>
-                                        
+
                                     </div>
-     
+
       </div>
 
       <div class="line"></div>
@@ -254,8 +259,8 @@
       <div class="center bold">=== MERCI !! ===</div>
                                 <hr>
                                 <div class="cut-section">
-                                </div>  
-                                
+                                </div>
+
                             </div>
 
                         </div>
@@ -269,7 +274,7 @@
                         e.preventDefault();
                         window.print();
                     })
-                    
+
 
                     const reciept = document.getElementById('print_reciept')
                     reciept.addEventListener('click',function(event){

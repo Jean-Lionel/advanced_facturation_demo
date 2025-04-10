@@ -6,6 +6,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -47,29 +48,9 @@ class OrderController extends Controller
     {
         $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEME');
         $currentModelFacture = 'cart.facture_model_prothem';
-
-        if ($modelFacture == 'MODEL_DUKORANE'){
-            $currentModelFacture = 'cart.facture_model_dukorane';
+        if($modelFacture){
+            $currentModelFacture = 'cart.facture_' . Str::lower($modelFacture) ;
         }
-
-        if ($modelFacture == 'MODEL_NIYUBAHWE'){
-            $currentModelFacture = 'cart.facture_model_niyubahwe';
-        }
-
-        if ($modelFacture == 'MODEL_EREFO_COMPANY'){
-            $currentModelFacture = 'cart.facture_model_erfo';
-        }
-
-        if ($modelFacture == 'FACTURE_MODEL_BIT_HEALTH'){
-            $currentModelFacture = 'cart.facture_model_bit_health';
-        }
-        if($modelFacture == 'MODEL_SOCOFAUMA'){
-            $currentModelFacture = 'cart.facture_model_socofauma';
-        }
-        if($modelFacture == 'MODEL_ADVANCED'){
-            $currentModelFacture = 'cart.facture_model_advanced';
-        }
-
         return view( $currentModelFacture ,compact('order'));
     }
 

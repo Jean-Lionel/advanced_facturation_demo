@@ -19,6 +19,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Compte;
 use DateTime;
+use Str;
 
 class CheckoutController extends Controller
 {
@@ -102,6 +103,8 @@ class CheckoutController extends Controller
                 'client'=> $client->toJson(),
                 'addresse_client'=> $client->addresse,
                 'date_facturation'=> now(),
+                'invoice_currency' => $request->invoice_currency,
+                'type_facture' => 'FACTURE',
                 'is_cancelled' => 0,
                 'client_id' => $request->client_id,
                 'commissionaire_id' =>  $client->commissionnaire_id ?? null,
@@ -144,24 +147,15 @@ class CheckoutController extends Controller
         }
 
         if(isset($order->id)){
-            // Call a JOB
-    //        SyncroniseInvoice::dispatch($order->id);
-//            $obr = new ObrDeclarationController();
-//            try{
-//                $obr->sendInvoinceToObr($order->id);
-//            }catch(\Exception $e){
-//                Session::flash('error', $e->getMessage());
-//            }
-
             $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEME');
             $currentModelFacture = 'cart.facture_model_prothem';
-
-            if($modelFacture == 'MODEL_SOCOFAUMA'){
-                $currentModelFacture = 'cart.facture_model_socofauma';
-            }
+            if($modelFacture){
+                $currentModelFacture = 'cart.facture_' . Str::lower($modelFacture) ;
+                }
 
             return view($currentModelFacture, compact('order'));
         }
+
     }
 
     public function thankyou()

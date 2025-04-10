@@ -80,10 +80,10 @@ class ServiceVente extends Component
              }else{
                 $order = Proformat::create($orderData);
              }
-        
+
             DB::commit();
 
-            return redirect()->to('orders/' . $order->id);
+            return $this->typeFacture == 'FACTURE' ? redirect()->to('orders/' . $order->id) : redirect()->to('proformats/' . $order->id);
 
         }catch(\Exception $e){
             DB::rollBack();
@@ -93,9 +93,15 @@ class ServiceVente extends Component
     }
 
     public function searchClient(){
-        $this->customer = Client::find($this->clientNumber);
+        $this->customer = Client::where('id', 'LIKE', "%{$this->clientNumber}%")
+            ->orWhere('customer_TIN', 'LIKE', "%{$this->clientNumber}%")
+            ->orWhere('name', 'LIKE', "%{$this->clientNumber}%")
+            ->orWhere('telephone', 'LIKE', "%{$this->clientNumber}%")
+            ->orWhere('addresse', 'LIKE', "%{$this->clientNumber}%")
+            ->first();
+
         if($this->customer == null){
-            $this->errorMessage = "Customer not found";
+            $this->errorMessage = "Client non trouvé";
         }else{
             $this->errorMessage = "";
         }
@@ -103,8 +109,9 @@ class ServiceVente extends Component
     public function updateUI(){
         foreach($this->prices as $key => $price ){
             if(isset($price) && is_numeric($price)  && isset($this->quantite[$key])   && is_numeric($this->quantite[$key])){
-                $this->pricesHorTva[$key] = floatval($this->quantite[$key]) * floatval($price) ;
-                $this->tvas[$key] = floatval($this->pricesHorTva[$key]) *  floatval($this->taxes[$key] ?? 18) / 100;
+                $this->pricesHorTva[$key] = floatval($this->quantite[$key] ?? 0) * floatval($price) ;
+                $this->tvas[$key] = floatval($this->pricesHorTva[$key]) *
+                 floatval($this->taxes[$key] ?? 0) / 100;
                 $this->pricesTVAC[$key] =   floatval($this->pricesHorTva[$key]) + floatval($this->tvas[$key]);
             }
         }
@@ -139,7 +146,7 @@ class ServiceVente extends Component
     private function extractCart(){
         $products = [];
         foreach ($this->table_length as $key) {
-            $v = ($this->prices[$key] * $this->quantite[$key]) * ($this->taxes[$key] ?? 18 )/100;
+            $v = ($this->prices[$key] * $this->quantite[$key]) * ($this->taxes[$key] ?? 0  )/100;
             $prix_hors_tva =  $this->prices[$key] * $this->quantite[$key];
             $products[] = [
                 'id' =>'ITEM_'. $key,

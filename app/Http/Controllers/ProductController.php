@@ -134,11 +134,13 @@ class ProductController extends Controller
             'category_id' => 'required',
             'unite_mesure' => 'required',
             'taux_tva' => 'required',
-            'price_min' => 'required',
+            'price_min' => 'nullable',
             'quantite' => 'numeric|min:0',
             'quantite_alert' => 'numeric|min:0',
         ]);
-
+        if(!$request->price_min){
+            $request->merge(['price_min' => 0]);
+        }
         Product::create($request->all());
 
 
