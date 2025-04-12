@@ -134,7 +134,7 @@
                     @endif
                     @if (env('APP_ADVANCED_USER_MODE', false))
                     <li>
-                        <a href="{{ route('depenses.index') }}" class="{{ setActiveRoute('depenses.*') }}"><span class="fa fa-user-shield"></span> 
+                        <a href="{{ route('advanced.index') }}" class="{{ setActiveRoute('advanced.*') }}"><span class="fa fa-user-shield"></span>
                         Advanced
                     </a>
                     </li>
