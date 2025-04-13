@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -18,19 +19,34 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $is_active
  * @property int $organisation_id
  * @property int $user_id
+ * @property int $login_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
  */
 class Member extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
-     * The attributes that aren't mass assignable.
+     * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'firstname',
+        'last_name',
+        'email',
+        'title',
+        'profile_image',
+        'phone',
+        'address',
+        'description',
+        'is_active',
+        'organisation_id',
+        'user_id',
+        'login_id'
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -38,10 +54,7 @@ class Member extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
         'is_active' => 'boolean',
-        'organisation_id' => 'integer',
-        'user_id' => 'integer',
     ];
 
     /**
@@ -60,13 +73,11 @@ class Member extends Model
         return $this->belongsTo(User::class);
     }
 
-   
-   
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function organisations()
+    public function login()
     {
-        return $this->belongsToMany(Organisation::class);
+        return $this->belongsTo(User::class, 'login_id');
     }
 }

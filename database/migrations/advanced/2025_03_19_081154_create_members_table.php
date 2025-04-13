@@ -28,6 +28,7 @@ class CreateMembersTable extends Migration
             $table->boolean('is_active')->default(true);
             $table->foreignId('organisation_id')->nullable()->constrained();
             $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('login_id')->nullable()->constrained();
             $table->timestamps();
             $table->softDeletes();
         });

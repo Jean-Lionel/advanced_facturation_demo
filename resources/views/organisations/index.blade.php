@@ -35,13 +35,13 @@
                                         <a href="{{ route('advanced.organisations.edit', $organisation) }}" class="btn btn-sm btn-warning">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="{{ route('advanced.organisations.destroy', $organisation) }}" method="POST" class="d-inline">
+                                       <!--  <form action="{{ route('advanced.organisations.destroy', $organisation) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette organisation ?')">
                                                 <i class="fas fa-trash"></i>
                                             </button>
-                                        </form>
+                                        </form> -->
                                     </div>
                                 </td>
                             </tr>

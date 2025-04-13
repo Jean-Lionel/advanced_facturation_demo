@@ -84,7 +84,7 @@
                         <a class="nav-link" href="{{ route('advanced.organisations.index') }}"><i class="fas fa-building me-2"></i>Organisations</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-users me-2"></i>Membres</a>
+                        <a class="nav-link" href="{{ route('advanced.members.index') }}"><i class="fas fa-users me-2"></i>Membres</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-exchange-alt me-2"></i>Transactions</a>

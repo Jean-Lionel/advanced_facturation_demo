@@ -28,7 +28,6 @@ class MemberStoreRequest extends FormRequest
             'last_name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:100', 'unique:members,email'],
             'title' => ['required', 'string', 'max:50'],
-            'profile_image' => ['string', 'max:255'],
             'phone' => ['string', 'max:30'],
             'address' => ['string'],
             'description' => ['string'],
