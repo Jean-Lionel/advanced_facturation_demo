@@ -21,12 +21,52 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
-        $transactions = Transaction::with(['transactionType'])->latest()->paginate();
+        $query = Transaction::with(['transactionType', 'member', 'files'])
+            ->latest();
+
+            // Dans le contrôleur
+        if ($request->has('date_debut') && $request->date_debut !== null && $request->has('date_fin') && $request->date_fin !== null) {
+            $query->whereBetween('date_transaction', [
+                $request->input('date_debut'),
+                $request->input('date_fin')
+            ]);
+        }
+
+        // Filtrer par date
+        if ($request->has('date_transaction') && $request->date_transaction !== null) {
+            $date = $request->input('date_transaction');
+            $query->whereDate('date_transaction', $date);
+        }
+
+        // Filtrer par montant
+        if ($request->has('montant') && $request->montant !== null) {
+            $query->where('montant', $request->input('montant'));
+        }
+
+        // Filtrer par type de transaction
+        if ($request->has('transaction_type_id') && $request->transaction_type_id !== null) {
+            $query->where('transaction_type_id', $request->input('transaction_type_id'));
+        }
+
+        // Filtrer par membre
+        if ($request->has('member_id') && $request->member_id !== null) {
+            $query->where('member_id', $request->input('member_id'));
+        }
+
+        // Filtrer par description
+        if ($request->has('description') && $request->description !== null) {
+            $query->where('description', 'like', '%' . $request->input('description') . '%');
+        }
+        $transactions = $query->paginate(10);
+
+        $transaction_types = TransactionType::all();
+        $members = Member::all();
+
         if ($request->wantsJson()) {
             return new TransactionCollection($transactions);
         }
 
-        return view('transactions.index', compact('transactions'));
+        return view('transactions.index', compact('transactions', 'transaction_types', 'members', 'members'));
     }
 
     /**
