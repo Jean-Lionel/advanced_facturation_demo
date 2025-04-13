@@ -42,7 +42,7 @@
                                         <a href="{{ route('advanced.transactions.show', $transaction) }}" class="btn btn-sm btn-info">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('advanced.transactions.edit', $transaction) }}" class="btn btn-sm btn-warning">
+                                        <!-- <a href="{{ route('advanced.transactions.edit', $transaction) }}" class="btn btn-sm btn-warning">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <form action="{{ route('advanced.transactions.destroy', $transaction) }}" method="POST" class="d-inline">
@@ -51,7 +51,7 @@
                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette transaction ?')">
                                                 <i class="fas fa-trash"></i>
                                             </button>
-                                        </form>
+                                        </form> -->
                                     </div>
                                 </td>
                             </tr>

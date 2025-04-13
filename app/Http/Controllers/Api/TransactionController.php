@@ -98,6 +98,18 @@ class TransactionController extends Controller
     /**
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Transaction $transaction
+     * @return \Illuminate\View\View
+     */
+    public function edit(Request $request, Transaction $transaction)
+    {
+        $transaction_types = TransactionType::all();
+        $members = Member::orderBy('last_name')->get();
+        return view('transactions.edit', compact('transaction', 'transaction_types', 'members'));
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Transaction $transaction
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, Transaction $transaction)
