@@ -18,6 +18,7 @@ class CreateDocumentMemberTable extends Migration
         Schema::create('document_member', function (Blueprint $table) {
             $table->foreignId('document_id');
             $table->foreignId('member_id');
+
         });
 
         Schema::enableForeignKeyConstraints();

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdvancedController;
+use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\OrganisationController;
 use App\Http\Controllers\Api\TransactionController;
@@ -17,4 +18,5 @@ Route::group([
     Route::resource('members', MemberController::class);
     Route::resource('transaction_types', TransactionTypeController::class);
     Route::resource('transactions', TransactionController::class);
+    Route::resource('documents', DocumentController::class);
 });

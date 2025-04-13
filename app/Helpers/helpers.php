@@ -128,3 +128,18 @@ function sub_letters($text, $limit = 50, $ellipsis = '...') {
     }
     return $truncated . $ellipsis;
 }
+
+// Types documents
+const TYPE_DOCUMENTS = [
+    '' => '--- SELECT ---',
+    'facture' => 'Facture',
+    'devis' => 'Devis',
+    'bon' => 'Bon',
+    'bon_reception' => 'Bon de réception',
+    'bon_livraison' => 'Bon de livraison',
+    'bon_retour' => 'Bon de retour',
+    'contrat' => 'Contrat',
+    'proforma' => 'Proforma',
+    'autre' => 'Autre',
+];
+

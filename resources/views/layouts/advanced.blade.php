@@ -93,7 +93,7 @@
                         <a class="nav-link" href="{{ route('advanced.transaction_types.index') }}"><i class="fas fa-list-alt me-2"></i>Types de transactions</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-file-upload me-2"></i>Fichiers</a>
+                        <a class="nav-link" href="{{ route('advanced.documents.index') }}"><i class="fas fa-file-upload me-2"></i>Fichiers</a>
                     </li>
                 </ul>
 

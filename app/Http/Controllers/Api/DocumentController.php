@@ -7,7 +7,9 @@ use App\Http\Requests\Api\DocumentStoreRequest;
 use App\Http\Requests\Api\DocumentUpdateRequest;
 use App\Http\Resources\Api\DocumentCollection;
 use App\Http\Resources\Api\DocumentResource;
+use App\Models\Client;
 use App\Models\Document;
+use App\Models\Member;
 use Illuminate\Http\Request;
 
 class DocumentController extends Controller
@@ -18,11 +20,19 @@ class DocumentController extends Controller
      */
     public function index(Request $request)
     {
-        $documents = Document::all();
-
-        return new DocumentCollection($documents);
+        $documents = Document::latest()->paginate();
+        if ($request->wantsJson()) {
+            return new DocumentCollection($documents);
+        }
+        return view('documents.index', compact('documents'));
     }
 
+    public function create()
+    {
+        $members = Member::orderBy('firstname')->get();
+        $clients = Client::orderBy('name')->get();
+        return view('documents.create', compact('members', 'clients'));
+    }
     /**
      * @param \App\Http\Requests\Api\DocumentStoreRequest $request
      * @return \App\Http\Resources\Api\DocumentResource
@@ -41,7 +51,10 @@ class DocumentController extends Controller
      */
     public function show(Request $request, Document $document)
     {
-        return new DocumentResource($document);
+        if ($request->wantsJson()) {
+            return new DocumentResource($document);
+        }
+        return view('documents.show', compact('document'));
     }
 
     /**
@@ -52,8 +65,10 @@ class DocumentController extends Controller
     public function update(DocumentUpdateRequest $request, Document $document)
     {
         $document->update($request->validated());
-
-        return new DocumentResource($document);
+        if ($request->wantsJson()) {
+            return new DocumentResource($document);
+        }
+        return view('documents.show', compact('document'));
     }
 
     /**
