@@ -39,7 +39,7 @@ class AddFielsToEntreprisesTable extends Migration
     {
         Schema::table('entreprises', function (Blueprint $table) {
             //
-            $table->dropColumn('tp_email');
+           /*  $table->dropColumn('tp_email');
             $table->dropColumn('tp_website');
             $table->dropColumn('tp_logo');
             $table->dropColumn('tp_bank');
@@ -49,7 +49,7 @@ class AddFielsToEntreprisesTable extends Migration
             $table->dropColumn('tp_instagram');
             $table->dropColumn('tp_youtube');
             $table->dropColumn('tp_whatsapp');
-            $table->dropColumn('tp_address');
+            $table->dropColumn('tp_address'); */
         });
     }
 }

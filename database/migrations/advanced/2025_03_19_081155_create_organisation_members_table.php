@@ -19,6 +19,8 @@ class CreateOrganisationMembersTable extends Migration
             $table->id();
             $table->foreignId('organisation_id')->constrained();
             $table->foreignId('member_id')->constrained();
+            $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();

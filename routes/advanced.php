@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdvancedController;
+use App\Http\Controllers\Api\OrganisationController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -9,4 +10,5 @@ Route::group([
     'middleware' => 'auth'
 ], function () {
     Route::get('index', [AdvancedController::class, 'index'])->name('index');
+    Route::resource('organisations', OrganisationController::class);
 });

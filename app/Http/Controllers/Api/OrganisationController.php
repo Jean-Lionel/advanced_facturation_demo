@@ -14,24 +14,51 @@ class OrganisationController extends Controller
 {
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \App\Http\Resources\Api\OrganisationCollection
+     *
      */
     public function index(Request $request)
     {
         $organisations = Organisation::all();
+        if ($request->wantsJson()) {
+            return $organisations;
+        }
 
-        return new OrganisationCollection($organisations);
+        return view('organisations.index', [
+            'organisations' => $organisations
+        ]);
+
+    }
+    public function create()
+    {
+        return view('organisations.create');
     }
 
+    /**
+     * Edit the specified resource.
+     *
+     * @param  \App\Models\Organisation  $organisation
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Organisation $organisation)
+    {
+        return view('organisations.edit', [
+            'organisation' => $organisation
+        ]);
+    }
     /**
      * @param \App\Http\Requests\Api\OrganisationStoreRequest $request
      * @return \App\Http\Resources\Api\OrganisationResource
      */
     public function store(OrganisationStoreRequest $request)
     {
-        $organisation = Organisation::create($request->validated());
+        $organisation = Organisation::create(array_merge($request->validated(), ['user_id' => auth()->user()->id]));
+        if ($request->wantsJson()) {
+            return new OrganisationResource($organisation);
+        }
 
-        return new OrganisationResource($organisation);
+        return view('organisations.show', [
+            'organisation' => $organisation
+        ]);
     }
 
     /**
@@ -41,7 +68,13 @@ class OrganisationController extends Controller
      */
     public function show(Request $request, Organisation $organisation)
     {
-        return new OrganisationResource($organisation);
+        if ($request->wantsJson()) {
+            return new OrganisationResource($organisation);
+        }
+
+        return view('organisations.show', [
+            'organisation' => $organisation
+        ]);
     }
 
     /**
@@ -53,7 +86,13 @@ class OrganisationController extends Controller
     {
         $organisation->update($request->validated());
 
-        return new OrganisationResource($organisation);
+        if ($request->wantsJson()) {
+            return new OrganisationResource($organisation);
+        }
+
+        return view('organisations.show', [
+            'organisation' => $organisation
+        ]);
     }
 
     /**
@@ -63,8 +102,12 @@ class OrganisationController extends Controller
      */
     public function destroy(Request $request, Organisation $organisation)
     {
-        $organisation->delete();
+       // $organisation->delete();
 
-        return response()->noContent();
+        if ($request->wantsJson()) {
+            return response()->noContent();
+        }
+
+        return redirect()->route('organisations.index');
     }
 }

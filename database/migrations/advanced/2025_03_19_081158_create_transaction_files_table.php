@@ -22,6 +22,7 @@ class CreateTransactionFilesTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('transaction_id')->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();

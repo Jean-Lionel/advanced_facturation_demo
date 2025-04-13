@@ -18,6 +18,7 @@ class CreateMemberOrganisationTable extends Migration
         Schema::create('member_organisation', function (Blueprint $table) {
             $table->foreignId('member_id');
             $table->foreignId('organisation_id');
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();

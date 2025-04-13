@@ -14,5 +14,6 @@
             "username": "root",
             "password": ""
         }
-    ]
+    ],
+    "windsurfPyright.disableLanguageServices": true
 }

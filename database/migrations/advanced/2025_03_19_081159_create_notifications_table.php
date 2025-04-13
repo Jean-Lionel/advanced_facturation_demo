@@ -23,6 +23,7 @@ class CreateNotificationsTable extends Migration
             $table->boolean('is_read')->default(false);
             $table->string('status', 50);
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();

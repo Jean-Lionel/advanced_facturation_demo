@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Organisation extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that aren't mass assignable.
@@ -33,11 +34,25 @@ class Organisation extends Model
         'id' => 'integer',
         'user_id' => 'integer',
     ];
+    public static function boot()
+    {
+        parent::boot();
+        self::created(function ($model) {
+            $model->user_id = auth()->user()->id;
+        });
+        self::updated(function ($model) {
+            $model->user_id = auth()->user()->id;
+        });
+        self::deleted(function ($model) {
+            $model->members()->detach($model->user_id);
+            $model->user_id = null;
+        });
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-  
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -54,3 +69,4 @@ class Organisation extends Model
         return $this->belongsToMany(Member::class);
     }
 }
+

@@ -24,6 +24,7 @@ class CreateTransactionsTable extends Migration
             $table->text('description')->nullable();
             $table->date('date_transaction');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();
