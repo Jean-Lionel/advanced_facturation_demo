@@ -32,11 +32,13 @@
                     <div class="mb-3">
                         <strong>Fichier:</strong>
                         <div class="mt-2">
-                            @if($document->transactionFile)
-                                <a href="{{ asset($document->transactionFile->file_url) }}" class="btn btn-primary" target="_blank">
+                            @if($document->document_file)
+                                <a href="{{ asset('documents/' . $document->document_file) }}" class="btn btn-primary" target="_blank">
                                     <i class="fas fa-download"></i> Télécharger
                                 </a>
                             @endif
+
+                            <iframe src="{{ asset('documents/' . $document->document_file) }}" width="100%" height="600px"></iframe>
                         </div>
                     </div>
 
