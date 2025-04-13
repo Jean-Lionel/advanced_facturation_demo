@@ -11,7 +11,6 @@ use App\Models\Member;
 use App\Models\Organisation;
 use Illuminate\Http\Request;
 
-
 class MemberController extends Controller
 {
     /**
@@ -20,13 +19,40 @@ class MemberController extends Controller
      */
     public function index(Request $request)
     {
-        $members = Member::latest()->paginate();
+        $query = Member::with(['organisation', 'user'])
+            ->latest();
+
+        // Recherche par nom complet
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('firstname', 'like', '%' . $search . '%')
+                    ->orWhere('last_name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%')
+                    ->orWhereHas('organisation', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    });
+            });
+        }
+
+        // Filtrer par organisation
+        if ($request->has('organisation_id')) {
+            $query->where('organisation_id', $request->input('organisation_id'));
+        }
+
+        // Filtrer par statut
+        if ($request->has('is_active')) {
+            $query->where('is_active', $request->input('is_active'));
+        }
+
+        $members = $query->paginate(10);
 
         if ($request->wantsJson()) {
             return new MemberCollection($members);
         }
 
-        return view('members.index', compact('members'));
+        $organisations = Organisation::all();
+        return view('members.index', compact('members', 'organisations'));
     }
 
     /**
@@ -48,6 +74,7 @@ class MemberController extends Controller
     {
         return view('members.edit', compact('member'));
     }
+
     /**
      * @param \App\Http\Requests\Api\MemberStoreRequest $request
      * @return \App\Http\Resources\Api\MemberResource

@@ -19,4 +19,6 @@ Route::group([
     Route::resource('transaction_types', TransactionTypeController::class);
     Route::resource('transactions', TransactionController::class);
     Route::resource('documents', DocumentController::class);
+    // dashboard
+
 });

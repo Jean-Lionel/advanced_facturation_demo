@@ -78,7 +78,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-home me-2"></i>Dashboard</a>
+                        <a class="nav-link" href="{{ route('advanced.index') }}"><i class="fas fa-home me-2"></i>Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('advanced.organisations.index') }}"><i class="fas fa-building me-2"></i>Organisations</a>

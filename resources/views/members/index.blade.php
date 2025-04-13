@@ -9,6 +9,48 @@
         </a>
     </div>
 
+    <!-- Formulaire de recherche -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Rechercher des membres</h5>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('advanced.members.index') }}" method="GET" class="row g-3">
+                <div class="col-md-4">
+                    <label for="search" class="form-label">Rechercher</label>
+                    <input type="text" name="search" id="search" class="form-control" placeholder="Nom, prénom, email ou organisation" value="{{ request('search') }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="organisation_id" class="form-label">Organisation</label>
+                    <select name="organisation_id" id="organisation_id" class="form-control">
+                        <option value="">Toutes les organisations</option>
+                        @foreach($organisations as $organisation)
+                            <option value="{{ $organisation->id }}" {{ request('organisation_id') == $organisation->id ? 'selected' : '' }}>
+                                {{ $organisation->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="is_active" class="form-label">Statut</label>
+                    <select name="is_active" id="is_active" class="form-control">
+                        <option value="">Tous les statuts</option>
+                        <option value="1" {{ request('is_active') == '1' ? 'selected' : '' }}>Actif</option>
+                        <option value="0" {{ request('is_active') == '0' ? 'selected' : '' }}>Inactif</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                    <a href="{{ route('advanced.members.index') }}" class="btn btn-secondary">Réinitialiser</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tableau des membres -->
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
