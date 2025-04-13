@@ -26,7 +26,6 @@ class TransactionTypeStoreRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:100'],
             'description' => ['string'],
-            'user_id' => ['required', 'integer', 'exists:users,id'],
         ];
     }
 }

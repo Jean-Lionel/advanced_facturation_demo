@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -15,17 +16,25 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $date_transaction
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
  */
 class Transaction extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
-     * The attributes that aren't mass assignable.
+     * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'user_id',
+        'member_id',
+        'transaction_type_id',
+        'montant',
+        'description',
+        'date_transaction'
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -37,7 +46,7 @@ class Transaction extends Model
         'user_id' => 'integer',
         'member_id' => 'integer',
         'transaction_type_id' => 'integer',
-        'montant' => 'float',
+        'montant' => 'double',
         'date_transaction' => 'date',
     ];
 
@@ -65,11 +74,10 @@ class Transaction extends Model
         return $this->belongsTo(TransactionType::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function transactionFiles()
+    public function files()
     {
         return $this->hasMany(TransactionFile::class);
     }

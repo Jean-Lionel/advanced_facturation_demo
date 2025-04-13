@@ -12,59 +12,77 @@ use Illuminate\Http\Request;
 
 class TransactionTypeController extends Controller
 {
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @return \App\Http\Resources\Api\TransactionTypeCollection
-     */
     public function index(Request $request)
     {
-        $transactionTypes = TransactionType::all();
+        $transaction_types = TransactionType::latest()->paginate();
 
-        return new TransactionTypeCollection($transactionTypes);
+        if ($request->wantsJson()) {
+            return new TransactionTypeCollection($transaction_types);
+        }
+
+        return view('transaction_types.index', compact('transaction_types'));
     }
 
-    /**
-     * @param \App\Http\Requests\Api\TransactionTypeStoreRequest $request
-     * @return \App\Http\Resources\Api\TransactionTypeResource
-     */
+    public function create()
+    {
+        return view('transaction_types.create');
+    }
+
     public function store(TransactionTypeStoreRequest $request)
     {
-        $transactionType = TransactionType::create($request->validated());
+        $transaction_type = TransactionType::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'user_id' => auth()->user()->id
+        ]);
 
-        return new TransactionTypeResource($transactionType);
+        if ($request->wantsJson()) {
+            return new TransactionTypeResource($transaction_type);
+        }
+
+        return redirect()->route('advanced.transaction_types.index')
+            ->with('success', 'Type de transaction créé avec succès');
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\TransactionType $transactionType
-     * @return \App\Http\Resources\Api\TransactionTypeResource
-     */
-    public function show(Request $request, TransactionType $transactionType)
+    public function show(Request $request, TransactionType $transaction_type)
     {
-        return new TransactionTypeResource($transactionType);
+        if ($request->wantsJson()) {
+            return new TransactionTypeResource($transaction_type);
+        }
+
+        return view('transaction_types.show', compact('transaction_type'));
     }
 
-    /**
-     * @param \App\Http\Requests\Api\TransactionTypeUpdateRequest $request
-     * @param \App\Models\TransactionType $transactionType
-     * @return \App\Http\Resources\Api\TransactionTypeResource
-     */
-    public function update(TransactionTypeUpdateRequest $request, TransactionType $transactionType)
+    public function edit(TransactionType $transaction_type)
     {
-        $transactionType->update($request->validated());
-
-        return new TransactionTypeResource($transactionType);
+        return view('transaction_types.edit', compact('transaction_type'));
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\TransactionType $transactionType
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, TransactionType $transactionType)
+    public function update(TransactionTypeUpdateRequest $request, TransactionType $transaction_type)
     {
-        $transactionType->delete();
+        $transaction_type->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'user_id' => auth()->user()->id
+        ]);
 
-        return response()->noContent();
+        if ($request->wantsJson()) {
+            return new TransactionTypeResource($transaction_type);
+        }
+
+        return redirect()->route('advanced.transaction_types.index')
+            ->with('success', 'Type de transaction mis à jour avec succès');
+    }
+
+    public function destroy(Request $request, TransactionType $transaction_type)
+    {
+        $transaction_type->delete();
+
+        if ($request->wantsJson()) {
+            return response()->noContent();
+        }
+
+        return redirect()->route('advanced.transaction_types.index')
+            ->with('success', 'Type de transaction supprimé avec succès');
     }
 }
