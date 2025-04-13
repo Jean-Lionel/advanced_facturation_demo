@@ -10,6 +10,7 @@ use App\Http\Resources\Api\DocumentResource;
 use App\Models\Client;
 use App\Models\Document;
 use App\Models\Member;
+use App\Models\TransactionFile;
 use Illuminate\Http\Request;
 
 class DocumentController extends Controller
@@ -22,7 +23,7 @@ class DocumentController extends Controller
     {
         $documents = Document::latest()->paginate();
         if ($request->wantsJson()) {
-            return new DocumentCollection($documents);
+            return $documents;
         }
         return view('documents.index', compact('documents'));
     }
@@ -39,7 +40,21 @@ class DocumentController extends Controller
      */
     public function store(DocumentStoreRequest $request)
     {
-        $document = Document::create($request->validated());
+
+        $document = Document::create(
+            [
+                ...$request->validated(),
+                'user_id' => auth()->user()->id,
+            ]
+        );
+        //file
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $file_name = time() . '_' . $file->getClientOriginalName();
+            $pathFile =  $file->move('documents', $file_name);
+            $document->document_file = $pathFile->getBasename();
+            $document->save();
+        }
 
         return new DocumentResource($document);
     }

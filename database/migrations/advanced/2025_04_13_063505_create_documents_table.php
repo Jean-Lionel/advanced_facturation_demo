@@ -21,7 +21,7 @@ class CreateDocumentsTable extends Migration
             $table->foreignId('member_id')->nullable()->constrained();
             $table->foreignId('client_id')->nullable()->constrained();
             $table->string('document_type')->nullable();
-            $table->foreignId('transaction_file_id')->nullable()->constrained();
+            $table->string('document_file')->nullable();
             $table->string('name', 255);
             $table->text('description')->nullable();
             $table->timestamps();

@@ -33,7 +33,7 @@ class Document extends Model
         'member_id',
         'client_id',
         'document_type',
-        'transaction_file_id',
+        'document_file',
         'name',
         'description'
     ];

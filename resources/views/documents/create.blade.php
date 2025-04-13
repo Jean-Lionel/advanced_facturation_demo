@@ -9,6 +9,16 @@
                     <h4>Nouveau Document</h4>
                 </div>
                 <div class="card-body">
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <form action="{{ route('advanced.documents.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
@@ -72,7 +82,7 @@
 
                         <div class="mb-3">
                             <label for="file" class="form-label">Fichier</label>
-                            <input type="file" name="file" id="file" class="form-control @error('file') is-invalid @enderror" required>
+                            <input type="file" name="file" id="file" class="form-control @error('file') is-invalid @enderror" >
                             @error('file')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

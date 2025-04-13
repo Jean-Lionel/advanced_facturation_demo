@@ -24,7 +24,6 @@ class DocumentStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
             'member_id' => ['integer', 'exists:members,id'],
             'client_id' => ['integer', 'exists:clients,id'],
             'document_type' => ['string'],
