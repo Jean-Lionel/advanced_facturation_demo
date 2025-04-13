@@ -24,7 +24,7 @@ class TransactionUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
+            //'user_id' => ['required', 'integer', 'exists:users,id'],
             'member_id' => ['required', 'integer', 'exists:members,id'],
             'transaction_type_id' => ['required', 'integer', 'exists:transaction_types,id'],
             'montant' => ['required', 'numeric'],
