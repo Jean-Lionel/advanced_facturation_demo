@@ -81,11 +81,11 @@
         }
     </style>
 
-    <div class="container-fluid py-4">
+    <div class="py-4 container-fluid">
         <!-- Filters -->
-        <div class="filters-section mb-4">
+        <div class="mb-4 filters-section">
             <div class="row">
-                <div class="col-md-3 mb-3 mb-md-0">
+                <div class="mb-3 col-md-3 mb-md-0">
                     <select class="form-select" id="periodFilter">
                         <option value="day">Aujourd'hui</option>
                         <option value="week">Cette semaine</option>
@@ -93,7 +93,7 @@
                         <option value="year">Cette année</option>
                     </select>
                 </div>
-                <div class="col-md-3 mb-3 mb-md-0">
+                <div class="mb-3 col-md-3 mb-md-0">
                     <select class="form-select" id="departmentFilter">
                         <option value="all" selected>Tous les départements</option>
                         @foreach($organisations as $organisation)
@@ -101,7 +101,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-3 mb-3 mb-md-0">
+                <div class="mb-3 col-md-3 mb-md-0">
                     <select class="form-select" id="userFilter">
                         <option value="all" selected>Tous les utilisateurs</option>
                         @foreach($users as $user)
@@ -116,13 +116,13 @@
         </div>
 
         <!-- KPIs -->
-        <div class="row mb-4">
+        <div class="mb-4 row">
             <div class="col-md-6 col-xl-3">
                 <div class="card dashboard-card kpi-card members">
                     <div class="card-body position-relative">
                         <h6 class="card-title">Membres actifs</h6>
                         <div class="card-value">{{ $stats['activeMembers'] }}</div>
-                        <div class="text-success mt-2">
+                        <div class="mt-2 text-success">
                             <i class="fas fa-arrow-up"></i> +5 ce mois
                         </div>
                         <i class="fas fa-users card-icon"></i>
@@ -134,7 +134,7 @@
                     <div class="card-body position-relative">
                         <h6 class="card-title">Bilan financier</h6>
                         <div class="card-value">+{{ number_format($stats['totalRevenue'], 2, ',', ' ') }} €</div>
-                        <div class="text-success mt-2">
+                        <div class="mt-2 text-success">
                             <i class="fas fa-arrow-up"></i> +15% vs mois dernier
                         </div>
                         <i class="fas fa-money-bill-alt card-icon"></i>
@@ -146,7 +146,7 @@
                     <div class="card-body position-relative">
                         <h6 class="card-title">Nouveaux documents</h6>
                         <div class="card-value">{{ $stats['newDocuments']->count() }}</div>
-                        <div class="text-warning mt-2">
+                        <div class="mt-2 text-warning">
                             <i class="fas fa-equals"></i> Stable vs mois dernier
                         </div>
                         <i class="fas fa-file-alt card-icon"></i>
@@ -158,7 +158,7 @@
                     <div class="card-body position-relative">
                         <h6 class="card-title">Tâches actives</h6>
                         <div class="card-value">{{ $stats['activeTasks'] }}</div>
-                        <div class="text-danger mt-2">
+                        <div class="mt-2 text-danger">
                             <i class="fas fa-arrow-up"></i> +8 vs semaine dernière
                         </div>
                         <i class="fas fa-tasks card-icon"></i>
@@ -169,10 +169,10 @@
 
         <!-- Charts -->
         <div class="row">
-            <div class="col-lg-8 mb-4">
+            <div class="mb-4 col-lg-8">
                 <div class="card dashboard-card">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">Évolution des transactions</h5>
+                    <div class="bg-white card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 card-title">Évolution des transactions</h5>
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-outline-secondary active">Revenus</button>
                             <button type="button" class="btn btn-sm btn-outline-secondary">Dépenses</button>
@@ -186,10 +186,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 mb-4">
+            <div class="mb-4 col-lg-4">
                 <div class="card dashboard-card">
-                    <div class="card-header bg-white">
-                        <h5 class="card-title mb-0">Répartition des membres</h5>
+                    <div class="bg-white card-header">
+                        <h5 class="mb-0 card-title">Répartition des membres</h5>
                     </div>
                     <div class="card-body">
                         <div class="chart-container">
@@ -202,13 +202,13 @@
 
         <!-- Dernières transactions -->
         <div class="row">
-            <div class="col-12 mb-4">
+            <div class="mb-4 col-12">
                 <div class="card dashboard-card">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">Dernières transactions</h5>
+                    <div class="bg-white card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 card-title">Dernières transactions</h5>
                         <a href="{{ route('advanced.transactions.index') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="p-0 card-body">
                         <div class="data-table">
                             <table class="table table-hover">
                                 <thead>
@@ -227,7 +227,7 @@
                                             <td>{{ $transaction->id }}</td>
                                             <td>{{ $transaction->date_transaction }}</td>
                                             <td>{{ $transaction->description }}</td>
-                                            <td>{{ $transaction->transactionType->name }}</td>
+                                            <td>{{ $transaction->transactionType?->name ?? 'N/A' }}</td>
                                             <td class="{{ $transaction->type === 'credit' ? 'text-success' : 'text-danger' }}">
                                                 {{ $transaction->type === 'credit' ? '+' : '-' }} {{ number_format($transaction->montant, 2, ',', ' ') }} €
                                             </td>
@@ -248,13 +248,13 @@
 
         <!-- Nouveaux membres -->
         <div class="row">
-            <div class="col-md-6 mb-4">
+            <div class="mb-4 col-md-6">
                 <div class="card dashboard-card">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">Nouveaux membres</h5>
+                    <div class="bg-white card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 card-title">Nouveaux membres</h5>
                         <a href="{{ route('advanced.members.index') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="p-0 card-body">
                         <div class="data-table">
                             <table class="table table-hover">
                                 <thead>
@@ -287,13 +287,13 @@
             </div>
 
             <!-- Derniers documents -->
-            <div class="col-md-6 mb-4">
+            <div class="mb-4 col-md-6">
                 <div class="card dashboard-card">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">Derniers documents</h5>
+                    <div class="bg-white card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 card-title">Derniers documents</h5>
                         <a href="{{ route('advanced.documents.index') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="p-0 card-body">
                         <div class="data-table">
                             <table class="table table-hover">
                                 <thead>
