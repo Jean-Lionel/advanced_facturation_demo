@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="mb-4 d-flex justify-content-between align-items-center">
         <h1>Transactions</h1>
         <a href="{{ route('advanced.transactions.create') }}" class="btn btn-primary">
             <i class="fas fa-plus"></i> Nouvelle Transaction
@@ -10,7 +10,7 @@
     </div>
 
     <!-- Formulaire de recherche -->
-    <div class="card mb-4">
+    <div class="mb-4 card">
         <div class="card-header">
             <h5 class="mb-0">Rechercher des transactions</h5>
         </div>
@@ -97,8 +97,8 @@
                             <tr>
                                 <td>{{ $transaction->date_transaction->format('d/m/Y') }}</td>
                                 <td>{{ number_format($transaction->montant, 2, ',', ' ') }} €</td>
-                                <td>{{ $transaction->transactionType->name }}</td>
-                                <td>{{ $transaction->member->firstname }} {{ $transaction->member->last_name }}</td>
+                                <td>{{ $transaction->transactionType->name ?? 'N/A' }}</td>
+                                <td>{{ $transaction->member->firstname ?? '' }} {{ $transaction->member->last_name ?? '' }}</td>
                                 <td>{{ $transaction->description }}</td>
                                 <td>
                                     <span class="badge bg-info">
