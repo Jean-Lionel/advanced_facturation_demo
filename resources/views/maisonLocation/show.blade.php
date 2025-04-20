@@ -1,13 +1,10 @@
 
     @extends('layouts.app')
-
     @section('content')
     @include('maisonLocation._header')
       <div class="row">
         <div class="col-4">
-        
             <div class="card" style="width:18rem;">
-              
               <div class="card-body">
                 <h5 class="card-title">
                   NOM :   {{  $maisonLocation->name ?? "" }}

@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Models\Traits\SearchOnModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends MyModel
 {
-	use HasFactory, SearchOnModel;
+	use HasFactory, SearchOnModel ,SoftDeletes;
 
 	protected $guarded = [];
 
@@ -18,5 +19,5 @@ class Client extends MyModel
         return $this->hasOne(Compte::class);
     }
 
-    
+
 }

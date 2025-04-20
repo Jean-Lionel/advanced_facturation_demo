@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MaisonLocationStoreRequest;
 use App\Http\Requests\MaisonLocationUpdateRequest;
+use App\Models\ClientMaison;
 use App\Models\MaisonLocation;
 use Illuminate\Http\Request;
 
@@ -12,22 +13,23 @@ class MaisonLocationController extends Controller
 
     public function index(Request $request)
     {
+
         $search = $request->input('search');
         $maisonLocations = MaisonLocation::with(['clients'])
                                     ->whereHas('clients', function($query) use ($search) {
                                         if($search){
                                             $query->where('name', 'LIKE', "%{$search}%");
-                                            
                                         }
                                     })
                                     ->orWhere(function($query) use ($search) {
                                         if($search){
                                             $query->where('name', 'LIKE', "%{$search}%");
-                                            
+
                                         }
                                     })
                                     ->withCount('clients')
                                     ->latest()->paginate(10);
+
 
         return view('maisonLocation.index', compact('maisonLocations' , 'search'));
     }

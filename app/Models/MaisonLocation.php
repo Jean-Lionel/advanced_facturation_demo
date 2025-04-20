@@ -51,7 +51,11 @@ class MaisonLocation extends Model
     }
 
     public function clients(){
-        return $this->belongsToMany(Client::class, 'client_maisons', 'maisonlocation_id');
+        return $this->belongsToMany(Client::class, 'client_maisons',
+         'maisonlocation_id', 'client_id')
+                ->withPivot('deleted_at')
+                ->wherePivotNull('deleted_at');
+        ;
     }
 
     public function getPriceTTCAttribute(){
@@ -60,7 +64,7 @@ class MaisonLocation extends Model
     }
 
     // public function getTaxAttribute(){
-        
+
     //     return $this->getPriceTTCAttribute() -($this->montant);
     // }
 
@@ -81,7 +85,7 @@ class MaisonLocation extends Model
     public function getVatCustomerPayerAttribute(){
         return $this->clients->map->vat_customer_payer->first() ?? 0;
     }
-    
+
     public function paymentLocationMensuels()
     {
         return $this->hasOne(PaymentLocationMensuel::class,'maisonlocation_id');
