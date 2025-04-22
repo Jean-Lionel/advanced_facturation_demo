@@ -49,6 +49,8 @@ class OrderInteret extends Model
         return $this->belongsTo(Order::class);
     }
 
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -67,10 +69,11 @@ class OrderInteret extends Model
     }
 
     public function commisionnaire(){
-        return Client::where('id', $this->commisionnaireId)->first();
+        //return Client::where('id', $this->commisionnaireId)->first();
+        return $this->belongsTo(Client::class, 'commisionnaire_id');
     }
     public function client(){
-        return Client::where('id', $this->clientId)->first();
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
     public function getInteretAttribute(){

@@ -67,7 +67,7 @@ protected $guarded = [];
         });
 	}
 
-    
+
     public function client(){
             return $this->belongsTo(Client::class);
     }
@@ -126,7 +126,7 @@ protected $guarded = [];
                     $table->string('invoice_type', 10)->nullable();
                 });
             }
-          
+
     }
 
 

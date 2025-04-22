@@ -60,16 +60,16 @@ class SyncronizeController extends Controller
         $obr = new ObrDeclarationController();
         try{
            // $ws400000333700160
-           //$
-           $excludes_ids = ObrPointer::all()->map->order_id;
-           $order_peding_ids = Order::whereNull('envoye_obr')
-                                        ->whereNotIn('id', $excludes_ids)
-                                        ->get()->map->id;
+
+           // dd($excludes_ids);
+            $order_peding_ids = Order::with('obrPointer')->whereNull('envoye_obr')
+                                            ->get()->map->id;
+
             foreach ($order_peding_ids as $item) {
                 try {
                     $response =   $obr->sendInvoinceToObr($item);
                 }catch (\Exception $e) {
-          
+
                     return response()->json(
                        [
                         'data' => [
@@ -102,10 +102,10 @@ class SyncronizeController extends Controller
                     $current->save();
                     $item2->status = 1;
                     $item2->save();
-                    
+
                     return $response;
                 } catch (\Throwable $e) {
-               
+
                     return response()->json([
                         'success' => false,
                         'data' => [
@@ -120,7 +120,7 @@ class SyncronizeController extends Controller
 
             }
         }catch(\Exception $e){
-          
+
             return response()->json([
                 'success' => false,
                 'data' => [

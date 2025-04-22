@@ -17,9 +17,7 @@ class RapportController extends Controller
     }
 
     public function partage_interet(){
-        $interets = OrderInteret::latest()->get();
-
-
+        $interets = OrderInteret::with(['order','client','commisionnaire'])->latest()->paginate(100);
          // Initialiser les tableaux pour stocker les totaux et les noms
          $commissionnaireTotals = [];
          $clientTotals = [];
@@ -28,11 +26,9 @@ class RapportController extends Controller
 
         $commissionnaires = [];
         $clients = [];
-
          // Parcourir tous les éléments du tableau
          foreach ($interets as $interet) {
             $description = json_decode($interet->description, true);
-
             if ($description) {
                 $partage = $description['partage'] ?? [];
                 $commissionnaireId = $description['commissionaire_id'];
@@ -55,7 +51,6 @@ class RapportController extends Controller
                     }
                     $commissionnaireTotals[$commissionnaireId] += $partage['Commisionnaire'] ?? 0;
                 }
-
                 // client
                 if (!isset($clientTotals[$clientId])) {
                     $clientTotals[$clientId] = 0;
