@@ -62,7 +62,8 @@ protected $guarded = [];
         });
 
         self::created(function($model){
-            self::update_use_abonement($model);
+
+          //  self::update_use_abonement($model);
         });
 	}
 
