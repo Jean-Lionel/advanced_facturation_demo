@@ -98,8 +98,7 @@ class ProductController extends Controller
         $category = request()->query('category');
         $occurence = request()->query('occurence') ?? 1;
 
-        $products = Product::where(function($quer) use($search){
-
+        $products = Product::with('category')-> where(function($quer) use($search){
             if($search){
                 $quer->where('name','like', '%'.$search.'%')
                 ->orWhere('code_product','like', '%'.$search.'%')

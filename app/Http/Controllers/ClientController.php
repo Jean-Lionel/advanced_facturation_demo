@@ -12,8 +12,16 @@ class ClientController extends Controller
 {
     public function index()
     {
+        $search = request()->get('search');
         $clients =  Client::with('compte')->latest()->paginate(10);
-
+        if($search){
+            $clients = Client::with('compte')
+            ->where(function($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                ->orWhere('telephone', 'like', "%{$search}%")
+                ->orWhere('customer_TIN', 'like', "%{$search}%");
+            })->paginate(10);
+        }
         $nombre_total_clients = $clients->total();
         return view('clients.index', compact('clients', 'nombre_total_clients'));
     }

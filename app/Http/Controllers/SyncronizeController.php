@@ -13,13 +13,28 @@ use Illuminate\Support\Facades\Session;
 
 class SyncronizeController extends Controller
 {
+    public function __construct()
+    {
+        if(env('OBR_CAN_SYNCRONISE', false) == false){
+            return response()->json([
+                'success' => false,
+                'data' => null,
+            ]);
+        }
+    }
 
     public function obr_log(){
-        $logs = ObrPointer::latest()->get();
+        $logs = ObrPointer::latest()->paginate(10);
         return view('entreprises.obr_log', compact('logs'));
     }
     //
     public function syncronize(){
+        if(env('OBR_CAN_SYNCRONISE', false) == false){
+            return response()->json([
+                'success' => false,
+                'data' => null,
+            ]);
+        }
 
         $response = 0;
         if(isInternetConnection()){
@@ -57,7 +72,7 @@ class SyncronizeController extends Controller
     }
 
     public function syncronizeInvoices(){
-        if(env('OBR_CAN_SYNCRONISE', false) ){
+        if(!env('OBR_CAN_SYNCRONISE', false) ){
             return response()->json([
                 'success' => false,
                 'data' => null,
