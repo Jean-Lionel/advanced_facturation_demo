@@ -275,7 +275,7 @@
                         return result;
                     }
 
-                    if(canSyncronize && !cancel_syncronize){
+                    if(canSyncronize && !cancel_syncronize && CAN_SYNCRONISE){
 
                         let  limitedInterval =  setInterval(async () => {
                             const result = await updateInternetStatus();
