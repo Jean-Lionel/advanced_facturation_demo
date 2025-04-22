@@ -147,7 +147,7 @@ class CheckoutController extends Controller
         }
 
         if(isset($order->id)){
-            $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEME');
+            $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEM');
             $currentModelFacture = 'cart.facture_model_prothem';
             if($modelFacture){
                 $currentModelFacture = 'cart.facture_' . Str::lower($modelFacture) ;
