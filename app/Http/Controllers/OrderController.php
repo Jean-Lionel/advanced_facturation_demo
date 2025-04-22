@@ -46,7 +46,7 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEME');
+        $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEM');
         $currentModelFacture = 'cart.facture_model_prothem';
         if($modelFacture){
             $currentModelFacture = 'cart.facture_' . Str::lower($modelFacture) ;
