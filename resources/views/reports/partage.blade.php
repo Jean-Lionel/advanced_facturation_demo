@@ -67,8 +67,8 @@
                         <tr>
                             <td>{{ $count }}</td>
                             <td class="text-center">{{ $item->order_id }}</td>
-                            <td>{{ $item->commisionnaire()?->name }}</td>
-                            <td>{{ $item->client()?->name }}</td>
+                            <td>{{ $item->commisionnaire?->name }}</td>
+                            <td>{{ $item->client?->name }}</td>
                             <td class="text-right">{{ $item->montant }}</td>
                             <td style="width: 200px;">
                                 <ul>

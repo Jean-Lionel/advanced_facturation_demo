@@ -12,9 +12,9 @@ class ClientController extends Controller
 {
     public function index()
     {
-        $model = new Client();
-        $clients =  $model->getPaginateData();
-        $nombre_total_clients = Client::all()->count();
+        $clients =  Client::with('compte')->latest()->paginate(10);
+
+        $nombre_total_clients = $clients->total();
         return view('clients.index', compact('clients', 'nombre_total_clients'));
     }
 

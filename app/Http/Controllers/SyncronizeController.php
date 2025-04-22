@@ -57,14 +57,18 @@ class SyncronizeController extends Controller
     }
 
     public function syncronizeInvoices(){
+        if(env('OBR_CAN_SYNCRONISE', false) ){
+            return response()->json([
+                'success' => false,
+                'data' => null,
+            ]);
+        }
         $obr = new ObrDeclarationController();
         try{
            // $ws400000333700160
-
            // dd($excludes_ids);
             $order_peding_ids = Order::with('obrPointer')->whereNull('envoye_obr')
                                             ->get()->map->id;
-
             foreach ($order_peding_ids as $item) {
                 try {
                     $response =   $obr->sendInvoinceToObr($item);
@@ -135,6 +139,12 @@ class SyncronizeController extends Controller
     }
 
     public function syncronizeStock(){
+        if(env('OBR_CAN_SYNCRONISE', false) ){
+            return response()->json([
+                'success' => false,
+                'data' => null,
+            ]);
+        }
         $today = Carbon::now();
         $thirtyDaysAgo = $today->subDays(DAY_FOR_STOCK_DATA_SYNCRONIZE);
         $records = ObrStockLog::whereDate('created_at', '>', $thirtyDaysAgo)->get()->map->movement_id;
