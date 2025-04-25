@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Doctrine\Common\Cache\Cache as CacheCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -71,16 +72,18 @@ class User extends Authenticatable
 
 
     public function roles(){
-        return  $this->belongsToMany('App\Models\Role');
+        return $this->belongsToMany('App\Models\Role');
     }
 
 
     public function isAdmin(){
-        return  $this->roles()->where('name','ADMINISTRATEUR')->first()  || $this->id === 1;
+        return Cache::remember('is_admin_user', 120, function(){
+            return  $this->roles()->where('name','ADMINISTRATEUR')->first()  || $this->id === 1;
+        });
     }
 
     public function isControleur(){
-         return  $this->roles()->where('name','CONTROLLEUR')->first();
+         return   $this->roles()->where('name','CONTROLLEUR')->first();
     }
 
     public function isComptable(){
@@ -93,7 +96,6 @@ class User extends Authenticatable
     }
 
     public function isEntreProduit(){
-
         return  $this->roles()->where('name','ENTRE DES PRODUITS')->first();
     }
 }

@@ -54,8 +54,6 @@ class CheckoutController extends Controller
             DB::beginTransaction();
             $this->stockUpdated();
             $client =  Client::find($request->client_id);
-
-
             if(!$client) {
                 $client =  Client::create([
                     'name' => $request->name,

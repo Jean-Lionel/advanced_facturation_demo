@@ -30,7 +30,6 @@ protected $guarded = [];
 			$model->user_id = Auth::user()->id ?? 1;
 			$model->client_id = $model->client->id ?? 0;
 			$model->invoice_type = $model->invoice_type ??  'FN';
-
             // Checking the last inserted id of the invoice
             $lastInsertedId = self::latest()->first();
             if ($lastInsertedId) {
@@ -51,7 +50,7 @@ protected $guarded = [];
 
         self::updating(function($model){
             $model->user_id = Auth::user()->id ?? 1;
-
+            $model->user_id = Auth::user()->id ?? 1;
             try {
                 self::updateDatabases();
             } catch (\Throwable $th) {

@@ -38,12 +38,10 @@ class RapportController extends Controller
                 if (isset($partage['Informaticien'])) {
                     $informaticienTotal += $partage['Informaticien'];
                 }
-
                 // l'entreprise
                 if (isset($partage['Entreprise'])) {
                     $entrepriseTotal += $partage['Entreprise'];
                 }
-
                 //  commissionnaire
                 if ($commissionnaireId) {
                     if (!isset($commissionnaireTotals[$commissionnaireId])) {
