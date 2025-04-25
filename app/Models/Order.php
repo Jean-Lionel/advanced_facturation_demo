@@ -19,17 +19,17 @@ class Order extends Model
     use SoftDeletes;
     use Sortable;
 
-protected $guarded = [];
- public $sortable = ['amount',
+    protected $guarded = [];
+    public $sortable = ['amount',
 'products','user_id','tax','amount_tax','client','type_paiement', 'date_facturation', 'invoice_signature'];
 
-	public static function boot(){
-		parent::boot();
+    public static function boot(){
+        parent::boot();
 
-		self::creating(function($model){
-			$model->user_id = Auth::user()->id ?? 1;
-			$model->client_id = $model->client->id ?? 0;
-			$model->invoice_type = $model->invoice_type ??  'FN';
+        self::creating(function($model){
+            $model->user_id = Auth::user()->id ?? 1;
+            $model->client_id = $model->client->id ?? 0;
+            $model->invoice_type = $model->invoice_type ??  'FN';
             // Checking the last inserted id of the invoice
             $lastInsertedId = self::latest()->first();
             if ($lastInsertedId) {
@@ -46,7 +46,7 @@ protected $guarded = [];
             }
 
             Session::put('cancel_syncronize', false);
-		});
+        });
 
         self::updating(function($model){
             $model->user_id = Auth::user()->id ?? 1;
@@ -59,58 +59,80 @@ protected $guarded = [];
 
             Session::put('cancel_syncronize', false);
         });
-
         self::created(function($model){
+           // dd($model->products);
+            if(env('APP_CAN_CALCULE_INTERET', false)){
+                $montant = collect($model->products)->pluck('interet_total')->sum();
+              $cre =   OrderInteret::create([
+                    'order_id' => $model->id,
+                    'user_id' => $model->user_id,
+                    'montant' => $montant ,
+                    'description' => json_encode([
+                        'type' => 'VENTE',
+                        'commissionaire_id' => $model->commissionaire_id,
+                        'client_id' => $model->client_id,
+                        'partage' => [
+                            'Informaticien' => ($montant * PARTAGE_INFORMATICIEN / 100),
+                            'Client' => ($montant * PARTAGE_CLIENT / 100),
+                            'Commisionnaire' => ($montant * PARTAGE_COMMISSIONNAIRE  / 100),
+                            'Entreprise' => ($montant * PARTAGE_ENTREPRISE  / 100),
+                            ]
+                        ]),
+                    ]);
+                   // dd($cre, env('APP_CAN_CALCULE_INTERET', false) , $model);
+                   // Writte historique Montant sur le compte du commissionnaire
 
-          //  self::update_use_abonement($model);
-        });
-	}
+
+                }
+
+            });
+        }
 
 
-    public function client(){
+        public function client(){
             return $this->belongsTo(Client::class);
-    }
+        }
 
 
-	public function details(){
-		return $this->hasMany('App\Models\DetailOrder','order_id');
-	}
+        public function details(){
+            return $this->hasMany('App\Models\DetailOrder','order_id');
+        }
 
 
-	public function dette(){
-		return $this->belongsTo(PaiementDette::class , 'id','order_id');
-	}
+        public function dette(){
+            return $this->belongsTo(PaiementDette::class , 'id','order_id');
+        }
 
-	public function getClientAttribute($v)
-	{
-		return json_decode($v);
-	}
+        public function getClientAttribute($v)
+        {
+            return json_decode($v);
+        }
 
-    public function concelInvoice(){
-        return $this->belongsTo(CanceledInvoince::class, 'id','order_id');
-    }
+        public function concelInvoice(){
+            return $this->belongsTo(CanceledInvoince::class, 'id','order_id');
+        }
 
-    public function obrPointer(){
-        return $this->belongsTo(ObrPointer::class, 'id','order_id');
-    }
-	//products
-	public function getProductsAttribute($v)
-	{
-		return unserialize($v);
-	}
-    public function getInteretAttribute(){
-        return collect($this->products)->pluck('interet_total')->sum();
-    }
-    public function getCompanyAttribute($v){
-        return json_decode($v) ?  json_decode($v) : Entreprise::currentEntreprise();
-    }
+        public function obrPointer(){
+            return $this->belongsTo(ObrPointer::class, 'id','order_id');
+        }
+        //products
+        public function getProductsAttribute($v)
+        {
+            return unserialize($v);
+        }
+        public function getInteretAttribute(){
+            return collect($this->products)->pluck('interet_total')->sum();
+        }
+        public function getCompanyAttribute($v){
+            return json_decode($v) ?  json_decode($v) : Entreprise::currentEntreprise();
+        }
 
-    public function commissionaire(){
-        return $this->belongsTo(Client::class , 'commissionaire_id');
-    }
+        public function commissionaire(){
+            return $this->belongsTo(Client::class , 'commissionaire_id');
+        }
 
-    private static function updateDatabases(){
-         // add a new column invoice_currency on order if it doesn't already exist
+        private static function updateDatabases(){
+            // add a new column invoice_currency on order if it doesn't already exist
             // Check if the 'invoice_currency' column exists in the 'orders' table
             if (!Schema::hasColumn('orders', 'invoice_currency')) {
                 // Add the 'invoice_currency' column if it doesn't exist
@@ -126,26 +148,26 @@ protected $guarded = [];
                 });
             }
 
-    }
-
-
-    private static function checkCanCreateNewRecord(){
-        $lastRecord = self::where('user_id', auth()->id())
-        ->latest()
-        ->first();
-        if ($lastRecord) {
-            // Calculer le temps écoulé depuis le dernier enregistrement
-            $timeElapsed = Carbon::parse($lastRecord->created_at)->diffInSeconds(Carbon::now());
-            // Si moins d'une minute s'est écoulée
-            if ($timeElapsed < TEMPS_GENERATION_FACTURE) {
-                $remainingTime = TEMPS_GENERATION_FACTURE - $timeElapsed;
-                throw new \Exception("Veuillez attendre encore {$remainingTime} secondes avant de créer un nouvel enregistrement.");
-            }
         }
-        return true;
-    }
 
-    public function user(){
-        return $this->belongsTo(User::class,'user_id');
+
+        private static function checkCanCreateNewRecord(){
+            $lastRecord = self::where('user_id', auth()->id())
+            ->latest()
+            ->first();
+            if ($lastRecord) {
+                // Calculer le temps écoulé depuis le dernier enregistrement
+                $timeElapsed = Carbon::parse($lastRecord->created_at)->diffInSeconds(Carbon::now());
+                // Si moins d'une minute s'est écoulée
+                if ($timeElapsed < TEMPS_GENERATION_FACTURE) {
+                    $remainingTime = TEMPS_GENERATION_FACTURE - $timeElapsed;
+                    throw new \Exception("Veuillez attendre encore {$remainingTime} secondes avant de créer un nouvel enregistrement.");
+                }
+            }
+            return true;
+        }
+
+        public function user(){
+            return $this->belongsTo(User::class,'user_id');
+        }
     }
-}
