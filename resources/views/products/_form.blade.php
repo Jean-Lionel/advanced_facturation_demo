@@ -56,7 +56,7 @@
             {!! $errors->first('unite_mesure', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
-
+{{--
     <div class="col-md-2">
 
         <div class="form-group">
@@ -118,7 +118,7 @@
             <input type="number" step="any" class="form-control {{$errors->has('quantite_alert') ? 'is-invalid' : 'is-valid' }}" id="quantite_alert" name="quantite_alert" value="{{ old('quantite_alert') ?? $product->quantite_alert?? ' ' }}">
             {!! $errors->first('quantite_alert', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
-    </div>
+    </div> --}}
 
 
     <div class="col-md-3">
