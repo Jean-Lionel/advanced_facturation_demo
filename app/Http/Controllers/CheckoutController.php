@@ -175,10 +175,20 @@ class CheckoutController extends Controller
 
     private function stockUpdated()
     {
+        $data = [];
         foreach (Cart::content() as $item) {
             $product = Product::find($item->model->id);
-            $product->update(['quantite' => $product->quantite - $item->qty]);
+
+            unset($product->created_at);
+            unset($product->updated_at);
+            unset($product->delete_at);
+            $data[] = [
+                ... $product->toArray(),
+                'quantite' => $product->quantite - $item->qty,
+            ];
+            //$product->update(['quantite' => $product->quantite - $item->qty]);
         }
+        Product::upsert($data, 'id', ['quantite']);
     }
 
     private function storeTodetailOder($order_id){

@@ -63,6 +63,8 @@ class Order extends Model
            // dd($model->products);
             if(env('APP_CAN_CALCULE_INTERET', false)){
                 $montant = collect($model->products)->pluck('interet_total')->sum();
+                $commission = ($montant * PARTAGE_COMMISSIONNAIRE  / 100);
+                $achatCmmission = ($montant * PARTAGE_CLIENT / 100);
               $cre =   OrderInteret::create([
                     'order_id' => $model->id,
                     'user_id' => $model->user_id,
@@ -73,8 +75,8 @@ class Order extends Model
                         'client_id' => $model->client_id,
                         'partage' => [
                             'Informaticien' => ($montant * PARTAGE_INFORMATICIEN / 100),
-                            'Client' => ($montant * PARTAGE_CLIENT / 100),
-                            'Commisionnaire' => ($montant * PARTAGE_COMMISSIONNAIRE  / 100),
+                            'Client' => $achatCmmission ,//($montant * PARTAGE_CLIENT / 100),
+                            'Commisionnaire' =>  $commission,
                             'Entreprise' => ($montant * PARTAGE_ENTREPRISE  / 100),
                             ]
                         ]),
@@ -82,7 +84,36 @@ class Order extends Model
                    // dd($cre, env('APP_CAN_CALCULE_INTERET', false) , $model);
                    // Writte historique Montant sur le compte du commissionnaire
 
+                   $compteCommissionnaire = Compte::where('client_id', $model->commissionaire_id)->first();
+                   $compteClient = Compte::where('client_id', $model->client_id)->first();
+                   // Commissionnair
+                   if($compteCommissionnaire &&  $compteClient ){
+                    $compteCommissionnaire->montant += $commission;
+                    $compteClient->montant += $achatCmmission;
+                    $compteCommissionnaire->save();
+                    $compteClient->save();
+                    BienvenuHistorique::create([
+                        'compte_id' =>   $compteCommissionnaire->id,
+                        'client_id' =>  $model->commissionaire_id,
+                        'mode_payement' => 1,
+                        'title' => 'COMMISSION',
+                        'montant' => $commission,
+                        'description' => "REF #". $cre->id . " Commission sur vente du facture Client No" . $model->client_id,
+                        'user_id' => auth()->user()->id
+                    ]);
+                    // Client
+                    BienvenuHistorique::create([
+                        'compte_id' =>   $compteClient->id,
+                        'client_id' =>  $model->client_id,
+                        'mode_payement' => 1,
+                        'title' => 'RESTOURNE SUR  ACHAT',
+                        'montant' => $achatCmmission,
+                        'description' => "REF #". $cre->id .  " Commission sur Achat du facture Client No" . $model->client_id,
+                        'user_id' => auth()->user()->id
+                    ]);
 
+                }
+                   // Augmenter le montant du compte
                 }
 
             });

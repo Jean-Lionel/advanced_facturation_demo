@@ -15,7 +15,7 @@ class ClientController extends Controller
         $search = request()->get('search');
         $clients =  Client::with('compte')->latest()->paginate(10);
         if($search){
-            $clients = Client::with('compte')
+            $clients = Client::with(['compte', 'commissionaire'])
             ->where(function($query) use ($search) {
                 $query->where('name', 'like', "%{$search}%")
                 ->orWhere('telephone', 'like', "%{$search}%")
@@ -27,9 +27,10 @@ class ClientController extends Controller
     }
 
     public function commissionnaires(){
-        $model = new Client();
-        $additionalCondition = [['column' => 'is_commissionaire', 'operator' => '<>', 'value' => null],];
-        $clients =  $model->getPaginateData($additionalCondition);
+
+        $clients =  Client::with('compte')
+                            ->whereHas('compte')
+                            ->paginate();
         return view('clients.commisionnaire_list', compact('clients'));
     }
 

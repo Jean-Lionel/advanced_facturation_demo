@@ -103,25 +103,24 @@
                         <th >{{ $informaticienTotal }}</th>
                     </tr>
                 </table>
-                {{-- <h5>Commissionnaires</h5>
-                <table class="table table-striped">
-                        @foreach($commissionnaireTotals as $id => $total)
+                <h5>Les  derniers commissions </h5>
+                <table id="clients" class="table table-striped">
+                        <tr>
+                            <th>Nom</th>
+                            <th>Type</th>
+                            <th>Montant</th>
+                            <th>Date</th>
+                        </tr>
+                        @foreach($historiquesPayment  as $pay)
                             <tr>
-                                <td>{{ $commissionnairesData[$id] ?? 'Inconnu' }}</td>
-                                <td>{{ $total }}</td>
+                                <td>{{ $pay->client->name}}</td>
+                                <td>{{ $pay->title}}</td>
+                                <td>{{ $pay->montant}}</td>
+                                <td>{{ $pay->created_at}}</td>
+
                             </tr>
                         @endforeach
                 </table>
-                <h5>Les  Client</h5>
-                <table id="clients" class="table table-striped">
-
-                        @foreach($clientTotals as $id => $total)
-                            <tr>
-                                <td>{{ $clientsData[$id] ?? 'Inconnu' }}</td>
-                                <td>{{ $total }}</td>
-                            </tr>
-                        @endforeach
-                </table> --}}
 
 
             </div>

@@ -50,6 +50,7 @@
 				@if (env('APP_USE_ABONEMENT', false))
                 <th scope="col">Commissionnaire</th>
 				<th scope="col">Fournisseur</th>
+                <th>Porteur</th>
 				<th>Abonnées</th>
 				@endif
 				<th>Date</th>
@@ -81,12 +82,13 @@
 				<td>
 					{{ $value->is_fournisseur}}
 				</td>
+                <td>{{ $value?->commissionaire?->name}}</td>
 				<td>{{ $value->compte->name  ?? "" }}</td>
 				@endif
 
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
-					{{--  <a href="{{ route('clients.edit', $value) }}" class="btn btn-outline-info btn-sm mr-2">Modifier</a>  --}}
+					{{--  <a href="{{ route('clients.edit', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>  --}}
 					<form class="form-delete" action="{{ route('clients.destroy' , $value) }}" style="display: inline;" method="POST">
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}
@@ -98,8 +100,8 @@
 						onclick="return confirm('Are you sure you want to delete this client ?')"
 						>Supprimer</button>
 						@if(env('APP_USE_ABONEMENT', false))
-						<a href="{{ route('clients_abones', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Abonée</a>
-						<a href="{{ route('make_commissionnaire', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Commissionnaire</a>
+						<a href="{{ route('clients_abones', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Abonée</a>
+						<a href="{{ route('make_commissionnaire', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Commissionnaire</a>
 
 						@endif
 					</form>

@@ -18,6 +18,9 @@ class Client extends MyModel
     public function compte(){
         return $this->hasOne(Compte::class);
     }
+    public function commissionaire(){
+        return $this->belongsTo(Client::class, 'commissionnaire_id');
+    }
 
 
 }

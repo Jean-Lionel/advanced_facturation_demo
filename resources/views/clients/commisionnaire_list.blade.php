@@ -9,7 +9,7 @@
         <div class="col-md-6 d-flex justify-content-between">
 
             <h4 class="text-center">
-                Liste des Commissionnaires
+                Liste des Commissions
             </h4>
         </div>
         <div class="col-md-6">
@@ -53,17 +53,13 @@
 
                 <td>{{ $value->created_at }}</td>
                 <td class="d-flex justify-content-around">
-                    <a href="{{ route('recharge',$value->compte->id) }}" class="btn btn-outline-info btn-sm
-                    mr-2">Recharger</a>
-                    <a href="{{ route('recharge',$value->compte->id) }}" class="btn btn-outline-warning btn-sm
-                        mr-2">Retrait</a>
-                    <a href="{{ route('historique', $value) }}" class="btn btn-outline-success btn-sm
-                    mr-2">Historique</a>
+                    <a href="{{ route('recharge',$value->compte->id) }}" class="mr-2 btn btn-outline-info btn-sm">Recharger</a>
+                    <a href="{{ route('recharge',$value->compte->id) }}" class="mr-2 btn btn-outline-warning btn-sm">Retrait</a>
+                    <a href="{{ route('historique', $value) }}" class="mr-2 btn btn-outline-success btn-sm">Historique</a>
                 </td>
 
                 <!-- <td class="d-flex justify-content-around">
-                    {{--  					<a href="{{ route('clients.edit', $value) }}" class="btn btn-outline-info btn-sm
-                    mr-2">Modifier</a>--}}
+                    {{--  					<a href="{{ route('clients.edit', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>--}}
                     <form class="form-delete" action="{{ route('clients.destroy' , $value) }}" style="display: inline;"
                         method="POST">
                         {{ csrf_field() }}
@@ -71,7 +67,7 @@
                         <button class="btn btn-outline-danger btn-sm delete_client">Supprimer</button>
 
                         <a href="{{ route('clients_abones', $value->id) }}"
-                            class="btn btn-outline-info btn-sm mr-2">Historique</a>
+                            class="mr-2 btn btn-outline-info btn-sm">Historique</a>
                     </form>
                 </td> -->
             </tr>

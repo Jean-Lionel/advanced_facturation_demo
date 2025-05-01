@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BienvenuHistorique;
 use App\Models\Client;
 use App\Models\OrderInteret;
 use App\Models\User;
@@ -23,7 +24,6 @@ class RapportController extends Controller
          $clientTotals = [];
          $entrepriseTotal = 0;
          $informaticienTotal = 0;
-
         $commissionnaires = [];
         $clients = [];
          // Parcourir tous les éléments du tableau
@@ -65,9 +65,11 @@ class RapportController extends Controller
         }
 
         $commissionnairesData = Client::whereIn('id', $commissionnaires)->pluck('name', 'id');
-        $clientsData = Client::whereIn('id', $clients)->pluck('name', 'id');
+        //$clientsData = Client::whereIn('id', $clients)->latest()->paginate();
 
-        return view('reports.partage', compact('interets','commissionnaireTotals', 'clientTotals', 'entrepriseTotal','informaticienTotal','commissionnairesData','clientsData'));
+        $historiquesPayment = BienvenuHistorique::with(['client'])->latest()->paginate();
+
+        return view('reports.partage', compact('interets','commissionnaireTotals', 'clientTotals', 'entrepriseTotal', 'historiquesPayment','informaticienTotal','commissionnairesData'));
 
     }
 }

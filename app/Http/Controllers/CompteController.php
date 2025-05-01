@@ -24,7 +24,6 @@ class CompteController extends Controller
 
     // View formulaire de recharge
     public function recharge($compte){
-
         $compte = Compte::find($compte);
         return view('compte.recharge')->with('compte', $compte);
     }
