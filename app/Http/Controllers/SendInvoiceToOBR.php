@@ -17,6 +17,11 @@ class SendInvoiceToOBR extends Controller
 
     public function __construct()
     {
+        // Check if the syncronize is enabled if not prevent calling the constructor
+
+        if(env('OBR_CAN_SYNCRONISE', false) == true){
+            return "";
+        }
         $this->baseUrl = env('OBR_PRODUCTION', false) == true ? 'https://ebms.obr.gov.bi:8443/ebms_api/' : 'https://ebms.obr.gov.bi:9443/ebms_api/';
     }
 
@@ -88,7 +93,7 @@ class SendInvoiceToOBR extends Controller
         ]);
 
         //dd($order);
-       
+
         $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'addInvoice_confirm/', $invoince);
         return json_decode($req->body());
     }
@@ -138,6 +143,9 @@ class SendInvoiceToOBR extends Controller
     // Generation du TOken
     public function getToken()
     {
+
+
+
 
         try {
             $req = Http::acceptJson()->post($this->baseUrl . 'login/', [
