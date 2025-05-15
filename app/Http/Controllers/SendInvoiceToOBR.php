@@ -19,9 +19,7 @@ class SendInvoiceToOBR extends Controller
     {
         // Check if the syncronize is enabled if not prevent calling the constructor
 
-        if(env('OBR_CAN_SYNCRONISE', false) == true){
-            return "";
-        }
+       
         $this->baseUrl = env('OBR_PRODUCTION', false) == true ? 'https://ebms.obr.gov.bi:8443/ebms_api/' : 'https://ebms.obr.gov.bi:9443/ebms_api/';
     }
 
@@ -143,8 +141,9 @@ class SendInvoiceToOBR extends Controller
     // Generation du TOken
     public function getToken()
     {
-
-
+        if(env('OBR_CAN_SYNCRONISE', false) == true){
+            return "";
+        }
 
 
         try {
