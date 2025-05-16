@@ -141,9 +141,6 @@ class SendInvoiceToOBR extends Controller
     // Generation du TOken
     public function getToken()
     {
-
-
-
         try {
             $req = Http::acceptJson()->post($this->baseUrl . 'login/', [
                 'username' => env('OBR_USERNAME'),
