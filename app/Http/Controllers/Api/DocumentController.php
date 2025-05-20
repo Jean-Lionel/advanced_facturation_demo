@@ -56,7 +56,7 @@ class DocumentController extends Controller
             $document->save();
         }
 
-        return new DocumentResource($document);
+        return $this->index($request);
     }
 
     /**

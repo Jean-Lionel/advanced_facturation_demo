@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="mb-4 d-flex justify-content-between align-items-center">
         <h1>Types de Transactions</h1>
         <a href="{{ route('advanced.transaction_types.create') }}" class="btn btn-primary">
             <i class="fas fa-plus"></i> Nouveau Type
@@ -48,6 +48,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $transaction_types->links() }}
             </div>
         </div>
     </div>
