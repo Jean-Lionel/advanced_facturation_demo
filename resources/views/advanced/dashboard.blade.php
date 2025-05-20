@@ -133,7 +133,7 @@
                 <div class="card dashboard-card kpi-card finance">
                     <div class="card-body position-relative">
                         <h6 class="card-title">Bilan financier</h6>
-                        <div class="card-value">+{{ number_format($stats['totalRevenue'], 2, ',', ' ') }} €</div>
+                        <div class="card-value">+{{ number_format($stats['totalRevenue'], 2, ',', ' ') }} FBU</div>
                         <div class="mt-2 text-success">
                             <i class="fas fa-arrow-up"></i> +15% vs mois dernier
                         </div>
@@ -229,7 +229,7 @@
                                             <td>{{ $transaction->description }}</td>
                                             <td>{{ $transaction->transactionType?->name ?? 'N/A' }}</td>
                                             <td class="{{ $transaction->type === 'credit' ? 'text-success' : 'text-danger' }}">
-                                                {{ $transaction->type === 'credit' ? '+' : '-' }} {{ number_format($transaction->montant, 2, ',', ' ') }} €
+                                                {{ $transaction->type === 'credit' ? '+' : '-' }} {{ number_format($transaction->montant, 2, ',', ' ') }} FBU
                                             </td>
                                             <td>
                                                 <span class="badge bg-{{ $transaction->status === 'completed' ? 'success' : 'warning' }}">
@@ -354,7 +354,7 @@
                                 beginAtZero: true,
                                 ticks: {
                                     callback: function(value) {
-                                        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+                                        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' FBU';
                                     }
                                 }
                             }

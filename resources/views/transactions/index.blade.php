@@ -24,7 +24,7 @@
                 <div class="col-md-3">
                     <label for="montant" class="form-label">Montant</label>
                     <div class="input-group">
-                        <span class="input-group-text">€</span>
+                        <span class="input-group-text">FBU</span>
                         <input type="number" step="0.01" name="montant" id="montant" class="form-control" value="{{ request('montant') }}">
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                         @foreach($transactions as $transaction)
                             <tr>
                                 <td>{{ $transaction->date_transaction->format('d/m/Y') }}</td>
-                                <td>{{ number_format($transaction->montant, 2, ',', ' ') }} €</td>
+                                <td>{{ number_format($transaction->montant, 2, ',', ' ') }} FBU</td>
                                 <td>{{ $transaction->transactionType->name ?? 'N/A' }}</td>
                                 <td>{{ $transaction->member->firstname ?? '' }} {{ $transaction->member->last_name ?? '' }}</td>
                                 <td>{{ $transaction->description }}</td>
@@ -126,6 +126,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $transactions->links() }}
             </div>
         </div>
     </div>

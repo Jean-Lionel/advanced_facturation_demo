@@ -22,7 +22,7 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         $query = Transaction::with(['transactionType', 'member', 'files'])
-            ->latest();
+            ->latest() ;
 
             // Dans le contrôleur
         if ($request->has('date_debut') && $request->date_debut !== null && $request->has('date_fin') && $request->date_fin !== null) {

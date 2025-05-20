@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <strong>Montant:</strong>
-                        <p>{{ number_format($transaction->montant, 2, ',', ' ') }} €</p>
+                        <p>{{ number_format($transaction->montant, 2, ',', ' ') }} FBU</p>
                     </div>
 
                     <div class="mb-3">
