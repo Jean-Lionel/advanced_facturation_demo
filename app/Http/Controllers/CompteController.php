@@ -23,13 +23,10 @@ class CompteController extends Controller
     }
 
     // View formulaire de recharge
-    public function recharge($compte){
-        $compte = Compte::find($compte);
+    public function recharge(Compte $compte){
         return view('compte.recharge')->with('compte', $compte);
     }
-    public function retrait($compte){
-
-        $compte = Compte::find($compte);
+    public function retrait(Compte $compte){
         return view('compte.retrait')->with('compte', $compte);
     }
 
@@ -39,51 +36,51 @@ class CompteController extends Controller
         return view('compte.historique', compact('historiques'));
     }
 
-    public function updatecompte(Request $request){
+    // public function updatecompte(Request $request){
 
 
-        $request->validate([
-            "montant" => "required",
-            "type_paiement" => "required",
-        ]);
-        $montant = $request->montant;
+    //     $request->validate([
+    //         "montant" => "required",
+    //         "type_paiement" => "required",
+    //     ]);
+    //     $montant = $request->montant;
 
 
-        $modePaiement = $request->type_paiement;
-        $id= $request->id;
-        $compte = Compte::find($id);
-        $montantActuel = $compte->montant;
-        if($request->operation == "RETRAIT" ){
-            if($montantActuel < $montant){
-                return redirect()->route('retrait', ['compte' => $compte])->with('error', 'Le montant est insuffisant, Il vous reste '. $montantActuel);
-            }
-            $montantActuel -= $montant;
-        }else{
-            $montantActuel += $montant;
-        }
+    //     $modePaiement = $request->type_paiement;
+    //     $id= $request->id;
+    //     $compte = Compte::find($id);
+    //     $montantActuel = $compte->montant;
+    //     if($request->operation == "RETRAIT" ){
+    //         if($montantActuel < $montant){
+    //             return redirect()->route('retrait', ['compte' => $compte])->with('error', 'Le montant est insuffisant, Il vous reste '. $montantActuel);
+    //         }
+    //         $montantActuel -= $montant;
+    //     }else{
+    //         $montantActuel += $montant;
+    //     }
 
-        $MontTotal = $montantActuel;
-        $compte->update(['montant' => $MontTotal]);
+    //     $MontTotal = $montantActuel;
+    //     $compte->update(['montant' => $MontTotal]);
 
-        if ($request->operation == "RETRAIT") {
-            $title = 'Retrait';
-            $description = 'Retrait du montant de '. $montant.' au client '. $compte->client->name;
-        }else{
-            $title = 'Depot';
-            $description = 'Depot du montant de '. $montant.' au client '. $compte->client->name;
-        }
+    //     if ($request->operation == "RETRAIT") {
+    //         $title = 'Retrait';
+    //         $description = 'Retrait du montant de '. $montant.' au client '. $compte->client->name;
+    //     }else{
+    //         $title = 'Depot';
+    //         $description = 'Depot du montant de '. $montant.' au client '. $compte->client->name;
+    //     }
 
-        BienvenuHistorique::create([
-            'compte_id'=>$id,
-            'client_id'=>$compte->client_id,
-            'mode_payement'=>$modePaiement,
-            'title'=>$title,
-            'montant'=>$montant,
-            'description'=>$description,
-        ]);
+    //     BienvenuHistorique::create([
+    //         'compte_id'=>$id,
+    //         'client_id'=>$compte->client_id,
+    //         'mode_payement'=>$modePaiement,
+    //         'title'=>$title,
+    //         'montant'=>$montant,
+    //         'description'=>$description,
+    //     ]);
 
-        return redirect()->route('compte.index');
-    }
+    //     return redirect()->route('compte.index');
+    // }
 
 
     public function syncronize_customer(){
@@ -164,6 +161,64 @@ class CompteController extends Controller
     public function destroy(Request $request, Compte $compte)
     {
         $compte->delete();
+
+        return redirect()->route('compte.index');
+    }
+
+    public function rechargeUpdatecompte(Compte $compte, Request $request){
+        $request->validate([
+            "montant" => "required",
+            "type_paiement" => "required",
+        ]);
+
+        $montant = $request->montant;
+
+        $modePaiement = $request->type_paiement;
+        $montantActuel = $compte->montant;
+        $montantActuel += $montant;
+        $compte->update(['montant' => $montantActuel]);
+        $title = 'Depot';
+        $description = 'Depot du montant de '. $montant.' au client '. $compte->client->name;
+
+        BienvenuHistorique::create([
+            'compte_id'=>$compte->id,
+            'client_id'=>$compte->client_id,
+            'mode_payement'=>$modePaiement,
+            'title'=>$title,
+            'montant'=>$montant,
+            'description'=>$description,
+        ]);
+
+        return redirect()->route('compte.index');
+
+    }
+
+    public function retraitUpdatecompte(Compte $compte, Request $request){
+        $request->validate([
+            "montant" => "required",
+            "type_paiement" => "required",
+        ]);
+
+        $montant = $request->montant;
+
+        $modePaiement = $request->type_paiement;
+        $montantActuel = $compte->montant;
+        if($montantActuel < $montant){
+            return redirect()->route('compte.retrait', ['compte' => $compte])->with('error', 'Le montant est insuffisant, Il vous reste '. $montantActuel);
+        }
+        $montantActuel -= $montant;
+        $compte->update(['montant' => $montantActuel]);
+        $title = 'Retrait';
+        $description = 'Retrait du montant de '. $montant.' au client '. $compte->client->name;
+
+        BienvenuHistorique::create([
+            'compte_id'=>$compte->id,
+            'client_id'=>$compte->client_id,
+            'mode_payement'=>$modePaiement,
+            'title'=>$title,
+            'montant'=>$montant,
+            'description'=>$description,
+        ]);
 
         return redirect()->route('compte.index');
     }

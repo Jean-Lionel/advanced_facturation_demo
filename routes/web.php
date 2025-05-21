@@ -112,11 +112,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('save_import_data', [ImportDataController::class, 'save'])->name('save_import_data');
     Route::get('clients_abones/{id}', [ClientController ::class, 'abonne'] )->name('clients_abones');
     //recharge le compte
-    Route::get('recharge/{compte}', [CompteController::class , 'recharge'] )->name('recharge');
+    Route::get('recharge/{compte}', [CompteController::class , 'recharge'] )->name('compte.recharge');
     //retrait de compte
-    Route::get('retrait/{compte}', [CompteController::class , 'retrait'] )->name('retrait');
+    Route::get('retrait/{compte}', [CompteController::class , 'retrait'] )->name('compte.retrait');
     Route::get('historique/{id}', [CompteController::class , 'historique'])->name('historique');
-    Route::post('updatecompte', [CompteController::class, 'updatecompte'])->name('updatecompte');
+    Route::post('retrait/updatecompte/{compte}', [CompteController::class, 'retraitUpdatecompte'])->name('retrait.updatecompte');
+    Route::post('recharge/updatecompte/{compte}', [CompteController::class, 'rechargeUpdatecompte'])->name('recharge.updatecompte');
+
     Route::resource('bienvenu-historique', BienvenuHistoriqueController::class);
     Route::get('commissionnaires', [ClientController::class, 'commissionnaires'])->name('commissionnaires');
     Route::get('make_commissionnaire/{id}', [ClientController::class, 'make_commissionnaire'])->name('make_commissionnaire');

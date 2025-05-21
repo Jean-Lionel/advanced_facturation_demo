@@ -55,9 +55,9 @@
 
                 <td>{{ $value->created_at }}</td>
                 <td class="d-flex justify-content-around">
-                    <a href="{{ route('recharge',$value->compte) }}" class="btn btn-outline-info btn-sm
+                    <a href="{{ route('compte.recharge',$value->compte) }}" class="btn btn-outline-info btn-sm
                     mr-2">Recharger</a>
-                    <a href="{{ route('retrait',$value->compte) }}" class="btn btn-outline-warning btn-sm
+                    <a href="{{ route('compte.retrait',$value->compte) }}" class="btn btn-outline-warning btn-sm
                         mr-2">Retrait</a>
                     <a href="{{ route('historique', $value) }}" class="btn btn-outline-success btn-sm
                     mr-2">Historique</a>

@@ -87,8 +87,16 @@
 				@endif
 
 				<td>{{ $value->created_at }}</td>
-				<td class="d-flex justify-content-around">
-					{{--  <a href="{{ route('clients.edit', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>  --}}
+                <td>
+                    <a href="{{ route('clients.edit', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
+                    @if(env('APP_USE_ABONEMENT', false))
+						<a href="{{ route('clients_abones', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Abonée</a>
+						<a href="{{ route('make_commissionnaire', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Commissionnaire</a>
+
+					@endif
+                </td>
+				{{-- <td class="d-flex justify-content-around">
+					 <a href="{{ route('clients.edit', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
 					<form class="form-delete" action="{{ route('clients.destroy' , $value) }}" style="display: inline;" method="POST">
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}
@@ -105,7 +113,7 @@
 
 						@endif
 					</form>
-				</td>
+				</td> --}}
 			</tr>
 			@endforeach
 		</tbody>

@@ -3,9 +3,10 @@
 @section('content')
 <div>
     <center>
-        <form action="{{ route('updatecompte')}}" method="POST">
+        <form action="{{ route('recharge.updatecompte',$compte)}}" method="POST">
             @csrf
             <div class="col-md-4">
+                <h3>Recharge sur le compte</h3>
                 <!-- Information du Client -->
                 <div class="form-group">
                     <label for="name">Nom du Client</label>
