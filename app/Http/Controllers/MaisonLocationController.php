@@ -23,8 +23,7 @@ class MaisonLocationController extends Controller
                                     })
                                     ->orWhere(function($query) use ($search) {
                                         if($search){
-                                            $query->where('name', 'LIKE', "%{$search}%");
-
+                                            $query->where('name', '=', $search);
                                         }
                                     })
                                     ->withCount('clients')

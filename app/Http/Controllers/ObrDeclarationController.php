@@ -10,6 +10,7 @@ use App\Models\ObrPointer;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\SendInvoiceToOBR;
+use Illuminate\Support\Facades\DB;
 
 class ObrDeclarationController extends Controller
 {
@@ -39,7 +40,7 @@ class ObrDeclarationController extends Controller
     }
 
     public function factureAvoir(){
-       
+
         return view('obr_declarations.facture_avoir');
     }
     public function remboursementCaution(){
@@ -47,7 +48,7 @@ class ObrDeclarationController extends Controller
     }
     public function index()
     {
-        $orders = Order::whereNull('envoye_obr')->latest()->get();
+        $orders = Order::whereNull('envoye_obr')->latest()->paginate();
         return view('obr_declarations.index', [
             'orders' => $orders
         ]);
@@ -79,7 +80,7 @@ class ObrDeclarationController extends Controller
 
     public function cancelInvoice(Request $request)
     {
-
+        //dd($request->all());
         $request->validate([
             'invoice_signature' => 'required',
             'motif' => 'required',
@@ -87,34 +88,46 @@ class ObrDeclarationController extends Controller
         // Change the Status Of the order
         //    dd($request->cancel_amount);
         $order = Order::where('invoice_signature', '=',$request->invoice_signature)->first();
+
         if($request->cancel_amount){
-          //  dd($order->products );
+
             foreach($order->products as $productItem){
-                // dd($product);
+
                 try{
+                    DB::beginTransaction();
+
                     $product = Product::find($productItem['id']);
                     if($product ){
-                        $product->quantite += $productItem['quantite'];
-                        $product->save();
+
                         \App\Models\RetourProduit::create([
                             'product_id' => $product->id,
                             'item_name' => $product->name,
                             'order_id' => $order->id,
                             'quantite' => $productItem['quantite'],
                             'description' => $request->motif,
-                            'user_id' => auth()->user()->id,
+                            'user_id' => auth()->user()->id ?? 1,
                         ]);
                         $current_price = $productItem['price_revient'] ?? 0 ;
+
                         ObrMouvementStock::saveMouvement( $product, 'ER',$current_price, $productItem['quantite'], $request->motif, $order->id);
+
+
+                        $product->quantite += $productItem['quantite'];
+                        $product->save();
+
                     }
 
                     // Enregistres les mouvements de stock correspondant pour la facture
 
                   //  $mouvements_enregistres = ObrMouvementStock
                     //
+                    DB::commit();
                 }catch(\Exception $e){
+                    DB::rollBack();
+                    dump($e);
                     return $e->getMessage();
-                   // dd( $e);
+
+
                 }
             }
         }
@@ -127,7 +140,7 @@ class ObrDeclarationController extends Controller
             'order_id' => $order->id,
         ]);
         if(!isInternetConnection() || !CAN_SYNCRONISE){
-           
+
             $order->canceled_or_connection = 'ANNULEE HORS CONNECTION';
             $order->is_cancelled = true;
             $order->save();
@@ -174,7 +187,7 @@ class ObrDeclarationController extends Controller
         $invoince_id = getInvoiceNumber($invoince_id);
         $invoince = $this->generateInvoince($order, $company, $invoince_id, $invoice_signature, $order->created_at);
         $response = null;
-      
+
 
        // die($invoince);
         try {
@@ -186,7 +199,7 @@ class ObrDeclarationController extends Controller
                 'msg' => $e->getMessage(). ' FILE ' . $e->getFile() . ' LINE ' .$e->getLine()
             ]);
         }
-        
+
         // Si la facture a été envoyé
         if ($response->success) {
             $order->envoye_obr = true;

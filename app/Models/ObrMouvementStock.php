@@ -52,7 +52,9 @@ class ObrMouvementStock extends Model
         return $this->hasMany(Product::class, 'item_code');
     }
     public static function saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_description = null, $item_movement_invoice_ref = null , $is_single_retour = false){
-        // is_single_retour is used when you are using return product 
+
+
+        // is_single_retour is used when you are using return product
         Session::put('cancel_syncronize', false);
         $item_movement_date = now();
         $active_data = [
@@ -68,7 +70,7 @@ class ObrMouvementStock extends Model
             'item_movement_description' => $item_movement_description,
             'item_movement_date' => $item_movement_date,
             'is_send_to_obr' => false,
-            'user_id' => auth()->user()->id,
+            'user_id' => auth()->user()->id ?? 1,
         ];
 
         if( in_array( $mouvement, ['SN','SP','SV', 'SD',  'SC','SAJ','ST', 'SAU'])){
@@ -100,17 +102,17 @@ class ObrMouvementStock extends Model
                     }
 
                 }
-               
+
             }
 
         }else if(in_array( $mouvement, ['ER'])){
             $mouvements = ObrMouvementStock::where('item_movement_invoice_ref', '=',$item_movement_invoice_ref)->where('item_movement_type', '=', 'SN')
                     ->where('item_code', $produit->id )
                     ->get();
-            
+
             foreach($mouvements as $mv){
                 $detail = ProductDetail::find($mv->item_product_detail_id);
-                // Quand c'est le retour d'un seul produit dans le stock 
+                // Quand c'est le retour d'un seul produit dans le stock
                 $current_quantite = $mv->item_quantity;
                 if($is_single_retour){
                     $current_quantite = $qte;
