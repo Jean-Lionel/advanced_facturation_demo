@@ -63,11 +63,11 @@ class Product extends MyModel
     }
 
     public function lastMouvement(){
-        $mouvement = ObrMouvementStock::where('item_code', '  >=>', $this->id)->latest()->first();
+        $mouvement = ObrMouvementStock::where('item_code', '=', $this->id)->latest()->first();
         return  $mouvement ;
     }
     public function item_movement_type(){
-        $mouvement = ObrMouvementStock::where('item_code', '  >=>', $this->id)->latest()->first();
+        $mouvement = ObrMouvementStock::where('item_code', '=', $this->id)->latest()->first();
         return  $mouvement ? $mouvement->item_movement_type : "-";
     }
 

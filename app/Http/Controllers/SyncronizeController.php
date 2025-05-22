@@ -21,6 +21,10 @@ class SyncronizeController extends Controller
     //
     public function syncronize(){
 
+        if(env('OBR_CAN_SYNCRONISE',false) === false){
+            return false;
+        }
+
         $response = 0;
         if(isInternetConnection()){
             try {
@@ -69,7 +73,7 @@ class SyncronizeController extends Controller
                 try {
                     $response =   $obr->sendInvoinceToObr($item);
                 }catch (\Exception $e) {
-          
+
                     return response()->json(
                        [
                         'data' => [
@@ -102,10 +106,10 @@ class SyncronizeController extends Controller
                     $current->save();
                     $item2->status = 1;
                     $item2->save();
-                    
+
                     return $response;
                 } catch (\Throwable $e) {
-               
+
                     return response()->json([
                         'success' => false,
                         'data' => [
@@ -120,7 +124,7 @@ class SyncronizeController extends Controller
 
             }
         }catch(\Exception $e){
-          
+
             return response()->json([
                 'success' => false,
                 'data' => [

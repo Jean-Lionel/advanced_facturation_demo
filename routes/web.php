@@ -157,6 +157,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('facture/payer/{order}', [StockController::class ,'FacturePayer'])->name('facture.payer');
     // proformat
     Route::resource('proformats', ProformatController::class);
+    Route::get('historique_entre_sortie', [StockController::class , 'historique_entre_sortie'])->name('historique_entre_sortie');
 
 
 });

@@ -13,6 +13,12 @@
             <span>Fiche de Stock</span>
         </a>
     </div>
+    <div>
+        <a href="{{ route('historique_entre_sortie') }}" class="{{ setActiveRoute('historique_entre_sortie') }}">
+            <span class="fa fa-file-alt"></span>
+            <span>Historique des Entres et Sorties</span>
+        </a>
+    </div>
 
     <div>
         <a href="{{ route('journal_history') }}" class="{{ setActiveRoute('journal_history') }}">

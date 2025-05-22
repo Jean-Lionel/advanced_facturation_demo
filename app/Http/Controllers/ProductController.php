@@ -41,7 +41,7 @@ class ProductController extends Controller
 
         $query = null;
         if(env('APP_CAN_USE_MULTI_STOCK', false)){
-            $query = Product::with(['category', 'mouvements'])
+            $query = Product::with(['category','mouvements'])
             ->whereHas('productStocks', function ($query) use ($userId) {
                 $query->whereIn('stock_id', function ($subQuery) use ($userId) {
                     $subQuery->select('stock_id')
@@ -61,7 +61,7 @@ class ProductController extends Controller
             ->orderBy('quantite', 'asc')
             ->latest() ;
         }else{
-            $query = Product::with(['category' , 'mouvements'])->latest()
+            $query = Product::with(['category' , 'mouvements' ])->latest()
                         ->where(function($query) use ($search) {
                             if($search){
                                 $query->where('name','like', '%'.$search.'%')
@@ -76,19 +76,14 @@ class ProductController extends Controller
                         ;
         }
 
-
-         $products = [];
         if(  $category == 'STOCK VIDE'){
-            $products = $query->where('quantite', 0)->latest()->paginate();
+            $query->where('quantite', 0);
         }
         else if( $category == 'STOCK NON VIDE'){
-
-            $products = $query->where('quantite', '>=', 1)->latest()->paginate();
-        }
-        else{
-            $products =  $query->latest()->paginate();
+            $query->where('quantite', '>=', 1);
         }
 
+        $products =  $query->latest()->paginate();
         return view("products.index", compact('products','search'));
     }
 

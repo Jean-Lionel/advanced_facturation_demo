@@ -55,18 +55,29 @@ class OrganisationMember extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Affecte un ou plusieurs membres à une organisation
+     *
+     * @param int|array $organisationId L'ID de l'organisation
+     * @param int|array $memberId L'ID ou tableau d'IDs des membres à affecter
+     * @return bool
      */
-    public function organisation()
+    public static function assignMembers($organisationId, $memberId)
     {
-        return $this->belongsTo(Organisation::class);
-    }
+        // Si member_id est un tableau, on les affecte tous
+        if (is_array($memberId)) {
+            foreach ($memberId as $id) {
+                OrganisationMember::updateOrCreate([
+                    'organisation_id' => $organisationId,
+                    'member_id' => $id
+                ]);
+            }
+            return true;
+        }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function member()
-    {
-        return $this->belongsTo(Member::class);
+        // Si member_id est un seul ID
+        return OrganisationMember::updateOrCreate([
+            'organisation_id' => $organisationId,
+            'member_id' => $memberId
+        ]);
     }
 }

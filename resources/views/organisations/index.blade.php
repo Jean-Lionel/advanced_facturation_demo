@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="mb-4 d-flex justify-content-between align-items-center">
         <h1>Organisations</h1>
         <a href="{{ route('advanced.organisations.create') }}" class="btn btn-primary">
             <i class="fas fa-plus"></i> Nouvelle Organisation
@@ -25,7 +25,7 @@
                         @foreach($organisations as $organisation)
                             <tr>
                                 <td>{{ $organisation->name }}</td>
-                                <td>{{ $organisation->description }}</td>
+                                <td>{{ substr($organisation->description,0,100) }}...</td>
                                 <td>{{ $organisation->user->name }}</td>
                                 <td>
                                     <div class="btn-group">

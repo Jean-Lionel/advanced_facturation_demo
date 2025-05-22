@@ -20,6 +20,13 @@ use Illuminate\Support\Facades\DB;
 class StockController extends Controller
 {
 
+    public function historique_entre_sortie(){
+        $mouvements = ObrMouvementStock::latest()->get();
+        dd(  $mouvements->first());
+
+        return view('stocks.historique', compact('produits'));
+    }
+
     public function mouvement_stock(){
         $start_at =  request()->query('start_at');
         $end_at =  request()->query('end_at');
@@ -162,7 +169,8 @@ class StockController extends Controller
         ] );
     }
     public function fiche_stock(){
-        $follow_products = FollowProduct::latest()->get();
+        $follow_products = FollowProduct::latest()->take(500)->get();
+
         return view('journals.fiche_stock', compact('follow_products'));
     }
 
