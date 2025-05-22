@@ -25,7 +25,7 @@ class StockController extends Controller
         $startDate = $request->input('start_date', now()->startOfMonth()->format('Y-m-d'));
         $endDate = $request->input('end_date', now()->format('Y-m-d'));
         $mouvements = ObrMouvementStock::
-        whereBetween('created_at', [$startDate, $endDate])
+        whereBetween('item_movement_date', [$startDate, $endDate])
         ->latest()
         ->get()
         ->groupBy('item_code')
