@@ -16,15 +16,33 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Str;
 
 class StockController extends Controller
 {
 
     public function historique_entre_sortie(){
-        $mouvements = ObrMouvementStock::latest()->get();
-        dd(  $mouvements->first());
-
-        return view('stocks.historique', compact('produits'));
+        $mouvements = ObrMouvementStock::latest()
+        ->take(500)
+        ->get()
+        ->groupBy('item_code')
+        ;
+       $products  = collect([]);
+        foreach($mouvements  as $key => $mouvement ){
+            $entre = $mouvement->filter(fn($e) => Str::startsWith( Str::lower($e->item_movement_type) , 'e'))
+                            ->reduce(fn ($acc, $o) =>  $acc + $o->item_quantity, 0 )
+                            ;
+            $sorties = $mouvement->filter(fn($e) => Str::startsWith( Str::lower($e->item_movement_type) , 's'))
+                            ->reduce(fn ($acc, $o) =>  $acc + $o->item_quantity, 0 )
+                            ;
+            $products->push([
+                'item_code' => $mouvement->first()->item_code,
+                'total_entre' =>  $entre,
+                'total_sortie' =>   $sorties,
+                'product' =>  $mouvement->first()->item_designation,
+            ]);
+        }
+        return view('stocks.historique', compact('products'));
     }
 
     public function mouvement_stock(){
