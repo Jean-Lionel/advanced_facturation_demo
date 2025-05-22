@@ -16,14 +16,17 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Str;
+use Illuminate\Support\Str;
 
 class StockController extends Controller
 {
 
-    public function historique_entre_sortie(){
-        $mouvements = ObrMouvementStock::latest()
-        ->take(500)
+    public function historique_entre_sortie(Request $request){
+        $startDate = $request->input('start_date', now()->startOfMonth()->format('Y-m-d'));
+        $endDate = $request->input('end_date', now()->format('Y-m-d'));
+        $mouvements = ObrMouvementStock::
+        whereBetween('created_at', [$startDate, $endDate])
+        ->latest()
         ->get()
         ->groupBy('item_code')
         ;
@@ -42,7 +45,7 @@ class StockController extends Controller
                 'product' =>  $mouvement->first()->item_designation,
             ]);
         }
-        return view('stocks.historique', compact('products'));
+        return view('stocks.historique', compact('products', 'startDate', 'endDate' ));
     }
 
     public function mouvement_stock(){

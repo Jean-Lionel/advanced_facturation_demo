@@ -55,6 +55,7 @@
 			],
 			pagingType: "full_numbers",
 			scrollX: true,
+            pageLength: 20,
 	});
 } );
 </script>
