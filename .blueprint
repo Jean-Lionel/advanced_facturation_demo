@@ -1,16 +1,17 @@
 created:
-    - app/Http/Controllers/Api/DocumentController.php
-    - database/factories/DocumentFactory.php
-    - database/migrations/2025_04_13_063505_create_documents_table.php
-    - database/migrations/2025_04_13_063506_create_document_member_table.php
-    - app/Models/Document.php
-    - tests/Feature/Http/Controllers/Api/DocumentControllerTest.php
-    - app/Http/Requests/Api/DocumentStoreRequest.php
-    - app/Http/Requests/Api/DocumentUpdateRequest.php
-    - app/Http/Resources/Api/DocumentCollection.php
-    - app/Http/Resources/Api/DocumentResource.php
+    - app/Http/Controllers/ActivityController.php
+    - database/factories/ActivityFactory.php
+    - database/migrations/2025_05_23_155327_create_activities_table.php
+    - app/Models/Activity.php
+    - tests/Feature/Http/Controllers/ActivityControllerTest.php
+    - app/Http/Requests/ActivityStoreRequest.php
+    - app/Http/Requests/ActivityUpdateRequest.php
+    - resources/views/activity/index.blade.php
+    - resources/views/activity/create.blade.php
+    - resources/views/activity/show.blade.php
+    - resources/views/activity/edit.blade.php
 updated:
-    - routes/api.php
+    - routes/web.php
 models:
     CanceledInvoince: { order_id: integer, invoice_signature: text, motif: text, status: string }
     Cart: {  }
@@ -65,3 +66,4 @@ models:
     TransactionFile: { id: id, name: 'string:255', file_url: 'string:255', user_id: 'id foreign:users', transaction_id: 'id foreign:transactions', timestamps: timestamps, relationships: { belongsTo: 'User, Transaction' } }
     Notification: { id: id, user_id: 'id foreign:users', message: text, description: 'text nullable', is_read: 'boolean default:false', status: 'string:50', timestamps: timestamps, relationships: { belongsTo: User } }
     Document: { id: id, user_id: 'id foreign:users', member_id: 'id foreign:members nullable', client_id: 'id foreign:clients nullable', document_type: 'string nullable', transaction_file_id: 'id foreign:transaction_files nullable', name: 'string:255', description: 'text nullable', timestamps: timestamps, relationships: { belongsTo: 'User ,TransactionFile , Client', belongsToMany: Member } }
+    Activity: { id: id, name: 'string:255', description: 'text nullable', timestamps: timestamps, user_id: 'id foreign:users', organisation_id: 'id foreign:organisations nullable', relationships: { belongsTo: 'User, Organisation' } }

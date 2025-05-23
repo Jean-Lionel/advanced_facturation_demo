@@ -1,18 +1,14 @@
 models:
-  Document:
+  Activity:
     id: id
-    user_id: id foreign:users
-    member_id: id foreign:members nullable
-    client_id: id foreign:clients nullable
-    document_type: string nullable
-    transaction_file_id: id foreign:transaction_files nullable
     name: string:255
     description: text nullable
     timestamps: true
+    user_id: id foreign:users
+    organisation_id: id foreign:organisations nullable
     relationships:
-      belongsTo: User ,TransactionFile , Client
-      belongsToMany: Member
+      belongsTo: User, Organisation
 
 controllers:
-  Api/Document:
-    resource: api
+  Activity:
+    resource: web
