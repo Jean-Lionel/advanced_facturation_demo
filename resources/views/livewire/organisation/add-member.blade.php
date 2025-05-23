@@ -36,7 +36,8 @@
                         <div class="list-group">
                             @foreach($organisationMembers as $member)
                                 <div class="list-group-item d-flex justify-content-between align-items-center">
-                                    {{ $member->name }}
+                                    {{ $member->firstname }}
+                                    {{ $member->last_name }}
                                     <button wire:click="removeMember({{ $member->id }})" class="btn btn-danger btn-sm">
                                         Supprimer
                                     </button>

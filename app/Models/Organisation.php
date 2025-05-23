@@ -66,7 +66,7 @@ class Organisation extends Model
      */
     public function members()
     {
-        return $this->belongsToMany(Member::class);
+        return $this->belongsToMany(Member::class, 'organisation_members', 'organisation_id', 'member_id');
     }
 }
 

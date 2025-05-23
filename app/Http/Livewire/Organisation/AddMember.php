@@ -38,15 +38,22 @@ class AddMember extends Component
 
     public function addMember()
     {
-        dd('Goood');
+
         $this->validate();
 
-        OrganisationMember::assignMembers($this->organisation->id, $this->selectedMember);
+
+        OrganisationMember::create([
+            'member_id' => $this->organisation->id,
+            'organisation_id' => $this->selectedMember
+        ]);
+
+
+      //  OrganisationMember::assignMembers();
 
         $this->reset('selectedMember');
         $this->loadMembers();
 
-        $this->dispatch('success', message: 'Membre ajouté avec succès');
+      //  $this->dispatch('success', message: 'Membre ajouté avec succès');
     }
 
     public function removeMember($memberId)

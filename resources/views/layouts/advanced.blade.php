@@ -63,7 +63,7 @@
             border: none;
         }
     </style>
-
+    @livewireStyles
     @stack('styles')
 </head>
 <body>
@@ -76,7 +76,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="mb-2 navbar-nav me-auto mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('advanced.index') }}"><i class="fas fa-home me-2"></i>Dashboard</a>
                     </li>
@@ -99,7 +99,7 @@
 
                 <!-- Dropdown User -->
                 <div class="dropdown">
-                    <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-white"
+                    <a class="text-white d-flex align-items-center text-decoration-none dropdown-toggle"
                        href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="user-avatar me-2">
                             <i class="fas fa-user"></i>
@@ -137,5 +137,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
     @stack('scripts')
+    @livewireScripts
 </body>
 </html>
