@@ -125,14 +125,31 @@ class TransactionController extends Controller
      * @param \App\Models\Transaction $transaction
      * @return \App\Http\Resources\Api\TransactionResource
      */
-    public function update(TransactionUpdateRequest $request, Transaction $transaction)
+    public function update(TransactionStoreRequest $request, $id)
     {
+        $transaction = Transaction::findOrFail($id);
+
         $transaction->update($request->validated());
+
+        // Gérer le nouveau fichier s'il existe
+        if($request->hasFile('file_item')) {
+            $file = $request->file('file_item');
+            $file_name = time() . "." . $file->getClientOriginalExtension();
+            $file_path = $file->move('img/transactions', $file_name);
+
+            TransactionFile::create([
+                'transaction_id' => $transaction->id,
+                'file_url' => $file_path,
+                'user_id' => auth()->user()->id,
+                'name' => $file_name
+            ]);
+        }
+
         if ($request->wantsJson()) {
             return new TransactionResource($transaction);
         }
 
-        return redirect()->route('advanced.transactions.index')->with('success', 'Transaction updated successfully');
+        return redirect()->route('advanced.transactions.index')->with('success', 'Transaction modifiée avec succès');
     }
 
     /**
