@@ -26,7 +26,6 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->all());
 
         $validate =
         [
@@ -108,6 +107,7 @@ class CheckoutController extends Controller
                 'commissionaire_id' =>  $client->commissionnaire_id ?? null,
                 'company' =>  $company->toJson(),
             ]);
+
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
             $order->invoice_signature = $signature;
             foreach ($cartInfo as $key => $item) {

@@ -207,7 +207,7 @@
                             <div class="p-2">
                                 <ul class="mb-2 list-unstyled">
                                     <li class="py-2 d-flex justify-content-between border-bottom"><strong class="text-muted">MONNAIE DE PAIEMENT </strong>
-                                        <h5 id="prix_hors_tva" class="font-weight-bold">
+                                        <h5 class="font-weight-bold">
                                            <select name="invoice_currency" id="">
                                             @foreach(TYPE_MONNAIE as $currency)
                                                 <option value="{{ $currency }}">{{ $currency }}</option>
