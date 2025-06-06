@@ -27,7 +27,7 @@ class ProductController extends Controller
         $mouvements = ObrMouvementStock::where('item_code',$item_id)->get();
         return view('products.movements', compact('mouvements', 'item_id'));
     }
-    public function index()
+    public function index(Request $request)
     {
 
         // dd(Gate::allows('is-admin'));
@@ -78,18 +78,19 @@ class ProductController extends Controller
 
 
          $products = [];
-        if(  $category == 'STOCK VIDE'){
-            $products = $query->where('quantite', 0)->latest()->paginate();
+        if ($request->filled('category')) {
+            if ($request->category == 'STOCK_VIDE') {
+                $products = $query->where('quantite', 0);
+            } elseif ($request->category == 'STOCK_NON_VIDE') {
+                $products = $query->where('quantite', '>', 0);
+            } else {
+                $products = $query->where('category_id', $request->category);
+            }
         }
-        else if( $category == 'STOCK NON VIDE'){
+        $products = $query->latest()->paginate(10);
+        $categories = \App\Models\Category::all();
 
-            $products = $query->where('quantite', '>=', 1)->latest()->paginate();
-        }
-        else{
-            $products =  $query->latest()->paginate();
-        }
-
-        return view("products.index", compact('products','search'));
+        return view("products.index", compact('products','search', 'categories', 'category'));
     }
 
     public function bar_code(){
