@@ -20,6 +20,7 @@ class CreateVersementsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->text('description')->nullable();
             $table->double('montant');
+            $table->foreignId('versement_type_id')->nullable();
             $table->date('date_transaction');
             $table->timestamps();
         });

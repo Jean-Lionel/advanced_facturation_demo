@@ -24,10 +24,10 @@ class VersementStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
             'description' => ['string'],
             'montant' => ['required', 'numeric'],
             'date_transaction' => ['required', 'date'],
+            'versement_type_id' => ['required', 'exists:versement_types,id'],
         ];
     }
 }

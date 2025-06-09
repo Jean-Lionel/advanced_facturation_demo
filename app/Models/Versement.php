@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $id
  * @property int $user_id
+ * @property int|null $versement_type_id
  * @property string $description
  * @property double $montant
  * @property \Carbon\Carbon $date_transaction
@@ -33,12 +34,13 @@ class Versement extends Model
     protected $casts = [
         'id' => 'integer',
         'user_id' => 'integer',
+        'versement_type_id' => 'integer',
         'montant' => 'double',
         'date_transaction' => 'date',
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Get the user that owns the versement.
      */
     public function user()
     {
@@ -46,10 +48,10 @@ class Versement extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Get the versement type associated with the versement.
      */
-    public function user()
+    public function versementType()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(VersementType::class);
     }
 }

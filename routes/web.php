@@ -159,14 +159,13 @@ Route::group(['middleware' => ['auth']], function () {
     // proformat
     Route::resource('proformats', ProformatController::class);
 
-
+    // Routes pour les types de versement
+    Route::resource('versement-types', App\Http\Controllers\VersementTypeController::class)
+        ->names('versementType');
 });
 require __DIR__ . '/jetstream.php';
 
 Route::resource('periode-paiment-location', App\Http\Controllers\PeriodePaimentLocationController::class);
-
-
-
 
 Route::resource('versement', App\Http\Controllers\VersementController::class);
 

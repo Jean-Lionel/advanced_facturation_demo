@@ -15,7 +15,7 @@ class VersementTypeController extends Controller
      */
     public function index(Request $request)
     {
-        $versementTypes = VersementType::all();
+        $versementTypes = VersementType::latest()->paginate(10);
 
         return view('versementType.index', compact('versementTypes'));
     }
