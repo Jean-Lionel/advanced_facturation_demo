@@ -166,3 +166,8 @@ require __DIR__ . '/jetstream.php';
 Route::resource('periode-paiment-location', App\Http\Controllers\PeriodePaimentLocationController::class);
 
 
+
+
+Route::resource('versement', App\Http\Controllers\VersementController::class);
+
+Route::resource('versement-type', App\Http\Controllers\VersementTypeController::class);
