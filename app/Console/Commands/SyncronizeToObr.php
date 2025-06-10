@@ -48,14 +48,15 @@ class SyncronizeToObr extends Command
             ->get()->map->id;
             $progressBar = $this->output->createProgressBar(count($order_peding_ids));
             $progressBar->start();
+            $this->info( 'Start ----------------------------------------------------------------');
             foreach ($order_peding_ids as $item) {
-                $this->info( 'Start ----------------------------------------------------------------');
                 $obr = new ObrDeclarationController();
                 $response =   $obr->sendInvoinceToObr( $item );
                 $this->info($response);
                 $progressBar->advance(1);
             }
             $progressBar->finish();
+            $this->info( 'FINSHID ----------------------------------------------------------------');
         }
 
         if(is_int($orderID)){
