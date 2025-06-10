@@ -52,7 +52,7 @@ class SyncronizeToObr extends Command
             foreach ($order_peding_ids as $item) {
                 $obr = new ObrDeclarationController();
                 $response =   $obr->sendInvoinceToObr( $item );
-                $this->info($response);
+               var_dump($response);
                 $progressBar->advance(1);
             }
             $progressBar->finish();
