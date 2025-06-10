@@ -39,14 +39,29 @@ class SyncronizeToObr extends Command
      */
     public function handle()
     {
-       
-        $orderID = $this->argument('orderID');    
-        
-        if($orderID){
-            // send a special command for sending ORDER 
+
+        $orderID = $this->argument('orderID');
+
+        if($orderID == 'all'){
+            $order_peding_ids = Order::with('obrPointer')->whereNull('envoye_obr')
+            ->get()->map->id;
+            $progressBar = $this->output->createProgressBar(count($order_peding_ids));
+            $progressBar->start();
+            foreach ($order_peding_ids as $item) {
+                $this->info( 'Start ----------------------------------------------------------------');
+                $obr = new ObrDeclarationController();
+                $response =   $obr->sendInvoinceToObr( $item );
+                $this->info($response);
+                $progressBar->advance(1);
+            }
+            $progressBar->finish();
+        }
+
+        if(is_int($orderID)){
+            // send a special command for sending ORDER
             $obr = new ObrDeclarationController();
             $response =   $obr->sendInvoinceToObr( $orderID );
-            var_dump($response);
+            $this->info($response);
         }else{
             // syncronize all invoices  in the system  (not a single order)
             $t1 = time();
