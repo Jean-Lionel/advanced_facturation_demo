@@ -135,9 +135,12 @@
                     <li>
                         <a href="{{ route('depenses.index') }}" class="{{ setActiveRoute('depenses.*') }}"><span class="fa fa-minus"></span> Depense</a>
                     </li>
-                    <li>
-                        <a href="{{ route('versement.index') }}" class="{{ setActiveRoute('versement.*') }}"><span class="fa fa-money-bill-wave"></span> Versements</a>
-                    </li>
+                    @if (env('APP_USE_VERSEMENT', false))
+                        <li>
+                            <a href="{{ route('versement.index') }}" class="{{ setActiveRoute('versement.*') }}"><span class="fa fa-money-bill-wave"></span> Versements</a>
+                        </li>
+                    @endif
+
                     <li>
                         <a href="{{ route('entreprises.index') }}" class="{{ setActiveRoute('entreprises.*') }}">
                             <span class="fa fa-building"></span> Entreprise</a>
