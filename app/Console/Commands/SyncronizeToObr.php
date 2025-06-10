@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Controllers\ObrDeclarationController;
 use App\Http\Controllers\SyncronizeController;
+use App\Models\Order;
 use Illuminate\Console\Command;
 
 class SyncronizeToObr extends Command
