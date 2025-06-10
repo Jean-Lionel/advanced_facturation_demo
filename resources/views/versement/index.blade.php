@@ -41,7 +41,7 @@
                                         <td>{{ $versement->id }}</td>
                                         <td>{{ $versement->user->name ?? 'N/A' }}</td>
                                         <td>{{ Str::limit($versement->description, 30) }}</td>
-                                        <td>{{ number_format($versement->montant, 2, ',', ' ') }} €</td>
+                                        <td>{{ number_format($versement->montant, 2, ',', ' ') }} Fbu</td>
                                         <td>{{ $versement->versementType->name ?? 'Non défini' }}</td>
                                         <td>{{ $versement->date_transaction->format('d/m/Y') }}</td>
                                         <td>
