@@ -43,6 +43,13 @@ class SyncronizeToObr extends Command
 
         $orderID = $this->argument('orderID');
 
+        if(is_int($orderID)){
+            // send a special command for sending ORDER
+            $obr = new ObrDeclarationController();
+            $response =   $obr->sendInvoinceToObr( $orderID );
+            $this->info($response);
+        }
+
         if($orderID == 'all'){
             $order_peding_ids = Order::with('obrPointer')->whereNull('envoye_obr')
             ->get()->map->id;
@@ -57,23 +64,6 @@ class SyncronizeToObr extends Command
             }
             $progressBar->finish();
             $this->info( 'FINSHID ----------------------------------------------------------------');
-        }
-
-        if(is_int($orderID)){
-            // send a special command for sending ORDER
-            $obr = new ObrDeclarationController();
-            $response =   $obr->sendInvoinceToObr( $orderID );
-            $this->info($response);
-        }else{
-            // syncronize all invoices  in the system  (not a single order)
-            $t1 = time();
-            $this->info( 'Start ----------------------------------------------------------------');
-            $syncronize = new SyncronizeController();
-            $syncronize->syncronizeInvoices();
-            $syncronize->syncronizeStock();
-           // $this->info( $resp);
-            $t2 = time();
-            $this->info( 'FINSHID ------------------in : '. ($t2 - $t1) .' s ---------------------');
         }
       //  dump( $orderID);
 
