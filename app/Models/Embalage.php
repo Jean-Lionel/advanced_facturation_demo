@@ -50,7 +50,7 @@ class Embalage extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function embalageMouvements()
+    public function mouvements()
     {
         return $this->hasMany(EmbalageMouvement::class);
     }

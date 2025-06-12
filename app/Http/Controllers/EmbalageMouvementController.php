@@ -41,6 +41,17 @@ class EmbalageMouvementController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = auth()->user()->id;
+
+        // Update Embalage Value
+
+        $emballage = Embalage::find($request->embalage_id);
+
+        if($request->type == 'sortie'){
+            $emballage->quantity -= $request->quantity;
+        }else{
+            $emballage->quantity += $request->quantity;
+        }
+        $emballage->save();
         $embalageMouvement = EmbalageMouvement::create( $data);
 
         $request->session()->flash('embalageMouvement.id', $embalageMouvement->id);
