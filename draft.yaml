@@ -1,27 +1,39 @@
 models:
-  Versement:
+  TypeEmbalage:
     id: id
-    user_id: id foreign:users
+    name: string:255
     description: text nullable
-    montant: double
-    date_transaction: date
     timestamps: true
     relationships:
-      belongsTo: User
+      hasMany: Embalage
 
-  VersementType:
+  Embalage:
     id: id
-    name: string:100
+    name: string:255
     description: text nullable
+    price: double default:0
+    quantity: double default:0
+    type_embalage_id: id foreign:type_embalages
     timestamps: true
+    relationships:
+      belongsTo: TypeEmbalage
+      hasMany: EmbalageMouvement
 
-seeders:
-  - Versement
-  - VersementType
+  EmbalageMouvement:
+    id: id
+    type: string:255
+    quantity: double default:0
+    embalage_id: id foreign:embalages
+    client_id: id foreign:clients
+    timestamps: true
+    relationships:
+      belongsTo: Embalage
 
 controllers:
-  Versement:
+  TypeEmbalage:
     resource: web
-  VersementType:
+  Embalage:
+    resource: web
+  EmbalageMouvement:
     resource: web
 

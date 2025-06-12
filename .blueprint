@@ -1,27 +1,37 @@
 created:
-    - app/Http/Controllers/VersementController.php
-    - app/Http/Controllers/VersementTypeController.php
-    - database/factories/VersementFactory.php
-    - database/factories/VersementTypeFactory.php
-    - database/migrations/2025_06_09_064107_create_versements_table.php
-    - database/migrations/2025_06_09_064108_create_versement_types_table.php
-    - app/Models/Versement.php
-    - app/Models/VersementType.php
-    - database/seeders/VersementVersementTypeSeeder.php
-    - tests/Feature/Http/Controllers/VersementControllerTest.php
-    - tests/Feature/Http/Controllers/VersementTypeControllerTest.php
-    - app/Http/Requests/VersementStoreRequest.php
-    - app/Http/Requests/VersementUpdateRequest.php
-    - app/Http/Requests/VersementTypeStoreRequest.php
-    - app/Http/Requests/VersementTypeUpdateRequest.php
-    - resources/views/versement/index.blade.php
-    - resources/views/versement/create.blade.php
-    - resources/views/versement/show.blade.php
-    - resources/views/versement/edit.blade.php
-    - resources/views/versementType/index.blade.php
-    - resources/views/versementType/create.blade.php
-    - resources/views/versementType/show.blade.php
-    - resources/views/versementType/edit.blade.php
+    - app/Http/Controllers/TypeEmbalageController.php
+    - app/Http/Controllers/EmbalageController.php
+    - app/Http/Controllers/EmbalageMouvementController.php
+    - database/factories/TypeEmbalageFactory.php
+    - database/factories/EmbalageFactory.php
+    - database/factories/EmbalageMouvementFactory.php
+    - database/migrations/2025_06_12_061557_create_type_embalages_table.php
+    - database/migrations/2025_06_12_061558_create_embalages_table.php
+    - database/migrations/2025_06_12_061559_create_embalage_mouvements_table.php
+    - app/Models/TypeEmbalage.php
+    - app/Models/Embalage.php
+    - app/Models/EmbalageMouvement.php
+    - tests/Feature/Http/Controllers/TypeEmbalageControllerTest.php
+    - tests/Feature/Http/Controllers/EmbalageControllerTest.php
+    - tests/Feature/Http/Controllers/EmbalageMouvementControllerTest.php
+    - app/Http/Requests/TypeEmbalageStoreRequest.php
+    - app/Http/Requests/TypeEmbalageUpdateRequest.php
+    - app/Http/Requests/EmbalageStoreRequest.php
+    - app/Http/Requests/EmbalageUpdateRequest.php
+    - app/Http/Requests/EmbalageMouvementStoreRequest.php
+    - app/Http/Requests/EmbalageMouvementUpdateRequest.php
+    - resources/views/typeEmbalage/index.blade.php
+    - resources/views/typeEmbalage/create.blade.php
+    - resources/views/typeEmbalage/show.blade.php
+    - resources/views/typeEmbalage/edit.blade.php
+    - resources/views/embalage/index.blade.php
+    - resources/views/embalage/create.blade.php
+    - resources/views/embalage/show.blade.php
+    - resources/views/embalage/edit.blade.php
+    - resources/views/embalageMouvement/index.blade.php
+    - resources/views/embalageMouvement/create.blade.php
+    - resources/views/embalageMouvement/show.blade.php
+    - resources/views/embalageMouvement/edit.blade.php
 updated:
     - routes/web.php
 models:
@@ -79,3 +89,6 @@ models:
     Notification: { id: id, user_id: 'id foreign:users', message: text, description: 'text nullable', is_read: 'boolean default:false', status: 'string:50', timestamps: timestamps, relationships: { belongsTo: User } }
     Versement: { id: id, user_id: 'id foreign:users', description: 'text nullable', montant: double, date_transaction: date, timestamps: timestamps, relationships: { belongsTo: User } }
     VersementType: { id: id, name: 'string:100', description: 'text nullable', timestamps: timestamps }
+    TypeEmbalage: { id: id, name: 'string:255', description: 'text nullable', timestamps: timestamps, relationships: { hasMany: Embalage } }
+    Embalage: { id: id, name: 'string:255', description: 'text nullable', price: 'double default:0', quantity: 'double default:0', type_embalage_id: 'id foreign:type_embalages', timestamps: timestamps, relationships: { belongsTo: TypeEmbalage, hasMany: EmbalageMouvement } }
+    EmbalageMouvement: { id: id, type: 'string:255', quantity: 'double default:0', embalage_id: 'id foreign:embalages', client_id: 'id foreign:clients', timestamps: timestamps, relationships: { belongsTo: Embalage } }

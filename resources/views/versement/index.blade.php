@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div>
-            <a href="{{ route('versementType.index') }}" class="btn btn-primary btn-sm"> Types des versments </a>
+           @include("versement._header")
         </div>
         <div class="col-md-12">
             <div class="card">
