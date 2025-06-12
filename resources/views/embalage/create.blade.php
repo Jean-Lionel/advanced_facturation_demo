@@ -62,7 +62,7 @@
                                 <div class="input-group">
                                     <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror"
                                            id="price" name="price" value="{{ old('price', '0.00') }}" required>
-                                    <span class="input-group-text">FCFA</span>
+                                    <span class="input-group-text">Fbu</span>
                                 </div>
 
                                 @error('price')
