@@ -39,7 +39,9 @@ class EmbalageMouvementController extends Controller
      */
     public function store(EmbalageMouvementStoreRequest $request)
     {
-        $embalageMouvement = EmbalageMouvement::create($request->validated());
+        $data = $request->validated();
+        $data['user_id'] = auth()->user()->id;
+        $embalageMouvement = EmbalageMouvement::create( $data);
 
         $request->session()->flash('embalageMouvement.id', $embalageMouvement->id);
 
