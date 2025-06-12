@@ -37,7 +37,7 @@
                    step="0.01"
                    min="0"
                    required>
-            <span class="input-group-text">€</span>
+            <span class="input-group-text">Fbu</span>
             @error('montant')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
