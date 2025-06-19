@@ -46,6 +46,18 @@ Route::get('send_invoice', function () {
 });
 Route::group(['middleware' => ['auth']], function () {
     //
+
+    Route::post('/logout-clear-cache', function () {
+            //Suppression des caches
+            cache()->flush();
+
+            auth()->logout();
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+
+            return redirect('/');
+        })->name('logout.clear.cache');
+
     Route::get('/', [VenteController::class, 'index']);
     Route::get('product/create', [ProductController::class, 'create'])->name('product.create');
     Route::resource('obr_declarations', ObrDeclarationController::class);

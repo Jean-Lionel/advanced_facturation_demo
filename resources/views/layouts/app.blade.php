@@ -94,71 +94,74 @@
 <body>
 
     <div class="wrapper d-flex align-items-stretch">
-        <nav id="sidebar" class="active noprint" >
-            <h1><a href="" class="logo">
-                <img src="{{ asset('img/'. env('USE_LOGO_NAME', 'logo.jpg')) }}" class="img-thumbnail"  alt="">
-            </a></h1>
-            <ul class="mb-5 list-unstyled components">
-                @can('is-vente')
-                <li >
-                    <a href="{{ route('ventes.index') }}" class="{{ setActiveRoute('ventes.*') }}">
-                        <span class="fa fa-shopping-cart"></span> Vente</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('clients.index') }}" class="{{ setActiveRoute('clients.*') }}"  ><span class="fa fa-users"></span> Client</a>
-                    </li>
-                    {{-- <li>
-                        <a href="{{ route('services.index') }}"><span class="fa fa-cubes"></span> Service</a>
-                    </li> --}}
-                    @endcan
+            <nav id="sidebar" class="active noprint">
+                <h1><a href="" class="logo">
+                    <img src="{{ asset('img/'. env('USE_LOGO_NAME', 'logo.jpg')) }}" class="img-thumbnail" alt="">
+                </a></h1>
+
+                <ul class="mb-5 list-unstyled components">
+
+                    {{-- Ventes - Accessible par VENTE et ADMIN --}}
+                    @canany(['is-vente', 'is-admin'])
+                        <li><a href="{{ route('ventes.index') }}" class="{{ setActiveRoute('ventes.*') }}">
+                            <span class="fa fa-shopping-cart"></span> Vente</a></li>
+                        <li><a href="{{ route('clients.index') }}" class="{{ setActiveRoute('clients.*') }}">
+                            <span class="fa fa-users"></span> Client</a></li>
+                    @endcanany
+
+                    {{-- Stock - Accessible par ENTRE_PRODUITS, CONTROLLEUR et ADMIN --}}
+                    @canany(['is-entre-stock', 'is-controleur', 'is-admin'])
+                        <li><a href="{{ route('products.index') }}" class="{{ setActiveRoute('products.*') }}">
+                            <span class="fa fa-sticky-note"></span> Stock</a></li>
+                    @endcanany
+
+                    {{-- Journal - Accessible par CONTROLLEUR, ENTRE_PRODUITS et ADMIN --}}
+                    @canany(['is-controleur', 'is-entre-stock', 'is-admin'])
+                        <li><a href="{{ route('stockes.journal') }}" class="{{ setActiveRoute('stockes.*') }}">
+                            <span class="fa fa-calendar"></span> Journal</a></li>
+                    @endcanany
+
+                    {{-- Rapports - Accessible par COMPTABLE, CONTROLLEUR et ADMIN --}}
+                    @canany(['is-comptable', 'is-controleur', 'is-admin'])
+                        <li><a href="{{ route('rapport') }}" class="{{ setActiveRoute('rapport') }}">
+                            <span class="fa fa-chart-bar"></span> Rapport</a></li>
+                    @endcanany
+
+                    {{-- Finances - Accessible par COMPTABLE et ADMIN --}}
+                    @canany(['is-comptable', 'is-admin'])
+                        <li><a href="{{ route('depenses.index') }}" class="{{ setActiveRoute('depenses.*') }}">
+                            <span class="fa fa-minus"></span> Depense</a></li>
+
+                        @if (env('APP_USE_VERSEMENT', false))
+                            <li><a href="{{ route('versement.index') }}" class="{{ setActiveRoute('versement.*') }}">
+                                <span class="fa fa-money-bill-wave"></span> Versements</a></li>
+                        @endif
+
+                        @if (env('APP_USE_ABONEMENT', false))
+                            <li><a href="{{ route('comptes.index') }}" class="{{ setActiveRoute('comptes.*') }}">
+                                <span class="fa fa-hand-holding-usd"></span> Abonement</a></li>
+                        @endif
+                    @endcanany
+
+                    {{-- Administration - ADMIN uniquement --}}
                     @can('is-admin')
-                    <li>
-                        <a href="{{ route('products.index') }}" class="{{ setActiveRoute('products.*') }}" ><span class="fa fa-sticky-note"></span> Stock</a>
-                    </li>
+                        @if (env('APP_USE_LOCATION', false))
+                            <li><a href="{{ route('maison-location.index') }}" class="{{ setActiveRoute('maison-location.*') }}">
+                                <span class="fa fa-cubes"></span> Location</a></li>
+                        @endif
 
-                    @if (env('APP_USE_LOCATION', false))
-                    <li>
-                        <a href="{{ route('maison-location.index') }}" class="{{ setActiveRoute('maison-location.*') }}" ><span class="fa fa-cubes"></span> Location</a>
-                    </li>
-                    @endif
-                    <li>
-                        <a href="{{ route('rapport') }}" class="{{ setActiveRoute('rapport') }}" ><span class="fa fa-chart-bar"></span> Rapport</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('stockes.journal') }}"  class="{{ setActiveRoute('stockes.*') }}" ><span class="fa fa-calendar"></span> Journal</a>
-                    </li>
-                    @if (env('APP_USE_ABONEMENT', false))
-                    <li>
-                        <a href="{{ route('comptes.index') }}"  class="{{ setActiveRoute('comptes.*') }}" ><span class="fa fa-hand-holding-usd" aria-hidden="true"></span> Abonement</a>
-                    </li>
-                    @endif
-                    <li>
-                        <a href="{{ route('depenses.index') }}" class="{{ setActiveRoute('depenses.*') }}"><span class="fa fa-minus"></span> Depense</a>
-                    </li>
-                    @if (env('APP_USE_VERSEMENT', false))
-                        <li>
-                            <a href="{{ route('versement.index') }}" class="{{ setActiveRoute('versement.*') }}"><span class="fa fa-money-bill-wave"></span> Versements</a>
-                        </li>
-                    @endif
+                        <li><a href="{{ route('entreprises.index') }}" class="{{ setActiveRoute('entreprises.*') }}">
+                            <span class="fa fa-building"></span> Entreprise</a></li>
 
-                    <li>
-                        <a href="{{ route('entreprises.index') }}" class="{{ setActiveRoute('entreprises.*') }}">
-                            <span class="fa fa-building"></span> Entreprise</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('users.index') }}" class="{{ setActiveRoute('users.*') }}"><span class="fas fa-cogs"></span> Système</a>
-                        </li>
-                        <li></li>
-                        {{--  <li>
-                            <a href="{{ route('register') }}"><span class="fa fa-paper-plane"></span> Utilisateur</a>
-                        </li> --}}
-                    </ul>
-                    <div id="status" class="status"></div>
+                        <li><a href="{{ route('users.index') }}" class="{{ setActiveRoute('users.*') }}">
+                            <span class="fas fa-cogs"></span> Système</a></li>
                     @endcan
-                    <div class="footer">
 
-                    </div>
-                </nav>
+                </ul>
+
+                <div id="status" class="status"></div>
+                <div class="footer"></div>
+            </nav>
 
                 <!-- Page Content  -->
                 <div id="content" class="p-0 p-md-6">
@@ -194,13 +197,12 @@
                                         </a>
                                     </li>
                                     <li class="ml-2 nav-item">
-                                        <form action="{{ route('logout') }}" method="post">
+                                       <form action="{{ route('logout.clear.cache') }}" method="post">
                                             @csrf
-                                            @method('POST')
                                             <button type="submit" class="btn btn-dark btn-sm rounded-bottom">
                                                 <i class="fa fa-power-off fa-2x" aria-hidden="true" title=" Se deconnecter"></i>
-
-                                            </form>
+                                            </button>
+                                        </form>
                                         </li>
 
                                         {{--  <li class="nav-item">
