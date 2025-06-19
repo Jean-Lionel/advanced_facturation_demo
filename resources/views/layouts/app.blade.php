@@ -260,12 +260,24 @@
                     const canSyncronize = @json( CAN_SYNCRONISE );
                     const timeSyncronisation = @json( TIME_OUT_SYNCRONISATION );
                     const cancel_syncronize = "{{ session('cancel_syncronize') }}";
-                    //alert(cancel_syncronize);
+                    let lastOnlineStatus = localStorage.getItem("lastOnlineStatus") === null ? null : JSON.parse(localStorage.getItem("lastOnlineStatus"));
+                    let lastOnlineStatusUpdate = localStorage.getItem("lastOnlineStatusUpdate") === null ? 0 : JSON.parse(localStorage.getItem("lastOnlineStatusUpdate"));
                     const checkOnlineStatus = async () => {
+                        const now = Date.now();
+                        if (now - lastOnlineStatusUpdate < 300000) {
+                            return lastOnlineStatus;
+                        }
                         try {
                             const online = await fetch("https://jsonplaceholder.typicode.com/todos/1");
-                            return online.status >= 200 && online.status < 300; // either true or false
+                            const result = online.status >= 200 && online.status < 300;
+                            localStorage.setItem("lastOnlineStatus", JSON.stringify(result));
+                            localStorage.setItem("lastOnlineStatusUpdate", JSON.stringify(now));
+                            lastOnlineStatus = result;
+                            lastOnlineStatusUpdate = now;
+                            return result;
                         } catch (err) {
+                            localStorage.setItem("lastOnlineStatus", JSON.stringify(false));
+                            localStorage.setItem("lastOnlineStatusUpdate", JSON.stringify(now));
                             return false; // definitely offline
                         }
                     };
@@ -283,8 +295,7 @@
                         return result;
                     }
 
-                    if(canSyncronize && !cancel_syncronize && CAN_SYNCRONISE){
-
+                    if(canSyncronize && !cancel_syncronize){
                         let  limitedInterval =  setInterval(async () => {
                             const result = await updateInternetStatus();
                             console.log(result);
