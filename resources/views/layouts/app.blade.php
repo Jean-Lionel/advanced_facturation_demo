@@ -296,7 +296,7 @@
                     if(canSyncronize && !cancel_syncronize){
                         let  limitedInterval =  setInterval(async () => {
                             const result = await updateInternetStatus();
-                            console.log(result);
+                                console.log(result);
                             if(result){
                                 // window.location.reload();
                                 clearInterval(limitedInterval);
