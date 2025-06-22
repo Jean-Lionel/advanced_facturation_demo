@@ -5,10 +5,45 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClientMaisonStoreRequest;
 use App\Http\Requests\ClientMaisonUpdateRequest;
 use App\Models\ClientMaison;
+use App\Models\MaisonLocation;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class ClientMaisonController extends Controller
 {
+    public function document_maison(){
+
+        $months = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"];
+        $lettres = ["A", "B","C","D","E","F","G","H","I"];
+
+      //  $
+        //customerName=&shop_letter=TOUS
+
+        $customerName = request()->query('customerName');
+        $shop_letter = request()->query('shop_letter');
+
+        if($shop_letter != null ||  $customerName != null){
+            $clientMaisons = MaisonLocation::with(['clients'])
+            ->whereHas('clients')
+            ->get();
+           // return view('maisonLocation.detailView', compact('months', 'clientMaisons'));
+            $pdf = Pdf::loadView('maisonLocation.detailView', compact('months', 'clientMaisons'));
+            $pdf->setPaper('a4', 'portrait');
+
+            $pdf->setOptions([
+                'defaultFont' => 'sans-serif',
+            ]);
+            return $pdf->stream(time(). 'galerie_ideal.pdf');
+        }
+
+
+
+
+
+        return view('maisonLocation.document', compact('months', 'clientMaisons', "lettres"));
+
+
+    }
     /**
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response

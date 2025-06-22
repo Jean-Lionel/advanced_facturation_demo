@@ -11,6 +11,9 @@
     <div>
         <a href="{{ route('clients_half_paid') }}">Paiement partielle </a>
     </div>
-    
+    <div>
+        <a href="{{ route('document_maison') }}">Document Administrative </a>
+    </div>
+
 
 </div>
