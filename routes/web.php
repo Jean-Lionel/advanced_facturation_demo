@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('update_quantite', [CartController::class ,'update_quantite'])->name('update_quantite');
     Route::get('update_tva', [CartController::class ,'update_tva'])->name('update_tva');
     Route::get('rapport', [StockController::class , 'rapport'])->name('rapport');
+    Route::get('impression_multiple', [StockController::class , 'impression_multiple'])->name('impression_multiple');
     //Cart ROUTE
     Route::post('panier/ajouter', [CartController::class ,'store'])->name('panier.store');
     Route::get('panier/index', [CartController::class ,'index'])->name('panier.index');
@@ -143,6 +144,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('hr-commande', App\Http\Controllers\HrCommandeController::class);
     Route::resource('banque', App\Http\Controllers\BanqueController::class);
     Route::resource('maison-location', App\Http\Controllers\MaisonLocationController::class);
+
     Route::resource('client-maison', App\Http\Controllers\ClientMaisonController::class);
     Route::resource('payment-location-mensuel', App\Http\Controllers\PaymentLocationMensuelController::class);
     Route::resource('historique-paiement', App\Http\Controllers\HistoriquePaymentController::class);

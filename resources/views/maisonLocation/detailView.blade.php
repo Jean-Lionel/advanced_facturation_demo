@@ -9,7 +9,9 @@ table{
 }
 tr, th,td{
     border: 1px solid #000;
-    padding: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
 
 }
 </style>

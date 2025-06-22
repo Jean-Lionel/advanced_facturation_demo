@@ -7,7 +7,7 @@
 			<span>Facture à Crédit </span>
 		</a>
 
-        <a class="mx-4" href="{{ route('facture.credit') }}" class="{{ setActiveRoute('journal_sort_history') }}">
+        <a class="mx-4" href="{{ route('impression_multiple') }}" class="{{ setActiveRoute('journal_sort_history') }}">
 			<span class="fa fa-file"></span>
 			<span>Impression Multiple des factures </span>
 		</a>
