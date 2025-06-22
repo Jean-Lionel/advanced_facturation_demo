@@ -11,6 +11,7 @@ class Update extends Component
     public $description;
     public $montant;
     public $tax;
+    public $avance;
 
     // "" => "H17"
     // "" => null
@@ -23,6 +24,7 @@ class Update extends Component
         $this->description = $maisonLocation->description;
         $this->montant = $maisonLocation->montant;
         $this->tax = $maisonLocation->tax;
+        $this->avance = $maisonLocation->avance;
 
     }
     public function render()
@@ -31,12 +33,13 @@ class Update extends Component
     }
 
     public function savePriceClick(){
-       
+
         $this->maisonLocation->update([
             'name' => $this->name,
             'description' => $this->description,
            'montant' => $this->montant,
             'tax' => $this->tax,
+            'avance' => $this->avance,
         ]);
         return redirect()->to('maison-location');
     }

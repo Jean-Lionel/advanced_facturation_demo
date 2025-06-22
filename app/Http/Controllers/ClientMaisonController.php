@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClientMaisonStoreRequest;
 use App\Http\Requests\ClientMaisonUpdateRequest;
 use App\Models\ClientMaison;
+use App\Models\Entreprise;
 use App\Models\MaisonLocation;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Faker\Provider\ar_EG\Company;
 use Illuminate\Http\Request;
 
 class ClientMaisonController extends Controller
@@ -29,13 +31,15 @@ class ClientMaisonController extends Controller
                                 $query->where('name', 'like', "{$shop_letter}%");
                             }
                             if($customerName != null){
-                                $query->where('name', 'like', "%{$customerName}%");
+                                $query->where('name', 'like', "{$customerName}");
                             }
                         })
-                        ->get();
+                        ->get()
+                        ->sortBy('name')
+                        ;
+            $entreprise = Entreprise::currentEntreprise();
 
-
-            $pdf = Pdf::loadView('maisonLocation.detailView', compact('months', 'clientMaisons'));
+            $pdf = Pdf::loadView('maisonLocation.detailView', compact('months', 'clientMaisons', 'entreprise'));
             $pdf->setPaper('a4', 'portrait');
 
             $pdf->setOptions([

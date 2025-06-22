@@ -9,11 +9,29 @@ table{
 }
 tr, th,td{
     border: 1px solid #000;
+    padding: 5px;
+
 }
 </style>
+<div style="">
+
+
+
 
 @foreach ($clientMaisons as $maison)
+<div style="text-align: left;">
+        <h2 style="margin-bottom: 0; text-transform: uppercase; text-align: center;">{{ $entreprise->tp_name }}</h2>
+        <p style="margin: 0;">NIF : {{ $entreprise->tp_TIN }}</p>
+        <p style="margin: 0;">RC : {{ $entreprise->tp_trade_number }}</p>
+        <p style="margin: 0;">Tél : {{ $entreprise->tp_phone_number }}</p>
+        <p style="margin: 0;">Commune : {{ $entreprise->tp_address_privonce }}</p>
+        <p style="margin: 0;">Quartier : {{ $entreprise->tp_address_avenue }}</p>
+        <p style="margin: 0;">Rue : {{ $entreprise->tp_address_quartier }}</p>
+        <p style="margin: 0;">Commune : {{ $entreprise->tp_address_commune }}</p>
+        <p style="margin: 0;">Rue : {{ $entreprise->tp_address_rue }}</p>
+        <p style="margin: 0;">N° : {{ $entreprise->tp_address_number }}</p>
 
+    </div>
 
 
 <table>
@@ -28,7 +46,7 @@ tr, th,td{
     </tr>
     <tr>
         <th>Avance</th>
-        <td>0</td>
+        <td>{{$maison->avance}}</td>
     </tr>
     <tr>
         <th>Téléphone</th>

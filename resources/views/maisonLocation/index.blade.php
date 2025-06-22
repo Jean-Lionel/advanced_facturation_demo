@@ -15,7 +15,7 @@
 			<form action="{{ route('maison-location.index') }}" method="GET">
 				<input type="search" name="search" class="form-control form-control-sm"
 				value="{{ $search }}"
-				
+
 				placeholder="Rechercher ici ">
 			</form>
 		</div>
@@ -29,6 +29,7 @@
 				<th scope="col">Description</th>
 				<th scope="col">Client</th>
 				<th scope="col">Tax (%)</th>
+				<th scope="col">Avance</th>
 				<th scope="col">Date de création</th>
 				<th scope="col">Action</th>
 			</tr>
@@ -53,10 +54,11 @@
 					</ol>
 				</td>
 				<th scope="col">{{$value->tax }}</th>
+				<th scope="col">{{$value->avance }}</th>
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
-					<a href="{{ route('maison-location.show', $value) }}" class="btn btn-outline-info btn-sm mr-2">Locataire</a>
-					<a href="{{ route('maison-location.edit', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Modifier</a>
+					<a href="{{ route('maison-location.show', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Locataire</a>
+					<a href="{{ route('maison-location.edit', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
 				</td>
 			</tr>
 			@endforeach
