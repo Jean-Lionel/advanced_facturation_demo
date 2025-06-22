@@ -14,7 +14,10 @@ tr, th,td{
 
 @foreach ($clientMaisons as $maison)
 
+
+
 <table>
+
     <tr>
         <th>SHOP</th>
         <th>{{$maison->name}}</th>

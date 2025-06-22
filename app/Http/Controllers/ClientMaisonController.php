@@ -16,17 +16,25 @@ class ClientMaisonController extends Controller
         $months = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"];
         $lettres = ["A", "B","C","D","E","F","G","H","I"];
 
-      //  $
         //customerName=&shop_letter=TOUS
-
         $customerName = request()->query('customerName');
         $shop_letter = request()->query('shop_letter');
 
         if($shop_letter != null ||  $customerName != null){
+
             $clientMaisons = MaisonLocation::with(['clients'])
-            ->whereHas('clients')
-            ->get();
-           // return view('maisonLocation.detailView', compact('months', 'clientMaisons'));
+                        ->whereHas('clients')
+                        ->where(function($query) use($shop_letter, $customerName){
+                            if($shop_letter != null && $shop_letter != "TOUS"){
+                                $query->where('name', 'like', "{$shop_letter}%");
+                            }
+                            if($customerName != null){
+                                $query->where('name', 'like', "%{$customerName}%");
+                            }
+                        })
+                        ->get();
+
+
             $pdf = Pdf::loadView('maisonLocation.detailView', compact('months', 'clientMaisons'));
             $pdf->setPaper('a4', 'portrait');
 
@@ -40,7 +48,7 @@ class ClientMaisonController extends Controller
 
 
 
-        return view('maisonLocation.document', compact('months', 'clientMaisons', "lettres"));
+        return view('maisonLocation.document', compact('months', "lettres"));
 
 
     }
