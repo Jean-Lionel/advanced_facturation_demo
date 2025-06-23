@@ -11,6 +11,7 @@ tr, th,td{
     border: 1px solid #000;
     padding-top: 5px;
     padding-bottom: 5px;
+    text-align: left !important;
 
 
 }
@@ -26,10 +27,10 @@ tr, th,td{
         <p style="margin: 0;">NIF : {{ $entreprise->tp_TIN }}</p>
         <p style="margin: 0;">RC : {{ $entreprise->tp_trade_number }}</p>
         <p style="margin: 0;">Tél : {{ $entreprise->tp_phone_number }}</p>
-        <p style="margin: 0;">Commune : {{ $entreprise->tp_address_privonce }}</p>
-        <p style="margin: 0;">Quartier : {{ $entreprise->tp_address_avenue }}</p>
-        <p style="margin: 0;">Rue : {{ $entreprise->tp_address_quartier }}</p>
+        <p style="margin: 0;">Province : {{ $entreprise->tp_address_privonce }}</p>
         <p style="margin: 0;">Commune : {{ $entreprise->tp_address_commune }}</p>
+        <p style="margin: 0;">Quartier : {{ $entreprise->tp_address_quartier }}</p>
+        <p style="margin: 0;">Avenue : {{ $entreprise->tp_address_avenue }}</p>
         <p style="margin: 0;">Rue : {{ $entreprise->tp_address_rue }}</p>
         <p style="margin: 0;">N° : {{ $entreprise->tp_address_number }}</p>
 
