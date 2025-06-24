@@ -53,7 +53,7 @@ class DepenseController extends Controller
 
         $request->validate([
             'name' => 'required|min:2',
-            'montant' => 'numeric|min:0|max:'. $montant_total,
+            'montant' => 'numeric|min:0',
         ]);
 
         Depense::create($request->all());

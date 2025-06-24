@@ -24,12 +24,13 @@ class MaisonLocationStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            
+
             'name' => ['required', 'string', 'unique:maison_locations'],
             'description' => ['string', 'nullable'],
             'montant' => ['required', 'numeric'],
+           // 'avance' => ['required', 'numeric'],
             'tax' => ['required'],
-           
+
         ];
     }
 }

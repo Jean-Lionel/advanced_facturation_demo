@@ -13,12 +13,40 @@ use App\Models\Service;
 use App\Models\Stocke;
 use App\Models\StockerUser;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
+    public function impression_multiple(){
+
+        $dateDebut = request()->query('dateDebut');
+        $dateFin = request()->query('dateFin');
+
+        if($dateDebut and $dateFin){
+            $orders = Order::where('is_cancelled', '=',0)
+                        ->whereBetween('created_at', [$dateDebut, $dateFin])
+                        ->sortable()
+                        ->latest()
+                        ->take(30)
+                        ->get();
+
+                $pdf = Pdf::loadView('stocks.impression', compact('orders'));
+                // Option 2: Format 80mm
+                $pdf->setPaper([0, 0, 226.8, 430], 'portrait');
+                $pdf->setOption('margin-top', 0);
+                $pdf->setOption('margin-bottom', 0);
+                $pdf->setOption('margin-left', 0);
+                $pdf->setOption('margin-right', 0);
+
+            return $pdf->stream();
+        }
+
+        return view('stocks.impression_multiple');
+
+    }
 
     public function mouvement_stock(){
         $start_at =  request()->query('start_at');

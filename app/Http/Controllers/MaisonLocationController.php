@@ -41,6 +41,8 @@ class MaisonLocationController extends Controller
     public function store(MaisonLocationStoreRequest $request)
     {
         $maisonLocation = MaisonLocation::create($request->validated());
+
+
         $request->session()->flash('maisonLocation.id', $maisonLocation->id);
 
         return$this->index($request);
