@@ -142,6 +142,31 @@ class StockController extends Controller
         return back();
     }
 
+    public function deleteMouvementStoc($id){
+        $mouvement = ObrMouvementStock::find($id);
+        // SI $mouvement->item_movement_type commence par E  c entre Modifier la quantite en stock
+
+        if(str_starts_with($mouvement->item_movement_type, 'E')){
+
+            // rechercher le produits par Item code
+            $product = Product::where('id', $mouvement->item_product_detail_id)->first();
+
+            if($product){
+                $product->quantite -= $mouvement->item_quantity;
+                $product->save();
+            }
+        }
+        if(str_starts_with($mouvement->item_movement_type, 'S')){
+            $product = Product::where('id', $mouvement->item_product_detail_id)->first();
+            if($product){
+                $product->quantite += $mouvement->item_quantity;
+                $product->save();
+            }
+        }
+        $mouvement->delete();
+        return back();
+    }
+
     public function canceledInvoince()
     {
         // code...

@@ -57,7 +57,8 @@
                 <th>Mouvement type</th>
                 <th>Déscription</th>
                 <th>Date</th>
-                <th>Envoyé à OBR</>
+                <th>Envoyé à OBR</th>
+                <th></th>
                 </tr>
             </thead>
 
@@ -77,6 +78,13 @@
                     <td>{{ $item->item_movement_description }}</td>
                     <td>{{ $item->item_movement_date }}</td>
                     <td class="{{ $item->is_send_to_obr ? 'text-success' : 'text-danger' }}">{{ $item->is_send_to_obr ? 'Oui' : 'Non' }}</td>
+                    <td>
+                        <form action="{{ route('obr_mouvement.destroy', $item->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Voulez-vous supprimer ?')">Supprimer</button>
+                        </form>
+                    </td>
                 </tr>
                 @endforeach
 

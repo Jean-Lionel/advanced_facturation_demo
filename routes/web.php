@@ -147,9 +147,12 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('client-maison', App\Http\Controllers\ClientMaisonController::class);
     Route::resource('payment-location-mensuel', App\Http\Controllers\PaymentLocationMensuelController::class);
+
     Route::resource('historique-paiement', App\Http\Controllers\HistoriquePaymentController::class);
     Route::resource('non-paiement-location', App\Http\Controllers\NonPaymentLocationController::class);
     Route::get('document_maison', [App\Http\Controllers\ClientMaisonController::class, 'document_maison'] )->name('document_maison');
+
+    Route::delete("obr_mouvement/{id}", [App\Http\Controllers\StockController::class, 'deleteMouvementStoc'])->name('obr_mouvement.destroy');
     Route::prefix('/LocationMaison')->name('LocationMaison.')->group(function(){
         Route::resource('', App\Http\Controllers\ClientsNonPayeLoyersController::class)
         ->except([ 'edit', 'update', 'destroy','show','create']);

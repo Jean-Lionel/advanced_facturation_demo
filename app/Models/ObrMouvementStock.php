@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Jobs\ObrSendInvoince;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Session;
 
 /**
@@ -28,6 +29,7 @@ use Illuminate\Support\Facades\Session;
 class ObrMouvementStock extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $guarded = [];
     public static function getMouvouments(){
         return [
@@ -135,6 +137,10 @@ class ObrMouvementStock extends Model
         ObrSendInvoince::dispatch();
 
     }
+
+    // Ajouter une colonne deleted at  le champs deleted at si ca n'existe pas
+
+
 }
 
 
