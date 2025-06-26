@@ -20,12 +20,18 @@
 			<span class="fa fa-briefcase"></span>
 			<span>Proformat </span>
 		</a>
+        <a class="mx-4"  href="{{ route('facture.search') }}" class="{{ setActiveRoute('facture.search') }}">
+			<span class="fa fa-search"></span>
+			<span>Recherche les factures </span>
+		</a>
 
 	</div>
-	<button class="btn btn-info noprint" onclick="window.print()" >
+    <div class="noprint">
+        <button class="btn btn-info noprint" onclick="window.print()" >
 		<i class="fa fa-print" aria-hidden="true"></i>
 		Imprimer
 	</button>
+    </div>
 </div>
 
 <h5 class="text-center">Historique</h5>

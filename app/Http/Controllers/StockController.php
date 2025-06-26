@@ -20,6 +20,30 @@ use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
+    public function facture_search(){
+        $facture_number = request()->query('facture_number');
+        $search = request()->query('search');
+        $start_date = request()->query('start_date');
+        $end_date = request()->query('end_date');
+        $orders = Order::where('is_cancelled', '=',0)
+        ->where(function($query) use($facture_number, $search, $start_date, $end_date){
+            if($facture_number){
+                $query->where('id', '=', $facture_number);
+            }
+            if($search){
+                $query->where('client', 'like', "%{$search}%")
+                ->orWhere('products', 'like', "%{$search}%");
+            }
+            if($start_date and $end_date){
+                $query->whereBetween('created_at', [$start_date, $end_date]);
+            }
+        })
+        ->sortable()
+        ->latest()
+        ->take(20)
+        ->get();
+        return view('stocks.facture_search', compact('orders', 'facture_number', 'search', 'start_date', 'end_date'));
+    }
     public function impression_multiple(){
 
         $dateDebut = request()->query('dateDebut');
