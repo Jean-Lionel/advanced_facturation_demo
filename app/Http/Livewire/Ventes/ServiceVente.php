@@ -93,13 +93,19 @@ class ServiceVente extends Component
     }
 
     public function searchClient(){
-        $this->customer = Client::where('id', 'LIKE', "%{$this->clientNumber}%")
-            ->orWhere('customer_TIN', 'LIKE', "%{$this->clientNumber}%")
-            ->orWhere('name', 'LIKE', "%{$this->clientNumber}%")
-            ->orWhere('telephone', 'LIKE', "%{$this->clientNumber}%")
-            ->orWhere('addresse', 'LIKE', "%{$this->clientNumber}%")
-            ->first();
+       $clienN = $this->clientNumber;
+        $this->customer = Client::where(function($query) use ($clienN){
 
+            if(is_numeric($clienN)){
+                $query->where('id', 'LIKE', "%{$clienN}%")
+               ;
+            }else{
+                $query->where('name', 'LIKE', "%{$clienN}%")
+                ->orWhere('telephone', 'LIKE', "%{$clienN}%")
+                ->orWhere('addresse', 'LIKE', "%{$clienN}%")
+                ;
+            }
+        })->first();
         if($this->customer == null){
             $this->errorMessage = "Client non trouvé";
         }else{
