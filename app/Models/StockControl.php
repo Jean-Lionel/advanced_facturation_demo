@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -21,42 +23,79 @@ class StockControl extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
+    use SoftDeletes;
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'id' => 'integer',
-        'product_id' => 'integer',
-        'old_quantity' => 'double',
-        'new_quantity' => 'double',
-        'sold_quantity' => 'double',
-        'price' => 'double',
-        'user_id' => 'integer',
-        'total' => 'double',
+    protected $fillable = [
+        'product_id',
+        'old_quantity',
+        'new_quantity',
+        'sold_quantity',
+        'price',
+        'total',
+        'user_id',
+        'description'
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function product()
+    protected $casts = [
+        'old_quantity' => 'decimal:2',
+        'new_quantity' => 'decimal:2',
+        'sold_quantity' => 'decimal:2',
+        'price' => 'decimal:2',
+        'total' => 'decimal:2',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime'
+    ];
+
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Accesseurs pour formater les données
+    public function getFormattedTotalAttribute()
+    {
+        return number_format($this->total, 0, ',', ' ') . ' F';
+    }
+
+    public function getFormattedPriceAttribute()
+    {
+        return number_format($this->price, 0, ',', ' ') . ' F';
+    }
+
+    public function getFormattedDateAttribute()
+    {
+        return $this->created_at->format('d/m/Y H:i');
+    }
+
+    // Scopes pour les requêtes
+    public function scopeByPeriod($query, $dateFrom, $dateTo)
+    {
+        return $query->whereBetween('created_at', [
+            $dateFrom . ' 00:00:00',
+            $dateTo . ' 23:59:59'
+        ]);
+    }
+
+    public function scopeByProduct($query, $productId)
+    {
+        return $query->where('product_id', $productId);
+    }
+
+    public function scopeByCategory($query, $categoryId)
+    {
+        return $query->whereHas('product', function($q) use ($categoryId) {
+            $q->where('category_id', $categoryId);
+        });
+    }
+
+    public function scopeWithSales($query)
+    {
+        return $query->where('sold_quantity', '>', 0);
     }
 }

@@ -93,6 +93,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('update_panier', [CartController::class ,'updatePanier'])->name('cart.update_panier');
     Route::get('journal', [StockController::class , 'journal'])->name('stockes.journal');
     Route::get('controls', [StockController::class , 'controls'])->name('stocks.controls');
+    Route::get('rapport_boutique', [StockController::class , 'rapport_boutique'])->name('rapport_boutique');
     //facture.search
     Route::get('facture.search', [StockController::class , 'facture_search'])->name('facture.search');
     Route::get('canceledInvoince', [StockController::class, 'canceledInvoince'])->name('stockes.journal');

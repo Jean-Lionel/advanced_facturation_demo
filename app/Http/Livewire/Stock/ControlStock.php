@@ -82,6 +82,10 @@ class ControlStock extends Component
                 'description' => json_encode([
                     'description' => 'Controle du ' . date('Y-m-d'),
                     'product_id' => $product->id,
+                    'product_code' => $product->code_product,
+                    'product_marque' => $product->marque,
+                    'product_unite_mesure' => $product->unite_mesure,
+                    'product_prix_vente' => $product->prix_vente,
                     'product_name' => $product->name,
                     'category_id' => $product->category_id
                 ]),

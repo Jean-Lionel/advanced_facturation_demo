@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\PaiementDette;
 use App\Models\Product;
 use App\Models\Service;
+use App\Models\StockControl;
 use App\Models\Stocke;
 use App\Models\StockerUser;
 use App\Models\User;
@@ -21,6 +22,10 @@ use Illuminate\Support\Facades\DB;
 class StockController extends Controller
 {
 
+    public function rapport_boutique(){
+       // $ventes = StockControl::all();
+        return view('stocks.rapport_boutique');
+    }
     public function controls(){
         return view('stocks.controls');
     }

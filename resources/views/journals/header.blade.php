@@ -2,9 +2,14 @@
 
 <div class="text-right">
 	<div class="">
+
+        <a href="{{ route('rapport_boutique') }}" class="mx-4 {{ setActiveRoute('rapport_boutique') }}">
+            <span class="fa fa-box"></span>
+            <span>Rapport Boutique </span>
+        </a>
         <a href="{{ route('stocks.controls') }}" class="mx-4 {{ setActiveRoute('stocks.controls') }}">
             <span class="fa fa-box"></span>
-            <span>Controle des stocks </span>
+            <span>Control des stocks </span>
         </a>
 
         <a class="mx-4" href="{{ route('facture.credit') }}" class="{{ setActiveRoute('facture.credit') }}">
