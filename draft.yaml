@@ -1,39 +1,18 @@
 models:
-  TypeEmbalage:
+  StockControl:
     id: id
-    name: string:255
-    description: text nullable
-    timestamps: true
-    relationships:
-      hasMany: Embalage
-
-  Embalage:
-    id: id
-    name: string:255
-    description: text nullable
+    product_id: id foreign:products
+    old_quantity: double default:0
+    new_quantity: double default:0
+    sold_quantity: double default:0
     price: double default:0
-    quantity: double default:0
-    type_embalage_id: id foreign:type_embalages
+    description: text nullable
+    user_id: id foreign:users
     timestamps: true
-    relationships:
-      belongsTo: TypeEmbalage
-      hasMany: EmbalageMouvement
 
-  EmbalageMouvement:
-    id: id
-    type: string:255
-    quantity: double default:0
-    embalage_id: id foreign:embalages
-    client_id: id foreign:clients
-    timestamps: true
-    relationships:
-      belongsTo: Embalage
+
 
 controllers:
-  TypeEmbalage:
-    resource: web
-  Embalage:
-    resource: web
-  EmbalageMouvement:
+  StockControl:
     resource: web
 

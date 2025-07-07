@@ -82,7 +82,9 @@
                                                    step="0.01"
                                                    min="0"
                                                    class="form-control form-control-sm"
-                                                   style="width: 100px;">
+                                                   style="width: 100px;"
+                                                   wire:keypress.enter="updateSingleProduct({{ $product->id }})"
+                                                   >
                                         </td>
                                         <td>
                                             <button wire:click="updateSingleProduct({{ $product->id }})"
