@@ -20,6 +20,10 @@ use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
+
+    public function controls(){
+        return view('stocks.controls');
+    }
     public function facture_search(){
         $facture_number = request()->query('facture_number');
         $search = request()->query('search');

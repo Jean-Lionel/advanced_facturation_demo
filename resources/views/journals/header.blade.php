@@ -2,11 +2,15 @@
 
 <div class="text-right">
 	<div class="">
+        <a href="{{ route('stocks.controls') }}" class="mx-4">
+            <span class="fa fa-box"></span>
+            <span>Controle des stocks </span>
+        </a>
+
         <a class="mx-4" href="{{ route('facture.credit') }}" class="{{ setActiveRoute('journal_sort_history') }}">
 			<span class="fa fa-file"></span>
 			<span>Facture à Crédit </span>
 		</a>
-
         <a class="mx-4" href="{{ route('impression_multiple') }}" class="{{ setActiveRoute('journal_sort_history') }}">
 			<span class="fa fa-file"></span>
 			<span>Impression Multiple des factures </span>
@@ -33,8 +37,6 @@
 	</button>
     </div>
 </div>
-
-<h5 class="text-center">Historique</h5>
 <div>
 	{{-- <form action="" class="form-group row">
 		<div class="col-sm-6">
