@@ -19,7 +19,6 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         $transactions = Transaction::with(['transactionType'])->latest()->paginate();
-
         return $transactions;
     }
 
@@ -30,7 +29,6 @@ class TransactionController extends Controller
     public function store(TransactionStoreRequest $request)
     {
         $transaction = Transaction::create($request->validated());
-
         return new TransactionResource($transaction);
     }
 
@@ -64,7 +62,6 @@ class TransactionController extends Controller
     public function destroy(Request $request, Transaction $transaction)
     {
         $transaction->delete();
-
         return response()->noContent();
     }
 }
