@@ -15,12 +15,9 @@ class MaisonLocationController extends Controller
     {
 
         $search = $request->input('search');
-        $maisonLocations = MaisonLocation::with(['clients'])
-                                    ->whereHas('clients', function($query) use ($search) {
-                                        if($search){
-                                            $query->where('name', 'LIKE', "%{$search}%");
-                                        }
-                                    })
+        $maisonLocations = MaisonLocation::with(['clients' => function($query) use ($search) {
+            $query->where('name', 'LIKE', "%{$search}%");
+        }])
                                     ->orWhere(function($query) use ($search) {
                                         if($search){
                                             $query->where('name', '=', $search);
@@ -40,6 +37,7 @@ class MaisonLocationController extends Controller
 
     public function store(MaisonLocationStoreRequest $request)
     {
+
         $maisonLocation = MaisonLocation::create($request->validated());
 
 
@@ -67,7 +65,6 @@ class MaisonLocationController extends Controller
      */
     public function update(MaisonLocationUpdateRequest $request, MaisonLocation $maisonLocation)
     {
-        dd($maisonLocation);
         $maisonLocation->update($request->validated());
 
         $request->session()->flash('maisonLocation.id', $maisonLocation->id);
