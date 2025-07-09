@@ -31,7 +31,7 @@ class ClientMaisonController extends Controller
                                 $query->where('name', 'like', "{%$shop_letter}%");
                             }
                             if($customerName != null){
-                                $query->where('name', 'like', "%{$customerName}%");
+                                $query->where('name', '=', $customerName);
                             }
                         })
                         ->get()
