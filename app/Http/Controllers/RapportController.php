@@ -19,12 +19,14 @@ class RapportController extends Controller
     public function rapportResultats(){
 
         //$resultats = Stock vendu-Versements-Charges-depenses=0;
-        $orders = Order::all();
-        $controls = StockControl::all();
-        $depenses = Depense::all();
-        $versements = Versement::all();
+       // $orders = Order::all();
+        $start_date = request()->query('start_date');
+        $end_date = request()->query('end_date');
+        $controls = StockControl::whereBetween('created_at', [$start_date, $end_date])->get();
+        $depenses = Depense::whereBetween('created_at', [$start_date, $end_date])->get();
+        $versements = Versement::whereBetween('created_at', [$start_date, $end_date])->get();
 
-        return view('reports.resultats', compact('orders','controls','depenses','versements'));
+        return view('reports.resultats', compact('controls','depenses','versements','start_date','end_date'));
     }
 
     public function rapport_detail(){
