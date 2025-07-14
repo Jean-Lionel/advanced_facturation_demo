@@ -24,7 +24,8 @@ class MaisonLocationController extends Controller
                                         }
                                     })
                                     ->withCount('clients')
-                                    ->latest()->paginate(10);
+                                    ->latest()->get();
+                                    //->paginate(10);
 
 
         return view('maisonLocation.index', compact('maisonLocations' , 'search'));

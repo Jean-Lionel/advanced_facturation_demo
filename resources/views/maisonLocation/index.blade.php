@@ -20,7 +20,7 @@
 			</form>
 		</div>
 	</div>
-	<table class="table table-sm">
+	<table class="table table-sm" style="width: 100%;" id="maisonLocationTable">
 		<thead>
 			<tr>
 				<th scope="col">#</th>
@@ -58,7 +58,7 @@
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
 					<a href="{{ route('maison-location.show', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Locataire</a>
-					<a href="{{ route('maison-location.edit', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
+					<a href="{{ route('maison-location.edit', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm no-print">Modifier</a>
 				</td>
 			</tr>
 			@endforeach
@@ -66,6 +66,23 @@
 	</table>
 </div>
 <div class="col-md-12" style="">
-		{{ $maisonLocations->links()}}
+
 </div>
+@endsection
+
+@section('javascript')
+    <script>
+        $(document).ready(function() {
+            $('#maisonLocationTable').DataTable(
+                {
+                    "pageLength": 15,
+                    "lengthMenu": [15, 25, 50, 100],
+                    "dom": 'Bfrtip',
+                    "buttons": [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+            );
+        });
+    </script>
 @endsection
