@@ -75,8 +75,8 @@
         $(document).ready(function() {
             $('#maisonLocationTable').DataTable(
                 {
-                    "pageLength": 15,
-                    "lengthMenu": [15, 25, 50, 100],
+                    "pageLength": 10,
+                    "lengthMenu": [10, 20, 50, 100],
                     "dom": 'Bfrtip',
                     "buttons": [
                         'copy', 'csv', 'excel', 'pdf', 'print'
