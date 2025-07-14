@@ -185,6 +185,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('versementTypes', App\Http\Controllers\VersementTypeController::class)
         ->names('versementType');
     Route::resource('typeEmbalage', App\Http\Controllers\TypeEmbalageController::class);
+
+    // rapport.resultats
+    Route::get('rapport.resultats', [RapportController::class, 'rapportResultats'])->name('rapport.resultats');
 });
 require __DIR__ . '/jetstream.php';
 

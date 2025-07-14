@@ -4,13 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\BienvenuHistorique;
 use App\Models\Client;
+use App\Models\Depense;
+use App\Models\Order;
 use App\Models\OrderInteret;
+use App\Models\StockControl;
 use App\Models\User;
+use App\Models\Versement;
 use Illuminate\Http\Request;
 
 class RapportController extends Controller
 {
     //
+
+    public function rapportResultats(){
+
+        //$resultats = Stock vendu-Versements-Charges-depenses=0;
+        $orders = Order::all();
+        $controls = StockControl::all();
+        $depenses = Depense::all();
+        $versements = Versement::all();
+
+        return view('reports.resultats', compact('orders','controls','depenses','versements'));
+    }
 
     public function rapport_detail(){
 

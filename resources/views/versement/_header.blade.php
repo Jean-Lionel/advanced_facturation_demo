@@ -15,6 +15,10 @@
     <a href="{{ route('embalage-mouvement.index') }}" class="btn btn-primary btn-sm">
         <i class="fas fa-list"></i> Liste des mouvements d'embalages
     </a>
+    <a href="{{ route('rapport.resultats') }}" class="btn btn-primary btn-sm">
+        <i class="fas fa-list"></i> Resultats des ventes
+    </a>
+
     {{-- <a href="{{ route('embalage.index') }}" class="btn btn-primary btn-sm">
         <i class="fas fa-list"></i> Liste des embalages
     </a> --}}
