@@ -43,6 +43,9 @@ class SyncronizeToObr extends Command
 
         $orderID = $this->argument('orderID');
 
+       $syncronizeController = new SyncronizeController();
+       $syncronizeController->syncronizeStock();
+
         if(is_int($orderID)){
             // send a special command for sending ORDER
             $obr = new ObrDeclarationController();

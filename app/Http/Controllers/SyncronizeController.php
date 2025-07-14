@@ -154,7 +154,7 @@ class SyncronizeController extends Controller
     }
 
     public function syncronizeStock(){
-        if(env('OBR_CAN_SYNCRONISE', false) ){
+        if(!env('OBR_CAN_SYNCRONISE', false) ){
             return response()->json([
                 'success' => false,
                 'data' => null,
