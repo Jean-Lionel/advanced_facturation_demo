@@ -57,7 +57,7 @@ class TransactionController extends Controller
         if ($request->has('description') && $request->description !== null) {
             $query->where('description', 'like', '%' . $request->input('description') . '%');
         }
-        $transactions = $query->paginate(10);
+        $transactions = $query->get();
 
         $transaction_types = TransactionType::all();
         $members = Member::all();

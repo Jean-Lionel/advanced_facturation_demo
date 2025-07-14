@@ -1,8 +1,8 @@
 @extends('layouts.advanced')
 
 @section('content')
-<div class="container mt-4">
-    <div class="mb-4 d-flex justify-content-between align-items-center">
+<div class="container-fluid">
+    <div class=" d-flex justify-content-between align-items-center">
         <h1>Transactions</h1>
         <a href="{{ route('advanced.transactions.create') }}" class="btn btn-primary">
             <i class="fas fa-plus"></i> Nouvelle Transaction
@@ -10,7 +10,7 @@
     </div>
 
     <!-- Formulaire de recherche -->
-    <div class="mb-4 card">
+    <div class="card">
         <div class="card-header">
             <h5 class="mb-0">Rechercher des transactions</h5>
         </div>
@@ -18,14 +18,14 @@
             <form action="{{ route('advanced.transactions.index') }}" method="GET" class="row g-3">
                 <div class="col-md-3">
                     <label for="date_transaction" class="form-label">Date</label>
-                    <input type="date" name="date_transaction" id="date_transaction" class="form-control" value="{{ request('date_transaction') }}">
+                    <input type="date" name="date_transaction" id="date_transaction" class="form-control form-control-sm" value="{{ request('date_transaction') }}">
                 </div>
 
                 <div class="col-md-3">
                     <label for="montant" class="form-label">Montant</label>
                     <div class="input-group">
                         <span class="input-group-text">FBU</span>
-                        <input type="number" step="0.01" name="montant" id="montant" class="form-control" value="{{ request('montant') }}">
+                        <input type="number" step="0.01" name="montant" id="montant" class="form-control form-control-sm" value="{{ request('montant') }}">
                     </div>
                 </div>
 
@@ -55,17 +55,17 @@
 
                 <div class="col-md-3">
                     <label for="description" class="form-label">Description</label>
-                    <input type="text" name="description" id="description" class="form-control" value="{{ request('description') }}">
+                    <input type="text" name="description" id="description" class="form-control form-control-sm" value="{{ request('description') }}">
                 </div>
 
                 <div class="col-md-3">
                     <label for="date_debut" class="form-label">Date de début</label>
-                    <input type="date" name="date_debut" id="date_debut" class="form-control" value="{{ request('date_debut') }}">
+                    <input type="date" name="date_debut" id="date_debut" class="form-control form-control-sm" value="{{ request('date_debut') }}">
                 </div>
 
                 <div class="col-md-3">
                     <label for="date_fin" class="form-label">Date de fin</label>
-                    <input type="date" name="date_fin" id="date_fin" class="form-control" value="{{ request('date_fin') }}">
+                    <input type="date" name="date_fin" id="date_fin" class="form-control form-control-sm" value="{{ request('date_fin') }}">
                 </div>
 
                 <div class="col-12">
@@ -80,9 +80,10 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="display" id="transactionsTable" style="width: 100%;">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Date</th>
                             <th>Montant</th>
                             <th>Type</th>
@@ -95,6 +96,7 @@
                     <tbody>
                         @foreach($transactions as $transaction)
                             <tr>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $transaction->date_transaction->format('d/m/Y') }}</td>
                                 <td>{{ number_format($transaction->montant, 2, ',', ' ') }} FBU</td>
                                 <td>{{ $transaction->transactionType->name ?? 'N/A' }}</td>
@@ -126,9 +128,24 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{ $transactions->links() }}
+
             </div>
         </div>
     </div>
 </div>
+@endsection
+
+
+@section('javascript')
+    <script>
+        $(document).ready(function() {
+            $('#transactionsTable').DataTable(
+                {
+                    "buttons": [
+                        'copy', 'excel', 'pdf', 'csv', 'print'
+                    ]
+                }
+            );
+        });
+    </script>
 @endsection
