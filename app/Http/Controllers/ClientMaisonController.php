@@ -21,6 +21,7 @@ class ClientMaisonController extends Controller
         //customerName=&shop_letter=TOUS
         $customerName = request()->query('customerName');
         $shop_letter = request()->query('shop_letter');
+       // dd($shop_letter, $customerName);
 
         if($shop_letter != null ||  $customerName != null){
 
@@ -28,7 +29,7 @@ class ClientMaisonController extends Controller
                         ->whereHas('clients')
                         ->where(function($query) use($shop_letter, $customerName){
                             if($shop_letter != null && $shop_letter != "TOUS"){
-                                $query->where('name', 'like', "{%$shop_letter}%");
+                                $query->where('name', 'like', "%{$shop_letter}%");
                             }
                             if($customerName != null){
                                 $query->where('name', '=', $customerName);
