@@ -3,10 +3,17 @@
 <div class="text-right">
 	<div class="">
 
+    @if (env('APP_USE_VERSEMENT', false))
+        <a href="{{ route('rapport.resultats') }}" class="btn btn-primary btn-sm">
+            <i class="fas fa-list"></i> Resultats des ventes
+        </a>
+
         <a href="{{ route('rapport_boutique') }}" class="mx-4 {{ setActiveRoute('rapport_boutique') }}">
             <span class="fa fa-box"></span>
             <span>Rapport Boutique </span>
         </a>
+        @endif
+
         <a href="{{ route('stocks.controls') }}" class="mx-4 {{ setActiveRoute('stocks.controls') }}">
             <span class="fa fa-box"></span>
             <span>Control des stocks </span>
