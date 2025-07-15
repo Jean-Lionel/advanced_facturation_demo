@@ -131,9 +131,16 @@
                         @foreach($order->products as $key=> $product)
                         <tr>
                             <td>{{ $key +1 }}</td>
-                            <td class="item_name"> {{ $product['name'] }}</td>
+                            <td class="item_name">
+                               @if (isset(explode("||", $product['name'])[1]))
+                               <b> {{ explode("||", $product['name'])[1] }}</b> <br>
+                               @endif
+                               {{ $product['name'] }}
+
+                            </td>
                             {{-- <td class="adroite">{{ $product['nombre_sac'] ?? 0 }}</td> --}}
-                            <td class="adroite" style="width: 40px;"> {{ $product['quantite'] }}
+                            <td class="adroite" style="width: 40px;">
+                                 {{ $product['quantite'] }}
                             {{ $product['unite_mesure'] ?? ""}}</td>
                             <td class="adroite"> {{ getPrice($product['price'] ) }}</td>
                             <td class="adroite"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
