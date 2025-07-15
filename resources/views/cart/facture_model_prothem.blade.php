@@ -79,7 +79,7 @@
                    <p>   Assujetti à la TVA : {{$order->company?->vat_taxpayer ? 'OUI' : 'NON'  }}</p>
                    <p>  Type de Facture : {{$order->invoice_type ?? "FN"  }}</p>
                    <p>  Mode de Paiment :  <b>{{TYPE_PAYMENT[$order->type_paiement]  }}</b> </p>
-                   <p>  Exonerer à la TVA :  <b> OUI</b> </p>
+                   <!-- <p>  Exonerer à la TVA :  <b> OUI</b> </p> -->
                    <br>
                    <br>
                 </div>
