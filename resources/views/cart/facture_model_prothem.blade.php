@@ -243,10 +243,7 @@
                                         @if (isset(explode("||", $product['name'])[1]))
                                <b> {{ explode("||", $product['name'])[1] }}</b> <br>
                                @endif
-                               {{ $product['name'] }}
-
-
-                                        {{ $product['quantite'] }} X {{ $product['name'] }} </td>
+                              {{ $product['quantite'] }} X {{ $product['name'] }} </td>
                                         <td class="adroite nowrap"> {{ getPrice($product['price'] ) }}</td>
                                         <td class="adroite nowrap"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                                     </tr>
