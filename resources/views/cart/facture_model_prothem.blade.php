@@ -239,7 +239,14 @@
                                 <tbody>
                                     @foreach($order->products as $key=> $product)
                                     <tr>
-                                        <td>{{ $product['quantite'] }} X {{ sub_letters($product['name'] ) }} </td>
+                                        <td>
+                                        @if (isset(explode("||", $product['name'])[1]))
+                               <b> {{ explode("||", $product['name'])[1] }}</b> <br>
+                               @endif
+                               {{ $product['name'] }}
+
+
+                                        {{ $product['quantite'] }} X {{ $product['name'] }} </td>
                                         <td class="adroite nowrap"> {{ getPrice($product['price'] ) }}</td>
                                         <td class="adroite nowrap"> {{ getPrice( $product['price'] * $product['quantite'])  }}</td>
                                     </tr>
