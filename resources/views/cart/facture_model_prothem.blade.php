@@ -270,9 +270,18 @@
 
       </div>
 
+      <div>
+      <div class="center bold">=== MERCI !! ===</div>
+      <hr>
+      <br>
+      <div class="element-center">
+                 {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
+        </div>
+      </div>
+
       <div class="line"></div>
 
-      <div class="center bold">=== MERCI !! ===</div>
+
                                 <hr>
                                 <div class="cut-section">
                                 </div>
