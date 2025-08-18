@@ -282,7 +282,7 @@
     <div class="container">
         <div class="header">
             <div>
-                <img src="{{ asset('img/logo_advanced.jpg') }}" alt="Logo" class="logo">
+                <img src="{{ asset('img/'. env('USE_LOGO_NAME') }}" alt="Logo" class="logo">
                 <div class="company-info">
                     <h2>{{ $order->company->tp_name }}</h2>
                     <p>NIF: {{ $order->company->tp_TIN }}</p>
