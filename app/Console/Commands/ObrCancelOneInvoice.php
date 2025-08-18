@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Controllers\ObrDeclarationController;
 use Illuminate\Console\Command;
+use Illuminate\Http\Request;
 
 class ObrCancelOneInvoice extends Command
 {
@@ -40,7 +41,16 @@ class ObrCancelOneInvoice extends Command
     {
         $invoiceID = $this->argument('invoiceID');
         $obr = new ObrDeclarationController();
-       $resp= $obr->cancelInvoice($invoiceID  , 'Annulation de la facture Car la facture a ete facture deux fois');
-       dump($resp);
+
+        $invoice = Order::where('id', $invoiceID)->first();
+            // add request
+        $request = new Request();
+        $request->merge([
+            'invoice_signature' =>  $invoice->invoice_signature,
+            'motif' => '# '. $invoiceID .' Annulation de la facture car il a ete facture deux fois',
+            'cancel_amount' => true,
+        ]);
+            $obr->cancelInvoice($request);
+            echo "Annulation de la facture " . $invoiceID . "\n";
     }
 }
