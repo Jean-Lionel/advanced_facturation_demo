@@ -288,6 +288,8 @@
                     <p>NIF: {{ $order->company->tp_TIN }}</p>
                     <p>RC: {{ $order->company->tp_trade_number }}</p>
                     <p>{{ $order->company->tp_address_commune }}, {{ $order->company->tp_address_quartier }}</p>
+                    <p>{{ $order->company->tp_address_avenue }}</p>
+                    <p>{{ $order->company->tp_address_number }}</p>
                     <p>Tél: {{ $order->company->tp_phone_number }}</p>
                 </div>
             </div>
