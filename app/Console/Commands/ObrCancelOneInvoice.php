@@ -53,5 +53,5 @@ class ObrCancelOneInvoice extends Command
         ]);
             $obr->cancelInvoice($request);
             echo "Annulation de la facture " . $invoiceID . "\n";
-    }
+            }
 }
