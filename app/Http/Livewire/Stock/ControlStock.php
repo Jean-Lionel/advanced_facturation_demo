@@ -45,9 +45,11 @@ class ControlStock extends Component
             });
         }
 
-        if ($this->selectedCategory) {
-            $query->where('category_id', $this->selectedCategory);
-        }
+        // dump($this->selectedCategory);
+        // if ($this->selectedCategory) {
+        //     $query->where('category_id', $this->selectedCategory);
+        // }
+        $query->where('category_id', 2);
         $query->where('quantite', '>', 0);
 
         $this->products = $query->orderBy('name')->take(100)->get();

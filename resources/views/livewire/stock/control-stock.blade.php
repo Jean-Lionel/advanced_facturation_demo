@@ -26,12 +26,12 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Rechercher un produit..."
                                        wire:model.live.debounce.300ms="search">
-                                <select class="form-select" wire:model.live="selectedCategory">
+                                {{-- <select class="form-select" wire:model.live="selectedCategory">
                                     <option value="">Toutes les catégories</option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->title }}</option>
                                     @endforeach
-                                </select>
+                                </select> --}}
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                                                    min="0"
                                                    class="form-control form-control-sm"
                                                    style="width: 100px;"
-                                                   wire:keypress.enter="updateSingleProduct({{ $product->id }})"
+                                                   {{-- wire:keypress.enter="updateSingleProduct({{ $product->id }})" --}}
                                                    >
                                         </td>
                                         <td>
