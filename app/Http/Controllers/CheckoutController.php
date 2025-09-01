@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Compte;
+use Carbon\Carbon;
 use DateTime;
 use Str;
 
@@ -54,8 +55,6 @@ class CheckoutController extends Controller
             DB::beginTransaction();
             $this->stockUpdated();
             $client =  Client::find($request->client_id);
-
-
             if(!$client) {
                 $client =  Client::create([
                     'name' => $request->name,
@@ -102,13 +101,15 @@ class CheckoutController extends Controller
                 'products'=> serialize($cartInfo),
                 'client'=> $client->toJson(),
                 'addresse_client'=> $client->addresse,
-                'date_facturation'=> now(),
+                'date_facturation'=>   now()->subDay(1), // Aujourd'hui moins un jour
                 'invoice_currency' => $request->invoice_currency,
                 'type_facture' => 'FACTURE',
                 'is_cancelled' => 0,
                 'client_id' => $request->client_id,
                 'commissionaire_id' =>  $client->commissionnaire_id ?? null,
                 'company' =>  $company->toJson(),
+                'created_at' => now()->subDay(1),
+                'updated_at' => now()->subDay(1),
             ]);
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
             $order->invoice_signature = $signature;
