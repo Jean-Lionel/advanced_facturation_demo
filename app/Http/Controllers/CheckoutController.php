@@ -99,15 +99,15 @@ class CheckoutController extends Controller
                 'products'=> serialize($cartInfo),
                 'client'=> $client->toJson(),
                 'addresse_client'=> $client->addresse,
-                'date_facturation'=> now()->subDay(1),
+                'date_facturation'=> now(),
                 'invoice_currency' => $request->invoice_currency,
                 'type_facture' => 'FACTURE',
                 'is_cancelled' => 0,
                 'client_id' => $request->client_id,
                 'commissionaire_id' =>  $client->commissionnaire_id ?? null,
                 'company' =>  $company->toJson(),
-                'created_at' => now()->subDay(1),
-                'updated_at' => now()->subDay(1),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
