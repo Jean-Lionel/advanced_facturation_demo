@@ -138,6 +138,13 @@ class SendInvoiceToOBR extends Controller
         return  $response;
     }
 
+
+    public function addStockMovementImporters($data){
+        $token = $this->getToken();
+        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovementImporters/', $data);
+        return json_decode($req->body());
+    }
+
     // Generation du TOken
     public function getToken()
     {

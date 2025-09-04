@@ -68,6 +68,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('stockes', StockController::class);
     Route::get('bar_code', [ProductController::class, 'bar_code'])->name('bar_code');
     Route::resource('products', ProductController::class);
+    Route::get('products.imports', [ProductController::class, 'imports'])->name('products.imports');
     Route::resource('clients', ClientController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('ventes', VenteController::class);

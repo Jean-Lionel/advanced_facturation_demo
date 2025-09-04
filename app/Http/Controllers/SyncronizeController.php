@@ -173,7 +173,14 @@ class SyncronizeController extends Controller
             # code...
             try {
                 $obr = new SendInvoiceToOBR();
-                $response = $obr->addStockMovement($movement->toArray());
+                $response = null;
+
+                // Verfier que le mouvement est un importation
+                if($movement->is_importation == 1){
+                    $response = $obr->addStockMovementImporters($movement->toArray());
+                }else{
+                    $response = $obr->addStockMovement($movement->toArray());
+                }
                 $repo = json_decode($response);
                 if ($repo && $repo->success) {
                     $movement->is_send_to_obr = 1;

@@ -23,6 +23,10 @@ class ProductController extends Controller
 
     public function __construct(){
     }
+
+    public function imports(){
+        return view('products.imports');
+    }
     public function movement_stock($item_id){
         $mouvements = ObrMouvementStock::where('item_code',$item_id)->get();
         return view('products.movements', compact('mouvements', 'item_id'));

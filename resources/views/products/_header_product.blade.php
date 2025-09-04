@@ -3,6 +3,9 @@
     <a href="{{ route('products.create') }}" class="{{ setActiveRoute('products.create') }}"><span class="fa fa-seedling"></span> Entré</a>
     </div>
     <div>
+    <a href="{{ route('products.imports') }}" class="{{ setActiveRoute('products.imports') }}"><span class="fa fa-seedling"></span> Importation des Marchandises</a>
+    </div>
+    <div>
     <a href="{{ route('retour_produit') }}" class="{{ setActiveRoute('retour_produit') }}"><span class="fa fa-undo"></span> Retour des marchandises</a>
     </div>
     <div><a href="{{ route('categories.index') }}" class="{{ setActiveRoute('categories.*') }}"><span class="fa fa-paper-plane"></span> Category</a></div>
@@ -47,7 +50,7 @@
     @endif
     <div>
         <a href="{{ route('bar_code') }}" class="{{ setActiveRoute('bar_code') }}">
-            <span class="fa fa-barcode "></span>
+            <span class="fa fa-barcode"></span>
             <span>Bar Code</span>
         </a>
     </div>
