@@ -202,3 +202,4 @@ Route::resource('embalage-mouvement', App\Http\Controllers\EmbalageMouvementCont
 
 
 Route::resource('stock-control', App\Http\Controllers\StockControlController::class);
+Route::post('stock-controls/{stockControl}', [App\Http\Controllers\StockControlController::class,'annulerSortie'])->name('stock-controls.annuler');

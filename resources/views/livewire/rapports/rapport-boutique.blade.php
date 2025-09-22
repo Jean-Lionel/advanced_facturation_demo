@@ -188,6 +188,7 @@
                                     <th>Prix Unitaire</th>
                                     <th>Total Vente</th>
                                     <th>Utilisateur</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -236,6 +237,14 @@
                                             <small class="text-muted">
                                                 {{ $vente->user->name }}
                                             </small>
+                                        </td>
+                                        <td>
+                                            <form action="{{ route('stock-controls.annuler',$vente->id)}}" method="post">
+                                                @csrf
+                                                @method('post')
+                                                {{-- {{$vente->id}} --}}
+                                                <button type="submit" class="btn btn-outline-primary">Annuler</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @empty

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StockControlStoreRequest;
 use App\Http\Requests\StockControlUpdateRequest;
 use App\Models\StockControl;
+
+use App\Models\ObrMouvementStock;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class StockControlController extends Controller
@@ -86,5 +89,35 @@ class StockControlController extends Controller
         $stockControl->delete();
 
         return redirect()->route('stockControl.index');
+    }
+
+    public function annulerSortie(StockControl $stockControl){
+
+        try {
+
+            \DB::beginTransaction();
+            //code...
+            $product = Product::findOrFail($stockControl->product_id);
+            // dd($product);
+            $oldQuantite = $stockControl->sold_quantity ?? 0;
+            $soldQuantity = $product->quantite + $oldQuantite;
+
+            $product->quantite = $soldQuantity;
+
+            $product->save();
+
+            ObrMouvementStock::saveMouvement($product, 'ER', $product->prix_vente, $soldQuantity, 'Controle du ' . date('Y-m-d'), $stockControl->id);
+            $stockControl->delete();
+             \DB::commit();
+            session()->flash('success', 'Stock mis à jour pour ' . $product->name);
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            //throw $th;p
+            \DB::rollBack();
+            session()->flash('error', 'Erreur lors de la mise à jour du stock'.$th);
+            return redirect()->back();
+        }
+
+
     }
 }
