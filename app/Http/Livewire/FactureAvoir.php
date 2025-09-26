@@ -5,6 +5,7 @@ use App\Http\Controllers\SendInvoiceToOBR;
 use Livewire\Component;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
+
 class FactureAvoir extends Component
 {
     public $search = '';
@@ -19,7 +20,8 @@ class FactureAvoir extends Component
     public $productsProductsPrices = [];
     public $choosedFacture = "";
     public $typeFactureListe = ["FA" => "Facture d'Avoir", "RC" => "Remboursement Caution"];
-    
+    public $addTva = false;
+
     protected $rules = [
         'selectedFacture' => 'required',
         'choosedFacture' => 'required',
@@ -64,7 +66,7 @@ class FactureAvoir extends Component
         $this->validate();
         try {
             DB::beginTransaction();
-            // Créer la facture d'avoir         
+            // Créer la facture d'avoir
             $avoir = new Order();
             $taux_tva = calculerTauxTVA($this->originalFacture->amount_tax, $this->originalFacture->tax);
             $b = $this->getSelectedProducts($taux_tva) ;// serialize();
@@ -79,17 +81,18 @@ class FactureAvoir extends Component
             if(abs($total_tvac) >  abs($this->originalFacture->amount) ){
                 throw new \Exception("Le montant de la facture d’avoir ne doit pas être supérieur au montant de la facture dont il fait objet");
             }
+
             $avoir->amount_tax = $price_hors_tva;
             $avoir->invoice_type = $this->choosedFacture; //'FA'; // Facture d'Avoir
             if(!is_numeric( $taux_tva )){
                 throw new \Exception($taux_tva);
             }
             // $avoir->amount_tax = -($this->montantAvoir * $taux_tva / 100);
-            $avoir->tax = $price_tva;
-            $avoir->amount =   $total_tvac;
+            $avoir->tax = $this->addTva ? $price_tva : 0;
+            $avoir->amount = $this->addTva ? $total_tvac : $price_hors_tva;
             $avoir->total_quantity = $this->calculateTotalQuantity();
             $avoir->total_sacs = $this->calculateTotalSacs();
-            // amount_tax calcule du Nouveau TVA 
+            // amount_tax calcule du Nouveau TVA
             $avoir->type_paiement = $this->originalFacture->type_paiement;
             $avoir->type_facture = $this->originalFacture->type_facture;
             $avoir->company = json_encode($this->originalFacture->company);
@@ -107,11 +110,10 @@ class FactureAvoir extends Component
             $avoir->invoice_ref = getInvoiceNumber($this->originalFacture->id);
             //$avoir->invoice_ref = $this->originalFacture->invoice_signature;
             $avoir->cn_motif = $this->motifAvoir;
-            
-          // dd($avoir);
+
             $avoir->save();
             $avoir->invoice_signature = SendInvoiceToOBR::getInvoinceSignature($avoir->id, $avoir->created_at);
-         
+
             $avoir->save();
             // Mettre à jour la facture originale
          //   $this->originalFacture->is_cancelled = true;
@@ -154,7 +156,7 @@ class FactureAvoir extends Component
             ->whereIn('id', $this->selectedProducts)
             ->map(function($product) use($tax) {
                 $item_price_nvat = ( $this->productsProductsPrices[$product['id']] *  $this->productsQuantities[$product['id']]);
-                $item_price_wvat = ($item_price_nvat *  $tax /  100); 
+                $item_price_wvat = ($item_price_nvat *  $tax /  100);
                 $product['price'] = $this->productsProductsPrices[$product['id']];
                 $product['quantite'] =  $this->productsQuantities[$product['id']];
                 $product['item_price_nvat'] =    $item_price_nvat ;
