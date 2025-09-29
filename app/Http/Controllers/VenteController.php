@@ -54,9 +54,10 @@ class VenteController extends Controller
         $body = "";
 
         foreach ($products as $key => $value){
+            $key++;
             $body .= <<<EOD
             <tr>
-            <td> ++$key </td>
+            <td>  $key </td>
             <td> $value->code_product </td>
             <td> $value->name [ $value->unite_mesure]</td>
             <td> $value->price </td>
