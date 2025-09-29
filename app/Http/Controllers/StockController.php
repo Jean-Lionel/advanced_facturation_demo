@@ -63,7 +63,7 @@ class StockController extends Controller
                         ->whereBetween('created_at', [$dateDebut, $dateFin])
                         ->sortable()
                         ->latest()
-                        ->take(20)
+                        ->take(15)
                         ->get();
 
                 $pdf = Pdf::loadView('stocks.impression', compact('orders'));
