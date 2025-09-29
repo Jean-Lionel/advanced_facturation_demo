@@ -206,6 +206,9 @@
     <div class="center bold">
         === MERCI ===
     </div>
+    <div class="center">
+        {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
+    </div>
 
     <div class="center small">
         {{ now()->format('d/m/Y H:i:s') }}

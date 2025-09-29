@@ -63,12 +63,12 @@ class StockController extends Controller
                         ->whereBetween('created_at', [$dateDebut, $dateFin])
                         ->sortable()
                         ->latest()
-                        ->take(30)
+                        ->take(45)
                         ->get();
 
                 $pdf = Pdf::loadView('stocks.impression', compact('orders'));
                 // Option 2: Format 80mm
-                $pdf->setPaper([0, 0, 226.8, 430], 'portrait');
+                $pdf->setPaper([0, 0, 226.8, 600], 'portrait');
                 $pdf->setOption('margin-top', 0);
                 $pdf->setOption('margin-bottom', 0);
                 $pdf->setOption('margin-left', 0);
