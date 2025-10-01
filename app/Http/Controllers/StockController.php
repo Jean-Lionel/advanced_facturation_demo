@@ -58,26 +58,15 @@ class StockController extends Controller
         $dateDebut = request()->query('dateDebut');
         $dateFin = request()->query('dateFin');
 
-        if($dateDebut and $dateFin){
-            $orders = Order::where('is_cancelled', '=',0)
-                        ->whereBetween('created_at', [$dateDebut, $dateFin])
-                        ->sortable()
-                        ->latest()
-                        ->take(15)
-                        ->get();
+        $orders = Order::where('is_cancelled', '=',0)
+                    ->whereBetween('created_at', [$dateDebut, $dateFin])
+                    ->sortable()
+                    ->latest()
+                    ->take(10)
+                    ->get();
 
-                $pdf = Pdf::loadView('stocks.impression', compact('orders'));
-                // Option 2: Format 80mm
-                $pdf->setPaper([0, 0, 226.8, 600], 'portrait');
-                $pdf->setOption('margin-top', 0);
-                $pdf->setOption('margin-bottom', 0);
-                $pdf->setOption('margin-left', 0);
-                $pdf->setOption('margin-right', 0);
 
-            return $pdf->stream();
-        }
-
-        return view('stocks.impression_multiple');
+        return view('stocks.impression_multiple', compact('orders') );
 
     }
 
