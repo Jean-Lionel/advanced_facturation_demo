@@ -42,10 +42,14 @@ class ObrStockMouvement extends Command
     {
         $obr = new SendInvoiceToOBR();
 
-        $movement = ObrMouvementStock::latest()->first();
-        $response = $obr->addStockMovementImporters($movement->toArray());
+        $movements = ObrMouvementStock::where("is_importation",1 )
+        ->whereNull("is_send_to_obr")
+        ->get();
+        foreach( $movements as $mouvement ){
+            $response = $obr->addStockMovementImporters($mouvement->toArray());
+           dump($response);
+        }
 
-        dump($response);
         return 0;
     }
 }
