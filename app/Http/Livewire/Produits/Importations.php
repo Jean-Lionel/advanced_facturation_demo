@@ -104,6 +104,7 @@ class Importations extends Component
 
             }
             DB::commit();
+            return redirect()->route('mouvement_stock');
         }catch(Exception $e){
             DB::rollBack();
             throw $th;
