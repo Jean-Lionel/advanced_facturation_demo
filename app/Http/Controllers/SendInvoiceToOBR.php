@@ -175,6 +175,19 @@ class SendInvoiceToOBR extends Controller
     }
 
 
+    //https://ebms.obr.gov.bi:9443/ebms_api/getDmcItems
+
+    public function  getDmcItems($reference_dmc){
+        $token = $this->getToken();
+        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'getDmcItems/',
+        [
+            "nif" => env('OBR_NIF'),
+            "reference_dmc" => $reference_dmc
+        ]);
+        return json_decode($req->body());
+    }
+
+
 
 }
 

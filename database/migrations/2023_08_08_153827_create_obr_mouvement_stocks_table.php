@@ -27,6 +27,8 @@ class CreateObrMouvementStocksTable extends Migration
             $table->string('item_movement_description')->nullable();
             $table->string('item_movement_date')->nullable();
             $table->string('is_importation')->nullable();
+            $table->string('product_name')->nullable();
+            $table->string('product_id')->nullable();
             // Mis a jour de Spetembre 2025
             $table->string('reference_dmc')->nullable();
             $table->string('rubrique_tarifaire')->nullable();

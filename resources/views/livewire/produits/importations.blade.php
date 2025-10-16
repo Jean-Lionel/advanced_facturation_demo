@@ -27,14 +27,14 @@
         @endforeach
     </ul>
 
-    <table class="table table-sm">
+    <table class="table table-sm table-bordered table-responsive">
         <thead>
             <tr>
                 <th>CODE PRODUIT</th>
                 <th>Produit</th>
                 <th>Quantité</th>
+                <th>PRIX A </th>
                 <th>Devise</th>
-                <th>Prix </th>
                 <th>Description</th>
                 <th>Reference DMC</th>
                 <th>Rubrique Tarifaire</th>
@@ -49,49 +49,49 @@
                 <tr>
                     <td>{{ $item['id'] }}</td>
                     <td>{{ $item['name'] }}</td>
-                    <td>
-                        <input type="number" wire:model="selectedItems.{{ $key }}.item_quantity">
+                    <td >
+                        <input class="form-control form-control-sm" type="number" wire:model="selectedItems.{{ $key }}.item_quantity">
+                    </td>
+                    <td width="10%">
+                        <input class="form-control form-control-sm" type="number" wire:model="selectedItems.{{ $key }}.item_cost_price">
                     </td>
 
                     <td>
-                        <select name="" id="" wire:model="selectedItems.{{ $key }}.item_purchase_or_sale_currency">
+                        <select class="form-control form-control-sm" name="" id="" wire:model="selectedItems.{{ $key }}.item_cost_price_currency">
                             <option value="">-Select-</option>
                             <option value="BIF">BIF</option>
                             <option value="USD">USD</option>
                             <option value="EUR">EUR</option>
                         </select>
                     </td>
+
                     <td>
-                        <input type="number" wire:model="selectedItems.{{ $key }}.item_purchase_or_sale_price">
+                        <input class="form-control form-control-sm" type="text" wire:model="selectedItems.{{ $key }}.item_movement_description">
                     </td>
 
                     <td>
-                        <input type="text" wire:model="selectedItems.{{ $key }}.item_movement_description">
-                    </td>
-
-                    <td>
-                        <input type="text" wire:model="selectedItems.{{ $key }}.reference_dmc">
+                        <input class="form-control form-control-sm" type="text" wire:model="selectedItems.{{ $key }}.reference_dmc">
                     </td>
                     <td>
-                        <input type="text" wire:model="selectedItems.{{ $key }}.rubrique_tarifaire">
+                        <input class="form-control form-control-sm" type="text" wire:model="selectedItems.{{ $key }}.rubrique_tarifaire">
                     </td>
                     <td>
-                        <input type="text" wire:model="selectedItems.{{ $key }}.numero_paquet">
+                        <input class="form-control form-control-sm" type="text" wire:model="selectedItems.{{ $key }}.numero_paquet">
                     </td>
                     <td>
-                        <input type="text" wire:model="selectedItems.{{ $key }}.nombre_par_paquet">
+                        <input class="form-control form-control-sm" type="text" wire:model="selectedItems.{{ $key }}.nombre_par_paquet">
                     </td>
                     <td>
-                        <input type="text" wire:model="selectedItems.{{ $key }}.description_paquet">
+                        <input class="form-control form-control-sm" type="text" wire:model="selectedItems.{{ $key }}.description_paquet">
                     </td>
                     <td>
-                        <button wire:click="removeSelectedItem({{$key}})">Supprimer</button>
+                        <button wire:click="removeSelectedItem({{$key}})" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-    <button wire:click="saveItem">Valider</button>
+    <button wire:click="saveItem" class="btn btn-primary">Valider</button>
     @endif
    </div>
 </div>

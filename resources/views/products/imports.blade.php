@@ -3,7 +3,7 @@
 @include('products._header_product')
 
 <div>
-    <livewire:produits.importations />
+    <livewire:produits.importation-dmc />
 </div>
 
 @endsection

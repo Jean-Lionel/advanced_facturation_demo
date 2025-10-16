@@ -44,13 +44,17 @@ class Importations extends Component
                             ->take(10)->get();
     }
 
+    //  "item_purchase_or_sale_price" devient "item_cost_price"
+    // "item_purchase_or_sale_currency" devient "item_cost_price_currency"
+
     protected $rules = [
         "selectedItems.*.item_quantity" => "required",
-        "selectedItems.*.item_purchase_or_sale_price" => "required",
-        "selectedItems.*.item_purchase_or_sale_currency" => "required",
+        "selectedItems.*.item_cost_price" => "required",
+        "selectedItems.*.item_cost_price_currency" => "required",
         "selectedItems.*.reference_dmc" => "required",
         "selectedItems.*.rubrique_tarifaire" => "required",
         "selectedItems.*.numero_paquet" => "required",
+        "selectedItems.*.item_cost_price" => "required",
         "selectedItems.*.description_paquet" => "required",
         "selectedItems.*.nombre_par_paquet" => "required",
     ];
@@ -71,15 +75,22 @@ class Importations extends Component
         try{
             DB::beginTransaction();
 
+           
+
             foreach ($this->selectedItems as $key => $item) {
+
                 $attributes = [
                     "system_or_device_id" => env('OBR_USERNAME'),
-                    "item_code" => $item['id'],
+                    "item_code" => $item['product_id'],
                     "item_designation" => $item['name'],
+                    "item_cost_price" => $item['item_cost_price'],
                     "item_quantity" => $item['item_quantity'],
                     "item_measurement_unit" => $item['unite_mesure'],
-                    "item_purchase_or_sale_price" => $item['item_purchase_or_sale_price'],
-                    "item_purchase_or_sale_currency" => $item['item_purchase_or_sale_currency'],
+                    "product_name" => $item['product_name'],
+                    "product_id" => $item['product_id'],
+                    "item_purchase_or_sale_price" => 0,
+                    "item_purchase_or_sale_currency" => 0,
+                    "item_cost_price_currency" => $item['item_cost_price_currency'],
                     "item_movement_type" => "EN",
                     "item_movement_invoice_ref" => "",
                     "item_movement_description" => $item['item_movement_description'],
@@ -90,7 +101,7 @@ class Importations extends Component
                     "nombre_par_paquet" => $item['nombre_par_paquet'],
                     'user_id' => auth()->user()->id,
                     "description_paquet" => $item['description_paquet'],
-                    "item_product_detail_id" => $item['id'],
+                    "item_product_detail_id" => $item['product_id'],
                     "is_importation" => "1",
                 ];
 
@@ -98,7 +109,12 @@ class Importations extends Component
 
             ObrMouvementStock::create($attributes);
              // search Product by id
-            $currentProduct = Product::find($item['id']);
+            $currentProduct = isset($item['product_id']) ? Product::find($item['product_id']) : null;
+            // if no product we have to create it
+
+            if(!$currentProduct){
+                $currentProduct = $this->createProduct($item);
+            }
             $currentProduct->quantite += $item['item_quantity'];
             $currentProduct->save();
 
@@ -113,4 +129,6 @@ class Importations extends Component
 
 
     }
+
+  
 }
