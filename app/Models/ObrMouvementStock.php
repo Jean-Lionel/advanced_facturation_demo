@@ -71,6 +71,7 @@ class ObrMouvementStock extends Model
             'item_movement_invoice_ref' => $item_movement_invoice_ref,
             'item_movement_description' => $item_movement_description,
             'item_movement_date' => $item_movement_date,
+            'item_cost_price' => $price,
             'is_send_to_obr' => false,
             'user_id' => auth()->user()->id ?? 1,
         ];

@@ -154,32 +154,38 @@ class SyncronizeController extends Controller
     }
 
     public function syncronizeStock(){
+
         if(!env('OBR_CAN_SYNCRONISE', false) ){
             return response()->json([
                 'success' => false,
                 'data' => null,
             ]);
         }
+
         $today = Carbon::now();
         $thirtyDaysAgo = $today->subDays(DAY_FOR_STOCK_DATA_SYNCRONIZE);
         $records = ObrStockLog::whereDate('created_at', '>', $thirtyDaysAgo)->get()->map->movement_id;
+
         $items = ObrMouvementStock::whereDate('created_at', '>', $thirtyDaysAgo)
         ->whereNotIn('id', $records)
         ->where('is_send_to_obr', '0')
         ->take(20)->get();
         // dump(ObrMouvementStock::all());
+        //dump('items',$thirtyDaysAgo , $items);
 
         foreach ($items as $key => $movement) {
             # code...
             try {
                 $obr = new SendInvoiceToOBR();
                 $response = null;
-
                 // Verfier que le mouvement est un importation
-                if($movement->is_importation == 1){
+
+                if($movement->is_importation){
                     $response = $obr->addStockMovementImporters($movement->toArray());
                 }else{
+
                     $response = $obr->addStockMovement($movement->toArray());
+
                 }
                 $repo = json_decode($response);
                 if ($repo && $repo->success) {

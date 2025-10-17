@@ -9,7 +9,7 @@ define('MAIL_FROM_USER','client@advanced.bi');
 define('CAN_BUCKUP_FILE',true); // Syncronisation des donnees en lignes
 
 define('BASE_UNITE_EMBALLAGE', 50);
-define('DAY_FOR_STOCK_DATA_SYNCRONIZE', 10);
+define('DAY_FOR_STOCK_DATA_SYNCRONIZE', 20);
 define('RAISON_ENTREPRISE_HEADER', 'ADVANCED FACTURATION');
 define('ARRONDIR_RESULTAT', true);
 define('USE_ABONEMENT', env('APP_USE_ABONEMENT', false) );
