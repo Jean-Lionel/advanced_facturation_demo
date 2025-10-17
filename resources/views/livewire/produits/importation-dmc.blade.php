@@ -63,7 +63,7 @@
                         @endif
                         </td>
                     <td >
-                        <input class="form-control form-control-sm" type="number" wire:model="selectedItems.{{ $key }}.item_quantity" disabled>
+                        <input class="form-control form-control-sm" type="number" wire:model="selectedItems.{{ $key }}.item_quantity" >
                     </td>
                     <td width="10%">
                         <input class="form-control form-control-sm" type="number" wire:model="selectedItems.{{ $key }}.item_cost_price" >
