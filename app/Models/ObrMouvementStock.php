@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Database\Schema\Blueprint;
 /**
 *
 * « EN » : Entrée Normales
@@ -49,6 +51,34 @@ class ObrMouvementStock extends Model
             'SAU' => 'Sorties Autres',
         ];
     }
+
+     protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $table = $model->getTable();
+            // Vérifie si la colonne 'item_cost_price' existe
+            if (!Schema::hasColumn($table, 'item_cost_price')) {
+                // Ajoute dynamiquement la colonne dans la table
+                Schema::table($table, function (Blueprint $table) {
+                    $table->double('item_price', 10, 2)
+                    ->default(0);
+                    $table->double('item_cost_price', 10, 2)
+                    ->default(0)->after('item_price');
+                });
+                // (Optionnel) efface le cache du schéma
+                //Artisan::call('optimize:clear');
+            }
+
+            // Ajoute une valeur par défaut si non définie
+            if (empty($model->item_cost_price)) {
+                $model->item_cost_price = 0;
+            }
+        });
+    }
+
+  
 
     public function produit(){
         return $this->hasMany(Product::class, 'item_code');

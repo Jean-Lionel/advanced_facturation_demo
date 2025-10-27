@@ -101,6 +101,7 @@ class ControlStock extends Component
         } catch (\Exception $e) {
             DB::rollBack();
             session()->flash('error', 'Erreur lors de la mise à jour du stock');
+              dd($e);
         }
     }
 
