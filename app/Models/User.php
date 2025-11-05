@@ -98,4 +98,8 @@ class User extends Authenticatable
     public function isEntreProduit(){
         return  $this->roles()->where('name','ENTRE DES PRODUITS EN STOCK')->first();
     }
+    public function isJournal(){
+        return $this->roles()->where('name','JOURNAL')->first();
+    }
+
 }

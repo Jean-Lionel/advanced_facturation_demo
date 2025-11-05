@@ -36,5 +36,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\Role::create(['name' => 'COMPTABLE']);
         \App\Models\Role::create(['name' => 'VENTE']);
         \App\Models\Role::create(['name' => 'ENTRE DES PRODUITS EN STOCK']);
+        \App\Models\Role::create(['name' => 'JOURNAL']);
     }
 }

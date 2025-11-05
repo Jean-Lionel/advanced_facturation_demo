@@ -34,59 +34,58 @@ class RapportController extends Controller
         return view('reports.index');
     }
 
-    public function partage_interet(){
-        $interets = OrderInteret::with(['order','client','commisionnaire'])->latest()->paginate(100);
-         // Initialiser les tableaux pour stocker les totaux et les noms
-         $commissionnaireTotals = [];
-         $clientTotals = [];
-         $entrepriseTotal = 0;
-         $informaticienTotal = 0;
-        $commissionnaires = [];
-        $clients = [];
-         // Parcourir tous les éléments du tableau
-         foreach ($interets as $interet) {
+    public function partage_interet()
+    {
+        $interets = OrderInteret::with(['order', 'client', 'commisionnaire'])->latest()->get();
+
+        $totaux = [
+            'entreprise' => 0,
+            'informaticien' => 0,
+            'commissionnaires' => [],
+            'clients' => []
+        ];
+
+        $ids = ['commissionnaires' => [], 'clients' => []];
+
+        foreach ($interets as $interet) {
             $description = json_decode($interet->description, true);
-            if ($description) {
-                $partage = $description['partage'] ?? [];
-                $commissionnaireId = $description['commissionaire_id'];
-                $clientId = $description['client_id'];
 
-                //  l'informaticien
-                if (isset($partage['Informaticien'])) {
-                    $informaticienTotal += $partage['Informaticien'];
-                }
-                // l'entreprise
-                if (isset($partage['Entreprise'])) {
-                    $entrepriseTotal += $partage['Entreprise'];
-                }
-                //  commissionnaire
-                if ($commissionnaireId) {
-                    if (!isset($commissionnaireTotals[$commissionnaireId])) {
-                        $commissionnaireTotals[$commissionnaireId] = 0;
-                    }
-                    $commissionnaireTotals[$commissionnaireId] += $partage['Commisionnaire'] ?? 0;
-                }
-                // client
-                if (!isset($clientTotals[$clientId])) {
-                    $clientTotals[$clientId] = 0;
-                }
-                $clientTotals[$clientId] += $partage['Client'] ?? 0;
+            if (!$description || !isset($description['partage'])) continue;
 
-                if ($commissionnaireId) {
-                    $commissionnaires[] = $commissionnaireId;
-                }
-                if ($clientId) {
-                    $clients[] = $clientId;
-                }
+            $partage = $description['partage'];
+            $commissionnaireId = $description['commissionaire_id'] ?? null;
+            $clientId = $description['client_id'] ?? null;
+
+            // Totaux globaux
+            $totaux['informaticien'] += $partage['Informaticien'] ?? 0;
+            $totaux['entreprise'] += $partage['Entreprise'] ?? 0;
+
+            // Totaux commissionnaires
+            if ($commissionnaireId) {
+                $totaux['commissionnaires'][$commissionnaireId] =
+                    ($totaux['commissionnaires'][$commissionnaireId] ?? 0) + ($partage['Commisionnaire'] ?? 0);
+                $ids['commissionnaires'][] = $commissionnaireId;
+            }
+
+            // Totaux clients
+            if ($clientId) {
+                $totaux['clients'][$clientId] =
+                    ($totaux['clients'][$clientId] ?? 0) + ($partage['Client'] ?? 0);
+                $ids['clients'][] = $clientId;
             }
         }
 
-        $commissionnairesData = Client::whereIn('id', $commissionnaires)->pluck('name', 'id');
-        //$clientsData = Client::whereIn('id', $clients)->latest()->paginate();
+        // Récupérer les noms
+        $commissionnairesData = Client::whereIn('id', array_unique($ids['commissionnaires']))
+            ->pluck('name', 'id');
+        $clientsData = Client::whereIn('id', array_unique($ids['clients']))
+            ->pluck('name', 'id');
 
-        $historiquesPayment = BienvenuHistorique::with(['client'])->latest()->paginate();
-
-        return view('reports.partage', compact('interets','commissionnaireTotals', 'clientTotals', 'entrepriseTotal', 'historiquesPayment','informaticienTotal','commissionnairesData'));
-
+        return view('reports.partage', compact(
+            'interets',
+            'totaux',
+            'commissionnairesData',
+            'clientsData'
+        ));
     }
 }

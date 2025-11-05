@@ -116,7 +116,7 @@
                     @endcanany
 
                     {{-- Journal - Accessible par CONTROLLEUR, ENTRE_PRODUITS et ADMIN --}}
-                    @canany(['is-controleur', 'is-entre-stock', 'is-admin'])
+                    @canany(['is-controleur', 'is-entre-stock','is-journal', 'is-admin'])
                         <li><a href="{{ route('stockes.journal') }}" class="{{ setActiveRoute('stockes.*') }}">
                             <span class="fa fa-calendar"></span> Journal</a></li>
                     @endcanany
