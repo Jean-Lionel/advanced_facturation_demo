@@ -7,16 +7,34 @@
 @endif
 
 <div class="container-fluid">
+    <!-- Barre de recherche globale -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" id="searchGlobal" class="form-control form-control-lg"
+                               placeholder="Rechercher un commissionnaire ou un client...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <!-- Commissionnaires -->
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
+                <div  class="card-header bg-primary text-white d-flex justify-content-between ">
                     <h5 class="mb-0"><i class="fas fa-user-tie"></i> Commissionnaires</h5>
+                    <h5 class="text-white fw-bold">{{$commissionnairesData->count()}}</h5>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-                        <table class="table table-hover mb-0">
+                        <table class="table table-hover mb-0" id="tableCommissionnaires">
                             <thead class="table-light sticky-top">
                                 <tr>
                                     <th>Nom</th>
@@ -25,13 +43,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($totaux['commissionnaires'] as $id => $montant)
-                                <tr>
-                                    <td>{{ $commissionnairesData[$id] ?? 'N/A' }}</td>
-                                    <td class="text-end fw-bold">{{ number_format($montant, 0, ',', ' ') }} BIF</td>
+                                @forelse($commissionnairesData as $compte)
+                                {{-- {{$commissionnaire}} --}}
+                                <tr class="searchable-row">
+                                    <td class="searchable-name">{{ $compte?->client?->name ?? 'N/A' }}</td>
+                                    <td class="text-end fw-bold">{{ number_format($compte?->montant, 2, ',', ' ') }} BIF</td>
                                     <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-secondary" disabled>
-                                            <i class="fas fa-tools"></i> En cours
+                                        <button class="btn btn-sm btn-success btn-payer"
+                                                data-type="commissionnaire"
+                                                data-id="{{ $compte->id }}"
+                                                data-client="{{ $compte?->client_id }}"
+                                                data-name="{{ $compte?->client?->name ?? 'N/A' }}"
+                                                data-montant="{{ $compte?->montant }}"
+                                                >
+                                            <i class="fas fa-money-bill-wave"></i> Payer
                                         </button>
                                     </td>
                                 </tr>
@@ -50,12 +75,13 @@
         <!-- Clients -->
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card shadow-sm">
-                <div class="card-header bg-success text-white">
+                <div class="card-header bg-primary text-white  d-flex   justify-content-between">
                     <h5 class="mb-0"><i class="fas fa-users"></i> Clients</h5>
+                    <h5 class="text-white fw-bold">{{$clientsData->count()}}</h5>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-                        <table class="table table-hover mb-0">
+                        <table class="table table-hover mb-0" id="tableClients">
                             <thead class="table-light sticky-top">
                                 <tr>
                                     <th>Nom</th>
@@ -64,13 +90,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($totaux['clients'] as $id => $montant)
-                                <tr>
-                                    <td>{{ $clientsData[$id] ?? 'N/A' }}</td>
-                                    <td class="text-end fw-bold">{{ number_format($montant, 0, ',', ' ') }} BIF</td>
+                                @forelse($clientsData as $compte)
+                                <tr class="searchable-row">
+                                    <td class="searchable-name">{{ $compte?->client?->name ?? 'N/A' }}</td>
+                                    <td class="text-end fw-bold">{{ number_format($compte->montant, 2, ',', ' ') }} BIF</td>
                                     <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-secondary" disabled>
-                                            <i class="fas fa-tools"></i> En cours
+                                        <button class="btn btn-sm btn-success btn-payer"
+                                                data-type="client"
+                                                data-id="{{ $compte->id }}"
+                                                data-client="{{ $compte?->client_id }}"
+                                                data-name="{{ $compte?->client?->name ?? 'N/A' }}"
+                                                data-montant="{{ $compte?->montant }}">
+                                            <i class="fas fa-money-bill-wave"></i> Payer
                                         </button>
                                     </td>
                                 </tr>
@@ -89,7 +120,7 @@
         <!-- Résumé Global -->
         <div class="col-lg-4 col-md-12 mb-4">
             <div class="card shadow-sm mb-3">
-                <div class="card-header bg-info text-white">
+                <div class="card-header bg-primary text-white">
                     <h5 class="mb-0"><i class="fas fa-chart-pie"></i> Résumé Global</h5>
                 </div>
                 <div class="card-body">
@@ -105,7 +136,7 @@
             </div>
 
             <div class="card shadow-sm">
-                <div class="card-header bg-warning text-dark">
+                <div class="card-header bg-primary text-white">
                     <h5 class="mb-0"><i class="fas fa-history"></i> Derniers Paiements</h5>
                 </div>
                 <div class="card-body p-0">
@@ -122,7 +153,7 @@
                                 @forelse($historiquesPayment ?? [] as $pay)
                                 <tr>
                                     <td><small>{{ $pay->client->name ?? 'N/A' }}</small></td>
-                                    <td><small class="badge bg-secondary">{{ $pay->title }}</small></td>
+                                    <td><small>{{ $pay->title }}</small></td>
                                     <td class="text-end"><small>{{ number_format($pay->montant, 0, ',', ' ') }}</small></td>
                                 </tr>
                                 @empty
@@ -142,7 +173,7 @@
 
     <!-- Détails des Intérêts -->
     <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white">
+        <div class="card-header bg-primary text-white">
             <h5 class="mb-0"><i class="fas fa-list"></i> Détails des Intérêts</h5>
         </div>
         <div class="card-body">
@@ -163,14 +194,14 @@
                         @foreach ($interets as $index => $item)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td class="text-center"><span class="badge bg-primary">{{ $item->order_id }}</span></td>
+                            <td class="text-center text-white"><span class="badge bg-primary">{{ $item->order_id }}</span></td>
                             <td>{{ $item->commisionnaire?->name ?? '-' }}</td>
                             <td>{{ $item->client?->name ?? '-' }}</td>
                             <td class="text-end fw-bold">{{ number_format($item->montant, 0, ',', ' ') }}</td>
                             <td>
                                 <small>
                                     @foreach ($item->interet as $key => $element)
-                                        <span class="badge bg-secondary me-1">{{ $key }}: {{ number_format($element, 0, ',', ' ') }}</span>
+                                        <span >{{ $key }}: {{ number_format($element, 1, ',', ' ') }}</span> <strong>;</strong>
                                     @endforeach
                                 </small>
                             </td>
@@ -184,27 +215,128 @@
     </div>
 </div>
 
+<!-- Modal de confirmation de paiement -->
+<div class="modal fade" id="modalPaiement" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="fas fa-money-bill-wave"></i> Confirmer le Paiement</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="formPaiement" method="POST" action="{{ route('paiement.interet') }}">
+                @csrf
+                <div class="modal-body">
+                    <input type="hidden" name="type" id="paymentType">
+                    <input type="hidden" name="compte_id" id="paymentCompteId">
+                    <input type="hidden" name="client_id" id="paymentClientId">
+
+
+                    <div class="alert alert-info">
+                        <strong>Bénéficiaire :</strong> <span id="paymentName"></span><br>
+                        <strong>Type :</strong> <span id="paymentTypeText"></span><br>
+                        <strong>Montant :</strong> <span id="paymentMontant"></span> BIF
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Montant à payer <span class="text-danger">*</span></label>
+                        <input type="number" name="montant" id="inputMontant" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Remarque</label>
+                        <textarea name="remarque" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> Confirmer le Paiement
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <style>
 .sticky-top {
     position: sticky;
     top: 0;
     z-index: 10;
 }
+.searchable-row.hidden {
+    display: none;
+}
 </style>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+@endsection
+@section('javascript')
 <script>
 $(document).ready(function() {
+    // DataTable pour les détails
     $('#interet').DataTable({
         pageLength: 10,
         language: {
             url: '//cdn.datatables.net/plug-ins/1.10.24/i18n/French.json'
         },
         order: [[0, 'desc']]
+    });
+
+    // Recherche globale
+    $('#searchGlobal').on('keyup', function() {
+        const searchTerm = $(this).val().toLowerCase();
+
+        $('.searchable-row').each(function() {
+            const name = $(this).find('.searchable-name').text().toLowerCase();
+            if (name.includes(searchTerm)) {
+                $(this).removeClass('hidden');
+            } else {
+                $(this).addClass('hidden');
+            }
+        });
+    });
+
+    // Gestion du bouton payer
+    $('.btn-payer').on('click', function() {
+        const type = $(this).data('type');
+        const id = $(this).data('id');
+        const client = $(this).data('client');
+        const name = $(this).data('name');
+        const montant = $(this).data('montant');
+
+        $('#paymentType').val(type);
+        $('#paymentCompteId').val(id);
+        $('#paymentClientId').val(client);
+        $('#paymentName').text(name);
+        $('#paymentTypeText').text(type === 'client' ? 'Client' : 'Commissionnaire');
+        $('#paymentMontant').text(new Intl.NumberFormat('fr-FR').format(montant));
+        $('#inputMontant').val(montant);
+
+        const modal = new bootstrap.Modal(document.getElementById('modalPaiement'));
+        modal.show();
+    });
+
+    // Soumission du formulaire
+    $('#formPaiement').on('submit', function(e) {
+        e.preventDefault();
+
+        const formData = $(this).serialize();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    alert('Paiement enregistré avec succès !');
+                    location.reload();
+                } else {
+                    alert('Erreur: ' + (response.message || 'Une erreur est survenue'));
+                }
+            },
+            error: function(xhr) {
+                alert('Erreur lors du paiement: ' + (xhr.responseJSON?.message || 'Erreur serveur'));
+            }
+        });
     });
 });
 </script>

@@ -189,17 +189,15 @@ Route::group(['middleware' => ['auth']], function () {
 
     // rapport.resultats
     Route::get('rapport.resultats', [RapportController::class, 'rapportResultats'])->name('rapport.resultats');
+
+    Route::post('/paiement-interet', [RapportController::class, 'paiement_interet'])
+        ->name('paiement.interet');
 });
 require __DIR__ . '/jetstream.php';
 
 Route::resource('periode-paiment-location', App\Http\Controllers\PeriodePaimentLocationController::class);
-
 Route::resource('versement', App\Http\Controllers\VersementController::class);
-
 Route::resource('embalage', App\Http\Controllers\EmbalageController::class);
-
 Route::resource('embalage-mouvement', App\Http\Controllers\EmbalageMouvementController::class);
-
-
 Route::resource('stock-control', App\Http\Controllers\StockControlController::class);
 Route::post('stock-controls/{stockControl}', [App\Http\Controllers\StockControlController::class,'annulerSortie'])->name('stock-controls.annuler');

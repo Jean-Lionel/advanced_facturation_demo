@@ -2,7 +2,7 @@
 <div>
 
     @if(env('APP_USE_ABONEMENT', false))
-        @include('compte._header')
+        {{-- @include('compte._header') --}}
 
     <div class="row mb-2">
         <div class="col">
