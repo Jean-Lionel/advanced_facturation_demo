@@ -27,12 +27,12 @@ class ServiceVente extends Component
     public $typePaiement;
     public $invoice_currency = 'BIF';
     public $typeFacture = 'FACTURE';
-    public $parClient = 0;
-    public $parAssurance = 0;
-    public $parClientPourcentage = 0;
-    public $parAssurancePourcentage = 0;
-    public $assuranceID = 0;
-    public $assuranceName = '';
+        public $parClient = 0;
+        public $parAssurance = 0;
+        public $parClientPourcentage = 0;
+        public $parAssurancePourcentage = 0;
+        public $assuranceID = 0;
+        public $assuranceName = '';
 
 
     public function render()
@@ -78,6 +78,12 @@ class ServiceVente extends Component
                 'is_cancelled' => 0,
                 'invoice_currency' => $this->invoice_currency,
                 'company' =>  $company->toJson(),
+                'par_client' => $this->parClient,
+                'par_assurance' => $this->parAssurance,
+                'par_client_pourcentage' => $this->parClientPourcentage,
+                'par_assurance_pourcentage' => $this->parAssurancePourcentage,
+                'assurance_id' => $this->assuranceID,
+                'assurance_name' => $this->assuranceName,
              ];
              $order = null ;
              if($this->typeFacture == 'FACTURE'){
