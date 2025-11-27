@@ -176,7 +176,7 @@ N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y à H:i:s') }} </h3>
 
     </div>
     <div class="col-6">
-        <h4>CLIENT : {{ getPrice($order->par_client) }} {{ $order->invoice_currency ?? 'FBU' }}
+        <h4>PATIENT : {{ getPrice($order->par_client) }} {{ $order->invoice_currency ?? 'FBU' }}
              ({{ getNumberToWord($order->par_client) }})
         </h4>
 
@@ -286,8 +286,8 @@ N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h3>
 
 <div>
     <div>
-        Assurance : {{ getPrice($order->par_assurance) }} <br>
-        Client : {{ getPrice($order->par_client) }}
+        Assureur : {{ getPrice($order->par_assurance) }} <br>
+        Patient : {{ getPrice($order->par_client) }}
     </div>
     <div>
         Facture Par : {{$order?->user?->name ?? ""}}
