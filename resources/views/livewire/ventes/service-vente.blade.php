@@ -149,7 +149,8 @@
             {{ $errorMessage }}
         </div>
         @endif
-        @if ($customer)
+       <div class="row">
+         @if ($customer)
         <div class="col-6">
             {{-- {{ $customer }} --}}
             <i class="fa fa-list-ul" aria-hidden="true"></i>
@@ -180,7 +181,16 @@
                 </li>
             </ul>
         </div>
+
         @endif
+
+        @if ($customer && $customer->assurances)
+
+        <div class="col-6">
+            {{$customer->assurances}}
+        </div>
+        @endif
+       </div>
 
 
     </div>

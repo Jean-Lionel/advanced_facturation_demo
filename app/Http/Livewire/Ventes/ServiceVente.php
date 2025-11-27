@@ -94,7 +94,7 @@ class ServiceVente extends Component
 
     public function searchClient(){
        $clienN = $this->clientNumber;
-        $this->customer = Client::where(function($query) use ($clienN){
+        $this->customer = Client::with('assurances')->where(function($query) use ($clienN){
 
             if(is_numeric($clienN)){
                 $query->where('id', 'LIKE', "%{$clienN}%")
@@ -111,6 +111,8 @@ class ServiceVente extends Component
         }else{
             $this->errorMessage = "";
         }
+
+        // Amener les assurances d'un client
     }
     public function updateUI(){
         foreach($this->prices as $key => $price ){
