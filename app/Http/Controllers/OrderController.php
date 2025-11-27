@@ -49,6 +49,7 @@ class OrderController extends Controller
         $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEM');
         $currentModelFacture = 'cart.facture_model_prothem';
         if($modelFacture){
+
             $currentModelFacture = 'cart.facture_' . Str::lower($modelFacture) ;
         }
         return view( $currentModelFacture ,compact('order'));
