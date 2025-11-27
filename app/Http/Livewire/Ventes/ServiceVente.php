@@ -27,6 +27,14 @@ class ServiceVente extends Component
     public $typePaiement;
     public $invoice_currency = 'BIF';
     public $typeFacture = 'FACTURE';
+    public $parClient = 0;
+    public $parAssurance = 0;
+    public $parClientPourcentage = 0;
+    public $parAssurancePourcentage = 0;
+    public $assuranceID = 0;
+    public $assuranceName = '';
+
+
     public function render()
     {
         return view('livewire.ventes.service-vente');
@@ -92,9 +100,26 @@ class ServiceVente extends Component
 
     }
 
+    public function toggleAssurance( $assuranceID ,  $parClient , $parAssureur , $assuranceName){
+
+        if($this->assuranceID == $assuranceID){
+            $this->assuranceID = 0;
+            $this->parClientPourcentage = 0;
+            $this->parAssurancePourcentage = 0;
+            $this->assuranceName = '';
+            return;
+        }else{
+            $this->assuranceID = $assuranceID;
+            $this->parClientPourcentage = $parClient;
+            $this->parAssurancePourcentage = $parAssureur;
+            $this->assuranceName = $assuranceName;
+        }
+        $this->updateUI();
+    }
+
     public function searchClient(){
        $clienN = $this->clientNumber;
-        $this->customer = Client::with('assurances')->where(function($query) use ($clienN){
+        $this->customer = Client::where(function($query) use ($clienN){
 
             if(is_numeric($clienN)){
                 $query->where('id', 'LIKE', "%{$clienN}%")
@@ -111,8 +136,6 @@ class ServiceVente extends Component
         }else{
             $this->errorMessage = "";
         }
-
-        // Amener les assurances d'un client
     }
     public function updateUI(){
         foreach($this->prices as $key => $price ){
@@ -124,6 +147,12 @@ class ServiceVente extends Component
             }
         }
         // $this->total_montant = ;
+        // Prix total TVAC
+        $this->total_montant = array_sum($this->pricesTVAC);
+
+
+        $this->parClient = $this->total_montant * ($this->parClientPourcentage / 100);
+        $this->parAssurance = $this->total_montant * ($this->parAssurancePourcentage / 100);
     }
     public function updated($v){
         $this->updateUI();

@@ -99,6 +99,15 @@
         </tbody>
     </table>
 
+    <div class="row">
+        <div class="col-6">
+            <h5>CLIENT :  {{number_format($parClient)}} </h5>
+        </div>
+        <div class="col-6">
+            <h5> ASSURANCE [{{ $assuranceName }}] : {{number_format($parAssurance)}} </h5>
+        </div>
+    </div>
+
     <div class="card">
         <div class="col-12 d-flex justify-content-between">
             <div>
@@ -184,10 +193,34 @@
 
         @endif
 
-        @if ($customer && $customer->assurances)
+        @if ($customer && $customer->assuranceClients)
 
         <div class="col-6">
-            {{$customer->assurances}}
+
+        <table class="table table-striped table-sm py-3">
+            <thead>
+                <tr>
+                    <th>NOM</th>
+                    <th> CLIENT</th>
+                    <th> ASSUREUR</th>
+                    <th>DATE D'EXPIRATION</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($customer->assuranceClients as $key => $assuranceClient)
+                <tr>
+                    <td>{{$assuranceClient?->assurance?->name}}</td>
+                    <td>{{$assuranceClient->par_client}}%</td>
+                    <td>{{$assuranceClient->par_assurance}}%</td>
+                    <td>{{$assuranceClient->expire_date?->format('Y-m-d')}}</td>
+                    <td>
+                        <input type="checkbox" wire:click="toggleAssurance({{ $assuranceClient->id}}, {{ $assuranceClient->par_client }}, {{ $assuranceClient->par_assurance }} , '{{ $assuranceClient?->assurance?->name }}')" value="{{$assuranceClient->id}}" class="form-check-input" style="cursor: pointer;">
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+        </table>
         </div>
         @endif
        </div>
