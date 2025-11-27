@@ -23,4 +23,8 @@ class Client extends MyModel
     }
 
 
+    public function assuranceClients()
+    {
+        return $this->hasMany(AssuranceClient::class);
+    }
 }
