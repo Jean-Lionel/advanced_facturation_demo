@@ -198,6 +198,9 @@ Nous disons le Total :  <b> {{ getNumberToWord($order->amount) }}
 {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
 </div>
 </article>
+<div>
+    <p>Facture Par : {{$order?->user?->name ?? ""}}</p>
+</div>
 </div>
 </div>
 
@@ -278,9 +281,17 @@ N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h3>
 {{ getPrice($order->amount) }}
 </div>
 
+
 </div>
 
 <div>
+    <div>
+        Assurance : {{ getPrice($order->par_assurance) }} <br>
+        Client : {{ getPrice($order->par_client) }}
+    </div>
+    <div>
+        Facture Par : {{$order?->user?->name ?? ""}}
+    </div>
 <div class="center bold">=== MERCI !! ===</div>
 <hr>
 <br>
