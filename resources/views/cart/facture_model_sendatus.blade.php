@@ -99,7 +99,7 @@ N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y à H:i:s') }} </h3>
 {{-- SIDE B --}}
 <article class="identification_b">
 <div>
-<h5>B. Client</h5>
+<h5>B. Patient</h5>
 <p>Nom et Prénom ou Raison Socail :</p>
 <p>
 <b>{{$order->client->name}}</b>
@@ -239,7 +239,7 @@ N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h3>
 <p>  Mode de Paiment :  <b>{{TYPE_PAYMENT[$order->type_paiement]  }}</b> </p>
 <p>  Exonerer à la TVA :  <b> OUI</b> </p>
 
-<h3>B. Client</h3>
+<h3>B. Patient</h3>
 <p>Nom et Prénom ou Raison Socail :</p>
 <p>{{$order->client->name}}</p>
 <br>
