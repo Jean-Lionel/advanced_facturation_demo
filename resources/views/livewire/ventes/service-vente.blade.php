@@ -103,7 +103,7 @@ Supplement :
 
     <div class="row">
         <div class="col-6">
-            <h5>CLIENT :  {{number_format($parClient)}} </h5>
+            <h5>PATIENT :  {{number_format($parClient)}} </h5>
         </div>
         <div class="col-6">
             <h5> ASSURANCE [{{ $assuranceName }}] : {{number_format($parAssurance)}} </h5>

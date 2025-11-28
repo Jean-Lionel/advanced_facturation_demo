@@ -150,7 +150,7 @@ N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y à H:i:s') }} </h3>
 <td colspan="4">
 {{ $order->tax != 0 ? "PVT HTVA" : "TOTAL" }}
 </td>
-<td class="adroite"><b>{{ getPrice($order->amount_tax) }}</b></td>
+<td class="adroite"><b>{{ getPrice($order->amount_tax+$order->supplement) }}</b></td>
 </tr>
 
 @if ($order->tax != 0)
@@ -190,7 +190,7 @@ N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y à H:i:s') }} </h3>
 </div>
 <br>
 <div>
-Nous disons le Total :  <b> {{ getNumberToWord($order->amount) }}
+Nous disons le Total :  <b> {{ getNumberToWord($order->amount+$order->supplement) }}
 {{ $order->invoice_currency ?? 'FBU' }} .</b>
 </div>
 @if($order->invoice_type != 'FN')
@@ -275,7 +275,7 @@ N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h3>
 
 <div>
 <div class="total_payment">
-<div> P.HTVA: {{ getPrice($order->amount_tax) }} </div>
+<div> P.HTVA: {{ getPrice($order->amount_tax+$order->supplement) }} </div>
 
 </div>
 <div class="total_payment">
