@@ -287,7 +287,9 @@ N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h3>
 <div>
     <div>
         Assureur : {{ getPrice($order->par_assurance) }} <br>
-        Patient : {{ getPrice($order->par_client) }}
+        Patient : {{ getPrice($order->par_client) }} <br>
+        Supplmt . 0 <br>
+        
     </div>
     <div>
         Facture Par : {{$order?->user?->name ?? ""}}
