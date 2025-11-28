@@ -21,6 +21,10 @@
 </div>
 <div>
 	<div class="row">
+        <div>
+            <a href="{{ route('assurances.index') }}"
+            class="btn btn-primary btn-sm">Assurances</a>
+        </div>
 		<div class="col-12">
 			<h2>Le Nombre total des clients : <b>{{ $nombre_total_clients }}</b></h2>
 		</div>
@@ -94,6 +98,10 @@
 						<a href="{{ route('make_commissionnaire', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Commissionnaire</a>
 
 					@endif
+
+                    @if(env('APP_USE_ASSURANCE', false))
+                     <a href="{{ route('assurance_clients.create', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Assurances</a>
+                    @endif
                 </td>
 				{{-- <td class="d-flex justify-content-around">
 					 <a href="{{ route('clients.edit', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>

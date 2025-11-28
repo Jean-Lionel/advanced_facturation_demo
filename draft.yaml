@@ -1,18 +1,10 @@
 models:
-  StockControl:
+  AssuranceClient:
     id: id
-    product_id: id foreign:products
-    old_quantity: double default:0
-    new_quantity: double default:0
-    sold_quantity: double default:0
-    price: double default:0
-    description: text nullable
-    user_id: id foreign:users
-    timestamps: true
-
-
-
-controllers:
-  StockControl:
-    resource: web
+    client_id : integer
+    assurance_id : integer
+    expire_date : date
+    par_client : float
+    par_assurance : float
+    description : text nullable
 

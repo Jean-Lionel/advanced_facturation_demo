@@ -308,6 +308,7 @@ class ObrDeclarationController extends Controller
             "customer_address" => $order->client->addresse ?? "",
             "vat_customer_payer" => $order->client->vat_customer_payer ?? "",
             "invoice_type" =>   $order->invoice_type ?? "FN",
+            "cn_motif" =>   $order->cn_motif ?? "",
             "cancelled_invoice_ref" => "",
             "invoice_ref" => $order->invoice_ref ? getInvoiceNumber($order->invoice_ref) : "",
             //yyyyMMddHHmmss

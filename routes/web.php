@@ -199,7 +199,8 @@ Route::resource('versement', App\Http\Controllers\VersementController::class);
 Route::resource('embalage', App\Http\Controllers\EmbalageController::class);
 
 Route::resource('embalage-mouvement', App\Http\Controllers\EmbalageMouvementController::class);
-
-
 Route::resource('stock-control', App\Http\Controllers\StockControlController::class);
 Route::post('stock-controls/{stockControl}', [App\Http\Controllers\StockControlController::class,'annulerSortie'])->name('stock-controls.annuler');
+
+Route::resource('assurances', App\Http\Controllers\AssuranceController::class);
+Route::resource('assurance_clients', App\Http\Controllers\AssuranceClientController::class);

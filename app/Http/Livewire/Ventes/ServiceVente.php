@@ -27,6 +27,16 @@ class ServiceVente extends Component
     public $typePaiement;
     public $invoice_currency = 'BIF';
     public $typeFacture = 'FACTURE';
+    public $parClient = 0;
+    public $parAssurance = 0;
+    public $parClientPourcentage = 0;
+    public $parAssurancePourcentage = 0;
+    public $assuranceID = 0;
+    public $assuranceName = '';
+    public $supplement = 0;
+    //public $com
+
+
     public function render()
     {
         return view('livewire.ventes.service-vente');
@@ -68,18 +78,25 @@ class ServiceVente extends Component
                 'addresse_client'=> $this->customer->addresse,
                 'date_facturation'=> now(),
                 'is_cancelled' => 0,
+                'supplement' => 0,
                 'invoice_currency' => $this->invoice_currency,
                 'company' =>  $company->toJson(),
-             ];
-             $order = null ;
-             if($this->typeFacture == 'FACTURE'){
+                'par_client' => $this->parClient,
+                'par_assurance' => $this->parAssurance,
+                'par_client_pourcentage' => $this->parClientPourcentage,
+                'par_assurance_pourcentage' => $this->parAssurancePourcentage,
+                'assurance_id' => $this->assuranceID,
+                'assurance_name' => $this->assuranceName,
+            ];
+            $order = null ;
+            if($this->typeFacture == 'FACTURE'){
                 $order = Order::create($orderData);
                 $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
                 $order->invoice_signature = $signature;
                 $order->save();
-             }else{
+            }else{
                 $order = Proformat::create($orderData);
-             }
+            }
 
             DB::commit();
 
@@ -92,13 +109,30 @@ class ServiceVente extends Component
 
     }
 
+    public function toggleAssurance( $assuranceID ,  $parClient , $parAssureur , $assuranceName){
+
+        if($this->assuranceID == $assuranceID){
+            $this->assuranceID = 0;
+            $this->parClientPourcentage = 0;
+            $this->parAssurancePourcentage = 0;
+            $this->assuranceName = '';
+            return;
+        }else{
+            $this->assuranceID = $assuranceID;
+            $this->parClientPourcentage = $parClient;
+            $this->parAssurancePourcentage = $parAssureur;
+            $this->assuranceName = $assuranceName;
+        }
+        $this->updateUI();
+    }
+
     public function searchClient(){
-       $clienN = $this->clientNumber;
+        $clienN = $this->clientNumber;
         $this->customer = Client::where(function($query) use ($clienN){
 
             if(is_numeric($clienN)){
                 $query->where('id', 'LIKE', "%{$clienN}%")
-               ;
+                ;
             }else{
                 $query->where('name', 'LIKE', "%{$clienN}%")
                 ->orWhere('telephone', 'LIKE', "%{$clienN}%")
@@ -117,11 +151,17 @@ class ServiceVente extends Component
             if(isset($price) && is_numeric($price)  && isset($this->quantite[$key])   && is_numeric($this->quantite[$key])){
                 $this->pricesHorTva[$key] = floatval($this->quantite[$key] ?? 0) * floatval($price) ;
                 $this->tvas[$key] = floatval($this->pricesHorTva[$key]) *
-                 floatval($this->taxes[$key] ?? 0) / 100;
+                floatval($this->taxes[$key] ?? 0) / 100;
                 $this->pricesTVAC[$key] =   floatval($this->pricesHorTva[$key]) + floatval($this->tvas[$key]);
             }
         }
         // $this->total_montant = ;
+        // Prix total TVAC
+        $this->total_montant = array_sum($this->pricesTVAC);
+
+
+        $this->parClient = $this->total_montant * ($this->parClientPourcentage / 100);
+        $this->parAssurance = $this->total_montant * ($this->parAssurancePourcentage / 100);
     }
     public function updated($v){
         $this->updateUI();

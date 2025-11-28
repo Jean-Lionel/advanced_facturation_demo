@@ -32,7 +32,7 @@ class SendInvoiceToOBR extends Controller
             ],
             $data
         );
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovement/', $data);
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovement/', $data);
        // dd();
         return $req->body();
     }
@@ -41,7 +41,7 @@ class SendInvoiceToOBR extends Controller
         $token = $this->getToken();
         // Enlevement des espaces
         $tp_TIN = trim($tp_TIN);
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'checkTIN/', [
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'checkTIN/', [
             'tp_TIN' => $tp_TIN
         ]);
 
@@ -64,7 +64,7 @@ class SendInvoiceToOBR extends Controller
                 "cn_motif" => $motif
             ]),
         ]);
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'cancelInvoice/', [
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'cancelInvoice/', [
             "invoice_identifier" => $invoice_signature,
            "cn_motif" => $motif
         ]);
@@ -92,7 +92,7 @@ class SendInvoiceToOBR extends Controller
 
         //dd($order);
 
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'addInvoice_confirm/', $invoince);
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'addInvoice_confirm/', $invoince);
         return json_decode($req->body());
     }
 
@@ -128,7 +128,7 @@ class SendInvoiceToOBR extends Controller
     public function getInvoice($invoice_signature)
     {
         $token = $this->getToken();
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'getInvoice/', [
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'getInvoice/', [
             'invoice_signature' => $invoice_signature
         ]);
         $response = json_decode($req->body());
@@ -141,7 +141,7 @@ class SendInvoiceToOBR extends Controller
 
     public function addStockMovementImporters($data){
         $token = $this->getToken();
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovementImporters/', $data);
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovementImporters/', $data);
         return json_decode($req->body());
     }
 
@@ -149,7 +149,7 @@ class SendInvoiceToOBR extends Controller
     public function getToken()
     {
         try {
-            $req = Http::acceptJson()->post($this->baseUrl . 'login/', [
+            $req = Http::withoutVerifying()->acceptJson()->post($this->baseUrl . 'login/', [
                 'username' => env('OBR_USERNAME'),
                 'password' => env('OBR_PASSWORD')
             ]);
@@ -179,7 +179,7 @@ class SendInvoiceToOBR extends Controller
 
     public function  getDmcItems($reference_dmc){
         $token = $this->getToken();
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'getDmcItems/',
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'getDmcItems/',
         [
             "nif" => env('OBR_NIF'),
             "reference_dmc" => $reference_dmc

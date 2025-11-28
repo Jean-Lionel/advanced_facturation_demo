@@ -23,4 +23,11 @@ class Client extends MyModel
     }
 
 
+    public function assurances()
+    {
+        return $this->belongsToMany(Assurance::class, 'assurance_clients', 'client_id', 'assurance_id');
+    }
+    public function assuranceClients(){
+        return $this->hasMany(AssuranceClient::class);
+    }
 }

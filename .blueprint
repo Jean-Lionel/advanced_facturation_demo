@@ -1,17 +1,7 @@
 created:
-    - app/Http/Controllers/StockControlController.php
-    - database/factories/StockControlFactory.php
-    - database/migrations/2025_07_07_065436_create_stock_controls_table.php
-    - app/Models/StockControl.php
-    - tests/Feature/Http/Controllers/StockControlControllerTest.php
-    - app/Http/Requests/StockControlStoreRequest.php
-    - app/Http/Requests/StockControlUpdateRequest.php
-    - resources/views/stockControl/index.blade.php
-    - resources/views/stockControl/create.blade.php
-    - resources/views/stockControl/show.blade.php
-    - resources/views/stockControl/edit.blade.php
-updated:
-    - routes/web.php
+    - database/factories/AssuranceClientFactory.php
+    - database/migrations/2025_11_27_151620_create_assurance_clients_table.php
+    - app/Models/AssuranceClient.php
 models:
     CanceledInvoince: { order_id: integer, invoice_signature: text, motif: text, status: string }
     Cart: {  }
@@ -71,3 +61,5 @@ models:
     Embalage: { id: id, name: 'string:255', description: 'text nullable', price: 'double default:0', quantity: 'double default:0', type_embalage_id: 'id foreign:type_embalages', timestamps: timestamps, relationships: { belongsTo: TypeEmbalage, hasMany: EmbalageMouvement } }
     EmbalageMouvement: { id: id, type: 'string:255', quantity: 'double default:0', embalage_id: 'id foreign:embalages', client_id: 'id foreign:clients', timestamps: timestamps, relationships: { belongsTo: Embalage } }
     StockControl: { id: id, product_id: 'id foreign:products', old_quantity: 'double default:0', new_quantity: 'double default:0', sold_quantity: 'double default:0', price: 'double default:0', description: 'text nullable', user_id: 'id foreign:users', timestamps: timestamps }
+    Assurance: { id: id, name: string, addresse: 'text nullable', phone: 'string nullable' }
+    AssuranceClient: { id: id, client_id: integer, assurance_id: integer, expire_date: date, par_client: float, par_assurance: float, description: 'text nullable' }
