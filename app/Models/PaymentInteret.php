@@ -11,15 +11,7 @@ class PaymentInteret extends Model
 
     protected $table = 'payment_interets';
 
-    protected $fillable = [
-        'client_id',
-        'title',
-        'montant',
-        'remarque',
-        'type_beneficiaire',
-        'date_paiement',
-        'statut'
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'montant' => 'decimal:2',

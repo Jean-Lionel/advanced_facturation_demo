@@ -8,6 +8,9 @@ use App\Models\Order;
 use App\Models\Entreprise;
 use App\Models\ObrPointer;
 use App\Models\Product;
+use App\Models\OrderInteret;
+use App\Models\Compte;
+use App\Models\BienvenuHistorique;
 use Illuminate\Http\Request;
 use App\Http\Controllers\SendInvoiceToOBR;
 use Illuminate\Support\Facades\DB;
@@ -78,26 +81,35 @@ class ObrDeclarationController extends Controller
         ]);
     }
 
+
     public function cancelInvoice(Request $request)
     {
-        //dd($request->all());
         $request->validate([
             'invoice_signature' => 'required',
             'motif' => 'required',
         ]);
-        // Change the Status Of the order
-        //    dd($request->cancel_amount);
-        $order = Order::where('invoice_signature', '=',$request->invoice_signature)->first();
 
-        if($request->cancel_amount){
+        $order = Order::where('invoice_signature', '=', $request->invoice_signature)->first();
 
-            foreach($order->products as $productItem){
+        if (!$order) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Facture introuvable.'
+            ]);
+        }
 
-                try{
-                    DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
+            if (env('APP_CAN_CALCULE_INTERET', false)) {
+                $this->removeInterestsFromOrder($order);
+            }
+
+            if ($request->cancel_amount) {
+                foreach ($order->products as $productItem) {
                     $product = Product::find($productItem['id']);
-                    if($product ){
+
+                    if ($product) {
 
                         \App\Models\RetourProduit::create([
                             'product_id' => $product->id,
@@ -107,70 +119,68 @@ class ObrDeclarationController extends Controller
                             'description' => $request->motif,
                             'user_id' => auth()->user()->id ?? 1,
                         ]);
-                        $current_price = $productItem['price_revient'] ?? 0 ;
 
-                        ObrMouvementStock::saveMouvement( $product, 'ER',$current_price, $productItem['quantite'], $request->motif, $order->id);
-
+                        $current_price = $productItem['price_revient'] ?? 0;
+                        ObrMouvementStock::saveMouvement(
+                            $product,
+                            'ER',
+                            $current_price,
+                            $productItem['quantite'],
+                            $request->motif,
+                            $order->id
+                        );
 
                         $product->quantite += $productItem['quantite'];
                         $product->save();
-
                     }
-
-                    // Enregistres les mouvements de stock correspondant pour la facture
-
-                  //  $mouvements_enregistres = ObrMouvementStock
-                    //
-                    DB::commit();
-                }catch(\Exception $e){
-                    DB::rollBack();
-                    dump($e);
-                    return $e->getMessage();
-
-
                 }
             }
-        }
-         // Add to pading table
-        $cancelInvoice = CanceledInvoince::create([
-            'motif' => $request->motif,
-            'invoice_signature' => $request->invoice_signature,
-            'created_at' => now(),
-            'status' => false,
-            'order_id' => $order->id,
-        ]);
-        if(!isInternetConnection() || !CAN_SYNCRONISE){
 
-            $order->canceled_or_connection = 'ANNULEE HORS CONNECTION';
-            $order->is_cancelled = true;
-            $order->save();
-            $cancelInvoice->status = false;
-            $cancelInvoice->save();
-            return response()->json([
-                'success' => true,
-                'msg' => 'la Facture a été annulée.',
-                'invoice_signature' => $request->invoice_signature
+            $cancelInvoice = CanceledInvoince::create([
+                'motif' => $request->motif,
+                'invoice_signature' => $request->invoice_signature,
+                'created_at' => now(),
+                'status' => false,
+                'order_id' => $order->id,
             ]);
-        }else{
-            $obr = new SendInvoiceToOBR();
-            try {
-                $response = $obr->cancelInvoice($request->invoice_signature , $request->motif);
-                $order = Order::find($request->order_id);
+
+            // if (!isInternetConnection() || env('OBR_CAN_SYNCRONISE', true)) {
+            if (true) {
+                $order->canceled_or_connection = 'ANNULEE HORS CONNECTION';
                 $order->is_cancelled = true;
+                $order->save();
+                $cancelInvoice->status = false;
+                $cancelInvoice->save();
+
+                DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                    'msg' => 'La facture a été annulée.',
+                    'invoice_signature' => $request->invoice_signature
+                ]);
+            } else {
+                $obr = new SendInvoiceToOBR();
+                $response = $obr->cancelInvoice($request->invoice_signature, $request->motif);
+
+                $order->is_cancelled = true;
+                $order->save();
                 $cancelInvoice->status = true;
                 $cancelInvoice->save();
-                $order->save();
+
+                DB::commit();
+
                 return $response;
-            } catch (\Exception $e) {
-                return response()->json([
-                    'success' => false,
-                    'msg' => $e->getMessage(). ' FILE ' . $e->getFile() . ' LINE ' .$e->getLine()
-                ]);
             }
 
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage() . ' FILE ' . $e->getFile() . ' LINE ' . $e->getLine()
+            ], 500);
         }
-
-
     }
 
     public function sendInvoinceToObr($invoince_id)
@@ -320,4 +330,68 @@ class ObrDeclarationController extends Controller
         return $invoince;
 
     }
+
+    private function removeInterestsFromOrder($order)
+    {
+        $orderInteret = OrderInteret::where('order_id', $order->id)->first();
+
+        if (!$orderInteret) {
+            return;
+        }
+
+        $description = json_decode($orderInteret->description, true);
+        $partage = $description['partage'] ?? [];
+
+        $montantInformaticien = $partage['Informaticien'] ?? 0;
+        $montantClient = $partage['Client'] ?? 0;
+        $montantCommissionnaire = $partage['Commisionnaire'] ?? 0;
+        $montantEntreprise = $partage['Entreprise'] ?? 0;
+
+        if ($order->commissionaire_id && $montantCommissionnaire > 0) {
+            $compteCommissionnaire = Compte::where('client_id', $order->commissionaire_id)->first();
+
+            if ($compteCommissionnaire) {
+                $compteCommissionnaire->montant -= $montantCommissionnaire;
+                $compteCommissionnaire->save();
+
+                BienvenuHistorique::create([
+                    'compte_id' => $compteCommissionnaire->id,
+                    'client_id' => $order->commissionaire_id,
+                    'mode_payement' => 1,
+                    'title' => 'ANNULATION COMMISSION',
+                    'montant' => -$montantCommissionnaire,
+                    'description' => "REF #" . $orderInteret->id . " Annulation commission sur vente - Facture Client No" . $order->client_id,
+                    'user_id' => auth()->user()->id ?? 1
+                ]);
+            }
+        }
+
+        if ($order->client_id && $montantClient > 0) {
+            $compteClient = Compte::where('client_id', $order->client_id)->first();
+
+            if ($compteClient) {
+                $compteClient->montant -= $montantClient;
+                $compteClient->save();
+
+                BienvenuHistorique::create([
+                    'compte_id' => $compteClient->id,
+                    'client_id' => $order->client_id,
+                    'mode_payement' => 1,
+                    'title' => 'ANNULATION RESTOURNE',
+                    'montant' => -$montantClient,
+                    'description' => "REF #" . $orderInteret->id . " Annulation restourne sur achat - Facture Client No" . $order->client_id,
+                    'user_id' => auth()->user()->id ?? 1
+                ]);
+            }
+        }
+        $description['partage'] = [
+            'Informaticien' => 0,
+            'Client' => 0,
+            'Commisionnaire' => 0,
+            'Entreprise' => 0,
+        ];
+        $orderInteret->description = json_encode($description);
+        $orderInteret->save();
+    }
+
 }
