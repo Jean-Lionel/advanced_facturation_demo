@@ -98,7 +98,7 @@
             </tr>
         </tbody>
     </table>
-
+SUpplement :
     <input type="supplement" wire:model="supplement"    class="form-control form-control-sm"    placeholder="SUPPLEMENT">
 
     <div class="row">
