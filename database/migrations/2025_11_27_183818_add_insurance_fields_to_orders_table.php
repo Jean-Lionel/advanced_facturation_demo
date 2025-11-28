@@ -20,6 +20,7 @@ class AddInsuranceFieldsToOrdersTable extends Migration
             $table->double('par_assurance_pourcentage')->nullable()->default(0);
             $table->integer('assurance_id')->nullable()->default(0);
             $table->string('assurance_name')->nullable();
+            $table->string('supplement')->nullable();
         });
     }
 

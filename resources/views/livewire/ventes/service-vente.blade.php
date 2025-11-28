@@ -99,6 +99,8 @@
         </tbody>
     </table>
 
+    <input type="supplement" wire:model="supplement"    class="form-control form-control-sm"    placeholder="SUPPLEMENT">
+
     <div class="row">
         <div class="col-6">
             <h5>CLIENT :  {{number_format($parClient)}} </h5>
@@ -197,7 +199,7 @@
 
         <div class="col-6">
 
-        <table class="table table-striped table-sm py-3">
+        <table class="table py-3 table-striped table-sm">
             <thead>
                 <tr>
                     <th>NOM</th>
