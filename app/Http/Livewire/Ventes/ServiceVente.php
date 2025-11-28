@@ -78,7 +78,7 @@ class ServiceVente extends Component
                 'addresse_client'=> $this->customer->addresse,
                 'date_facturation'=> now(),
                 'is_cancelled' => 0,
-                'supplement' => 0,
+                'supplement' => $this->supplement,
                 'invoice_currency' => $this->invoice_currency,
                 'company' =>  $company->toJson(),
                 'par_client' => $this->parClient,
