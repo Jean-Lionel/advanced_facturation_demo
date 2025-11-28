@@ -99,7 +99,7 @@
         </tbody>
     </table>
 Supplement :
-    <input type="supplement" wire:model="supplement"    class="form-control form-control-sm"    placeholder="SUPPLEMENT">
+    <input type="number" wire:model="supplement"     class="form-control form-control-sm col-4"    placeholder="SUPPLEMENT">
 
     <div class="row">
         <div class="col-6">
