@@ -38,6 +38,7 @@ class CreateOrdersTable extends Migration
             //Creditial for OBR
             $table->boolean('is_cancelled')->nullable();
             $table->text('update_info')->nullable();
+            $table->double('supplement')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
