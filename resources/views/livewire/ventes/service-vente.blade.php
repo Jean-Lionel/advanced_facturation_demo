@@ -103,7 +103,7 @@ Supplement :
 
     <div class="row">
         <div class="col-6">
-            <h5>CLIENT :  {{number_format($parClient)}} </h5>
+            <h5>PATIENT :  {{number_format($parClient)}} </h5>
         </div>
         <div class="col-6">
             <h5> ASSURANCE [{{ $assuranceName }}] : {{number_format($parAssurance)}} </h5>
@@ -113,7 +113,7 @@ Supplement :
     <div class="card">
         <div class="col-12 d-flex justify-content-between">
             <div>
-                <label for="" class="mr-3">NUMERO DE CLIENT</label>
+                <label for="" class="mr-3">NUMERO DE PATIENT</label>
                 <input type="text" class="justify-content-between" wire:model="clientNumber">
                 <button class="btn btn-info btn-sm" wire:click="searchClient">Search</button>
             </div>
@@ -203,7 +203,7 @@ Supplement :
             <thead>
                 <tr>
                     <th>NOM</th>
-                    <th> CLIENT</th>
+                    <th>PATIENT</th>
                     <th> ASSUREUR</th>
                     <th>DATE D'EXPIRATION</th>
                     <th></th>
