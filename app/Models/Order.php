@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Kyslik\ColumnSortable\Sortable;
-use Illuminate\Support\Facades\DB;
+
 
 class Order extends Model
 {
@@ -31,7 +31,8 @@ class Order extends Model
             $model->client_id = $model->client->id ?? 0;
             $model->invoice_type = $model->invoice_type ??  'FN';
             // Checking the last inserted id of the invoice
-            $lastInsertedId = self::latest()->first();
+            // Select max id from orders table
+            $lastInsertedId = self::select('id')->orderBy('id', 'desc')->first();
             if ($lastInsertedId) {
                 $model->id = $lastInsertedId->id + 1;
             } else {

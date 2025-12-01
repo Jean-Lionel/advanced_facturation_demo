@@ -26,6 +26,7 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
+        $currentData = now()->subDays(env('OBR_RETURN_DAY', 0));
 
         $validate =
         [
@@ -99,15 +100,15 @@ class CheckoutController extends Controller
                 'products'=> serialize($cartInfo),
                 'client'=> $client->toJson(),
                 'addresse_client'=> $client->addresse,
-                'date_facturation'=> now(),
+                'date_facturation'=>  $currentData,
                 'invoice_currency' => $request->invoice_currency,
                 'type_facture' => 'FACTURE',
                 'is_cancelled' => 0,
                 'client_id' => $request->client_id,
                 'commissionaire_id' =>  $client->commissionnaire_id ?? null,
                 'company' =>  $company->toJson(),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' =>  $currentData,
+                'updated_at' =>  $currentData,
             ]);
 
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
