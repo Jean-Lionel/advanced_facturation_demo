@@ -26,6 +26,7 @@
             margin: 5mm;
         }
 
+
         .text-center {
             text-align: center;
         }
@@ -76,6 +77,16 @@
             width: 95%;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
+
+        }
+
+        .invoice_signature{
+            position: absolute;
+            bottom: 115px;
+            text-align: center;
+            left: 20px;
+            right: 20px;
+            font-size: 18px;
 
         }
 
@@ -282,13 +293,20 @@
     <div class="container">
         <div class="header">
             <div>
-                <img src="{{ asset('img/logo_advanced.jpg') }}" alt="Logo" class="logo">
+                <img src="{{ asset('img/advanced.jpg') }}" alt="Logo" class="logo">
                 <div class="company-info">
                     <h2>{{ $order->company->tp_name }}</h2>
                     <p>NIF: {{ $order->company->tp_TIN }}</p>
                     <p>RC: {{ $order->company->tp_trade_number }}</p>
                     <p>{{ $order->company->tp_address_commune }}, {{ $order->company->tp_address_quartier }}</p>
                     <p>Tél: {{ $order->company->tp_phone_number }}</p>
+
+                    @if (env('OBR_PRODUCTION'))
+                        <p>Centre Fiscal : {{ $order->company->tp_fiscal_center }}</p>
+                        <p>Secteur d'activité : {{ $order->company->tp_activity_sector }}</p>
+                        <p>Forme juridique : {{ $order->company->tp_legal_form }}</p>
+                        <hr>
+                    @endif
                 </div>
             </div>
             <div class="invoice-details">
@@ -348,6 +366,7 @@
             </table>
         </div>
 
+
         <div class="footer">
             <div class="payment-info">
                 <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount_tax)}}  FBU</p>
@@ -365,7 +384,15 @@
             </div>
             @endif
 
+
+
             <hr class="hr-footer">
+            <div class="invoice_signature">
+                @if (env('OBR_PRODUCTION'))
+                 OBR ID : {{ $order->invoice_signature}}
+                @endif
+
+            </div>
             <div class="company-info-footer">
                <div> Site web : <br> {{ $order->company->tp_website ?? "" }}</div>
                <div> Email : <br> {{ $order->company->tp_email ?? "" }}</div>
