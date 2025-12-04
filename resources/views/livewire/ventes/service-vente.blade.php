@@ -98,7 +98,10 @@
             </tr>
         </tbody>
     </table>
-Supplement :
+
+    @if (env('APP_USE_ASSURANCE', false))
+
+    Supplement :
     <input type="number" wire:model="supplement"     class="form-control form-control-sm col-4"    placeholder="SUPPLEMENT">
 
     <div class="row">
@@ -109,6 +112,9 @@ Supplement :
             <h5> ASSURANCE [{{ $assuranceName }}] : {{number_format($parAssurance)}} </h5>
         </div>
     </div>
+
+    @endif
+
 
     <div class="card">
         <div class="col-12 d-flex justify-content-between">
@@ -195,7 +201,7 @@ Supplement :
 
         @endif
 
-        @if ($customer && $customer->assuranceClients)
+        @if ($customer &&  env('APP_USE_ASSURANCE', false) &&  $customer->assuranceClients)
 
         <div class="col-6">
 

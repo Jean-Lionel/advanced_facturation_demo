@@ -46,6 +46,7 @@ class SyncronizeController extends Controller
             if(CAN_SYNCRONISE_INVOICE ){
                 $response =  $this->syncronizeInvoices();
 
+
                return  $response;
             }
             } catch (\Throwable $th) {
@@ -153,6 +154,22 @@ class SyncronizeController extends Controller
         }
     }
 
+
+
+    public function syncronizeImportation(){
+
+        $movements = ObrMouvementStock::where("is_importation",1 )
+        ->whereNull("is_send_to_obr")
+        ->latest()
+        ->take(5)
+        ->get();
+        foreach($movements as $v){
+             $obr = new SendInvoiceToOBR();
+         $response = $obr->addStockMovementImporters($v->toArray());
+
+        }
+    }
+
     public function syncronizeStock(){
 
         if(!env('OBR_CAN_SYNCRONISE', false) ){
@@ -161,6 +178,8 @@ class SyncronizeController extends Controller
                 'data' => null,
             ]);
         }
+        // Faire la sycronisation des importations
+        $this->syncronizeImportation();
 
         $today = Carbon::now();
         $thirtyDaysAgo = $today->subDays(DAY_FOR_STOCK_DATA_SYNCRONIZE);
