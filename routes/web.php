@@ -189,8 +189,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // rapport.resultats
     Route::get('rapport.resultats', [RapportController::class, 'rapportResultats'])->name('rapport.resultats');
-});
-require __DIR__ . '/jetstream.php';
+
 
 Route::resource('periode-paiment-location', App\Http\Controllers\PeriodePaimentLocationController::class);
 
@@ -204,3 +203,10 @@ Route::post('stock-controls/{stockControl}', [App\Http\Controllers\StockControlC
 
 Route::resource('assurances', App\Http\Controllers\AssuranceController::class);
 Route::resource('assurance_clients', App\Http\Controllers\AssuranceClientController::class);
+Route::resource('env_settings', App\Http\Controllers\EnvSettingController::class);
+
+});
+require __DIR__ . '/jetstream.php';
+
+
+

@@ -9,6 +9,10 @@
         <li class="list-group-item">
             <a href="{{ route('import_data_show') }}" class=" {{ request()->routeIs('import_data_show') ? 'active' : '' }} ">Importation des données</a>
         </li>
+
+        <li class="list-group-item">
+            <a href="{{ route('env_settings.index') }}" class=" {{ request()->routeIs('env_settings.*') ? 'active' : '' }} ">Paramètres</a>
+        </li>
     </ul>
 
     @if (session('succes_message'))
