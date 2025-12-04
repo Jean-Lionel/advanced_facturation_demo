@@ -12,9 +12,20 @@ class EnvSettingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $settings = EnvSetting::all();
+        EnvSetting::init();
+
+        $query = EnvSetting::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('key', 'like', "%{$search}%")
+                  ->orWhere('value', 'like', "%{$search}%");
+        }
+
+        $settings = $query->paginate(10);
+
         return view('env_settings.index', compact('settings'));
     }
 

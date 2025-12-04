@@ -22,6 +22,16 @@
             </div>
         @endif
 
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <form action="{{ route('env_settings.index') }}" method="GET" class="form-inline">
+                    <div class="form-group mr-2 w-100">
+                        <input type="text" name="search" class="form-control w-100" placeholder="Search by key or value..." value="{{ request('search') }}">
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <div class="card shadow-sm">
             <div class="card-body">
                 <div class="table-responsive">
@@ -37,7 +47,13 @@
                             @foreach ($settings as $setting)
                                 <tr>
                                     <td class="font-weight-bold">{{ $setting->key }}</td>
-                                    <td>{{ Str::limit($setting->value, 50) }}</td>
+                                    <td>
+                                        @if (Str::contains(strtoupper($setting->key), ['PASSWORD', 'SECRET', 'KEY', 'TOKEN']))
+                                            ******
+                                        @else
+                                            {{ Str::limit($setting->value, 50) }}
+                                        @endif
+                                    </td>
                                     <td>
                                         <a href="{{ route('env_settings.edit', $setting) }}" class="btn btn-sm btn-info mr-2">Edit</a>
                                         <form action="{{ route('env_settings.destroy', $setting) }}" method="POST" class="d-inline">
@@ -50,6 +66,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="mt-4 d-flex justify-content-center">
+                    {{ $settings->withQueryString()->links() }}
                 </div>
             </div>
         </div>
