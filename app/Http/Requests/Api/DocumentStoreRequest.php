@@ -24,12 +24,9 @@ class DocumentStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'member_id' => ['integer', 'exists:members,id'],
-            'client_id' => ['integer', 'exists:clients,id'],
-            'document_type' => ['string'],
-            'transaction_file_id' => ['integer', 'exists:transaction_files,id'],
+            'document_type' => ['string', 'nullable'],
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['string'],
+            'description' => ['string', 'nullable'],
         ];
     }
 }

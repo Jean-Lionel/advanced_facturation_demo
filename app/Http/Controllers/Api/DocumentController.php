@@ -43,7 +43,7 @@ class DocumentController extends Controller
 
         $document = Document::create(
             [
-                ...$request->validated(),
+                ...$request->all(),
                 'user_id' => auth()->user()->id,
             ]
         );
