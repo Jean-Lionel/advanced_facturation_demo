@@ -9,6 +9,42 @@
         </a>
     </div>
 
+    <div class="card mb-4">
+        <div class="card-body">
+            <form action="{{ route('advanced.documents.index') }}" method="GET" class="row align-items-end">
+                <div class="col-md-3 mb-2">
+                    <label for="search" class="form-label">Recherche</label>
+                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Nom ou description...">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <label for="date_start" class="form-label">Date Début</label>
+                    <input type="date" class="form-control" id="date_start" name="date_start" value="{{ request('date_start') }}">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <label for="date_end" class="form-label">Date Fin</label>
+                    <input type="date" class="form-control" id="date_end" name="date_end" value="{{ request('date_end') }}">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <label for="category" class="form-label">Catégorie</label>
+                    <select class="form-select" id="category" name="category">
+                        <option value="">Toutes</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>{{ $category }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter"></i> Filtrer
+                    </button>
+                    <a href="{{ route('advanced.documents.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-sync-alt"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
@@ -61,6 +97,9 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="card-footer">
+            {{ $documents->links() }}
         </div>
     </div>
 </div>

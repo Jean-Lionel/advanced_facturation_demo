@@ -21,11 +21,37 @@ class DocumentController extends Controller
      */
     public function index(Request $request)
     {
-        $documents = Document::latest()->paginate();
+        $query = Document::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('date_start')) {
+            $query->whereDate('created_at', '>=', $request->input('date_start'));
+        }
+
+        if ($request->filled('date_end')) {
+            $query->whereDate('created_at', '<=', $request->input('date_end'));
+        }
+
+        if ($request->has('category') && $request->filled('category')) {
+            $query->where('document_type', $request->input('category'));
+        }
+
+        $documents = $query->latest()->paginate()->withQueryString();
+
+        $categories = Document::select('document_type')->distinct()->whereNotNull('document_type')->pluck('document_type');
+
         if ($request->wantsJson()) {
             return $documents;
         }
-        return view('documents.index', compact('documents'));
+
+        return view('documents.index', compact('documents', 'categories'));
     }
 
     public function create()
