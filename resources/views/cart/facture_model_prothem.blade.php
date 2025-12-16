@@ -40,7 +40,7 @@
                 @if (env('APP_USE_LOGO', false))
                 <div>
                     <div >
-                        <img class="img_logo" src="{{asset('img/'.   env('USE_LOGO_NAME', 'logo.jpg'))}}" alt="">
+                        <img class="img_logo" src="{{asset( getCurrentLogo() )}}" alt="">
                     </div>
                 </div>
                 @endif
@@ -56,7 +56,7 @@
                     <h3>
                         Email : {{EMAIL_ENTREPRISE}}, WebSite: {{WEBSITE_ENTREPRISE}}
                     </h3> --}}
-                    <hr>
+
                 </div>
 
             </header>
@@ -86,6 +86,20 @@
                         <p>Centre Fiscal : <b>{{ $order->company->tp_fiscal_center }}</b></p>
                         <p>{{ "Secteur d'activité" }} : <b> {{ $order->company->tp_activity_sector }} </b></p>
                         <p>Forme juridique : <b> {{ $order->company->tp_legal_form }} </b></p>
+
+                        @if ($order->company?->tp_bank)
+
+                        <div>
+                            <br>
+                            <br>
+                            <br>
+
+                          <p>COMPTE BANCAIRE : <b> {{ $order->company?->tp_bank }} </b></p>
+                          <p>NO : <b> {{ $order->company?->tp_account_number }} </b></p>
+
+
+                        </div>
+                        @endif
                     </div>
 
                 </div>
