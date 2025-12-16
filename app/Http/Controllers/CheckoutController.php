@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Models\FollowProduct;
 use App\Models\PaiementDette;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
