@@ -82,7 +82,7 @@ class DocumentController extends Controller
             $document->save();
         }
 
-        return $this->index($request);
+        return redirect()->route('document.index')->with('success', 'Document created successfully');
     }
 
     /**
@@ -121,6 +121,6 @@ class DocumentController extends Controller
     {
         $document->delete();
 
-        return response()->noContent();
+        return redirect()->route('document.index')->with('success', 'Document deleted successfully');
     }
 }
