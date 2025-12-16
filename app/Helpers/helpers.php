@@ -2,6 +2,7 @@
 
 use App\Models\Entreprise;
 use App\Models\MaisonLocation;
+use Illuminate\Support\Facades\Cache;
 use NumberToWords\NumberToWords;
 define('TAUX_TVA', [0,10,18]);
 
@@ -34,6 +35,16 @@ function remplacerPremierePartie($chaine, $nouvelleValeur , $key=0) {
 function curentEntrpiseName(){
     return Entreprise::currentEntreprise();
 }
+
+function getCurrentLogo(){
+    $default = asset('/img/'.env('USE_LOGO_NAME', 'log.jpeg'));
+    return Cache::remember('current_logo', 60*60*24, function () use ($default) {
+        return Entreprise::currentEntreprise()->tp_logo ?? $default;
+    });
+}
+
+
+
 function isInternetConnection(){
     try{
         if(fsockopen('www.google.fr',80)){

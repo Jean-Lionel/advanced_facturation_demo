@@ -96,7 +96,9 @@
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar" class="active noprint" >
             <h1><a href="" class="logo">
-                <img src="{{ asset('img/'. env('USE_LOGO_NAME', 'logo.jpg')) }}" class="img-thumbnail"  alt="">
+                <img src="
+                {{ asset(getCurrentLogo()) }}
+                " class="img-thumbnail"  alt="">
             </a></h1>
             <ul class="mb-5 list-unstyled components">
                 @can('is-vente')
