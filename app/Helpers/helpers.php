@@ -2,6 +2,8 @@
 
 use App\Models\Entreprise;
 use App\Models\MaisonLocation;
+use Dompdf\Image\Cache;
+use Illuminate\Support\Facades\Cache as FacadesCache;
 use NumberToWords\NumberToWords;
 define('TAUX_TVA', [0,10,18]);
 
@@ -42,6 +44,15 @@ function isInternetConnection(){
     }catch(\Exception $e){
         return false;
     }
+}
+
+// Ecrive le code que j'avais ecrit sur l'autre branche
+function getCurrentLogo(){
+    $entreprise = Entreprise::currentEntreprise();
+    $defaultLogo = env('APP_DEFAULT_LOGO', 'logo.jpg');
+    return FacadesCache::remember('tp_logo', 60*10, function () use ($entreprise, $defaultLogo) {
+        return $entreprise->tp_logo ?? $defaultLogo;
+    });
 }
 
 function convertTimestamp($timestamp) {
