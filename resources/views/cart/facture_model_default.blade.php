@@ -86,19 +86,13 @@
                         <p>Centre Fiscal : <b>{{ $order->company->tp_fiscal_center }}</b></p>
                         <p>{{ "Secteur d'activité" }} : <b> {{ $order->company->tp_activity_sector }} </b></p>
                         <p>Forme juridique : <b> {{ $order->company->tp_legal_form }} </b></p>
-
-                        @dump($order->company)
-
                         @if ($order->company?->tp_bank)
-
                         <div>
                             <br>
                             <br>
                             <br>
                           <p>COMPTE BANCAIRE : <b> {{ $order->company?->tp_bank }} </b></p>
                           <p>NO : <b> {{ $order->company?->tp_account_number }} </b></p>
-
-
                         </div>
                         @endif
                     </div>
