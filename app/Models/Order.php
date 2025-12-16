@@ -199,6 +199,10 @@ class Order extends Model
             return true;
         }
 
+        public function entreprise(){
+            return Entreprise::currentEntreprise();
+        }
+
         public function user(){
             return $this->belongsTo(User::class,'user_id');
         }
