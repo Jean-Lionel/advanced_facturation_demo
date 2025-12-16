@@ -17,9 +17,9 @@ class CreateHrFicheDetailsTable extends Migration
 
         Schema::create('hr_fiche_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('fiche_id')->constrained('fiches');
-            $table->foreignId('commande_id')->constrained('hr_commandes');
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('fiche_id')->nullable();
+            $table->foreignId('commande_id')->nullable();
             $table->date('date_debut');
             $table->date('date_fin')->nullable();
             $table->text('description')->nullable();
