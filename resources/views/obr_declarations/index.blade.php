@@ -2,6 +2,28 @@
 @section('content')
 <div>
     @include('entreprises.header')
+    <div class="row mb-2">
+        <div class="col-12">
+            <form class="form-inline" method="GET" action="{{ route('obr_declarations.index') }}">
+                <div class="input-group">
+                    <input type="text" name="q" value="{{ request('q') }}" class="form-control form-control-sm" placeholder="Recherche (client, signature, id)">
+                    <select name="field" class="form-control form-control-sm">
+                        <option value="">Tous</option>
+                        <option value="client" {{ request('field')=='client' ? 'selected' : '' }}>Client</option>
+                        <option value="invoice_signature" {{ request('field')=='invoice_signature' ? 'selected' : '' }}>Signature</option>
+                        <option value="id" {{ request('field')=='id' ? 'selected' : '' }}>ID</option>
+                        <option value="company" {{ request('field')=='company' ? 'selected' : '' }}>Entreprise</option>
+                    </select>
+                    <input type="date" name="from" value="{{ request('from') }}" class="form-control form-control-sm">
+                    <input type="date" name="to" value="{{ request('to') }}" class="form-control form-control-sm">
+                    <div class="input-group-append">
+                        <button class="btn btn-sm btn-primary" type="submit">Filtrer</button>
+                        <a href="{{ route('obr_declarations.index') }}" class="btn btn-sm btn-secondary ml-1">Réinitialiser</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="row">
         <div class="col-6">
             <button class="btn btn-sm btn-primary" id="btn_syncronize">
@@ -85,6 +107,9 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="d-flex justify-content-end">
+            {{ $orders->appends(request()->query())->links() }}
+        </div>
     </div>
     @stop
     

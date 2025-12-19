@@ -47,7 +47,47 @@ class ObrDeclarationController extends Controller
     }
     public function index()
     {
-        $orders = Order::whereNull('envoye_obr')->latest()->get();
+        $q = request()->query('q');
+        $field = request()->query('field');
+        $from = request()->query('from');
+        $to = request()->query('to');
+
+        $query = Order::with('client')->whereNull('envoye_obr');
+
+        if ($q) {
+            if ($field === 'client') {
+                $query->whereHas('client', function ($sub) use ($q) {
+                    $sub->where('name', 'like', "%{$q}%");
+                });
+            } elseif ($field === 'invoice_signature') {
+                $query->where('invoice_signature', 'like', "%{$q}%");
+            } elseif ($field === 'id') {
+                $query->where('id', $q);
+            } elseif ($field === 'company') {
+                $query->whereHas('company', function ($sub) use ($q) {
+                    $sub->where('tp_name', 'like', "%{$q}%");
+                });
+            } else {
+                // global search across a few fields
+                $query->where(function ($sub) use ($q) {
+                    $sub->where('invoice_signature', 'like', "%{$q}%")
+                        ->orWhere('id', $q)
+                        ->orWhereHas('client', function ($c) use ($q) {
+                            $c->where('name', 'like', "%{$q}%");
+                        });
+                });
+            }
+        }
+
+        if ($from) {
+            $query->whereDate('created_at', '>=', $from);
+        }
+        if ($to) {
+            $query->whereDate('created_at', '<=', $to);
+        }
+
+        $orders = $query->latest()->paginate(15);
+
         return view('obr_declarations.index', [
             'orders' => $orders
         ]);
