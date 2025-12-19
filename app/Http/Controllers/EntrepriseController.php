@@ -19,6 +19,32 @@ class EntrepriseController extends Controller
         return view('entreprises.index', compact('entreprises'));
     }
 
+    public function add_info(){
+        $entreprise = Entreprise::currentEntreprise();
+        return view('entreprises.add_info', compact('entreprise'));
+    }
+
+    public function store_info(\Illuminate\Http\Request $request){
+        $request->validate([
+            'tp_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $entreprise = Entreprise::currentEntreprise();
+        $data = $request->except('_token', 'tp_logo');
+
+        if ($request->hasFile('tp_logo')) {
+            $imageName = time().'.'.$request->tp_logo->extension();
+            $request->tp_logo->move(public_path('uploads/logos'), $imageName);
+            $data['tp_logo'] = 'uploads/logos/'.$imageName;
+        }
+
+        if($entreprise){
+            $entreprise->update($data);
+        }
+
+        return back()->with('success', 'Information updated successfully.');
+    }
+
     public function backup_database(){
 
         $database = env('DB_DATABASE','');

@@ -27,7 +27,6 @@ class Order extends Model
         parent::boot();
 
         self::creating(function($model){
-            $model->user_id = Auth::user()->id ?? 1;
             $model->client_id = $model->client->id ?? 0;
             $model->invoice_type = $model->invoice_type ??  'FN';
             // Checking the last inserted id of the invoice
@@ -197,6 +196,10 @@ class Order extends Model
                 }
             }
             return true;
+        }
+
+        public function entreprise(){
+            return Entreprise::currentEntreprise();
         }
 
         public function user(){

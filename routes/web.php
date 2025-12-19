@@ -74,6 +74,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('ventes', VenteController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('entreprises', EntrepriseController::class);
+    Route::get('entreprises.add_info', [EntrepriseController::class , 'add_info'])->name('entreprises.add_info');
+    Route::post('entreprises/store_info', [EntrepriseController::class, 'store_info'])->name('entreprises.store_info');
     Route::get('backup_database', [EntrepriseController::class , 'backup_database'])->name('backup_database');
     Route::resource('depenses', DepenseController::class);
     Route::resource('users', UserController::class);

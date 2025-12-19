@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Models\FollowProduct;
 use App\Models\PaiementDette;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
@@ -104,6 +105,7 @@ class CheckoutController extends Controller
                 'invoice_currency' => $request->invoice_currency,
                 'type_facture' => 'FACTURE',
                 'is_cancelled' => 0,
+                'user_id' => Auth::user()->id,
                 'client_id' => $request->client_id,
                 'commissionaire_id' =>  $client->commissionnaire_id ?? null,
                 'company' =>  $company->toJson(),
@@ -149,7 +151,7 @@ class CheckoutController extends Controller
 
         if(isset($order->id)){
             $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEM');
-            $currentModelFacture = 'cart.facture_model_prothem';
+            $currentModelFacture = 'cart.facture_model_default';
             if($modelFacture){
                 $currentModelFacture = 'cart.facture_' . Str::lower($modelFacture) ;
                 }
