@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Entreprise;
+use App\Models\ObrMouvementStock;
 use App\Models\ObrPointer;
 use App\Models\ObrRequestBody;
 use Illuminate\Support\Facades\Http;
@@ -24,6 +26,7 @@ class SendInvoiceToOBR extends Controller
     }
 
     public function addStockMovement($data){
+        //dd($data);
         $token = $this->getToken();
         // Item
         $data = array_merge(
@@ -33,8 +36,20 @@ class SendInvoiceToOBR extends Controller
             $data
         );
         $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovement/', $data);
-       // dd();
-        return $req->body();
+        // dd();
+        // Check if Request Body Is Success
+        $repo = $req->body();
+        $repoObj = json_decode($repo);
+
+        if (($repoObj && $repoObj->success) || ($repoObj && $repoObj->msg === "Le mouvement de stock a deja ete enregistre dans le systeme")) {
+            $movement = ObrMouvementStock::find($data['id']);
+            $movement->is_send_to_obr = 1;
+            $movement->is_sent_at = now();
+            $movement->save();
+        }
+
+
+        return  $repo ;
     }
     public function checkTin(string $tp_TIN)
     {
@@ -142,6 +157,13 @@ class SendInvoiceToOBR extends Controller
     public function addStockMovementImporters($data){
         $token = $this->getToken();
         $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovementImporters/', $data);
+        // update stock status
+
+        
+
+
+
+
         return json_decode($req->body());
     }
 

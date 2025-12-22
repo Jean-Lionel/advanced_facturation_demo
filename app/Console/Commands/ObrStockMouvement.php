@@ -46,17 +46,21 @@ class ObrStockMouvement extends Command
         // $item = $obr->getDmcItems("2025BIPORC7157");
         // dd($item);
 
-        $movements = ObrMouvementStock::where("is_importation",1 )
-        ->whereNull("is_send_to_obr")
+
+        $movements = ObrMouvementStock::whereNull("is_send_to_obr")
         ->latest()
         ->take(5)
         ->get();
 
-        foreach($movements as $v){
-             $obr = new SendInvoiceToOBR();
-         $response = $obr->addStockMovementImporters($v->toArray());
-           dump($response );
 
+
+
+        foreach($movements as $v){
+            $obr = new SendInvoiceToOBR();
+            $response1 = $obr->addStockMovementImporters($v->toArray());
+            $response = $obr->addStockMovement($v->toArray());
+            dump('Response 1:', $response1);
+            dump('Response 2:', $response);
         }
 
 

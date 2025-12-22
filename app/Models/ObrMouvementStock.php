@@ -83,7 +83,7 @@ class ObrMouvementStock extends Model
     public function produit(){
         return $this->hasMany(Product::class, 'item_code');
     }
-    public static function saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_description = null, $item_movement_invoice_ref = null , $is_single_retour = false){
+    public static function saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_description = null, $item_movement_invoice_ref = null , $is_single_retour = false, $is_importation = 0){
 
 
         // is_single_retour is used when you are using return product
@@ -104,6 +104,7 @@ class ObrMouvementStock extends Model
             'item_cost_price' => $price,
             'is_send_to_obr' => false,
             'user_id' => auth()->user()->id ?? 1,
+            'is_importation' => $is_importation,
         ];
 
         if( in_array( $mouvement, ['SN','SP','SV', 'SD',  'SC','SAJ','ST', 'SAU'])){
@@ -173,6 +174,3 @@ class ObrMouvementStock extends Model
 
 
 }
-
-
-

@@ -124,6 +124,7 @@ class CheckoutController extends Controller
                     $item['quantite'],
                     NULL,
                     $order->id,
+                    0
                 );
             }
 
