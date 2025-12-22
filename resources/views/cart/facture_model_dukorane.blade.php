@@ -119,7 +119,7 @@
             <a href="{{ URL::previous() }}">Retour</a>
             <button onclick="window.print()" class="btn">Imprimer</button>
         </div>
-        <img src="{{ asset('img/logo_dukorane.jpg') }}" width="200" height="100"/>
+        <img src="{{ asset('img/dukorane.jpeg') }}" width="200" height="100"/>
         <h2>Facture no {{ $order->id }} du {{ $order->created_at->format('d/m/Y') }}</h2>
         <div class="header">
             <div class="left">
