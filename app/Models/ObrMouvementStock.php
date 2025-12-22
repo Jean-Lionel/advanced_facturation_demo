@@ -78,13 +78,12 @@ class ObrMouvementStock extends Model
         });
     }
 
-  
+
 
     public function produit(){
         return $this->hasMany(Product::class, 'item_code');
     }
     public static function saveMouvement(Product $produit, string $mouvement, float $price,float $qte, $item_movement_description = null, $item_movement_invoice_ref = null , $is_single_retour = false, $is_importation = 0){
-
 
         // is_single_retour is used when you are using return product
         Session::put('cancel_syncronize', false);
@@ -107,7 +106,9 @@ class ObrMouvementStock extends Model
             'is_importation' => $is_importation,
         ];
 
-        if( in_array( $mouvement, ['SN','SP','SV', 'SD',  'SC','SAJ','ST', 'SAU'])){
+        $mvmt = null;
+
+        if (in_array($mouvement, ['SN','SP','SV', 'SD',  'SC','SAJ','ST', 'SAU'])) {
             $reste = $qte;
             foreach($produit->productDetails as $detail){
                 if($detail != null){
@@ -115,7 +116,7 @@ class ObrMouvementStock extends Model
                     $reste =  $reste - ($detail->quantite_restant ?? 0);
                     if($reste > 0){
                         //table.push(product.value)
-                        self::create( array_merge($active_data, [
+                      $mvmt =  self::create( array_merge($active_data, [
                             'item_quantity' =>  $detail->quantite_restant ?? 0,
                             'item_purchase_or_sale_price' => $detail->prix_revient ?? 0,
                             'item_product_detail_id' => $detail->id
@@ -124,7 +125,7 @@ class ObrMouvementStock extends Model
                         $detail->save();
                     }else if( $reste <= 0){
                         // table.push(tmp)
-                        self::create( array_merge($active_data, [
+                      $mvmt =  self::create( array_merge($active_data, [
                             'item_quantity' =>   $tmp,
                             'item_purchase_or_sale_price' => $detail->prix_revient,
                             'item_product_detail_id' => $detail->id
@@ -132,7 +133,7 @@ class ObrMouvementStock extends Model
                         $detail->quantite_restant -= $tmp;
                         $reste = 0;
                         $detail->save();
-                        break;
+                        //break;
                     }
 
                 }
@@ -155,7 +156,7 @@ class ObrMouvementStock extends Model
                     $detail->quantite_restant +=  $current_quantite; // Ajouter la quantite qu'on avait enleve
                     $detail->save();
                     //dd( $detail);
-                   $r = self::create( array_merge($active_data, [
+                  $mvmt = self::create( array_merge($active_data, [
                         'item_quantity' =>  $current_quantite  ,
                         'item_purchase_or_sale_price' => $mv->item_purchase_or_sale_price,
                         'item_product_detail_id' => $detail->id
@@ -164,8 +165,10 @@ class ObrMouvementStock extends Model
             }
         }
         else{
-            self::create( $active_data);
+           $mvmt = self::create( $active_data);
         }
+
+
         ObrSendInvoince::dispatch();
 
     }

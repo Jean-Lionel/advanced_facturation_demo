@@ -20,8 +20,6 @@ class SendInvoiceToOBR extends Controller
     public function __construct()
     {
         // Check if the syncronize is enabled if not prevent calling the constructor
-
-
         $this->baseUrl = env('OBR_PRODUCTION', false) == true ? 'https://ebms.obr.gov.bi:8443/ebms_api/' : 'https://ebms.obr.gov.bi:9443/ebms_api/';
     }
 
@@ -47,7 +45,6 @@ class SendInvoiceToOBR extends Controller
             $movement->is_sent_at = now();
             $movement->save();
         }
-
 
         return  $repo ;
     }
@@ -158,12 +155,6 @@ class SendInvoiceToOBR extends Controller
         $token = $this->getToken();
         $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovementImporters/', $data);
         // update stock status
-
-        
-
-
-
-
         return json_decode($req->body());
     }
 

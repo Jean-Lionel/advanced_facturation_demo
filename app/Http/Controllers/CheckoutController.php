@@ -117,6 +117,7 @@ class CheckoutController extends Controller
             $order->invoice_signature = $signature;
             foreach ($cartInfo as $key => $item) {
                 $product = Product::find($item['id']);
+
                 ObrMouvementStock::saveMouvement(
                     $product,
                     'SN',
@@ -124,6 +125,7 @@ class CheckoutController extends Controller
                     $item['quantite'],
                     NULL,
                     $order->id,
+                    0,
                     0
                 );
             }
