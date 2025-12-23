@@ -48,8 +48,6 @@ class CheckoutController extends Controller
             return redirect()->route('panier.index');
         }
         // Do this before
-
-
         $order = null;
         try {
             DB::beginTransaction();
@@ -117,8 +115,7 @@ class CheckoutController extends Controller
             $order->invoice_signature = $signature;
             foreach ($cartInfo as $key => $item) {
                 $product = Product::find($item['id']);
-
-                ObrMouvementStock::saveMouvement(
+              $d =  ObrMouvementStock::saveMouvement(
                     $product,
                     'SN',
                     $product->price_max, // Prix de reviens
@@ -128,6 +125,7 @@ class CheckoutController extends Controller
                     0,
                     0
                 );
+               
             }
 
             $order->save();
@@ -146,6 +144,7 @@ class CheckoutController extends Controller
             DB::commit();
 
         } catch (\Exception $e) {
+          
             DB::rollBack();
             Session::flash('error', $e->getMessage());
             return back();

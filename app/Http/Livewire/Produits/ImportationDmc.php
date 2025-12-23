@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Produits;
 
+use App\Models\ProductDetail;
 use Livewire\Component;
 use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Product;
@@ -10,7 +11,7 @@ use DB;
 
 class ImportationDmc extends Component
 {
-    public $dmc_number = "2025BIPORC7157";
+    public $dmc_number = "2025BIPORC7415";
     public $items = [];
     public $isLoading = false;
     public $reference_dmc = "";
@@ -109,8 +110,25 @@ class ImportationDmc extends Component
             DB::beginTransaction();
 
             foreach ($this->selectedItems as $key => $item) {
-
              $currentProduct = isset($item['product_id']) && $item['product_id'] != "" ? Product::find($item['product_id']) : null;
+
+             // If Current Product 
+
+            $currentProductDetail = ProductDetail::where('product_id', $currentProduct->id ?? 0)->first();
+
+            if(!$currentProductDetail){
+                // Create Product Detail
+                ProductDetail::create([
+                    'user_id' => auth()->user()->id,
+                    'stock_id' => 1,
+                    'product_id' => $currentProduct->id,
+                    'prix_revient' => $item['item_cost_price'],
+                    'quantite' => $item['item_quantity'],
+                    'quantite_restant' => $item['item_quantity'],
+                ]);
+            }
+
+             
             if(!$currentProduct){
                 $currentProduct = $this->createProduct($item);
             }
@@ -176,6 +194,17 @@ class ImportationDmc extends Component
            'marque' => $item['item_designation'],
            'taux_tva' => 0,
            'price_tvac' => 0
+        ]);
+
+        // Create Product Details 
+
+        ProductDetail::create([
+            'user_id' => auth()->user()->id,
+            'stock_id' => 1,
+            'product_id' => $product->id,
+            'prix_revient' => $item['item_cost_price'],
+            'quantite' => $item['item_quantity'],
+            'quantite_restant' => $item['item_quantity'],
         ]);
 
         return $product;
