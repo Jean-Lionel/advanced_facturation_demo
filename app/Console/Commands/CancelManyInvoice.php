@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\ObrDeclarationController;
+use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Order;
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;
@@ -40,21 +41,20 @@ class CancelManyInvoice extends Command
      */
     public function handle()
     {
-        $invoices =  Order::where('created_at', '<', '2025-05-01')->get();
+        $invoices =  [
+            // list of invoice signatures to cancel
+            '4002070029/wsl400207002901251/20251217060550/000001',
+            '4002070029/wsl400207002901251/20251217112341/000002',
+            '4002070029/wsl400207002901251/20251217115723/000003',
+            // Add more invoice signatures as needed
+        ];
 
         foreach($invoices as $invoice){
-            $obr = new ObrDeclarationController();
-            // add request
-            $request = new Request();
-            $request->merge([
-                'invoice_signature' => $invoice->invoice_signature,
-                'motif' => '# '. $invoice->id .' Annulation de la facture des factures des dattes inferieur au 1 Mai 2025',
-                'cancel_amount' => true,
-            ]);
-            $obr->cancelInvoice($request);
-            echo "Annulation de la facture " . $invoice->invoice_signature . "\n";
+            
+             $obr = new SendInvoiceToOBR();
+             $response = $obr->cancelInvoice( $invoice ,  '# '. $invoice .' erreur sur la facture  Annulation de la facture ');
 
-            $invoice->delete();
+             dump( $response );
         }
 
         echo "Je suis en bonne et du forme";

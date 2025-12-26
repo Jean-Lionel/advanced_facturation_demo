@@ -204,8 +204,6 @@ class SyncronizeController extends Controller
                     $response = $obr->addStockMovement($movement->toArray());
                 }
                 $repo = json_decode($response);
-                dd( $repo );
-              
                 if ($repo && $repo->success) {
                     $movement->is_send_to_obr = 1;
                     $movement->is_sent_at = now();
