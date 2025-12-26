@@ -13,8 +13,6 @@ class CreateHrFicheDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::disableForeignKeyConstraints();
-
         Schema::create('hr_fiche_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
@@ -27,7 +25,6 @@ class CreateHrFicheDetailsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::enableForeignKeyConstraints();
     }
 
     /**

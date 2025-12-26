@@ -25,6 +25,9 @@ class Order extends Model
 
     public static function boot(){
         parent::boot();
+        self::updateOrderTable();
+
+        // Add a new column invoice_number on orders if it doesn't already exist
 
         self::creating(function($model){
             $model->client_id = $model->client->id ?? 0;
@@ -65,7 +68,7 @@ class Order extends Model
                 $montant = collect($model->products)->pluck('interet_total')->sum();
                 $commission = ($montant * PARTAGE_COMMISSIONNAIRE  / 100);
                 $achatCmmission = ($montant * PARTAGE_CLIENT / 100);
-              $cre =   OrderInteret::create([
+                $cre =   OrderInteret::create([
                     'order_id' => $model->id,
                     'user_id' => $model->user_id,
                     'montant' => $montant ,
@@ -127,6 +130,22 @@ class Order extends Model
 
         public function details(){
             return $this->hasMany('App\Models\DetailOrder','order_id');
+        }
+
+        public static function updateOrderTable(){
+
+            // Add column cn_motif if not exists
+            if (!Schema::hasColumn('orders', 'cn_motif')) {
+                Schema::table('orders', function ($table) {
+                    $table->text('cn_motif')->nullable();
+                });
+            }
+            if (!Schema::hasColumn('orders', 'invoice_ref')) {
+                Schema::table('orders', function ($table) {
+                    $table->text('invoice_ref')->nullable();
+                });
+            }
+
         }
 
 
