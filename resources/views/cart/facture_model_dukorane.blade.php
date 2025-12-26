@@ -140,7 +140,7 @@
                 <p>Forme juridique : <b> {{ $order->company->tp_legal_form }} </b></p>
                 <hr>
                 <p>Bank : KCB Bank </p>
-                <p>Beneficiary: dukorane, SPR</p>
+                <p>Beneficiary: Mugisha Traval SPRL, SPR</p>
                 <p>Account Number: 6690449521</p>
             </div>
         </div>
