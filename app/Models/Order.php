@@ -212,16 +212,18 @@ class Order extends Model
         }
         
         public static function updateOrderTable(){
-            // Add column cn_motif if not exists
-            if (!Schema::hasColumn('orders', 'cn_motif')) {
-                Schema::table('orders', function ($table) {
-                    $table->text('cn_motif')->nullable();
-                });
-            }
-            if (!Schema::hasColumn('orders', 'invoice_ref')) {
-                Schema::table('orders', function ($table) {
-                    $table->text('invoice_ref')->nullable();
-                });
+            // Add column cn_motif if not exists 
+            $currents = [
+                'cn_motif','invoice_ref','cn_motif','par_client', 'par_assurance', 'par_client_pourcentage', 'par_assurance_pourcentage',
+                'assurance_id', 'assurance_name', 'supplement'
+            ];
+
+            foreach ($currents as $current) {
+                if (!Schema::hasColumn('orders', $current)) {
+                    Schema::table('orders', function ($table) use ($current) {
+                        $table->text($current)->nullable();
+                    });
+                }
             }
             
         }
