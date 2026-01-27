@@ -20,5 +20,4 @@ Route::group([
     Route::resource('transactions', TransactionController::class);
     Route::resource('documents', DocumentController::class);
     // dashboard
-
 });

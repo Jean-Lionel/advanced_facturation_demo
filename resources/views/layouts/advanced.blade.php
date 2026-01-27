@@ -144,7 +144,10 @@ onclick="event.preventDefault(); document.getElementById('logout-form').submit()
 <script src="{{ asset('js/jquery-3.5.min.js') }}"></script>
 <script src="{{ asset('js/popper.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('js/chart.js.2.9.4_Chart.min.js') }}"></script>
+
+<!-- Chart.js moderne -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
 <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('datatable/datatables.min.js') }}"></script>
 <script src="{{ asset('datatable/pdfmake.min.js') }}"></script>
