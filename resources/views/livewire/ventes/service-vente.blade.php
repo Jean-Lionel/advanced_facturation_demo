@@ -99,6 +99,18 @@
         </tbody>
     </table>
 
+    <div class="card mb-3">
+        <div class="card-body">
+            <label for="commentaire" class="form-label"><strong>Commentaire (affiché sur la facture)</strong></label>
+            <textarea
+                class="form-control"
+                wire:model="commentaire"
+                id="commentaire"
+                rows="3"
+                placeholder="Ajouter un commentaire qui sera affiché sur la facture..."></textarea>
+        </div>
+    </div>
+
     <div class="card">
         <div class="col-12 d-flex justify-content-between">
             <div>

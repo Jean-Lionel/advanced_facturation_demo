@@ -184,6 +184,12 @@
                     </div>
                    @endif
 
+                    @if($order->commentaire)
+                        <div style="margin-top: 10px; padding: 10px; border: 1px dashed #ccc;">
+                            <b>Commentaire :</b> {{ $order->commentaire }}
+                        </div>
+                    @endif
+
                         <h4 class="text-center"> {{$order->invoice_signature}}</h4>
                         <div class="element-center">
                             {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
@@ -267,6 +273,12 @@
                                     </div>
 
       </div>
+
+      @if($order->commentaire)
+        <div style="margin-top: 5px;">
+            <b>Note:</b> {{ $order->commentaire }}
+        </div>
+      @endif
 
       <div class="line"></div>
 

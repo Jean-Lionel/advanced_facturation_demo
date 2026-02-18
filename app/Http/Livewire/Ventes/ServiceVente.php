@@ -27,6 +27,7 @@ class ServiceVente extends Component
     public $typePaiement;
     public $invoice_currency = 'BIF';
     public $typeFacture = 'FACTURE';
+    public $commentaire;
     public function render()
     {
         return view('livewire.ventes.service-vente');
@@ -66,6 +67,7 @@ class ServiceVente extends Component
                 'client'=> $this->customer->toJson(),
                 'type_facture'=> $this->typeFacture,
                 'addresse_client'=> $this->customer->addresse,
+                'commentaire' => $this->commentaire,
                 'date_facturation'=> now(),
                 'is_cancelled' => 0,
                 'invoice_currency' => $this->invoice_currency,

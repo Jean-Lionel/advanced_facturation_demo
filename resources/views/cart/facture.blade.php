@@ -115,6 +115,12 @@
         </table>
     </article>
 
+    @if($order->commentaire)
+        <div style="margin: 10px 0; padding: 10px; border: 1px dashed #ccc;">
+            <strong>Commentaire :</strong> {{ $order->commentaire }}
+        </div>
+    @endif
+
     <footer>
         * Mention obligatoire
 

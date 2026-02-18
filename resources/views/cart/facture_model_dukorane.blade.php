@@ -197,6 +197,11 @@
             </tbody>
         </table>
         <p class="amount">Nous disons  {{ getNumberToWord($order->amount) }} francs Burundais.</p>
+        @if($order->commentaire)
+            <div style="margin: 10px 0; padding: 10px; border: 1px dashed #ccc;">
+                <strong>Commentaire :</strong> {{ $order->commentaire }}
+            </div>
+        @endif
         <hr>
         {{ $order->invoice_signature ?? "" }}
     

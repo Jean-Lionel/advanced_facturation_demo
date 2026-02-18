@@ -173,6 +173,11 @@ FBU .</b>
 <b> Motif </b> : {{ $order->cn_motif }} .
 </div>
 @endif
+@if($order->commentaire)
+<div style="margin: 10px 0; padding: 10px; border: 1px dashed #ccc;">
+<strong>Commentaire :</strong> {{ $order->commentaire }}
+</div>
+@endif
 <h4 class="text-center"> {{$order->invoice_signature}}</h4>
 <div class="element-center">
 {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
@@ -248,6 +253,11 @@ FBU .</b>
 </tr>
 </tbody>
 </table>
+@if($order->commentaire)
+<div style="margin: 5px 0;">
+<strong>Note:</strong> {{ $order->commentaire }}
+</div>
+@endif
 <hr>
 <h6 class="text-center">==== MERCI !! ===</h6>
 <br>

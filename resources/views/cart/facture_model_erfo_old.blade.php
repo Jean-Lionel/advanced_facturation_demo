@@ -101,6 +101,11 @@
         </section>
         <section >
             <p>Ce montant est à verser sur le compete n :<strong>4491939667 EUROS ouvert àla Banque Populaire du Rwanda au nom de l'Entreprise LTD.</strong></p>
+            @if($order->commentaire)
+                <div style="margin: 10px 0; padding: 10px; border: 1px dashed #ccc;">
+                    <strong>Commentaire :</strong> {{ $order->commentaire }}
+                </div>
+            @endif
         </section>
         <div class="signature-section">
             <div class="signature-box">

@@ -134,11 +134,16 @@
                         </tfoot>
                     </table>
                     <br><br>
+                    @if($order->commentaire)
+                        <div style="margin: 10px 0; padding: 10px; border: 1px dashed #ccc;">
+                            <strong>Commentaire :</strong> {{ $order->commentaire }}
+                        </div>
+                    @endif
                     <p class="id-info">ID: {{$order->invoice_signature}}</p>
                 </div>
             </section>
                 <br><br>
-                
+
             <footer>
                  <p class="text-center">{!! "Ce montant est à verser sur le compete no :<strong>181649 FBU ouvert à la Banque BANCOBU  au nom de l'Entreprise EREFO COMPANY" !!}</strong></p>
 

@@ -353,6 +353,11 @@
         <div class="footer">
             <div class="payment-info">
                 <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount_tax)}} {{ $order->invoice_currency }} </p>
+                @if($order->commentaire)
+                    <div style="margin: 10px 0; padding: 10px; border: 1px dashed #ccc;">
+                        <strong>Commentaire :</strong> {{ $order->commentaire }}
+                    </div>
+                @endif
                 <h4 class="text-center payment-info-text">MERCI DE NOUS FAIRE CONFIANCE !!!</h4>
             </div>
             @if($order->type_facture == "PROFORMAT")
