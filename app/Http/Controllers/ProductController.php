@@ -189,7 +189,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return $this->index();
+        return redirect()->route('products.index');
     }
 
     public function add_view(Product $product){
