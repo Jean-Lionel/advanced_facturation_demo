@@ -17,11 +17,11 @@ class VenteController extends Controller
     {
         // $order = Order::latest()->first();
         // dump($order );
-        if(env('OBR_CHECKCONNECTIVITY', false)){
-            $obr = new SendInvoiceToOBR();
-            dump($obr->getInvoice('4000004806/wsl400000480600187/20240417143348/000025'));
-            dd($obr->getToken());
-        }
+        // if(env('OBR_CHECKCONNECTIVITY', false)){
+        //     $obr = new SendInvoiceToOBR();
+        //     dump($obr->getInvoice('4000004806/wsl400000480600187/20240417143348/000025'));
+        //     dd($obr->getToken());
+        // }
         // dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
         $search = request()->get('search');
         $products = Product::where('quantite', '>', 0)
