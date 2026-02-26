@@ -362,13 +362,8 @@
             </div>
             @if($order->type_facture == "PROFORMAT")
             <div>
-            Modalités de paiement <br>
-            - Acompte : 50 % à la signature du contrat <br>
-            - Solde : à la livraison de l’application <br>
-            - Mode de paiement : Virement bancaire / Espèces / Mobile Money <br>
-            - Validité de l’offre <br>
             <i>Cette facture proforma est valable pour une période de 30 jours à compter de la date d’émission.</i>
-
+            
             </div>
             @endif
 
