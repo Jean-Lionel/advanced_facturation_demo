@@ -11,7 +11,7 @@ use DB;
 
 class ImportationDmc extends Component
 {
-    public $dmc_number = "2025BIPORC7415";
+    public $dmc_number = "";
     public $items = [];
     public $isLoading = false;
     public $reference_dmc = "";
@@ -116,6 +116,10 @@ class ImportationDmc extends Component
 
             $currentProductDetail = ProductDetail::where('product_id', $currentProduct->id ?? 0)->first();
 
+            if(!$currentProduct){
+                $currentProduct = $this->createProduct($item);
+            }
+            
             if(!$currentProductDetail){
                 // Create Product Detail
                 ProductDetail::create([
@@ -128,10 +132,6 @@ class ImportationDmc extends Component
                 ]);
             }
 
-             
-            if(!$currentProduct){
-                $currentProduct = $this->createProduct($item);
-            }
 
                 $attributes = [
                     "system_or_device_id" => env('OBR_USERNAME'),
