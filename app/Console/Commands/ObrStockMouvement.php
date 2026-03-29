@@ -46,9 +46,9 @@ class ObrStockMouvement extends Command
         // $item = $obr->getDmcItems("2025BIPORC7157");
         // dd($item);
 
-        $movements = ObrMouvementStock::whereNull("is_send_to_obr")
+        $movements = ObrMouvementStock::where("is_send_to_obr",0)
         ->latest()
-        ->take(5)
+        ->take(100)
         ->get();
 
         foreach($movements as $v){
