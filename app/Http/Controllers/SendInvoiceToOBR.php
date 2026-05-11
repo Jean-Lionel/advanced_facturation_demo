@@ -17,7 +17,8 @@ class SendInvoiceToOBR extends Controller
 
     public function __construct()
     {
-        $this->baseUrl = env('OBR_PRODUCTION', false) == true ? 'https://ebms.obr.gov.bi:8443/ebms_api/' : 'https://ebms.obr.gov.bi:9443/ebms_api/';
+        $this->baseUrl = env('OBR_PRODUCTION', false) == true ? '
+        ' : 'https://ebms.obr.gov.bi:9443/ebms_api/';
     }
 
     public function addStockMovement($data){
