@@ -23,7 +23,7 @@ class RapportController extends Controller
         $start_date = request()->query('start_date');
         $end_date = request()->query('end_date');
         $controls = StockControl::whereBetween('created_at', [$start_date, $end_date])->get();
-        $depenses = Depense::whereBetween('created_at', [$start_date, $end_date])->get();
+        $depenses = Depense::whereBetween('date_depense', [$start_date, $end_date])->get();
         $versements = Versement::whereBetween('created_at', [$start_date, $end_date])->get();
 
         return view('reports.resultats', compact('controls','depenses','versements','start_date','end_date'));

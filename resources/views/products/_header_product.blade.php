@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-around noprint">
+<div class="d-flex justify-content-around flex-wrap noprint">
     <div>
     <a href="{{ route('products.create') }}" class="{{ setActiveRoute('products.create') }}"><span class="fa fa-seedling"></span> Entré</a>
     </div>
@@ -58,6 +58,12 @@
         <a href="{{ route('bon_commande') }}" class="{{ setActiveRoute('bon_commande') }}">
             <span class="fas fa-file-invoice"></span>
             <span>Bon de Commande</span>
+        </a>
+    </div>
+    <div>
+        <a href="{{ route('import_data_show') }}" class="{{ setActiveRoute('import_data_show') }}">
+            <span class="fas fa-file-excel"></span>
+            <span>Import Excel</span>
         </a>
     </div>
 </div>

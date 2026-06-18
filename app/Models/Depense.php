@@ -12,7 +12,11 @@ class Depense extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name','montant','user_id','description'];
+    protected $fillable = ['name', 'montant', 'user_id', 'description', 'depense_category_id', 'date_depense'];
+
+    protected $casts = [
+        'date_depense' => 'date',
+    ];
 
     public static function boot(){
     	parent::boot();
@@ -22,7 +26,26 @@ class Depense extends Model
 
     	});
     }
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(DepenseCategory::class, 'depense_category_id');
+    }
+
+    public function scopeFilteredReport($query, $startDate, $endDate, $search = null)
+    {
+        return $query->with(['user', 'category'])
+            ->whereBetween('date_depense', [$startDate, $endDate])
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($inner) use ($search) {
+                    $inner->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('description', 'like', '%' . $search . '%');
+                });
+            })
+            ->orderBy('date_depense', 'desc');
     }
 }

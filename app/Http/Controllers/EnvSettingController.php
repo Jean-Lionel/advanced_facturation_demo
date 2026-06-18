@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EnvSetting;
+use App\Services\DatabaseMigrationService;
 use Illuminate\Http\Request;
 
 class EnvSettingController extends Controller
@@ -26,7 +27,35 @@ class EnvSettingController extends Controller
 
         $settings = $query->paginate(10);
 
-        return view('env_settings.index', compact('settings'));
+        $migrationService = app(DatabaseMigrationService::class);
+        $pendingMigrations = $migrationService->getPendingMigrations();
+        $missingTables = $migrationService->getMissingTables();
+        $ranMigrationsCount = count($migrationService->getRanMigrations());
+        $totalMigrationsCount = count($migrationService->getMigrationFiles());
+
+        return view('env_settings.index', compact(
+            'settings',
+            'pendingMigrations',
+            'missingTables',
+            'ranMigrationsCount',
+            'totalMigrationsCount'
+        ));
+    }
+
+    public function runMigrations(DatabaseMigrationService $migrationService)
+    {
+        $result = $migrationService->runPendingMigrations();
+
+        $flashType = empty($result['failed']) ? 'success' : 'error';
+
+        return redirect()
+            ->route('env_settings.index')
+            ->with($flashType, $result['message'])
+            ->with('migration_output', $result['output'])
+            ->with('migration_executed', $result['executed'] ?? [])
+            ->with('migration_skipped', $result['skipped'] ?? [])
+            ->with('migration_failed', $result['failed'] ?? [])
+            ->with('migration_remaining', $result['remaining'] ?? []);
     }
 
     public function create()

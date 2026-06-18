@@ -8,6 +8,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\CompteController;
+use App\Http\Controllers\DepenseCategoryController;
 use App\Http\Controllers\DepenseController;
 use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\ObrDeclarationController;
@@ -77,7 +78,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('entreprises.add_info', [EntrepriseController::class , 'add_info'])->name('entreprises.add_info');
     Route::post('entreprises/store_info', [EntrepriseController::class, 'store_info'])->name('entreprises.store_info');
     Route::get('backup_database', [EntrepriseController::class , 'backup_database'])->name('backup_database');
+    Route::get('depenses/export/excel', [DepenseController::class, 'exportExcel'])->name('depenses.export.excel');
+    Route::get('depenses/export/pdf', [DepenseController::class, 'exportPdf'])->name('depenses.export.pdf');
+    Route::get('depenses/print', [DepenseController::class, 'print'])->name('depenses.print');
     Route::resource('depenses', DepenseController::class);
+    Route::resource('depense-categories', DepenseCategoryController::class)->except(['show']);
     Route::resource('users', UserController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('paimenent_dette', PaiementDetteController::class);
@@ -205,6 +210,7 @@ Route::post('stock-controls/{stockControl}', [App\Http\Controllers\StockControlC
 
 Route::resource('assurances', App\Http\Controllers\AssuranceController::class);
 Route::resource('assurance_clients', App\Http\Controllers\AssuranceClientController::class);
+Route::post('env_settings/run-migrations', [App\Http\Controllers\EnvSettingController::class, 'runMigrations'])->name('env_settings.run_migrations');
 Route::resource('env_settings', App\Http\Controllers\EnvSettingController::class);
 
 });
