@@ -31,6 +31,9 @@
 				<th scope="col">Tax (%)</th>
 				<th scope="col">Avance</th>
 				<th scope="col">Date de création</th>
+				@foreach ($periodes as $periode)
+				<th scope="col">{{ getMonthName($periode->month) }} {{ $periode->year }}</th>
+				@endforeach
 				<th scope="col">Action</th>
 			</tr>
 		</thead>
@@ -56,6 +59,25 @@
 				<th scope="col">{{$value->tax }}</th>
 				<th scope="col">{{$value->avance }}</th>
 				<td>{{ $value->created_at }}</td>
+				@foreach ($periodes as $periode)
+				@php
+					$paymentKey = $value->id . '-' . $periode->id;
+					$totalPaid = optional($paymentSums->get($paymentKey))->total_paid ?? 0;
+					$isPaid = $totalPaid >= $value->montant;
+				@endphp
+				<td>
+					@if ($isPaid)
+						<span class="badge badge-success">Payé</span>
+					@elseif ($value->clients_count > 0)
+						<a
+							href="{{ route('payment-location-mensuel.payer', ['maisonLocation' => $value->id, 'periode' => $periode->id, 'return' => 'maison-location']) }}"
+							class="btn btn-primary btn-sm"
+						>Payer</a>
+					@else
+						<span class="text-muted">-</span>
+					@endif
+				</td>
+				@endforeach
 				<td class="d-flex justify-content-around">
 					<a href="{{ route('maison-location.show', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Locataire</a>
 					<a href="{{ route('maison-location.edit', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm no-print">Modifier</a>
@@ -64,9 +86,6 @@
 			@endforeach
 		</tbody>
 	</table>
-</div>
-<div class="col-md-12" style="">
-
 </div>
 @endsection
 
@@ -77,6 +96,7 @@
                 {
                     "pageLength": 10,
                     "lengthMenu": [10, 20, 50, 100],
+                    "order": [],
                     "dom": 'Bfrtip',
                     "buttons": [
                         'copy', 'csv', 'excel', 'pdf', 'print'

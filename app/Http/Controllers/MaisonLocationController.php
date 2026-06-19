@@ -6,6 +6,8 @@ use App\Http\Requests\MaisonLocationStoreRequest;
 use App\Http\Requests\MaisonLocationUpdateRequest;
 use App\Models\ClientMaison;
 use App\Models\MaisonLocation;
+use App\Models\PaymentLocationMensuel;
+use App\Models\PeriodePaimentLocation;
 use Illuminate\Http\Request;
 
 class MaisonLocationController extends Controller
@@ -27,8 +29,21 @@ class MaisonLocationController extends Controller
                                     ->latest()->get();
                                     //->paginate(10);
 
+        $this->ensureCurrentPaymentPeriode();
 
-        return view('maisonLocation.index', compact('maisonLocations' , 'search'));
+        $periodes = PeriodePaimentLocation::latest()->take(3)->get();
+
+        $paymentSums = PaymentLocationMensuel::query()
+            ->whereIn('maisonlocation_id', $maisonLocations->pluck('id'))
+            ->whereIn('periode_paiement_id', $periodes->pluck('id'))
+            ->selectRaw('maisonlocation_id, periode_paiement_id, SUM(montant) as total_paid')
+            ->groupBy('maisonlocation_id', 'periode_paiement_id')
+            ->get()
+            ->keyBy(fn ($payment) => $payment->maisonlocation_id . '-' . $payment->periode_paiement_id);
+
+        $maisonLocations = sortMaisonsByUnpaidStatus($maisonLocations, $periodes, $paymentSums);
+
+        return view('maisonLocation.index', compact('maisonLocations', 'search', 'periodes', 'paymentSums'));
     }
 
     public function create(Request $request)
@@ -83,5 +98,20 @@ class MaisonLocationController extends Controller
         $maisonLocation->delete();
 
         return redirect()->route('maisonLocation.index');
+    }
+
+    private function ensureCurrentPaymentPeriode(): void
+    {
+        $check = PeriodePaimentLocation::where('month', date('m'))
+            ->where('year', date('Y'))
+            ->first();
+
+        if (is_null($check)) {
+            PeriodePaimentLocation::create([
+                'month' => date('m'),
+                'year' => date('Y'),
+                'user_id' => auth()->user()->id,
+            ]);
+        }
     }
 }

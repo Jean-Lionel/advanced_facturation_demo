@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PaymentLocationMensuelStoreRequest;
 use App\Http\Requests\PaymentLocationMensuelUpdateRequest;
+use App\Models\MaisonLocation;
 use App\Models\PaymentLocationMensuel;
+use App\Models\PeriodePaimentLocation;
 use Illuminate\Http\Request;
 
 class PaymentLocationMensuelController extends Controller
@@ -14,6 +16,13 @@ class PaymentLocationMensuelController extends Controller
     {
         $paymentLocationMensuels = PaymentLocationMensuel::all();
         return view('paymentLocationMensuel.index', compact('paymentLocationMensuels'));
+    }
+
+    public function payer(Request $request, MaisonLocation $maisonLocation, PeriodePaimentLocation $periode)
+    {
+        $returnTo = $request->query('return', 'payment-location-mensuel');
+
+        return view('paymentLocationMensuel.payer', compact('maisonLocation', 'periode', 'returnTo'));
     }
 
     /**

@@ -158,6 +158,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('maison-location', App\Http\Controllers\MaisonLocationController::class);
 
     Route::resource('client-maison', App\Http\Controllers\ClientMaisonController::class);
+    Route::get('payment-location-mensuel/payer/{maisonLocation}/{periode}', [App\Http\Controllers\PaymentLocationMensuelController::class, 'payer'])
+        ->name('payment-location-mensuel.payer');
     Route::resource('payment-location-mensuel', App\Http\Controllers\PaymentLocationMensuelController::class);
 
     Route::resource('historique-paiement', App\Http\Controllers\HistoriquePaymentController::class);

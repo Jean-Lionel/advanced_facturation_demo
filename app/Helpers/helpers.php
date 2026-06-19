@@ -127,6 +127,78 @@ function getMaisonById($id){
     return MaisonLocation::find($id);
 }
 
+function getMonthName($month)
+{
+    $months = [
+        '01' => 'Janvier', '02' => 'Février', '03' => 'Mars',
+        '04' => 'Avril', '05' => 'Mai', '06' => 'Juin',
+        '07' => 'Juillet', '08' => 'Août', '09' => 'Septembre',
+        '10' => 'Octobre', '11' => 'Novembre', '12' => 'Décembre',
+        1 => 'Janvier', 2 => 'Février', 3 => 'Mars',
+        4 => 'Avril', 5 => 'Mai', 6 => 'Juin',
+        7 => 'Juillet', 8 => 'Août', 9 => 'Septembre',
+        10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre',
+    ];
+
+    return $months[$month] ?? $month;
+}
+
+function getPaymentTotalFromSums($paymentSums, string $key): float
+{
+    if ($paymentSums instanceof \Illuminate\Support\Collection) {
+        $item = $paymentSums->get($key);
+
+        return (float) (optional($item)->total_paid ?? 0);
+    }
+
+    if (is_array($paymentSums) && isset($paymentSums[$key])) {
+        return (float) ($paymentSums[$key]['total_paid'] ?? 0);
+    }
+
+    return 0;
+}
+
+function countUnpaidPeriodesForMaison($maison, $periodes, $paymentSums): int
+{
+    $clientsCount = $maison->clients_count ?? ($maison->clients?->count() ?? 0);
+
+    if ($clientsCount === 0) {
+        return 0;
+    }
+
+    $unpaid = 0;
+
+    foreach ($periodes as $periode) {
+        $key = $maison->id . '-' . $periode->id;
+        $totalPaid = getPaymentTotalFromSums($paymentSums, $key);
+
+        if ($totalPaid < $maison->montant) {
+            $unpaid++;
+        }
+    }
+
+    return $unpaid;
+}
+
+function sortMaisonsByUnpaidStatus($maisons, $periodes, $paymentSums)
+{
+    return collect($maisons)->sortBy(function ($maison) use ($periodes, $paymentSums) {
+        $clientsCount = $maison->clients_count ?? ($maison->clients?->count() ?? 0);
+
+        if ($clientsCount === 0) {
+            return [2, 0, $maison->name];
+        }
+
+        $unpaidPeriods = countUnpaidPeriodesForMaison($maison, $periodes, $paymentSums);
+
+        if ($unpaidPeriods > 0) {
+            return [0, -$unpaidPeriods, $maison->name];
+        }
+
+        return [1, 0, $maison->name];
+    })->values();
+}
+
 function sub_letters($text, $limit = 50, $ellipsis = '...') {
     $text = trim($text);
     if (mb_strlen($text) <= $limit) {
