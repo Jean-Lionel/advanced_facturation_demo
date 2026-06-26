@@ -13,12 +13,19 @@
                   PRIX :   {{ getPrice($maisonLocation->montant) }}
                 </h6>
                 <p class="card-text"> {{ $maisonLocation->description }}</p>
-                b5
               </div>
             </div>
         </div>
         <div class="col-8">
             @livewire('location.add-client', [
+                'maison_id' => $maisonLocation->id
+            ])
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-12">
+            @livewire('location.commentaires', [
                 'maison_id' => $maisonLocation->id
             ])
         </div>

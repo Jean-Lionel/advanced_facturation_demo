@@ -90,4 +90,9 @@ class MaisonLocation extends Model
     {
         return $this->hasOne(PaymentLocationMensuel::class,'maisonlocation_id');
     }
+
+    public function commentaires()
+    {
+        return $this->hasMany(MaisonLocationCommentaire::class, 'maisonlocation_id');
+    }
 }
