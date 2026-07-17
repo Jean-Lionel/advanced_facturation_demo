@@ -331,6 +331,7 @@
         <table>
             <thead class="table_header">
                 <tr>
+                    <td>#</td>
                     <th>Description</th>
                     <th>Quantité</th>
                     <th>P.U</th>
@@ -340,6 +341,7 @@
             <tbody>
                 @foreach($order->products as $product)
                 <tr>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $product['name'] }}</td>
                     <td>{{ $product['quantite'] }}</td>
                     <td>{{ number_format($product['price'], 2) }}</td>
@@ -355,14 +357,14 @@
                     <td><strong>Montant Total</strong></td>
                     <td>{{ number_format($order->amount_tax, 2) }}</td>
                 </tr>
-               <!--  <tr>
-                    <td><strong>Tax</strong></td>
+               <tr>
+                    <td><strong>TVA </strong></td>
                     <td>{{ number_format($order->tax, 2) }}</td>
                 </tr>
                 <tr>
                     <td><strong>Montant Total</strong></td>
                     <td>{{ number_format($order->amount, 2) }}</td>
-                </tr> -->
+                </tr> 
             </table>
         </div>
 
