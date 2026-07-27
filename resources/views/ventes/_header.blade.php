@@ -23,7 +23,7 @@
     </a>
     <a href="{{ route('panier.index') }}"
        class="vente-tab {{ request()->routeIs('panier.*') ? 'is-active' : '' }}">
-        <i class="fas fa-shopping-basket"></i>
+        <i class="fas fa-shopping-cart"></i>
         <span>Panier</span>
     </a>
 </nav>

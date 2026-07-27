@@ -56,7 +56,7 @@
                                 <td>{{ $value->name }}</td>
                                 <td>{{ $value->taux_tva }}</td>
                                 <td>{{ $value->price }}</td>
-                                <td class="{{ $value->quantite >= $value->quantite_alert ? 'bg-success text-white' : 'bg-danger text-white' }}">
+                                <td class="app-table-qty {{ $value->quantite >= $value->quantite_alert ? 'is-ok' : 'is-low' }}">
                                     {{ $value->quantite }}
                                 </td>
                                 <td>{{ $value->unite_mesure }}</td>
@@ -74,14 +74,16 @@
                                 </td>
                                 <td>{{ $value->updated_at->format('d/m/Y') }}</td>
                                 <td>
-                                    <a href="{{ route('add_view',$value) }}" class="btn btn-info btn-sm">Mouvement</a>
-                                    <a href="{{ route('products.edit', $value) }}" class="btn btn-outline-info btn-sm">Modifier</a>
-                                    <a href="{{ route('products.show', $value) }}" class="btn btn-outline-warning btn-sm">Afficher</a>
-                                    <form action="{{ route('products.destroy', $value) }}" method="POST" class="d-inline" onsubmit="return confirm('Voulez-vous supprimer ?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-outline-danger btn-sm">Supprimer</button>
-                                    </form>
+                                    <div class="app-table-actions">
+                                        <a href="{{ route('add_view',$value) }}" class="btn btn-info btn-sm">Mouvement</a>
+                                        <a href="{{ route('products.edit', $value) }}" class="btn btn-outline-info btn-sm">Modifier</a>
+                                        <a href="{{ route('products.show', $value) }}" class="btn btn-outline-warning btn-sm">Afficher</a>
+                                        <form action="{{ route('products.destroy', $value) }}" method="POST" class="d-inline" onsubmit="return confirm('Voulez-vous supprimer ?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">Supprimer</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

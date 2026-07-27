@@ -434,6 +434,43 @@
     background: #f5f3ff !important;
 }
 
+.contenu_principal .table tbody tr:hover td.app-table-qty,
+.app-page .table tbody tr:hover td.app-table-qty,
+.contenu_principal .table tbody tr:hover td.bg-success,
+.app-page .table tbody tr:hover td.bg-success,
+.contenu_principal .table tbody tr:hover td.bg-danger,
+.app-page .table tbody tr:hover td.bg-danger {
+    color: #fff !important;
+}
+
+.contenu_principal .table tbody tr:hover td.app-table-qty.is-ok,
+.app-page .table tbody tr:hover td.app-table-qty.is-ok,
+.contenu_principal .table tbody tr:hover td.bg-success,
+.app-page .table tbody tr:hover td.bg-success {
+    background: #15803d !important;
+}
+
+.contenu_principal .table tbody tr:hover td.app-table-qty.is-low,
+.app-page .table tbody tr:hover td.app-table-qty.is-low,
+.contenu_principal .table tbody tr:hover td.bg-danger,
+.app-page .table tbody tr:hover td.bg-danger {
+    background: #b91c1c !important;
+}
+
+.app-table-qty {
+    text-align: center;
+    font-weight: 700;
+    color: #fff !important;
+}
+
+.app-table-qty.is-ok {
+    background: #16a34a !important;
+}
+
+.app-table-qty.is-low {
+    background: #dc2626 !important;
+}
+
 .contenu_principal .table-striped tbody tr:nth-of-type(odd),
 .app-page .table-striped tbody tr:nth-of-type(odd) {
     background-color: transparent;
@@ -485,9 +522,14 @@
 
 .app-table-actions {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.4rem 0.35rem;
+}
+
+.app-table-actions > form {
+    display: inline-flex;
+    margin: 0;
 }
 
 .app-chart-wrap {
