@@ -1,0 +1,853 @@
+/* =========================================================
+   App UI — shared page design (lists, forms, tabs, tables)
+   Matches Vente redesign: purple primary, cards, flush tables
+   ========================================================= */
+
+.app-page {
+    font-family: var(--app-font, 'DM Sans', system-ui, sans-serif);
+    color: var(--app-ink, #0f172a);
+}
+
+.app-page .app-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ----- Tabs (module subnav) ----- */
+.app-tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 5px;
+    margin-bottom: 16px;
+    background: #e2e8f0;
+    border-radius: 12px;
+}
+
+.app-tabs a,
+.app-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 9px;
+    color: var(--app-muted, #64748b);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    border: none;
+    background: transparent;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.app-tabs a:hover,
+.app-tab:hover {
+    color: var(--app-ink, #0f172a);
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.app-tabs a.active,
+.app-tab.active,
+.app-tabs a.is-active,
+.app-tab.is-active {
+    color: var(--app-ink, #0f172a);
+    background: #fff;
+}
+
+.app-tabs a.active i,
+.app-tabs a.is-active i,
+.app-tab.active i,
+.app-tab.is-active i {
+    color: var(--app-primary, #5c3fd8);
+}
+
+/* ----- Cards ----- */
+.app-card {
+    background: #fff;
+    border: 1px solid var(--app-line, #e2e8f0);
+    border-radius: var(--app-radius, 14px);
+    overflow: hidden;
+}
+
+.app-card-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 16px;
+    flex-wrap: wrap;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--app-line, #e2e8f0);
+}
+
+.app-card-heading {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--app-ink, #0f172a);
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.app-card-body {
+    padding: 20px 18px;
+}
+
+.app-card-body--flush {
+    padding: 0;
+}
+
+.app-card-body--flush > .app-card-toolbar,
+.app-card-body--flush > .app-meta.app-card-toolbar {
+    padding: 14px 18px 0;
+    margin: 0;
+}
+
+.app-card-body .app-table-wrap {
+    border: 1px solid var(--app-line, #e2e8f0);
+    border-radius: 0;
+    overflow: auto;
+}
+
+.app-card-body--flush > .app-table-wrap,
+.app-card .app-card-body--flush .app-table-wrap {
+    border: none;
+}
+
+/* DataTables scrollX clones thead into the body for column widths.
+   Our thead padding/sticky rules were making that clone look like an empty row. */
+.dataTables_wrapper .dataTables_scrollBody > table > thead > tr > th,
+.dataTables_wrapper .dataTables_scrollBody > table > thead > tr > td,
+.app-page .dataTables_scrollBody .table thead th,
+.app-page .dataTables_scrollBody .app-table thead th,
+.contenu_principal .dataTables_scrollBody .table thead th {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-top-width: 0 !important;
+    border-bottom-width: 0 !important;
+    height: 0 !important;
+    line-height: 0 !important;
+    overflow: hidden !important;
+    position: static !important;
+    background: transparent !important;
+    color: transparent !important;
+    font-size: 0 !important;
+}
+
+.dataTables_scrollHead .table thead th,
+.dataTables_scrollHead .app-table thead th {
+    position: static !important;
+}
+
+/* DataTables in cards: flush table, padded toolbar + footer only */
+.app-card .dataTables_wrapper,
+.app-card .app-table-wrap .dataTables_wrapper,
+.app-card-body .dataTables_wrapper,
+.app-card-body--flush .dataTables_wrapper {
+    padding: 0;
+}
+
+.app-card .dataTables_wrapper .dt-buttons,
+.app-card-body .dataTables_wrapper .dt-buttons {
+    float: left;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0;
+    padding: 14px 18px;
+    min-height: 36px;
+    box-sizing: content-box;
+}
+
+.app-card .dataTables_wrapper .dataTables_length,
+.app-card-body .dataTables_wrapper .dataTables_length {
+    margin: 0;
+    padding: 14px 18px;
+}
+
+.app-card .dataTables_wrapper .dataTables_filter,
+.app-card-body .dataTables_wrapper .dataTables_filter {
+    float: right;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    margin: 0;
+    padding: 14px 18px;
+    min-height: 36px;
+    box-sizing: content-box;
+}
+
+.app-card .dataTables_wrapper .dataTables_filter label,
+.app-page .dataTables_wrapper .dataTables_filter label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--app-muted, #64748b);
+    white-space: nowrap;
+}
+
+.app-card .dataTables_wrapper .dataTables_filter input,
+.app-page .dataTables_wrapper .dataTables_filter input {
+    height: 36px;
+    min-width: 200px;
+    margin: 0 0 0 4px !important;
+    padding: 0 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: var(--app-ink, #0f172a);
+    font-size: 0.875rem;
+    line-height: 1.25;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.app-card .dataTables_wrapper .dataTables_filter input:focus,
+.app-page .dataTables_wrapper .dataTables_filter input:focus {
+    outline: none;
+    border-color: var(--app-primary, #5c3fd8);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(92, 63, 216, 0.18);
+}
+
+.app-card .dataTables_wrapper .dataTables_info,
+.app-card-body .dataTables_wrapper .dataTables_info {
+    float: left;
+    margin: 0;
+    padding: 14px 18px;
+}
+
+.app-card .dataTables_wrapper .dataTables_paginate,
+.app-card-body .dataTables_wrapper .dataTables_paginate {
+    float: right;
+    text-align: right;
+    margin: 0;
+    padding: 14px 18px;
+}
+
+.app-card .dataTables_wrapper .dt-buttons .btn,
+.app-page .dataTables_wrapper .dt-buttons .btn,
+.dataTables_wrapper .dt-buttons .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0.25rem 0.55rem;
+    height: 32px;
+    font-size: 0.75rem;
+    line-height: 1;
+    border-radius: 6px !important;
+    font-weight: 600;
+    box-shadow: none !important;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+/* Neutralize default DataTables button look when Bootstrap classes are used */
+.dataTables_wrapper .dt-buttons .dt-button.btn,
+.dataTables_wrapper .dt-buttons button.btn {
+    background-image: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+}
+
+.app-card .dataTables_wrapper table.dataTable,
+.app-card-body .dataTables_wrapper table.dataTable,
+.app-card .dataTables_wrapper .dataTables_scroll {
+    clear: both;
+    margin: 0 !important;
+}
+
+.app-page .dataTables_wrapper .dataTables_paginate .paginate_button {
+    border-radius: 6px !important;
+    border: 1px solid var(--app-line, #e2e8f0) !important;
+    background: #fff !important;
+    color: var(--app-ink, #0f172a) !important;
+    padding: 0.25rem 0.6rem !important;
+    margin: 0 2px !important;
+}
+
+.app-page .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.app-page .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: var(--app-primary, #5c3fd8) !important;
+    border-color: var(--app-primary, #5c3fd8) !important;
+    color: #fff !important;
+}
+
+.app-page .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #f5f3ff !important;
+    border-color: #c4b5fd !important;
+    color: var(--app-ink, #0f172a) !important;
+}
+
+.app-toolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.app-toolbar-actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-left: auto;
+    min-width: 0;
+}
+
+.app-toolbar-actions > .btn,
+.app-toolbar-actions > .app-btn-ghost,
+.app-toolbar-actions > .app-meta,
+.app-toolbar-actions > .form-control,
+.app-toolbar-actions > select,
+.app-toolbar-actions > input[type="date"] {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.app-toolbar-actions > form,
+.app-toolbar-actions > .app-search {
+    flex: 0 1 220px;
+    width: 220px;
+    max-width: 220px;
+    min-width: 140px;
+    margin: 0;
+}
+
+.app-toolbar-actions > form.app-toolbar-filters {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    flex: 0 1 auto;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+}
+
+.app-toolbar-actions .app-toolbar-select {
+    width: 180px;
+    min-width: 140px;
+    height: 36px;
+    flex: 0 0 auto;
+}
+
+.app-toolbar-actions > form.app-toolbar-filters .app-search {
+    flex: 0 1 200px;
+    width: 200px;
+    max-width: 200px;
+    min-width: 140px;
+}
+
+.app-search {
+    position: relative;
+    display: block;
+    width: 220px;
+    max-width: 220px;
+    flex-shrink: 1;
+}
+
+.app-search input {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px 0 34px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
+    font-size: 0.875rem;
+}
+
+.app-search i {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--app-muted, #64748b);
+    font-size: 0.8rem;
+    pointer-events: none;
+}
+
+.app-search input:focus {
+    outline: none;
+    border-color: var(--app-primary, #5c3fd8);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(92, 63, 216, 0.15);
+}
+
+/* ----- Tables (global within main content) ----- */
+.contenu_principal .table,
+.app-page .table,
+.app-table {
+    width: 100%;
+    margin-bottom: 0;
+    background: #fff;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.875rem;
+}
+
+.contenu_principal .table thead th,
+.app-page .table thead th,
+.app-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 10px 12px !important;
+    background: #f8fafc !important;
+    color: var(--app-muted, #64748b) !important;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: none !important;
+    border-bottom: 1px solid var(--app-line, #e2e8f0) !important;
+    border-radius: 0 !important;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.contenu_principal .table tbody td,
+.contenu_principal .table tbody th,
+.app-page .table tbody td,
+.app-page .table tbody th,
+.app-table tbody td {
+    padding: 10px 12px !important;
+    border: none !important;
+    border-bottom: 1px solid var(--app-line, #e2e8f0) !important;
+    vertical-align: middle;
+    background: #fff;
+}
+
+.contenu_principal .table tbody tr:hover td,
+.app-page .table tbody tr:hover td {
+    background: #f5f3ff !important;
+}
+
+.contenu_principal .table-striped tbody tr:nth-of-type(odd),
+.app-page .table-striped tbody tr:nth-of-type(odd) {
+    background-color: transparent;
+}
+
+.app-table-wrap {
+    overflow: auto;
+    border: 1px solid var(--app-line, #e2e8f0);
+    border-radius: 0;
+    background: #fff;
+}
+
+.app-card .app-table-wrap,
+.app-card-body--flush .table-responsive {
+    border: none;
+    border-radius: 0;
+}
+
+.app-table--obr-history .app-table-cell-signature {
+    min-width: 320px;
+    max-width: 420px;
+    width: 36%;
+    white-space: normal !important;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.45;
+    vertical-align: top;
+}
+
+.app-table--obr-history .app-table-signature-text {
+    display: inline-block;
+    max-width: 100%;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.dataTables_wrapper .app-table--obr-history td.app-table-cell-signature,
+.dataTables_wrapper table.dataTable td.app-table-cell-signature {
+    white-space: normal !important;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.app-table--obr-history .app-table-cell-actions {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.app-table-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.app-chart-wrap {
+    position: relative;
+    height: 320px;
+}
+
+.app-chart-wrap canvas {
+    max-height: 100%;
+}
+
+.app-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.app-stat-card .app-card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    min-height: 148px;
+}
+
+.app-stat-label {
+    margin: 0 0 4px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--app-ink, #0f172a);
+}
+
+.app-stat-date {
+    margin: 0 0 14px;
+    font-size: 0.75rem;
+    color: var(--app-muted, #64748b);
+}
+
+.app-stat-value {
+    margin: auto 0 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.app-stat-value span {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--app-muted, #64748b);
+}
+
+.app-stat-rows {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.app-stat-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding-top: 8px;
+    border-top: 1px solid var(--app-line, #e2e8f0);
+}
+
+.app-stat-row span {
+    font-size: 0.8125rem;
+    color: var(--app-muted, #64748b);
+}
+
+.app-stat-row strong {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--app-ink, #0f172a);
+    text-align: right;
+    white-space: nowrap;
+}
+
+@media (max-width: 991.98px) {
+    .app-stat-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.app-roles {
+    padding-top: 10px;
+    border-top: 1px solid var(--app-line, #e2e8f0);
+}
+
+.app-roles-header {
+    margin-bottom: 8px;
+}
+
+.app-roles-title {
+    margin: 0 0 2px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--app-muted, #64748b);
+}
+
+.app-roles-hint {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--app-muted, #64748b);
+}
+
+.app-roles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 6px;
+}
+
+.app-role-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 6px 10px;
+    border: 1px solid var(--app-line, #e2e8f0);
+    border-radius: 8px;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--app-ink, #0f172a);
+}
+
+.app-role-option:hover {
+    border-color: #c4b5fd;
+    background: #fff;
+}
+
+.app-role-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.app-role-check {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 3px;
+    background: #fff;
+    position: relative;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.app-role-check::after {
+    content: "";
+    position: absolute;
+    left: 3.5px;
+    top: 0.5px;
+    width: 4px;
+    height: 7px;
+    border: solid #fff;
+    border-width: 0 1.5px 1.5px 0;
+    transform: rotate(45deg) scale(0);
+    transition: transform 0.15s ease;
+}
+
+.app-role-option.is-checked {
+    border-color: var(--app-primary, #5c3fd8);
+    background: rgba(92, 63, 216, 0.06);
+    box-shadow: 0 0 0 2px rgba(92, 63, 216, 0.1);
+}
+
+.app-role-option.is-checked .app-role-check {
+    border-color: var(--app-primary, #5c3fd8);
+    background: var(--app-primary, #5c3fd8);
+}
+
+.app-role-option.is-checked .app-role-check::after {
+    transform: rotate(45deg) scale(1);
+}
+
+.app-role-name {
+    line-height: 1.2;
+}
+
+/* ----- Forms ----- */
+.contenu_principal .form-control,
+.contenu_principal .form-control-sm,
+.contenu_principal select.form-control,
+.app-page .form-control,
+.app-page select.form-control {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: var(--app-ink, #0f172a);
+}
+
+.contenu_principal .form-control:focus,
+.app-page .form-control:focus {
+    border-color: var(--app-primary, #5c3fd8);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(92, 63, 216, 0.15);
+}
+
+.contenu_principal .form-group label,
+.app-page .form-group label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--app-muted, #64748b);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.contenu_principal .card,
+.app-page .card {
+    border: 1px solid var(--app-line, #e2e8f0);
+    border-radius: var(--app-radius, 14px);
+    box-shadow: none !important;
+    background: #fff;
+}
+
+.contenu_principal .card-header,
+.app-page .card-header {
+    background: #fff;
+    border-bottom: 1px solid var(--app-line, #e2e8f0);
+    font-weight: 700;
+}
+
+/* ----- Buttons ----- */
+.contenu_principal .btn-primary,
+.app-page .btn-primary,
+.app-shell .btn-primary {
+    background: var(--app-primary, #5c3fd8) !important;
+    border-color: var(--app-primary, #5c3fd8) !important;
+    color: #fff !important;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: none !important;
+}
+
+.contenu_principal .btn-primary:hover,
+.app-page .btn-primary:hover {
+    background: var(--app-primary-dark, #4a32b5) !important;
+    border-color: var(--app-primary-dark, #4a32b5) !important;
+}
+
+.contenu_principal .btn-outline-info,
+.contenu_principal .btn-info,
+.app-page .btn-outline-info,
+.app-page .btn-info {
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.contenu_principal .btn-outline-danger,
+.contenu_principal .btn-danger,
+.app-page .btn-outline-danger,
+.app-page .btn-danger {
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.contenu_principal .btn-sm,
+.app-page .btn-sm {
+    border-radius: 8px;
+}
+
+.app-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 34px;
+    padding: 0 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--app-ink, #0f172a);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none !important;
+}
+
+.app-btn-ghost:hover {
+    background: #f8fafc;
+    color: var(--app-ink, #0f172a);
+}
+
+.app-meta {
+    font-size: 0.875rem;
+    color: var(--app-muted, #64748b);
+}
+
+.app-meta b {
+    color: var(--app-ink, #0f172a);
+}
+
+.app-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px 14px;
+}
+
+.app-pagination {
+    padding: 12px 18px;
+    border-top: 1px solid var(--app-line, #e2e8f0);
+}
+
+.app-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--app-line, #e2e8f0);
+}
+
+.app-form-actions .btn-primary,
+.app-form-actions input[type="submit"] {
+    width: auto;
+    min-width: 140px;
+    height: 38px;
+    cursor: pointer;
+}
+
+/* Align ventes tabs with global naming when needed */
+.vente-tabs.app-tabs,
+.app-page .vente-tabs {
+    margin-bottom: 16px;
+}
+
+@media (max-width: 767.98px) {
+    .app-card-header {
+        padding: 12px 14px;
+        flex-wrap: wrap;
+    }
+
+    .app-toolbar-actions {
+        width: 100%;
+        margin-left: 0;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .app-toolbar-actions > form,
+    .app-toolbar-actions > .app-search {
+        flex: 0 0 180px;
+        width: 180px;
+        max-width: 180px;
+    }
+
+    .app-search {
+        width: 180px;
+        max-width: 180px;
+    }
+}

@@ -1,133 +1,83 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="app-page">
+    @include('compte._header')
 
-<div>
-    @if (env('APP_USE_ABONEMENT', false))
-        <div>
-            @include('compte._header')
-        </div>
+    @if (session('error'))
+        <div class="alert alert-danger" role="alert">{{ session('error') }}</div>
     @endif
-	@if (session('error'))
-	<div
-	class="alert alert-primary"
-	role="alert"
-	>
-	<h4 class="alert-heading">{{ session('error') }}</h4>
 
-</div>
-@endif
+    <div class="app-card">
+        <header class="app-card-header">
+            <h2 class="app-card-heading">Liste des clients</h2>
+            <div class="app-toolbar-actions">
+                <span class="app-meta">Total: <b>{{ $nombre_total_clients }}</b></span>
+                <form action="" method="GET" class="app-search">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="search" name="search" placeholder="Rechercher ici" value="{{ \Request::get('search') ?? '' }}">
+                </form>
+                <a href="{{ route('clients.create') }}" class="btn btn-primary btn-sm">Ajouter</a>
+            </div>
+        </header>
 
-</div>
-<div>
-	<div class="row">
-        <div>
-            <a href="{{ route('assurances.index') }}"
-            class="btn btn-primary btn-sm">Assurances</a>
+        <div class="app-card-body--flush">
+            <div class="app-table-wrap">
+                <table class="table table-sm app-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>NUMERO</th>
+                            <th>NOM</th>
+                            <th>TELEPHONE</th>
+                            <th>NIF</th>
+                            <th>Adresse</th>
+                            @if (env('APP_USE_ABONEMENT', false))
+                                <th>Commissionnaire</th>
+                                <th>Fournisseur</th>
+                                <th>Porteur</th>
+                                <th>Abonnées</th>
+                            @endif
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($clients as $value)
+                            <tr>
+                                <td>{{ ++$loop->index }}</td>
+                                <td>{{ $value->id }}</td>
+                                <td>{{ $value->name }}</td>
+                                <td>{{ $value->telephone }}</td>
+                                <td>{{ $value->customer_TIN }}</td>
+                                <td>{{ $value->addresse }}</td>
+                                @if (env('APP_USE_ABONEMENT', false))
+                                    <td>{{ $value->is_commissionaire ? 'on' : '' }}</td>
+                                    <td>{{ $value->is_fournisseur }}</td>
+                                    <td>{{ $value?->commissionaire?->name }}</td>
+                                    <td>{{ $value->compte->name ?? '' }}</td>
+                                @endif
+                                <td>{{ $value->created_at }}</td>
+                                <td>
+                                    <a href="{{ route('clients.edit', $value) }}" class="mr-1 btn btn-outline-info btn-sm">Modifier</a>
+                                    @if(env('APP_USE_ABONEMENT', false))
+                                        <a href="{{ route('clients_abones', $value->id) }}" class="mr-1 btn btn-outline-info btn-sm">Abonée</a>
+                                        <a href="{{ route('make_commissionnaire', $value->id) }}" class="mr-1 btn btn-outline-info btn-sm">Commissionnaire</a>
+                                    @endif
+                                    @if(env('APP_USE_ASSURANCE', false))
+                                        <a href="{{ route('assurance_clients.create', $value->id) }}" class="mr-1 btn btn-outline-info btn-sm">Assurances</a>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
-		<div class="col-12">
-			<h2>Le Nombre total des clients : <b>{{ $nombre_total_clients }}</b></h2>
-		</div>
-		<div class="col-md-6 d-flex justify-content-between">
-			<a href="{{ route('clients.create') }}"
-			class="btn btn-primary btn-sm">Ajouter</a>
-			<h4 class="text-center">
-				Liste des clients
-			</h4>
-		</div>
-		<div class="col-md-6">
-			<form action="">
-				<input type="search" class="form-control form-control-sm" placeholder="Rechercher ici " name="search" value="{{ \Request::get('search') ?? '' }}">
-			</form>
-		</div>
-	</div>
 
-	<table class="table table-sm">
-		<thead>
-			<tr>
-				<th scope="col">#</th>
-				<th scope="col">NUMERO</th>
-				<th scope="col">NOM</th>
-				<th scope="col">TELEPHONE</th>
-				<th scope="col">NIF</th>
-				<th scope="col">Adresse</th>
-				@if (env('APP_USE_ABONEMENT', false))
-                <th scope="col">Commissionnaire</th>
-				<th scope="col">Fournisseur</th>
-                <th>Porteur</th>
-				<th>Abonnées</th>
-				@endif
-				<th>Date</th>
-				<th scope="col">Action</th>
-			</tr>
-		</thead>
-		<tbody>
-
-			@foreach ($clients as $value)
-			{{-- expr description  --}}
-			<tr>
-				<td>{{ ++$loop->index }}</td>
-				<td>{{ $value->id }}</td>
-				<td>
-					{{ $value->name}}
-				</td>
-				<td>{{ $value->telephone }}</td>
-				<td>
-					{{ $value->customer_TIN}}
-				</td>
-
-				<td>
-					{{ $value->addresse}}
-				</td>
-
-				@if (env('APP_USE_ABONEMENT', false))
-                <td>
-                    {{ $value->is_commissionaire ? "on" : "" }}</td>
-				<td>
-					{{ $value->is_fournisseur}}
-				</td>
-                <td>{{ $value?->commissionaire?->name}}</td>
-				<td>{{ $value->compte->name  ?? "" }}</td>
-				@endif
-
-				<td>{{ $value->created_at }}</td>
-                <td>
-                    <a href="{{ route('clients.edit', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
-                    @if(env('APP_USE_ABONEMENT', false))
-						<a href="{{ route('clients_abones', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Abonée</a>
-						<a href="{{ route('make_commissionnaire', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Commissionnaire</a>
-
-					@endif
-
-                    @if(env('APP_USE_ASSURANCE', false))
-                     <a href="{{ route('assurance_clients.create', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Assurances</a>
-                    @endif
-                </td>
-				{{-- <td class="d-flex justify-content-around">
-					 <a href="{{ route('clients.edit', $value) }}" class="mr-2 btn btn-outline-info btn-sm">Modifier</a>
-					<form class="form-delete" action="{{ route('clients.destroy' , $value) }}" style="display: inline;" method="POST">
-						{{ csrf_field() }}
-						{{ method_field('DELETE') }}
-						<button class="btn btn-outline-danger btn-sm delete_client"
-
-						onclick="return confirm('Are you sure you want to delete this client ?')"
-
-						<button class="btn btn-outline-danger btn-sm delete_client"
-						onclick="return confirm('Are you sure you want to delete this client ?')"
-						>Supprimer</button>
-						@if(env('APP_USE_ABONEMENT', false))
-						<a href="{{ route('clients_abones', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Abonée</a>
-						<a href="{{ route('make_commissionnaire', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Commissionnaire</a>
-
-						@endif
-					</form>
-				</td> --}}
-			</tr>
-			@endforeach
-		</tbody>
-	</table>
-</div>
-<div class="col-md-12" style="height: 20px; overflow: hidden;">
-	{{ $clients->links()}}
+        <div class="app-pagination">
+            {{ $clients->links() }}
+        </div>
+    </div>
 </div>
 @endsection

@@ -1,0 +1,926 @@
+/* =========================================================
+   Vente — modern UI (frontend only)
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+.vente-page {
+    --v-bg: var(--app-bg, #eef2f6);
+    --v-surface: var(--app-surface, #ffffff);
+    --v-ink: var(--app-ink, #0f172a);
+    --v-muted: var(--app-muted, #64748b);
+    --v-line: var(--app-line, #e2e8f0);
+    --v-line-strong: #cbd5e1;
+    --v-accent: var(--app-primary, #5c3fd8);
+    --v-accent-soft: var(--app-primary-soft, #ede9fe);
+    --v-accent-ink: var(--app-primary-ink, #4c1d95);
+    --v-danger: var(--app-danger, #e11d48);
+    --v-danger-soft: var(--app-danger-soft, #ffe4e6);
+    --v-shadow: none;
+    --v-radius: var(--app-radius, 14px);
+    --v-radius-sm: var(--app-radius-sm, 10px);
+    --v-font: var(--app-font, 'DM Sans', system-ui, -apple-system, sans-serif);
+
+    font-family: var(--v-font);
+    color: var(--v-ink);
+    margin: -4px -8px 0;
+    padding: 8px 8px 20px;
+}
+
+/* ----- Tabs ----- */
+.vente-tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 5px;
+    margin-bottom: 16px;
+    background: #e2e8f0;
+    border-radius: 12px;
+}
+
+.vente-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 9px;
+    color: var(--v-muted);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vente-tab i {
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
+.vente-tab:hover {
+    color: var(--v-ink);
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.vente-tab.is-active {
+    color: var(--v-ink);
+    background: var(--v-surface);
+    box-shadow: none;
+}
+
+.vente-tab.is-active i {
+    color: var(--v-accent);
+    opacity: 1;
+}
+
+/* ----- Workspace / cards ----- */
+.vente-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 65%) minmax(280px, 35%);
+    gap: 16px;
+    align-items: stretch;
+}
+
+.vente-card {
+    background: var(--v-surface);
+    border: 1px solid var(--v-line);
+    border-radius: var(--v-radius);
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.vente-page .vente-card-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--v-line);
+}
+
+.vente-page .vente-card-heading {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: var(--v-ink);
+    flex: 0 1 auto;
+    white-space: nowrap;
+}
+
+.vente-page .vente-card-header .vente-search,
+.vente-page .vente-card-header .vente-actions,
+.vente-page .vente-card-header .vente-badge {
+    flex: 0 0 auto;
+}
+
+/* ----- Search ----- */
+.vente-search {
+    position: relative;
+    flex: 0 1 260px;
+    min-width: 180px;
+}
+
+.vente-search i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--v-muted);
+    font-size: 0.8rem;
+    pointer-events: none;
+}
+
+.vente-search input {
+    width: 100%;
+    height: 40px;
+    padding: 0 14px 0 36px;
+    border: 1px solid var(--v-line-strong);
+    border-radius: 10px;
+    background: #f8fafc;
+    color: var(--v-ink);
+    font-family: inherit;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.vente-search input::placeholder {
+    color: #94a3b8;
+}
+
+.vente-search input:focus {
+    background: #fff;
+    border-color: var(--v-accent);
+    box-shadow: 0 0 0 3px rgba(92, 63, 216, 0.18);
+}
+
+/* ----- Data table ----- */
+.vente-datatable {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.vente-datatable-scroll,
+.vente-page .formTableHead.vente-datatable-scroll,
+.vente-page .vente-cart-body .formTableHead {
+    overflow: auto;
+    height: calc(78vh - 48px);
+    max-height: 720px;
+    background: #fff;
+    border: none;
+}
+
+.vente-page .vente-table,
+.vente-page .formTableHead .vente-table,
+.vente-page .formTableHead table {
+    width: 100%;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.875rem;
+}
+
+.vente-page .vente-table thead th,
+.vente-page .formTableHead thead th,
+.vente-page .formTableHead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding: 11px 12px;
+    background: #f8fafc !important;
+    color: var(--v-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border: none !important;
+    border-bottom: 1px solid var(--v-line) !important;
+    border-radius: 0 !important;
+    vertical-align: middle;
+}
+
+.vente-page .vente-table tbody td,
+.vente-page .formTableHead tbody td,
+.vente-page .formTableHead td {
+    padding: 11px 12px;
+    border: none !important;
+    border-bottom: 1px solid var(--v-line) !important;
+    vertical-align: middle;
+    color: var(--v-ink);
+    background: #fff;
+}
+
+.vente-page .vente-table tbody tr:last-child td,
+.vente-page .formTableHead tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+.vente-page .vente-table tbody tr {
+    transition: background 0.12s ease;
+}
+
+.vente-page .vente-table tbody tr:hover td,
+.vente-page .formTableHead tbody tr:hover td {
+    background: #f5f3ff !important;
+}
+
+.vente-page .col-num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.vente-page .col-center {
+    text-align: center;
+}
+
+.vente-page .col-action {
+    text-align: center;
+    width: 64px;
+}
+
+/* Code chip look for first data column cells that look like codes — optional via first td after # */
+.vente-page #body_table td:nth-child(2) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.vente-page .btn-add,
+.vente-page .btn-remove {
+    min-width: 34px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: 8px !important;
+    border: none !important;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: none !important;
+    transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.vente-page .btn-add {
+    background: var(--v-accent) !important;
+    color: #fff !important;
+}
+
+.vente-page .btn-add:hover {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+}
+
+.vente-page .btn-remove {
+    background: var(--v-danger-soft) !important;
+    color: var(--v-danger) !important;
+}
+
+.vente-page .btn-remove:hover {
+    filter: brightness(0.97);
+}
+
+/* ----- Cart ----- */
+.vente-cart {
+    position: sticky;
+    top: 12px;
+    max-height: calc(100vh - 100px);
+}
+
+.vente-cart-header {
+    background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+}
+
+.vente-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: var(--v-accent);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.vente-badge.is-empty {
+    background: #cbd5e1;
+    color: #475569;
+}
+
+.vente-cart-body {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.vente-cart-body .formTableHead,
+.vente-cart-body .vente-table-wrap {
+    height: calc(78vh - 160px) !important;
+    max-height: 560px;
+}
+
+.vente-page .vente-cart-empty {
+    padding: 28px 16px !important;
+    text-align: center;
+    color: var(--v-muted);
+    font-size: 0.9rem;
+    border: none !important;
+    background: transparent !important;
+}
+
+.vente-cart-footer {
+    padding: 14px 16px 16px;
+    border-top: 1px solid var(--v-line);
+    background: #f8fafc;
+}
+
+.vente-btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--v-accent);
+    color: #fff !important;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    box-shadow: none;
+    transition: background 0.15s ease;
+}
+
+.vente-btn-primary:hover {
+    background: var(--app-primary-dark, #4a32b5);
+    color: #fff !important;
+}
+
+.vente-btn-primary i {
+    font-size: 0.8rem;
+}
+
+/* ----- Shared vente forms / tables / layout ----- */
+.vente-page .vente-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.vente-page .vente-card-body {
+    padding: 16px 18px 18px;
+}
+
+.vente-page .vente-card-body--tight {
+    padding: 10px 18px;
+}
+
+.vente-page .vente-card-body--compact {
+    padding: 10px 14px 12px;
+}
+
+.vente-page .vente-card-header--compact {
+    padding: 10px 14px;
+}
+
+.vente-page .vente-table-card--flush {
+    border: none;
+    border-radius: 0;
+    border-top: 1px solid var(--v-line);
+}
+
+.vente-page .vente-compact-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px 10px;
+    align-items: end;
+}
+
+.vente-page .vente-compact-bar .vente-field label {
+    margin-bottom: 4px;
+    font-size: 0.68rem;
+}
+
+.vente-page .vente-compact-bar .vente-field .form-control,
+.vente-page .vente-compact-bar .vente-field select,
+.vente-page .vente-compact-bar .vente-field .vente-inline-control,
+.vente-page .vente-compact-bar .vente-actions .vente-inline-control {
+    height: 34px;
+    font-size: 0.8125rem;
+}
+
+.vente-page .vente-compact-bar .vente-btn {
+    height: 34px;
+    padding: 0 10px;
+    font-size: 0.8rem;
+}
+
+.vente-page .vente-client-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-top: 8px;
+    padding: 8px 10px;
+    border: 1px solid var(--v-line);
+    border-radius: 8px;
+    background: #f8fafc;
+    font-size: 0.8125rem;
+    color: var(--v-ink);
+}
+
+.vente-page .vente-client-inline span {
+    color: var(--v-muted);
+}
+
+.vente-page .vente-client-inline b {
+    color: var(--v-ink);
+}
+
+.vente-page .vente-client-search {
+    margin-bottom: 12px;
+}
+
+.vente-page .vente-client-search-wrap {
+    position: relative;
+}
+
+.vente-page .vente-client-search-wrap > i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--v-muted);
+    font-size: 0.875rem;
+    pointer-events: none;
+}
+
+.vente-page .vente-client-search-wrap .form-control,
+.vente-page .vente-field.vente-client-search .vente-client-search-wrap .form-control,
+.vente-page .vente-field.vente-client-search input[type="search"] {
+    width: 100%;
+    height: 42px;
+    padding: 8px 12px 8px 40px;
+    font-size: 0.9375rem;
+    border-radius: 10px;
+}
+
+.vente-page .vente-client-panel {
+    margin-top: 4px;
+    padding: 12px 14px;
+    border: 1px solid var(--v-line);
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.vente-page .vente-client-panel.is-empty {
+    padding: 14px;
+}
+
+.vente-page .vente-client-panel-empty {
+    font-size: 0.8125rem;
+    color: var(--v-muted);
+    text-align: center;
+}
+
+.vente-page .vente-client-panel-name {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--v-ink);
+}
+
+.vente-page .vente-client-panel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+}
+
+.vente-page .vente-client-panel-grid > div {
+    min-width: 0;
+}
+
+.vente-page .vente-client-panel-grid span {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--v-muted);
+}
+
+.vente-page .vente-client-panel-grid b {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--v-ink);
+    word-break: break-word;
+}
+
+.vente-page .vente-client-panel-full {
+    grid-column: 1 / -1;
+}
+
+.vente-page .vente-pay-simple {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.vente-page .vente-pay-simple .vente-field--grow {
+    flex: 1 1 220px;
+    min-width: 180px;
+    position: relative;
+}
+
+.vente-page .vente-pay-simple .vente-inline-control,
+.vente-page .vente-pay-simple select.vente-inline-control {
+    height: 34px;
+    min-width: 120px;
+    font-size: 0.8125rem;
+}
+
+.vente-page .vente-pay-simple .vente-field--grow .vente-inline-control {
+    width: 100%;
+}
+
+.vente-page .vente-pay-simple .vente-btn {
+    height: 34px;
+    padding: 0 12px;
+    font-size: 0.8rem;
+}
+
+.vente-page .vente-pay-simple .vente-search-results {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 4px);
+    z-index: 20;
+    max-height: 220px;
+    overflow: auto;
+}
+
+.vente-page .vente-section-title {
+    margin: 0 0 12px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--v-ink);
+}
+
+.vente-page .vente-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px 14px;
+    align-items: end;
+}
+
+.vente-page .vente-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--v-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.vente-page .vente-field .form-control,
+.vente-page .vente-field select,
+.vente-page .vente-field textarea,
+.vente-page .vente-field input[type="text"],
+.vente-page .vente-field input[type="number"],
+.vente-page .vente-inline-control {
+    width: 100%;
+    height: 38px;
+    padding: 6px 12px;
+    border: 1px solid var(--v-line-strong);
+    border-radius: 8px;
+    background: #f8fafc;
+    color: var(--v-ink);
+    font-size: 0.875rem;
+    font-family: inherit;
+}
+
+.vente-page .vente-field textarea,
+.vente-page textarea.form-control {
+    height: auto;
+    min-height: 72px;
+    background: #f8fafc;
+    border: 1px solid var(--v-line-strong);
+    border-radius: 8px;
+}
+
+.vente-page .vente-field .form-control:focus,
+.vente-page .vente-field select:focus,
+.vente-page .vente-inline-control:focus,
+.vente-page .vente-table input:focus,
+.vente-page .vente-table textarea:focus,
+.vente-page .vente-table select:focus {
+    outline: none;
+    border-color: var(--v-accent);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(92, 63, 216, 0.15);
+}
+
+.vente-page .vente-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.vente-page .vente-btn,
+.vente-page .btn.vente-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+.vente-page .vente-btn-accent,
+.vente-page .btn.vente-btn-accent {
+    background: var(--v-accent);
+    border-color: var(--v-accent);
+    color: #fff !important;
+}
+
+.vente-page .vente-btn-accent:hover,
+.vente-page .btn.vente-btn-accent:hover {
+    background: var(--app-primary-dark, #4a32b5);
+    color: #fff !important;
+}
+
+.vente-page .vente-btn-ghost,
+.vente-page .btn.vente-btn-ghost {
+    background: #fff;
+    border-color: var(--v-line-strong);
+    color: var(--v-ink) !important;
+}
+
+.vente-page .vente-btn-danger,
+.vente-page .btn.vente-btn-danger {
+    background: var(--v-danger-soft);
+    border-color: transparent;
+    color: var(--v-danger) !important;
+}
+
+.vente-page .vente-btn-info,
+.vente-page .btn.vente-btn-info {
+    background: #e0f2fe;
+    border-color: transparent;
+    color: #0369a1 !important;
+}
+
+.vente-page .vente-table-card {
+    overflow: auto;
+    border: 1px solid var(--v-line);
+    border-radius: 0;
+    background: #fff;
+}
+
+.vente-page .vente-table-card .vente-table,
+.vente-page table.vente-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.875rem;
+}
+
+.vente-page table.vente-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 10px 12px;
+    background: #f8fafc !important;
+    color: var(--v-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: none !important;
+    border-bottom: 1px solid var(--v-line) !important;
+    border-radius: 0 !important;
+    white-space: nowrap;
+}
+
+.vente-page table.vente-table tbody td,
+.vente-page table.vente-table tbody th,
+.vente-page table.vente-table tfoot td,
+.vente-page table.vente-table tfoot th {
+    padding: 10px 12px;
+    border: none !important;
+    border-bottom: 1px solid var(--v-line) !important;
+    vertical-align: middle;
+    background: #fff;
+    font-weight: 500;
+}
+
+.vente-page table.vente-table tbody tr:hover td,
+.vente-page table.vente-table tbody tr:hover th {
+    background: #f5f3ff !important;
+}
+
+.vente-page table.vente-table input.form-control,
+.vente-page table.vente-table input[type="number"],
+.vente-page table.vente-table input[type="text"],
+.vente-page table.vente-table select,
+.vente-page table.vente-table textarea {
+    width: 100%;
+    min-width: 72px;
+    height: 34px;
+    padding: 4px 8px;
+    border: 1px solid var(--v-line-strong);
+    border-radius: 6px;
+    background: #f8fafc;
+    font-size: 0.85rem;
+}
+
+.vente-page table.vente-table textarea {
+    height: auto;
+    min-height: 56px;
+}
+
+.vente-page .vente-meta-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--v-line);
+    border-radius: var(--v-radius-sm);
+    overflow: hidden;
+}
+
+.vente-page .vente-meta-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--v-line);
+    font-size: 0.875rem;
+    background: #fff;
+}
+
+.vente-page .vente-meta-list li:last-child {
+    border-bottom: none;
+}
+
+.vente-page .vente-meta-list li span {
+    color: var(--v-muted);
+}
+
+.vente-page .vente-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+}
+
+.vente-page .vente-summary-item {
+    padding: 14px;
+    border: 1px solid var(--v-line);
+    border-radius: var(--v-radius-sm);
+    background: #f8fafc;
+    text-align: center;
+}
+
+.vente-page .vente-summary-item.is-primary {
+    background: var(--v-accent-soft);
+    border-color: #ddd6fe;
+}
+
+.vente-page .vente-summary-item h6 {
+    margin: 0 0 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--v-muted);
+    text-transform: uppercase;
+}
+
+.vente-page .vente-summary-item h4 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--v-ink);
+}
+
+.vente-page .vente-search-results {
+    margin-top: 8px;
+    border: 1px solid var(--v-line);
+    border-radius: var(--v-radius-sm);
+    overflow: hidden;
+    background: #fff;
+}
+
+.vente-page .vente-search-results button,
+.vente-page .vente-search-results .list-group-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 12px;
+    border: none;
+    border-bottom: 1px solid var(--v-line);
+    background: #fff;
+    color: var(--v-ink);
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.vente-page .vente-search-results button:hover,
+.vente-page .vente-search-results .list-group-item:hover {
+    background: #f5f3ff;
+}
+
+.vente-page .vente-search-results button:last-child,
+.vente-page .vente-search-results .list-group-item:last-child {
+    border-bottom: none;
+}
+
+.vente-page .vente-info-box {
+    padding: 12px 14px;
+    border: 1px solid #bfdbfe;
+    border-radius: var(--v-radius-sm);
+    background: #eff6ff;
+    color: #1e3a8a;
+    font-size: 0.875rem;
+}
+
+.vente-page .vente-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+    gap: 16px;
+}
+
+.vente-page .panier-qty,
+.vente-page .price_input,
+.vente-page .quantite_select {
+    width: 90px;
+    height: 34px;
+    padding: 4px 8px;
+    border: 1px solid var(--v-line-strong);
+    border-radius: 6px;
+    background: #f8fafc;
+}
+
+@media (max-width: 991.98px) {
+    .vente-page .vente-split {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Soft page backdrop when inside contenu_principal */
+.contenu_principal:has(.vente-page) {
+    background: transparent;
+}
+
+@media (max-width: 1100px) {
+    .vente-workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .vente-cart {
+        position: static;
+        max-height: none;
+    }
+
+    .vente-datatable-scroll,
+    .vente-page .formTableHead.vente-datatable-scroll,
+    .vente-cart-body .formTableHead,
+    .vente-cart-body .vente-table-wrap {
+        height: 42vh !important;
+        max-height: 420px;
+    }
+}
+
+@media (max-width: 576px) {
+    .vente-tab span {
+        display: none;
+    }
+
+    .vente-tab {
+        padding: 10px 14px;
+    }
+
+    .vente-search {
+        flex: 1 1 100%;
+    }
+}

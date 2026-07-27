@@ -1,19 +1,17 @@
-<div class="d-flex justify-content-around">
-    <div>
-        <a href="{{ route('payment-location-mensuel.index') }}">Paiement de Location Mensuel</a>
-    </div>
-    <div>
-        <a href="{{ route('historique-paiement.index') }}">Historique de paiement</a>
-    </div>
-    <div>
-        <a href="{{ route('clients_non_paye_loyers_all') }}">Les non payées par periode</a>
-    </div>
-    <div>
-        <a href="{{ route('clients_half_paid') }}">Paiement partielle </a>
-    </div>
-    <div>
-        <a href="{{ route('document_maison') }}">Document Administrative </a>
-    </div>
-
-
-</div>
+<nav class="app-tabs noprint" aria-label="Navigation location">
+    <a href="{{ route('payment-location-mensuel.index') }}" class="{{ setActiveRoute('payment-location-mensuel.*') }}">
+        Paiement de Location Mensuel
+    </a>
+    <a href="{{ route('historique-paiement.index') }}" class="{{ setActiveRoute('historique-paiement.*') }}">
+        Historique de paiement
+    </a>
+    <a href="{{ route('clients_non_paye_loyers_all') }}" class="{{ setActiveRoute('clients_non_paye_loyers_all') }}">
+        Les non payées par periode
+    </a>
+    <a href="{{ route('clients_half_paid') }}" class="{{ setActiveRoute('clients_half_paid') }}">
+        Paiement partielle
+    </a>
+    <a href="{{ route('document_maison') }}" class="{{ setActiveRoute('document_maison') }}">
+        Document Administrative
+    </a>
+</nav>

@@ -1,25 +1,9 @@
-<div>
-    <a href="{{ route('versementType.index') }}" class="btn btn-primary btn-sm"> Types des versments </a>
-    <a href="{{ route('versement.create') }}" class="btn btn-primary btn-sm">
-        <i class="fas fa-plus"></i> Nouveau versement
-    </a>
-    <a href="{{ route('versement.index') }}" class="btn btn-primary btn-sm">
-        <i class="fas fa-list"></i> Liste des versements
-    </a>
-    <a href="{{ route('typeEmbalage.index') }}" class="btn btn-primary btn-sm">
-        <i class="fas fa-list"></i> Liste des types d'embalages
-    </a>
-    <a href="{{ route('embalage.index') }}" class="btn btn-primary btn-sm">
-        <i class="fas fa-list"></i> Liste des embalages
-    </a>
-    <a href="{{ route('embalage-mouvement.index') }}" class="btn btn-primary btn-sm">
-        <i class="fas fa-list"></i> Liste des mouvements d'embalages
-    </a>
-    <a href="{{ route('rapport.resultats') }}" class="btn btn-primary btn-sm">
-        <i class="fas fa-list"></i> Resultats des ventes
-    </a>
-
-    {{-- <a href="{{ route('embalage.index') }}" class="btn btn-primary btn-sm">
-        <i class="fas fa-list"></i> Liste des embalages
-    </a> --}}
-</div>
+<nav class="app-tabs noprint" aria-label="Navigation versement">
+    <a href="{{ route('versementType.index') }}">Types des versements</a>
+    <a href="{{ route('versement.create') }}" class="{{ setActiveRoute('versement.create') }}">Nouveau versement</a>
+    <a href="{{ route('versement.index') }}" class="{{ setActiveRoute('versement.index') }}">Liste des versements</a>
+    <a href="{{ route('typeEmbalage.index') }}">Types d'embalages</a>
+    <a href="{{ route('embalage.index') }}">Embalages</a>
+    <a href="{{ route('embalage-mouvement.index') }}">Mouvements d'embalages</a>
+    <a href="{{ route('rapport.resultats') }}">Resultats des ventes</a>
+</nav>

@@ -53,21 +53,21 @@ class StockController extends Controller
         ->get();
         return view('stocks.facture_search', compact('orders', 'facture_number', 'search', 'start_date', 'end_date'));
     }
-    public function impression_multiple(){
-
+    public function impression_multiple()
+    {
         $dateDebut = request()->query('dateDebut');
         $dateFin = request()->query('dateFin');
 
-        $orders = Order::where('is_cancelled', '=',0)
-                    ->whereBetween('created_at', [$dateDebut, $dateFin])
-                    ->sortable()
-                    ->latest()
-                    ->take(10)
-                    ->get();
+        $orders = Order::where('is_cancelled', '=', 0)
+            ->when($dateDebut && $dateFin, function ($query) use ($dateDebut, $dateFin) {
+                $query->whereBetween('created_at', [$dateDebut, $dateFin]);
+            })
+            ->sortable()
+            ->latest()
+            ->take(10)
+            ->get();
 
-
-        return view('stocks.impression_multiple', compact('orders') );
-
+        return view('stocks.impression_multiple', compact('orders', 'dateDebut', 'dateFin'));
     }
 
     public function mouvement_stock(){

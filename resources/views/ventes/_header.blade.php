@@ -1,34 +1,29 @@
-<div>
-    <div class="row">
-        <div class="col-md-4 d-flex justify-content-between">
-            <h4 class="text-center {{ request()->routeIs('ventes.create') ? 'active' : '' }}">
-           
-                <a href="{{ route('ventes.create') }}">
-                <i class="fas fa-file-invoice"></i> 
-                    Facturation des Services</a>
-            </h4>
-        </div>
-        <div class="col-md-6 d-flex justify-content-between">
-            <h4 class="text-center {{ request()->routeIs('facture.avoir') ? 'active' : '' }}">
-                <a href="{{ route('facture.avoir') }}">
-                <i class="fas fa-money-bill"></i>  Facture d'Avoir et Remboursement Caution</a>
-            </h4>
-        </div>
-        <!-- <div class="col-md-4 d-flex justify-content-between">
-            <h4 class="text-center {{ request()->routeIs('facture.remboursement_caution') ? 'active' : '' }}">
-                <a href="{{ route('facture.remboursement_caution') }}">Remboursement Caution</a>
-            </h4>
-        </div> -->
-    </div>
-</div>
+<link rel="stylesheet" href="{{ asset('css/ventes.css') }}">
 
-{{-- Ajoutez ce CSS dans votre fichier de style --}}
-<style>
-    .active {
-        font-weight: bold;
-        color: #007bff;
-    }
-    .active a {
-        color: inherit;
-    }
-</style>
+<nav class="vente-tabs noprint" aria-label="Navigation vente">
+    <a href="{{ route('ventes.index') }}"
+       class="vente-tab {{ request()->routeIs('ventes.index') ? 'is-active' : '' }}">
+        <i class="fas fa-box-open"></i>
+        <span>Vente produits</span>
+    </a>
+    <a href="{{ route('ventes.create') }}"
+       class="vente-tab {{ request()->routeIs('ventes.create') ? 'is-active' : '' }}">
+        <i class="fas fa-file-invoice"></i>
+        <span>Services</span>
+    </a>
+    <a href="{{ route('facture.avoir') }}"
+       class="vente-tab {{ request()->routeIs('facture.avoir') ? 'is-active' : '' }}">
+        <i class="fas fa-file-invoice-dollar"></i>
+        <span>Facture d'avoir</span>
+    </a>
+    <a href="{{ route('facture.remboursement_caution') }}"
+       class="vente-tab {{ request()->routeIs('facture.remboursement_caution') ? 'is-active' : '' }}">
+        <i class="fas fa-hand-holding-usd"></i>
+        <span>Caution</span>
+    </a>
+    <a href="{{ route('panier.index') }}"
+       class="vente-tab {{ request()->routeIs('panier.*') ? 'is-active' : '' }}">
+        <i class="fas fa-shopping-basket"></i>
+        <span>Panier</span>
+    </a>
+</nav>

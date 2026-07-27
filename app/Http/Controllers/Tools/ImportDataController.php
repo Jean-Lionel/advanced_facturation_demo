@@ -99,24 +99,24 @@ class ImportDataController extends Controller
         return Excel::download(new ProductExport, date('Y_m_h')."_product_model.xlsx");
     }
 
-    public function makeTable($dataCollection){
-
-        $headers =  ProductExport::$headers;
-        $body = '<table class="table table-responsive"> <thead> </tr>';
-        foreach($headers as $key => $header){
-            $body .= "<td> $header</td>";
+    public function makeTable($dataCollection)
+    {
+        $headers = ProductExport::$headers;
+        $body = '<table class="table table-sm app-table"><thead><tr>';
+        foreach ($headers as $header) {
+            $body .= '<th>' . e($header) . '</th>';
         }
-        $body .= '</tr></thead>';
+        $body .= '</tr></thead><tbody>';
 
-        foreach($dataCollection as $itemLine){
+        foreach ($dataCollection as $itemLine) {
             $body .= '<tr>';
-            foreach($itemLine as $line){
-                $body .= '<td>' . $line . '</td>';
+            foreach ($itemLine as $line) {
+                $body .= '<td>' . e($line) . '</td>';
             }
             $body .= '</tr>';
         }
 
-        $body .= '</table>';
+        $body .= '</tbody></table>';
 
         return $body;
     }

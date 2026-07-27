@@ -1,12 +1,8 @@
 @csrf
 
-<div class="row">
+<div class="row app-card-body">
 
-    <div class="col-md-12">
-        <h5 class="text-left">Nouveau Produit</h5>
-    </div>
-
-    <div class="col-md-2">
+    <div class="col-md-2 ">
         <div class="form-group">
             <label for="code_product">CODE DE PRODUIT</label>
             <input type="text" class="form-control {{$errors->has('code_product') ? 'is-invalid' : 'is-valid' }}" id="code_product" name="code_product" value="{{ old('code_product') ?? $product->code_product?? ' ' }}">

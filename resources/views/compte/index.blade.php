@@ -1,85 +1,58 @@
 @extends('layouts.app')
 
 @section('content')
-<div>
+<div class="app-page">
     @if (env('APP_USE_ABONEMENT', false))
-        <div>
-            @include('compte._header')
-        </div>
+        @include('compte._header')
     @endif
-    <div class="row">
-        <div class="col-md-6 d-flex justify-content-between">
 
-            <h4 class="text-center">
-                Liste des abonnées
-            </h4>
-        </div>
-        <div class="col-md-6">
-            <form action="">
-                <input type="search" class="form-control form-control-sm" placeholder="Rechercher ici ">
-            </form>
+    <div class="app-card">
+        <header class="app-card-header">
+            <h2 class="app-card-heading">Liste des abonnées</h2>
+            <div class="app-toolbar-actions">
+                <form action="" method="GET" class="app-search">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="search" name="search" placeholder="Rechercher ici">
+                </form>
+            </div>
+        </header>
+
+        <div class="app-card-body--flush">
+            <div class="app-table-wrap">
+                <table class="table table-sm app-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>NOM COMPTE</th>
+                            <th>NOM</th>
+                            <th>TELEPHONE</th>
+                            <th>Adresse</th>
+                            <th>Solde</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($clients as $value)
+                        <tr>
+                            <td>{{ ++$loop->index }}</td>
+                            <td class="justify-content">{{ $value->compte->name }}</td>
+                            <td>{{ $value->name }}</td>
+                            <td>{{ $value->telephone }}</td>
+                            <td>{{ $value->addresse }}</td>
+                            <td>{{ number_format($value->compte->montant, 2) }}</td>
+                            <td>{{ $value->created_at }}</td>
+                            <td class="d-flex justify-content-around">
+                                <a href="{{ route('compte.recharge',$value->compte) }}" class="btn btn-outline-info btn-sm mr-2">Recharger</a>
+                                <a href="{{ route('compte.retrait',$value->compte) }}" class="btn btn-outline-warning btn-sm mr-2">Retrait</a>
+                                <a href="{{ route('historique', $value) }}" class="btn btn-outline-success btn-sm mr-2">Historique</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-    <table class="table table-sm">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">NOM COMPTE</th>
-                <th scope="col">NOM</th>
-                <th scope="col">TELEPHONE</th>
-                <!-- <th scope="col">NIF</th> -->
-                <th scope="col">Adresse</th>
-                <th scope="col">Solde</th>
-                <th scope="col">Date</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach ($clients as $value)
-            <tr>
-                <td>{{ ++$loop->index }}</td>
-                <td class="justify-content">{{$value->compte->name}}</td>
-                <td>
-                    {{ $value->name}}
-                </td>
-                <td>{{ $value->telephone }}</td>
-                <!-- <td>
-                    {{ $value->customer_TIN}}
-                </td> -->
-                <td>
-                    {{ $value->addresse}}
-                </td>
-                <td>{{ number_format($value->compte->montant, 2) }} </td>
-
-                <td>{{ $value->created_at }}</td>
-                <td class="d-flex justify-content-around">
-                    <a href="{{ route('compte.recharge',$value->compte) }}" class="btn btn-outline-info btn-sm
-                    mr-2">Recharger</a>
-                    <a href="{{ route('compte.retrait',$value->compte) }}" class="btn btn-outline-warning btn-sm
-                        mr-2">Retrait</a>
-                    <a href="{{ route('historique', $value) }}" class="btn btn-outline-success btn-sm
-                    mr-2">Historique</a>
-                </td>
-
-                <!-- <td class="d-flex justify-content-around">
-                    {{--  					<a href="{{ route('clients.edit', $value) }}" class="btn btn-outline-info btn-sm
-                    mr-2">Modifier</a>--}}
-                    <form class="form-delete" action="{{ route('clients.destroy' , $value) }}" style="display: inline;"
-                        method="POST">
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
-                        <button class="btn btn-outline-danger btn-sm delete_client">Supprimer</button>
-
-                        <a href="{{ route('clients_abones', $value->id) }}"
-                            class="btn btn-outline-info btn-sm mr-2">Historique</a>
-                    </form>
-                </td> -->
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
 </div>
-
 @endsection

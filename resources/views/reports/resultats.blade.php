@@ -1,53 +1,59 @@
 @extends('layouts.app')
 
 @section('content')
-@include("versement._header")
-<div class="container mt-4">
+<div class="app-page">
+    @include('versement._header')
 
-    <form action="" method="get" class="mb-4">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="start_date">Date de début</label>
-                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ $start_date }}">
+    <div class="app-card mb-3">
+        <header class="app-card-header">
+            <h2 class="app-card-heading">Résultats financiers</h2>
+        </header>
+
+        <div class="app-card-body">
+            <form action="" method="get" class="mb-0">
+                <div class="app-form-grid">
+                    <div class="form-group mb-0">
+                        <label for="start_date">Date de début</label>
+                        <input type="date" class="form-control form-control-sm" id="start_date" name="start_date" value="{{ $start_date }}">
+                    </div>
+                    <div class="form-group mb-0">
+                        <label for="end_date">Date de fin</label>
+                        <input type="date" class="form-control form-control-sm" id="end_date" name="end_date" value="{{ $end_date }}">
+                    </div>
+                    <div class="form-group mb-0 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary btn-sm">Rechercher</button>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="end_date">Date de fin</label>
-                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ $end_date }}">
-                </div>
-            </div>
+            </form>
         </div>
-        <button type="submit" class="mt-2 btn btn-primary">Rechercher</button>
-    </form>
+    </div>
 
-    <div class="mb-4 text-center row">
+    <div class="row mb-3">
         <div class="col-md-4">
-            <div class="shadow-sm card">
-                <div class="card-body">
-                    <h5 class="card-title">Stock Vendu</h5>
-                    <p class="display-6 text-success fw-bold">
+            <div class="app-card">
+                <div class="app-card-body text-center">
+                    <h5 class="mb-2">Stock Vendu</h5>
+                    <p class="display-6 text-success fw-bold mb-0">
                         {{ number_format($controls->sum('total'), 0, ',', ' ') }} FBu
                     </p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="shadow-sm card">
-                <div class="card-body">
-                    <h5 class="card-title">Versements</h5>
-                    <p class="display-6 text-info fw-bold">
+            <div class="app-card">
+                <div class="app-card-body text-center">
+                    <h5 class="mb-2">Versements</h5>
+                    <p class="display-6 text-info fw-bold mb-0">
                         {{ number_format($versements->sum('montant'), 0, ',', ' ') }} FBu
                     </p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="shadow-sm card">
-                <div class="card-body">
-                    <h5 class="card-title">Dépenses</h5>
-                    <p class="display-6 text-danger fw-bold">
+            <div class="app-card">
+                <div class="app-card-body text-center">
+                    <h5 class="mb-2">Dépenses</h5>
+                    <p class="display-6 text-danger fw-bold mb-0">
                         {{ number_format($depenses->sum('montant'), 0, ',', ' ') }} FBu
                     </p>
                 </div>
@@ -55,12 +61,13 @@
         </div>
     </div>
 
-    <div class="mt-4 text-center">
-        <h4>Résultat de cette période :</h4>
-        <p class="display-5 fw-bold {{ ($controls->sum('total') - $versements->sum('montant') - $depenses->sum('montant')) >= 0 ? 'text-success' : 'text-danger' }}">
-            {{ number_format($controls->sum('total') - $versements->sum('montant') - $depenses->sum('montant'), 0, ',', ' ') }} FBu
-        </p>
+    <div class="app-card">
+        <div class="app-card-body text-center">
+            <h4 class="mb-3">Résultat de cette période</h4>
+            <p class="display-5 fw-bold mb-0 {{ ($controls->sum('total') - $versements->sum('montant') - $depenses->sum('montant')) >= 0 ? 'text-success' : 'text-danger' }}">
+                {{ number_format($controls->sum('total') - $versements->sum('montant') - $depenses->sum('montant'), 0, ',', ' ') }} FBu
+            </p>
+        </div>
     </div>
-
 </div>
 @endsection

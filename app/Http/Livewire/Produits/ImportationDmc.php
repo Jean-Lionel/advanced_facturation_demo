@@ -11,7 +11,7 @@ use DB;
 
 class ImportationDmc extends Component
 {
-    public $dmc_number = "";
+    public $dmc_number = '';
     public $items = [];
     public $isLoading = false;
     public $reference_dmc = "";
@@ -28,6 +28,10 @@ class ImportationDmc extends Component
         "selectedItems.*.description_paquet" => "required",
         "selectedItems.*.nombre_par_paquet" => "required",
     ];
+
+    public function mount(){
+        $this->dmc_number = env('OBR_DMC', '');
+    }
     
     public function render()
     {
@@ -75,6 +79,7 @@ class ImportationDmc extends Component
         $this->isLoading = false;
         
         if($response->success){
+            
             $this->message = $response->msg;
             $this->reference_dmc = $response->result->reference_dmc;
             $this->items = $response->result->items;
@@ -136,7 +141,7 @@ class ImportationDmc extends Component
                 $attributes = [
                     "system_or_device_id" => env('OBR_USERNAME'),
                     "item_code" => $currentProduct->id,
-                    "item_designation" => $item['item_designation'],
+                    "item_designation" => $currentProduct->name,
                     "item_cost_price" => $item['item_cost_price'],
                     "item_quantity" => $item['item_quantity'],
                     "item_measurement_unit" => $item['description_paquet'],

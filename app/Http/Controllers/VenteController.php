@@ -57,16 +57,16 @@ class VenteController extends Controller
             $key++;
             $body .= <<<EOD
             <tr>
-            <td>  $key </td>
-            <td> $value->code_product </td>
-            <td> $value->name [ $value->unite_mesure]</td>
-            <td> $value->price </td>
-            <td> $value->taux_tva </td>
-            <td> $value->price_tvac </td>
-            <td> $value->quantite </td>
-            <td> $value->date_expiration </td>
-            <td class="d-flex justify-content-around">
-            <button onclick="addToCartProduct($value->id)"  class="btn btn-sm btn-primary" title="Ajouter au panier">+</button>
+            <td class="col-center">{$key}</td>
+            <td>{$value->code_product}</td>
+            <td>{$value->name} [{$value->unite_mesure}]</td>
+            <td class="col-num">{$value->price}</td>
+            <td class="col-num">{$value->taux_tva}</td>
+            <td class="col-num">{$value->price_tvac}</td>
+            <td class="col-num">{$value->quantite}</td>
+            <td>{$value->date_expiration}</td>
+            <td class="col-action">
+            <button type="button" onclick="addToCartProduct({$value->id})" class="btn btn-sm btn-primary btn-add" title="Ajouter au panier">+</button>
             </td>
             </tr>
             EOD;
@@ -78,28 +78,36 @@ class VenteController extends Controller
 
 
     public  static function panierContent(){
-        $body = '<div class="fixTableHead"> <table class="table table-striped table-sm table-bordered">
+        $body = '<div class="fixTableHead vente-table-wrap"><table class="table table-sm vente-table">
         <thead>
-        <tr><th>Produit</th><th>Prix</th><th>Quantite</th><th>Supprimer</th>
+        <tr>
+            <th>Produit</th>
+            <th class="col-num">Prix</th>
+            <th class="col-num">Quantite</th>
+            <th class="col-action">Supprimer</th>
         </tr>
         </thead>
         <tbody id="panier_content">
         ';
 
-        foreach (Cart::content() as $product){
-            $price = getPrice($product->model->price);
-            $body .= <<< EOD
-            </tr>
-            <td>$product->name</td>
-            <td class="text-right">$price</td>
-            <td></td>
-            <td><button onclick="removeToContent('{$product->rowId}')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></td>
-            </tr>
-            EOD;
-
+        if (Cart::content()->isEmpty()) {
+            $body .= '<tr><td colspan="4" class="vente-cart-empty">Aucun produit dans le panier</td></tr>';
         }
 
-        $body .= '</tbody></table> </div>';
+        foreach (Cart::content() as $product){
+            $price = getPrice($product->model->price);
+            $qty = $product->qty;
+            $body .= <<<EOD
+            <tr>
+            <td>{$product->name}</td>
+            <td class="col-num">{$price}</td>
+            <td class="col-num">{$qty}</td>
+            <td class="col-action"><button type="button" onclick="removeToContent('{$product->rowId}')" class="btn btn-sm btn-danger btn-remove" title="Supprimer"><i class="fa fa-trash"></i></button></td>
+            </tr>
+            EOD;
+        }
+
+        $body .= '</tbody></table></div>';
 
         return  $body;
 

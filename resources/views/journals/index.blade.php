@@ -3,165 +3,156 @@
 {{-- Stocke Controller Journal --}}
 
 @section('content')
-@include('products._header_product')
+<div class="app-page">
+    
+    @include('journals.header')
 
-<style>
+    <style>
+    .numbers {
+        white-space: nowrap;
+    }
+    </style>
 
-.numbers {
-    white-space: nowrap;
-}
-
-</style>
-
-<div class="row">
-
-	<div class="col-md-12">
-		@include('journals.header')
-        <div class="row">
-            <form action="" class="col-4">
-                <div class="row">
-                    <div class="col-6">
-                        <span>DU</span>
-                        <input type="date" class="form-control form-control-sm" name="startDate"
-                        value="{{ $startDate }}"
-                        >
+    <div class="app-card mb-3">
+        <div class="app-card-body">
+            <div class="row">
+                <form action="" method="GET" class="col-4 noprint">
+                    <div class="app-form-grid" style="grid-template-columns: 1fr 1fr auto; align-items: end;">
+                        <div class="form-group mb-0">
+                            <label for="startDate">Du</label>
+                            <input
+                                type="date"
+                                id="startDate"
+                                class="form-control form-control-sm"
+                                name="startDate"
+                                value="{{ $startDate }}"
+                            >
+                        </div>
+                        <div class="form-group mb-0">
+                            <label for="endDate">Au</label>
+                            <input
+                                type="date"
+                                id="endDate"
+                                class="form-control form-control-sm"
+                                name="endDate"
+                                value="{{ $endDate }}"
+                            >
+                        </div>
+                        <div class="form-group mb-0">
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                Filtrer
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <span>Au</span>
-                        <input type="date" class="form-control form-control-sm" name="endDate"
-                        value="{{ $endDate }}"
-                        >
+                </form>
+
+                <div class="col-4">
+                    <div class="gap-3 d-flex">
+                        <table class="table table-sm table-striped">
+                            <tr>
+                                <th>DATE</th>
+                                <th>
+                                    DU {{ $startDate  }} AU {{ $endDate }}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>NOMBRE TOTAL DE FACTURE</th>
+                                <th>{{ getPrice($total_facture) }}</th>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="col-6 noprint">
-                        <button type="submit" class="btn btn-info btn-sm">
-                            Ok
-                        </button>
+                </div>
+                <div class="col-4">
+                    <div class="gap-3 d-flex">
+                        <table class="table table-sm table-striped">
+                            <tr>
+                                <th>MONTANT TOTAL DES FACTURE TVAC</th>
+                                <th class="numbers">
+                                {{ getPrice($total_amount) }}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>NOMBRE TOTAL POUR  TVA</th>
+                                <th class="numbers">{{ getPrice($total_tva) }}</th>
+                            </tr>
+                            <tr>
+                                <th>NOMBRE TOTAL POUR  HTVA</th>
+                                <th class="numbers">{{ getPrice($total_amount_tax) }}</th>
+                            </tr>
+                        </table>
                     </div>
-
                 </div>
-            </form>
-
-            <div class="col-4">
-                <div class="gap-3 d-flex">
-                    <table class="table table-sm table-striped">
-                        <tr>
-                            <th>DATE</th>
-                            <th>
-                                DU {{ $startDate  }} AU {{ $endDate }}
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>NOMBRE TOTAL DE FACTURE</th>
-                            <th>{{ getPrice($total_facture) }}</th>
-                        </tr>
-                    </table>
-                </div>
-
-            </div>
-            <div class="col-4">
-                <div class="gap-3 d-flex">
-                    <table class="table table-sm table-striped">
-                        <tr>
-                            <th>MONTANT TOTAL DES FACTURE TVAC</th>
-                            <th class="numbers">
-                            {{ getPrice($total_amount) }}
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>NOMBRE TOTAL POUR  TVA</th>
-                            <th class="numbers">{{ getPrice($total_tva) }}</th>
-                        </tr>
-                        <tr>
-                            <th>NOMBRE TOTAL POUR  HTVA</th>
-                            <th class="numbers">{{ getPrice($total_amount_tax) }}</th>
-                        </tr>
-                    </table>
-                </div>
-
             </div>
         </div>
+    </div>
 
-		<table class="table table-sm">
-			<thead class="table-dark">
-				<tr>
-					<th scope="col">#</th>
-					<th scope="col">PRODUITS</th>
-					<th scope="col">@sortablelink('montant','MONTANT')</th>
-					<th scope="col" class="noprint">
-						@sortablelink('type_paiement', 'MODE DE PAIMENT')
-					</th>
-					<th scope="col" class="noprint">
-                    TYPE DE FACTURE
-					</th>
-                    <th>
-                        TVA
-                    </th>
-					<th scope="col" class="noprint">Action</th>
-				</tr>
-			</thead>
-			<tbody>
+    <div class="app-card">
+        <header class="app-card-header">
+            <h2 class="app-card-heading">Journal des ventes</h2>
+        </header>
 
-
-				@foreach($orders as $key => $order)
-
-				<tr>
-					<th scope="row">{{ $order->id }}</th>
-
-					<td class="">
-						<ul class="">
-							@foreach($order->products as $product)
-							<li>{{ $product['name'] }} | Qte : {{ $product['quantite'] }} |
-							PRIX : {{ getPrice($product['price'] )}}</li>
-							@endforeach
-
-							<li class="text-center list-unstyled">{{ $order->created_at }}</li>
-
-							<li class="">
-                               Client :  <b>{{ $order->client->name ?? "" }}</b> &nbsp; &nbsp; &nbsp; Vendu par : <b>{{ $order->user->name ?? "" }}</b
-                            </li>
-
-
-						</ul>
-
-					</td>
-					<td class="numbers">{{ getPrice($order->amount )}}</td>
-					<td class="noprint">{{ $order->type_paiement ? TYPE_PAYMENT[$order->type_paiement]: ""}}</td>
-					<td class="noprint">{{ $order->invoice_type ?? ""}}</td>
-                    <td class="numbers">
-                        {{ getPrice($order->tax ) }}
-                    </td>
-					<td class="d-flex noprint" >
-
-
-						<a href="{{ route('orders.show', $order) }}" class="mr-2 btn btn-sm btn-success" title="imprimer"> <i class="fa fa-print" ></i></a>
-                        @if ($order->type_paiement == 3)
-                        <form action="{{ route('facture.payer', $order) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit" class="btn btn-sm btn-warning" title="Valider le paiement">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 17l-5-5m5 0l5 5L22 7m-10 5l5-5"/>
-                                </svg>
-                            </button>
-                        </form>
-
-                        @endif
-
-
-					</td>
-
-				</tr>
-
-				@endforeach
-
-			</tbody>
-		</table>
-
-
-	</div>
-
+        <div class="app-card-body--flush">
+            <div class="app-table-wrap">
+                <table class="table table-sm app-table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">PRODUITS</th>
+                            <th scope="col">@sortablelink('montant','MONTANT')</th>
+                            <th scope="col" class="noprint">
+                                @sortablelink('type_paiement', 'MODE DE PAIMENT')
+                            </th>
+                            <th scope="col" class="noprint">
+                            TYPE DE FACTURE
+                            </th>
+                            <th>
+                                TVA
+                            </th>
+                            <th scope="col" class="noprint">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($orders as $key => $order)
+                        <tr>
+                            <th scope="row">{{ $order->id }}</th>
+                            <td class="">
+                                <ul class="">
+                                    @foreach($order->products as $product)
+                                    <li>{{ $product['name'] }} | Qte : {{ $product['quantite'] }} |
+                                    PRIX : {{ getPrice($product['price'] )}}</li>
+                                    @endforeach
+                                    <li class="text-center list-unstyled">{{ $order->created_at }}</li>
+                                    <li class="">
+                                       Client :  <b>{{ $order->client->name ?? "" }}</b> &nbsp; &nbsp; &nbsp; Vendu par : <b>{{ $order->user->name ?? "" }}</b
+                                    </li>
+                                </ul>
+                            </td>
+                            <td class="numbers">{{ getPrice($order->amount )}}</td>
+                            <td class="noprint">{{ $order->type_paiement ? TYPE_PAYMENT[$order->type_paiement]: ""}}</td>
+                            <td class="noprint">{{ $order->invoice_type ?? ""}}</td>
+                            <td class="numbers">
+                                {{ getPrice($order->tax ) }}
+                            </td>
+                            <td class="d-flex noprint" >
+                                <a href="{{ route('orders.show', $order) }}" class="mr-2 btn btn-sm btn-success" title="imprimer"> <i class="fa fa-print" ></i></a>
+                                @if ($order->type_paiement == 3)
+                                <form action="{{ route('facture.payer', $order) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-sm btn-warning" title="Valider le paiement">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 17l-5-5m5 0l5 5L22 7m-10 5l5-5"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-
 @stop

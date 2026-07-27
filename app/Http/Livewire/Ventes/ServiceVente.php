@@ -23,6 +23,7 @@ class ServiceVente extends Component
     public $total_montant = 0;
     public $clientNumber;
     public $customer;
+    public $clientResults = [];
     public $errorMessage;
     public $typePaiement;
     public $invoice_currency = 'BIF';
@@ -50,7 +51,7 @@ class ServiceVente extends Component
         'customer' => 'required',
     ];
     protected $messages = [
-        'clientNumber.required' => 'Le Numero du client est Obligatoire',
+        'clientNumber.required' => 'Le client est obligatoire',
         'typePaiement.required' => 'Type de paiement Obligatoire',
         'typeFacture.required' => 'Type de Facture Obligatoire',
         'customer.required' => 'Le Client est Obligatoire',
@@ -126,25 +127,30 @@ class ServiceVente extends Component
         $this->updateUI();
     }
 
-    public function searchClient(){
-        $clienN = $this->clientNumber;
-        $this->customer = Client::where(function($query) use ($clienN){
+    public function selectClient($clientId)
+    {
+        $this->customer = Client::with('assuranceClients.assurance')->find($clientId);
 
-            if(is_numeric($clienN)){
-                $query->where('id', 'LIKE', "%{$clienN}%")
-                ;
-            }else{
-                $query->where('name', 'LIKE', "%{$clienN}%")
-                ->orWhere('telephone', 'LIKE', "%{$clienN}%")
-                ->orWhere('addresse', 'LIKE', "%{$clienN}%")
-                ;
-            }
-        })->first();
-        if($this->customer == null){
-            $this->errorMessage = "Client non trouvé";
-        }else{
-            $this->errorMessage = "";
+        if (!$this->customer) {
+            $this->errorMessage = 'Client non trouvé';
+            $this->clientResults = [];
+            return;
         }
+
+        $this->clientNumber = $this->customer->name;
+        $this->clientResults = [];
+        $this->errorMessage = '';
+    }
+
+    public function searchClient()
+    {
+        // Kept for compatibility; selection is handled via autocomplete UI like panier.
+        if ($this->customer) {
+            $this->errorMessage = '';
+            return;
+        }
+
+        $this->errorMessage = 'Sélectionnez un client dans la liste';
     }
     public function updateUI(){
         foreach($this->prices as $key => $price ){

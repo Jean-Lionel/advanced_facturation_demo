@@ -1,10 +1,7 @@
-<div>
-    <ul class="list-unstyled">
-        <li>
-            <a href="{{ route('commissionnaires') }}">
-                <i class="fa fa-home"></i>
-                <span>Commissionnaire</span>
-            </a>
-        </li>
-    </ul>
-</div>
+@if (env('APP_USE_ABONEMENT', false))
+<nav class="app-tabs noprint" aria-label="Commissionnaires">
+    <a href="{{ route('commissionnaires') }}">
+        <i class="fa fa-home"></i> Commissionnaire
+    </a>
+</nav>
+@endif
