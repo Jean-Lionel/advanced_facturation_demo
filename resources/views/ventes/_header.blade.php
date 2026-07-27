@@ -2,7 +2,7 @@
 
 <nav class="vente-tabs noprint" aria-label="Navigation vente">
     <a href="{{ route('ventes.index') }}"
-       class="vente-tab {{ request()->routeIs('ventes.index') ? 'is-active' : '' }}">
+       class="vente-tab {{ request()->routeIs(['ventes.index', 'home']) ? 'is-active' : '' }}">
         <i class="fas fa-box-open"></i>
         <span>Vente produits</span>
     </a>

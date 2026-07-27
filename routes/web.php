@@ -59,7 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
             return redirect('/');
         })->name('logout.clear.cache');
 
-    Route::get('/', [VenteController::class, 'index']);
+    Route::get('/', [VenteController::class, 'index'])->name('home');
     Route::get('product/create', [ProductController::class, 'create'])->name('product.create');
     Route::resource('obr_declarations', ObrDeclarationController::class);
     Route::get('obr_declarations_hostory', [ObrDeclarationController::class, 'hostory'])->name('obr_declarations_hostory');

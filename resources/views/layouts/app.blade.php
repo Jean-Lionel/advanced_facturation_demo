@@ -78,7 +78,7 @@
                 {{-- Ventes - Accessible par VENTE et ADMIN --}}
                 @canany(['is-vente', 'is-admin'])
                     <li>
-                        <a href="{{ route('ventes.index') }}" class="{{ setActiveRoute('ventes.*') }}">
+                        <a href="{{ route('ventes.index') }}" class="{{ setActiveRoute(['ventes.*', 'home']) }}">
                             <i class="nav-icon fa fa-shopping-cart" aria-hidden="true"></i>
                             <span class="nav-label">Vente</span>
                         </a>
