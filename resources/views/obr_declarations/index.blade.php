@@ -7,7 +7,7 @@
         <header class="app-card-header">
             <h2 class="app-card-heading">Facture en attente</h2>
             <div class="app-toolbar-actions">
-                <button class="btn btn-sm btn-primary" id="btn_syncronize">Sycnronize</button>
+                <button class="btn btn-sm btn-primary" id="btn_syncronize">Synchroniser</button>
                 <div id="loader_file">
                     <div class="spinner-border text-success" role="status">
                         <span class="sr-only">Loading...</span>
