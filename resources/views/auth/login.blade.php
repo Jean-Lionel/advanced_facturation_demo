@@ -15,7 +15,13 @@
 
         <main class="login-main">
             <header class="login-brand">
-                <p class="login-brand-name">{{ RAISON_ENTREPRISE_HEADER }}</p>
+                <p class="login-brand-name">
+                    <span class="login-brand-text">ADVANCED</span>
+                    <span class="login-brand-last">
+                        FACTURATION
+                        <span class="login-brand-version">v1.1</span>
+                    </span>
+                </p>
                 <p class="login-brand-tagline">Connectez-vous pour continuer</p>
             </header>
 

@@ -93,16 +93,19 @@
                                 <td>{{ $value->description }}</td>
                                 <td>{{ $value->user->name ?? '-' }}</td>
                                 <td>
-                                    <button class="btn btn-outline-danger btn-sm" onclick="confirmDelete(event, {{ $value->id }})">Supprimer</button>
-                                    <form id="delete-form-{{ $value->id }}" action="{{ route('depenses.destroy', $value) }}" method="POST" style="display: none;">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
+                                    <div class="app-table-actions">
+                                        <a href="{{ route('depenses.edit', $value) }}" class="btn btn-outline-info btn-sm">Modifier</a>
+                                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete(event, {{ $value->id }})">Supprimer</button>
+                                        <form id="delete-form-{{ $value->id }}" action="{{ route('depenses.destroy', $value) }}" method="POST" class="d-none">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center">Aucune dépense trouvée.</td>
+                                <td colspan="8" class="text-center text-muted py-4">Aucune dépense trouvée.</td>
                             </tr>
                         @endforelse
                     </tbody>

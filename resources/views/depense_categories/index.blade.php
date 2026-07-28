@@ -19,25 +19,31 @@
                             <th scope="col">#</th>
                             <th scope="col">Nom</th>
                             <th scope="col">Description</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($depenseCategories as $category)
-                        <tr>
-                            <td>{{ $category->id }}</td>
-                            <td>{{ $category->name }}</td>
-                            <td>{{ $category->description }}</td>
-                            <td>
-                                <a href="{{ route('depense-categories.edit', $category) }}" class="btn btn-outline-primary btn-sm">Modifier</a>
-                                <button class="btn btn-outline-danger btn-sm" onclick="confirmDelete(event, {{ $category->id }})">Supprimer</button>
-                                <form id="delete-form-{{ $category->id }}" action="{{ route('depense-categories.destroy', $category) }}" method="POST" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
+                        @forelse ($depenseCategories as $category)
+                            <tr>
+                                <td>{{ $category->id }}</td>
+                                <td>{{ $category->name }}</td>
+                                <td>{{ $category->description }}</td>
+                                <td>
+                                    <div class="app-table-actions">
+                                        <a href="{{ route('depense-categories.edit', $category) }}" class="btn btn-outline-info btn-sm">Modifier</a>
+                                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete(event, {{ $category->id }})">Supprimer</button>
+                                        <form id="delete-form-{{ $category->id }}" action="{{ route('depense-categories.destroy', $category) }}" method="POST" class="d-none">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">Aucune catégorie trouvée.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
