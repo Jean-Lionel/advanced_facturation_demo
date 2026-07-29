@@ -55,12 +55,15 @@ class CheckoutController extends Controller
 
         if ((int) $typePaiement === 3) {
             $request->validate([
+                'montant_paye' => 'nullable|numeric|min:0|max:' . $orderAmount,
                 'montant_restant' => 'nullable|numeric|min:0|max:' . $orderAmount,
             ]);
 
-            $montantRestant = $request->filled('montant_restant')
-                ? (float) $request->montant_restant
-                : $orderAmount;
+            if ($request->filled('montant_paye')) {
+                $montantRestant = max(0, $orderAmount - (float) $request->montant_paye);
+            } elseif ($request->filled('montant_restant')) {
+                $montantRestant = (float) $request->montant_restant;
+            }
         }
 
         // Do this before
