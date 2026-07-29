@@ -32,6 +32,7 @@ class CheckoutController extends Controller
         $validate =
         [
             'client_id' => 'required|exists:clients,id',
+            'type_paiement' => 'required',
             // 'date_facturation' => 'required',
         ];
         if ($request->customer_TIN) {
@@ -47,6 +48,21 @@ class CheckoutController extends Controller
             Session::flash('error', 'Un produit de votre panier ne se trouve plus en stock.');
             return redirect()->route('panier.index');
         }
+
+        $typePaiement = $this->normalizeTypePaiement($request->type_paiement);
+        $orderAmount = round((float) Cart::total(0, '.', ''));
+        $montantRestant = $orderAmount;
+
+        if ((int) $typePaiement === 3) {
+            $request->validate([
+                'montant_restant' => 'nullable|numeric|min:0|max:' . $orderAmount,
+            ]);
+
+            $montantRestant = $request->filled('montant_restant')
+                ? (float) $request->montant_restant
+                : $orderAmount;
+        }
+
         // Do this before
         $order = null;
         try {
@@ -90,11 +106,11 @@ class CheckoutController extends Controller
             }
 
             $order = Order::create([
-                'amount' => round( $tax  + Cart::subtotal()),
+                'amount' => $orderAmount,
                 'total_quantity' => Cart::count(),
                 'total_sacs' => $nombre_sac,
                 'tax' => $tax,
-                'type_paiement' => $request->type_paiement,
+                'type_paiement' => $typePaiement,
                 'amount_tax' => round(Cart::subtotal()),
                 'products'=> serialize($cartInfo),
                 'client'=> $client->toJson(),
@@ -131,13 +147,13 @@ class CheckoutController extends Controller
             $order->save();
             $this->storeTodetailOder($order->id);
             // SEND INVOINCES TO OBR
-            if($request->type_paiement == 'DETTE'){
+            if((int) $typePaiement === 3){
                 //Enregistre les infos dans les dettes
                 PaiementDette::create([
-                    'montant' => Cart::total() ,
-                    'montant_restant' =>Cart::total() ,
+                    'montant' => $orderAmount,
+                    'montant_restant' => $montantRestant,
                     'order_id' =>   $order->id ,
-                    'status' => 'NON PAYE'
+                    'status' => $montantRestant <= 0 ? 'DEJA PAYE' : 'NON PAYE'
                 ]);
             }
             Cart::destroy();
@@ -161,6 +177,19 @@ class CheckoutController extends Controller
             return view($currentModelFacture, compact('order'));
         }
 
+    }
+
+    private function normalizeTypePaiement($typePaiement)
+    {
+        if ($typePaiement === 'CACHE') {
+            return 1;
+        }
+
+        if ($typePaiement === 'DETTE') {
+            return 3;
+        }
+
+        return $typePaiement;
     }
 
     public function thankyou()

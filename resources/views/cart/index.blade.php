@@ -175,15 +175,35 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        @php
+                                            $useCredit = filter_var(env('APP_USE_CREDIT', false), FILTER_VALIDATE_BOOLEAN);
+                                            $cartTotal = Cart::total(0, '.', '');
+                                            $oldTypePaiement = old('type_paiement');
+                                        @endphp
                                         <label for="type_paiement">MODE DE PAIEMENT</label>
-                                        <select required="" class="form-control" name="type_paiement" id="">
+                                        <select required="" class="form-control" name="type_paiement" id="type_paiement">
                                             <option value="">Choisissez ...</option>
-                                            <option value="1">en espèce</option>
-                                            <option value="2">banque</option>
-                                            <option value="3">à crédit</option>
-                                            <option value="4">autres</option>
+                                            <option value="1" {{ (string) $oldTypePaiement === '1' ? 'selected' : '' }}>en espèce</option>
+                                            <option value="2" {{ (string) $oldTypePaiement === '2' ? 'selected' : '' }}>banque</option>
+                                            @if ($useCredit)
+                                                <option value="3" {{ (string) $oldTypePaiement === '3' ? 'selected' : '' }}>à crédit</option>
+                                            @endif
+                                            <option value="4" {{ (string) $oldTypePaiement === '4' ? 'selected' : '' }}>autres</option>
                                         </select>
                                     </div>
+                                    @if ($useCredit)
+                                        <div class="form-group" id="montant_restant_group" style="display: {{ (string) $oldTypePaiement === '3' ? 'block' : 'none' }};">
+                                            <label for="montant_restant">MONTANT RESTANT A PAYER</label>
+                                            <input type="number"
+                                                   min="0"
+                                                   max="{{ $cartTotal }}"
+                                                   step="0.01"
+                                                   name="montant_restant"
+                                                   id="montant_restant"
+                                                   value="{{ old('montant_restant', $cartTotal) }}"
+                                                   class="form-control border-2">
+                                        </div>
+                                    @endif
                                     @if (env('APP_USE_ABONEMENT', false))
                                         <div class="form-group">
                                             <input type="hidden" name="commissionaire_id" id="selectedCommisionnaire">
@@ -246,6 +266,9 @@
 
             <script>
 
+                const useCredit = @json($useCredit ?? false);
+                const cartTotal = @json($cartTotal ?? 0);
+
                 const searchCommissionnaire = async () => {
                     try {
                         const x = await fetch('{{ route('load_commission') }}')
@@ -267,6 +290,23 @@
 
 
                 $(document).ready(async function()  {
+                    const typePaiement = $('#type_paiement');
+                    const montantRestantGroup = $('#montant_restant_group');
+                    const montantRestantInput = $('#montant_restant');
+
+                    function toggleMontantRestant() {
+                        const isCredit = typePaiement.val() === '3';
+                        montantRestantGroup.toggle(useCredit && isCredit);
+                        montantRestantInput.prop('required', useCredit && isCredit);
+
+                        if (useCredit && isCredit && !montantRestantInput.val()) {
+                            montantRestantInput.val(cartTotal);
+                        }
+                    }
+
+                    typePaiement.on('change', toggleMontantRestant);
+                    toggleMontantRestant();
+
                     var tags = await searchCommissionnaire();
                     var clients = await loadingCliens();
 

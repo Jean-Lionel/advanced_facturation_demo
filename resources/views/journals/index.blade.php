@@ -103,6 +103,22 @@
 
 
 				@foreach($orders as $key => $order)
+                @php
+                    $typePaiement = $order->type_paiement;
+                    if ($typePaiement === 'DETTE') {
+                        $typePaiement = 3;
+                    } elseif ($typePaiement === 'CACHE') {
+                        $typePaiement = 1;
+                    }
+                    $typePaiement = is_numeric($typePaiement) ? (int) $typePaiement : $typePaiement;
+                    $dette = $order->dette;
+                    $montantTotalDette = $dette ? (float) $dette->montant : (float) $order->amount;
+                    $montantRestant = $dette ? max(0, (float) $dette->montant_restant) : (float) $order->amount;
+                    $montantDejaPaye = max(0, $montantTotalDette - $montantRestant);
+                    if ($montantRestant > 0 && $dette) {
+                        $typePaiement = 3;
+                    }
+                @endphp
 
 				<tr>
 					<th scope="row">{{ $order->id }}</th>
@@ -125,25 +141,38 @@
 
 					</td>
 					<td class="numbers">{{ getPrice($order->amount )}}</td>
-					<td class="noprint">{{ $order->type_paiement ? TYPE_PAYMENT[$order->type_paiement]: ""}}</td>
+					<td class="noprint">
+                        {{ $typePaiement ? (TYPE_PAYMENT[$typePaiement] ?? $order->type_paiement): ""}}
+                        @if ($typePaiement === 3)
+                            <div>
+                                <small class="{{ $montantRestant > 0 ? 'text-danger' : 'text-success' }}">
+                                    {{ $montantRestant > 0 ? 'Reste : ' . getPrice($montantRestant) : 'Tout est payé' }}
+                                </small>
+                            </div>
+                        @endif
+                    </td>
 					<td class="noprint">{{ $order->invoice_type ?? ""}}</td>
                     <td class="numbers">
                         {{ getPrice($order->tax ) }}
                     </td>
-					<td class="d-flex noprint" >
+					<td class="d-flex flex-wrap noprint" >
 
 
 						<a href="{{ route('orders.show', $order) }}" class="mr-2 btn btn-sm btn-success" title="imprimer"> <i class="fa fa-print" ></i></a>
-                        @if ($order->type_paiement == 3)
-                        <form action="{{ route('facture.payer', $order) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit" class="btn btn-sm btn-warning" title="Valider le paiement">
+                        @if ($typePaiement === 3)
+                            @if ($montantRestant > 0)
+                            <button type="button"
+                                    class="btn btn-sm btn-warning"
+                                    title="Valider le paiement"
+                                    data-toggle="modal"
+                                    data-target="#paymentModal{{ $order->id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
                                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 17l-5-5m5 0l5 5L22 7m-10 5l5-5"/>
                                 </svg>
                             </button>
-                        </form>
+                            @else
+                            <span class="badge badge-success align-self-center">Tout payé</span>
+                            @endif
 
                         @endif
 
@@ -156,6 +185,67 @@
 
 			</tbody>
 		</table>
+
+        @foreach($orders as $order)
+            @php
+                $typePaiement = $order->type_paiement;
+                if ($typePaiement === 'DETTE') {
+                    $typePaiement = 3;
+                } elseif ($typePaiement === 'CACHE') {
+                    $typePaiement = 1;
+                }
+                $typePaiement = is_numeric($typePaiement) ? (int) $typePaiement : $typePaiement;
+                $dette = $order->dette;
+                $montantTotalDette = $dette ? (float) $dette->montant : (float) $order->amount;
+                $montantRestant = $dette ? max(0, (float) $dette->montant_restant) : (float) $order->amount;
+                $montantDejaPaye = max(0, $montantTotalDette - $montantRestant);
+                if ($montantRestant > 0 && $dette) {
+                    $typePaiement = 3;
+                }
+            @endphp
+
+            @if ($typePaiement === 3 && $montantRestant > 0)
+            <div class="modal fade noprint" id="paymentModal{{ $order->id }}" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel{{ $order->id }}" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <form action="{{ route('facture.payer', $order) }}" method="POST" class="modal-content">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="paymentModalLabel{{ $order->id }}">Valider le paiement de la facture #{{ $order->id }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <p class="mb-1">Client : <b>{{ $order->client->name ?? "" }}</b></p>
+                                <p class="mb-1">Montant total : <b>{{ getPrice($montantTotalDette) }}</b></p>
+                                <p class="mb-1">Déjà payé : <b>{{ getPrice($montantDejaPaye) }}</b></p>
+                                <p class="mb-0">Reste à payer : <b class="text-danger">{{ getPrice($montantRestant) }}</b></p>
+                            </div>
+                            <div class="form-group">
+                                <label for="montant_paye_{{ $order->id }}">Montant payé</label>
+                                <input type="number"
+                                       min="0.01"
+                                       max="{{ $montantRestant }}"
+                                       step="0.01"
+                                       name="montant_paye"
+                                       id="montant_paye_{{ $order->id }}"
+                                       value="{{ $montantRestant }}"
+                                       class="form-control"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                            <button type="submit" name="payer_tout" value="1" class="btn btn-success">Payer tout</button>
+                            <button type="submit" class="btn btn-warning">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            @endif
+        @endforeach
 
 
 	</div>

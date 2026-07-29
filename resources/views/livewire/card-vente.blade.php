@@ -50,8 +50,8 @@
                   </th>
 
                    <th scope="row" class="border-0">
-                    {{getPrice($product->model->price_min) . ' - '. getPrice($product->model->price_max)}} 
-                     
+                    {{getPrice($product->model->price_min) . ' - '. getPrice($product->model->price_max)}}
+
                   </th>
 
                   <th>
@@ -107,7 +107,7 @@
             <input required="" type="text" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="form-control border-2">
 
 
-        
+
          </div>
 
          <div class="form-group">
@@ -115,14 +115,36 @@
          </div>
 
 
+          @php
+            $useCredit = filter_var(env('APP_USE_CREDIT', false), FILTER_VALIDATE_BOOLEAN);
+            $cartTotal = Cart::total(0, '.', '');
+            $oldTypePaiement = old('type_paiement');
+          @endphp
+
           <div class="form-group">
             <label for="type_paiement">MODE DE PAIEMENT</label>
-           <select required="" class="form-control" name="type_paiement" id="">
+           <select required="" class="form-control" name="type_paiement" id="type_paiement_card_vente">
              <option value="">Choisissez ...</option>
-             <option value="CACHE">EN CACHE</option>
-             <option value="DETTE">DETTE</option>
+             <option value="1" {{ in_array($oldTypePaiement, ['1', 'CACHE']) ? 'selected' : '' }}>EN CACHE</option>
+             @if ($useCredit)
+             <option value="3" {{ in_array($oldTypePaiement, ['3', 'DETTE']) ? 'selected' : '' }}>CREDIT</option>
+             @endif
            </select>
          </div>
+
+         @if ($useCredit)
+         <div class="form-group" id="montant_restant_card_vente_group" style="display: {{ in_array($oldTypePaiement, ['3', 'DETTE']) ? 'block' : 'none' }};">
+            <label for="montant_restant_card_vente">MONTANT RESTANT A PAYER</label>
+            <input type="number"
+                   min="0"
+                   max="{{ $cartTotal }}"
+                   step="0.01"
+                   name="montant_restant"
+                   id="montant_restant_card_vente"
+                   value="{{ old('montant_restant', $cartTotal) }}"
+                   class="form-control border-2">
+         </div>
+         @endif
 
          <button type="submit" class="btn btn-dark rounded-pill py-2 btn-block">Valider</button>
        </form>
@@ -152,9 +174,37 @@
           </li>
         </ul>
 
-        
+
 
       </div>
     </div>
   </div>
 </div>
+
+@if ($useCredit)
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var typePaiement = document.getElementById('type_paiement_card_vente');
+    var montantRestantGroup = document.getElementById('montant_restant_card_vente_group');
+    var montantRestantInput = document.getElementById('montant_restant_card_vente');
+    var cartTotal = '{{ $cartTotal }}';
+
+    if (!typePaiement || !montantRestantGroup || !montantRestantInput) {
+      return;
+    }
+
+    function toggleMontantRestant() {
+      var isCredit = typePaiement.value === '3' || typePaiement.value === 'DETTE';
+      montantRestantGroup.style.display = isCredit ? 'block' : 'none';
+      montantRestantInput.required = isCredit;
+
+      if (isCredit && !montantRestantInput.value) {
+        montantRestantInput.value = cartTotal;
+      }
+    }
+
+    typePaiement.addEventListener('change', toggleMontantRestant);
+    toggleMontantRestant();
+  });
+</script>
+@endif

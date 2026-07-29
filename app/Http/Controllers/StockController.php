@@ -394,7 +394,15 @@ class StockController extends Controller
             $query->whereBetween('created_at',[$startDate,$endDate]);
         }
         $orders =  $query->where('is_cancelled','=','0')
-                            ->where('type_paiement','=','3')
+                            ->where(function ($query) {
+                                $query->whereHas('dette', function ($query) {
+                                    $query->where('montant_restant', '>', 0);
+                                })->orWhere(function ($query) {
+                                    $query->whereIn('type_paiement', [3, '3', 'DETTE'])
+                                        ->whereDoesntHave('dette');
+                                });
+                            })
+                            ->with('dette')
                             ->sortable()
                             ->latest()
                             ->get();
@@ -409,41 +417,91 @@ class StockController extends Controller
             'total_amount_tax' => $orders->sum('amount_tax'),
         ] );
     }
-    public function FacturePayer(Order $order)
+    public function FacturePayer(Request $request, Order $order)
     {
+        $dette = $order->dette;
+        $montantRestant = $dette ? max(0, (float) $dette->montant_restant) : (float) $order->amount;
+
+        if ($montantRestant <= 0) {
+            $this->markOrderAsPaid($order);
+
+            return redirect()->route('facture.credit')
+                ->with('success', 'Cette facture est déjà totalement payée.');
+        }
+
+        $montantPaye = $request->has('payer_tout') ? $montantRestant : $request->montant_paye;
+        $request->merge(['montant_paye' => $montantPaye]);
+        $request->validate([
+            'montant_paye' => 'required|numeric|min:0.01|max:' . $montantRestant,
+        ]);
+
         DB::beginTransaction();
 
         try {
-            $oldValues = $order->getOriginal();
+            $dette = PaiementDette::where('order_id', $order->id)->first();
 
-
-            if ($order->update_info) {
-                $existingUpdates = json_decode($order->update_info, true);
-                $existingUpdates[] = [
-                    'updated_at' => now(),
-                    'old_values' => $oldValues,
-                ];
-                $order->update_info = json_encode($existingUpdates);
-            } else {
-                $order->update_info = json_encode([
-                    [
-                        'updated_at' => now(),
-                        'old_values' => $oldValues,
-                    ]
+            if (!$dette) {
+                $dette = PaiementDette::create([
+                    'montant' => $order->amount,
+                    'montant_restant' => $order->amount,
+                    'order_id' => $order->id,
+                    'status' => 'NON PAYE',
                 ]);
             }
 
-            $order->type_paiement = 1;
-            $order->save();
+            $dette->montant_restant = max(0, (float) $dette->montant_restant - (float) $montantPaye);
+
+            if ($dette->montant_restant <= 0) {
+                $dette->status = 'DEJA PAYE';
+            }
+
+            $dette->save();
+
+            DetailPaimentDette::create([
+                'paiement_dette_id' => $dette->id,
+                'montant' => $montantPaye,
+            ]);
+
+            if ($dette->montant_restant <= 0) {
+                $this->markOrderAsPaid($order);
+            }
 
             DB::commit();
 
-            return redirect()->route('facture.credit');
+            return redirect()->route('facture.credit')->with('success', 'Paiement enregistré avec succès.');
         }catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', $e->getMessage());
         }
 
+    }
+
+    private function markOrderAsPaid(Order $order)
+    {
+        if ((int) $order->type_paiement === 1) {
+            return;
+        }
+
+        $oldValues = $order->getOriginal();
+
+        if ($order->update_info) {
+            $existingUpdates = json_decode($order->update_info, true);
+            $existingUpdates[] = [
+                'updated_at' => now(),
+                'old_values' => $oldValues,
+            ];
+            $order->update_info = json_encode($existingUpdates);
+        } else {
+            $order->update_info = json_encode([
+                [
+                    'updated_at' => now(),
+                    'old_values' => $oldValues,
+                ]
+            ]);
+        }
+
+        $order->type_paiement = 1;
+        $order->save();
     }
 
 
