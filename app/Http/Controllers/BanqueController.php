@@ -9,13 +9,22 @@ use Illuminate\Http\Request;
 
 class BanqueController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            abort_unless(filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN), 404);
+
+            return $next($request);
+        });
+    }
+
     /**
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $banques = Banque::all();
+        $banques = Banque::latest()->paginate(20);
 
         return view('banque.index', compact('banques'));
     }
@@ -35,11 +44,15 @@ class BanqueController extends Controller
      */
     public function store(BanqueStoreRequest $request)
     {
-        $banque = Banque::create($request->validated());
+        $data = $request->validated();
+        $data['user_id'] = auth()->id() ?? 1;
+        $data['is_active'] = $request->boolean('is_active');
+
+        $banque = Banque::create($data);
 
         $request->session()->flash('banque.id', $banque->id);
 
-        return redirect()->route('banque.index');
+        return redirect()->route('banque.index')->with('success', 'Banque enregistrée avec succès.');
     }
 
     /**
@@ -69,11 +82,14 @@ class BanqueController extends Controller
      */
     public function update(BanqueUpdateRequest $request, Banque $banque)
     {
-        $banque->update($request->validated());
+        $data = $request->validated();
+        $data['is_active'] = $request->boolean('is_active');
+
+        $banque->update($data);
 
         $request->session()->flash('banque.id', $banque->id);
 
-        return redirect()->route('banque.index');
+        return redirect()->route('banque.index')->with('success', 'Banque modifiée avec succès.');
     }
 
     /**
@@ -85,6 +101,6 @@ class BanqueController extends Controller
     {
         $banque->delete();
 
-        return redirect()->route('banque.index');
+        return redirect()->route('banque.index')->with('success', 'Banque supprimée avec succès.');
     }
 }

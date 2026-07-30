@@ -32,16 +32,10 @@
             font-size: 18px;
             line-height: 1.2;
         }
-        .bank-details{
+        .bank-details-line{
             margin-top: 8px;
             font-size: 12px;
-        }
-        .bank-details th,
-        .bank-details td{
-            padding: 3px 5px;
-        }
-        .bank-details th{
-            text-align: left;
+            text-align: center;
         }
     </style>
 </head>
@@ -215,32 +209,18 @@
                         {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
                     </div>
 
-                    <table class="bank-details">
-                        <thead>
-                            <tr>
-                                <th>Nom de la banque</th>
-                                <th>N° compte</th>
-                                <th>Devise</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>BANQUE COMMERCIALE DU BURUNDI - BANCOBU</td>
-                                <td>19051020101-03</td>
-                                <td>BIF</td>
-                            </tr>
-                            <tr>
-                                <td>BCB - BANK</td>
-                                <td>21654870000</td>
-                                <td>BIF</td>
-                            </tr>
-                            <tr>
-                                <td>BCB - BANK</td>
-                                <td>21654870013</td>
-                                <td>USD</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    @php
+                        $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
+                        $invoiceBanque = $useBanque ? ($order->banque ?? null) : null;
+                    @endphp
+
+                    @if ($invoiceBanque)
+                        <div class="bank-details-line">
+                            Banque : <b>{{ $invoiceBanque->name ?? '' }}</b>
+                            | N° compte : <b>{{ $invoiceBanque->account_number ?? '' }}</b>
+                            | Devise : <b>{{ $invoiceBanque->currency ?? '' }}</b>
+                        </div>
+                    @endif
                 </article>
             </div>
         </div>

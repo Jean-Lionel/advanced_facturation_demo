@@ -181,6 +181,9 @@
                                             $oldTypePaiement = old('type_paiement');
                                             $oldMontantPaye = old('montant_paye');
                                             $oldMontantRestant = old('montant_restant');
+                                            $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
+                                            $oldBanqueId = old('banque_id');
+                                            $banques = $useBanque ? \App\Models\Banque::active()->orderBy('name')->get() : collect();
 
                                             if ($oldMontantPaye === null && $oldMontantRestant !== null) {
                                                 $oldMontantPaye = max(0, (float) $cartTotal - (float) $oldMontantRestant);
@@ -198,6 +201,19 @@
                                             <option value="4" {{ (string) $oldTypePaiement === '4' ? 'selected' : '' }}>autres</option>
                                         </select>
                                     </div>
+                                    @if ($useBanque)
+                                        <div class="form-group">
+                                            <label for="banque_id">BANQUE</label>
+                                            <select class="form-control" name="banque_id" id="banque_id">
+                                                <option value="">Choisissez ...</option>
+                                                @foreach ($banques as $banque)
+                                                    <option value="{{ $banque->id }}" {{ (string) $oldBanqueId === (string) $banque->id ? 'selected' : '' }}>
+                                                        {{ $banque->display_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
                                     @if ($useCredit)
                                         <div id="montant_restant_group" style="display: {{ (string) $oldTypePaiement === '3' ? 'block' : 'none' }};">
                                             <div class="form-group">

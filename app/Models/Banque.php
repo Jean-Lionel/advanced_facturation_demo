@@ -10,7 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property int $user_id
  * @property string $name
+ * @property string $account_name
+ * @property string $account_number
+ * @property string $account_type
+ * @property string $currency
  * @property string $description
+ * @property bool $is_active
  * @property \Carbon\Carbon $deleted_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
@@ -34,7 +39,18 @@ class Banque extends Model
     protected $casts = [
         'id' => 'integer',
         'user_id' => 'integer',
+        'is_active' => 'boolean',
     ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function getDisplayNameAttribute()
+    {
+        return trim($this->name . ' - ' . $this->account_number . ' (' . $this->currency . ')');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

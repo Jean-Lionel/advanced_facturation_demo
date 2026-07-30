@@ -13,6 +13,11 @@
         <li class="list-group-item">
             <a href="{{ route('env_settings.index') }}" class=" {{ request()->routeIs('env_settings.*') ? 'active' : '' }} ">Paramètres</a>
         </li>
+        @if (filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN))
+            <li class="list-group-item">
+                <a href="{{ route('banque.index') }}" class=" {{ request()->routeIs('banque.*') ? 'active' : '' }} ">Banques</a>
+            </li>
+        @endif
     </ul>
 
     @if (session('succes_message'))
