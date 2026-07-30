@@ -17,9 +17,31 @@
             justify-content: center;
             align-content: center;
         }
+        .header-facture{
+            align-items: center;
+            gap: 12px;
+            min-height: 52px;
+        }
         .img_logo{
-            width: 250px;
-            height: 250px;
+            width: auto;
+            height: 48px;
+            max-width: 120px;
+            object-fit: contain;
+        }
+        .invoice-company-name{
+            font-size: 18px;
+            line-height: 1.2;
+        }
+        .bank-details{
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        .bank-details th,
+        .bank-details td{
+            padding: 3px 5px;
+        }
+        .bank-details th{
+            text-align: left;
         }
     </style>
 </head>
@@ -48,7 +70,7 @@
                     @endif
 
                     <div style="width: 100%;">
-                        <h3>{{ $order->company->tp_name ?? "" }} </h3>
+                        <h3 class="invoice-company-name">{{ $order->company->tp_name ?? "" }} </h3>
                         {{-- <h3>{{COMPANY_DESCRIPTION}} </h3>
                         <h3>
                         {{BOITE_POSTAL}}
@@ -192,6 +214,33 @@
                     <div class="element-center">
                         {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
                     </div>
+
+                    <table class="bank-details">
+                        <thead>
+                            <tr>
+                                <th>Nom de la banque</th>
+                                <th>N° compte</th>
+                                <th>Devise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BANQUE COMMERCIALE DU BURUNDI - BANCOBU</td>
+                                <td>19051020101-03</td>
+                                <td>BIF</td>
+                            </tr>
+                            <tr>
+                                <td>BCB - BANK</td>
+                                <td>21654870000</td>
+                                <td>BIF</td>
+                            </tr>
+                            <tr>
+                                <td>BCB - BANK</td>
+                                <td>21654870013</td>
+                                <td>USD</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </article>
             </div>
         </div>
