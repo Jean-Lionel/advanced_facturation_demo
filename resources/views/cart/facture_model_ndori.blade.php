@@ -113,6 +113,20 @@
                             <p>Centre Fiscal : <b>{{ $order->company->tp_fiscal_center }}</b></p>
                             <p>{{ "Secteur d'activité" }} : <b>{{ $order->company->tp_activity_sector }}</b></p>
                             <p>Forme juridique : <b>{{ $order->company->tp_legal_form }}</b></p>
+
+                            @php
+                                $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
+                                $invoiceBanque = $useBanque ? ($order->banque ?? null) : null;
+                            @endphp
+
+                            @if ($invoiceBanque)
+                            <br>
+                                <p>Banque : <b>{{ $invoiceBanque->name ?? '' }}</b></p>
+                                <p>N° compte : <b>{{ $invoiceBanque->account_number ?? '' }}</b></p>
+                                <p>Devise : <b>{{ $invoiceBanque->currency ?? '' }}</b></p>
+                                <div class="line"></div>
+
+                            @endif
                         </div>
                     </div>
                 </article>
@@ -209,18 +223,7 @@
                         {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
                     </div>
 
-                    @php
-                        $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
-                        $invoiceBanque = $useBanque ? ($order->banque ?? null) : null;
-                    @endphp
 
-                    @if ($invoiceBanque)
-                        <div class="bank-details-line">
-                            Banque : <b>{{ $invoiceBanque->name ?? '' }}</b>
-                            | N° compte : <b>{{ $invoiceBanque->account_number ?? '' }}</b>
-                            | Devise : <b>{{ $invoiceBanque->currency ?? '' }}</b>
-                        </div>
-                    @endif
                 </article>
             </div>
         </div>
