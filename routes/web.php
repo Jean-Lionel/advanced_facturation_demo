@@ -189,7 +189,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('facture/credit', [StockController::class ,'FactureCredit'])->name('facture.credit');
     Route::put('facture/payer/{order}', [StockController::class ,'FacturePayer'])->name('facture.payer');
     // proformat
-    Route::resource('proformats', ProformatController::class);
+    Route::resource('proformats', ProformatController::class)->names('proformat');
 
     // Routes pour les types de versement
     Route::resource('versementTypes', App\Http\Controllers\VersementTypeController::class)
