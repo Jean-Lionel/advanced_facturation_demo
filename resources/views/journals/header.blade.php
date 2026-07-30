@@ -19,7 +19,7 @@
     <a href="{{ route('journal_sort_history') }}" class="{{ setActiveRoute('journal_sort_history') }}">
         <span class="fa fa-file-archive"></span> Historique facture
     </a>
-    <a href="{{ route('proformats.index') }}" class="{{ setActiveRoute('proformat.index') }}">
+    <a href="{{ route('proformat.index') }}" class="{{ setActiveRoute('proformat.index') }}">
         <span class="fa fa-briefcase"></span> Proformas
     </a>
     <a href="{{ route('facture.search') }}" class="{{ setActiveRoute('facture.search') }}">
