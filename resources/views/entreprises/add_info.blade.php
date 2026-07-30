@@ -84,26 +84,55 @@
 
                             <!-- Right Column: Bank & Social -->
                             <div class="col-md-6">
-                                <h5 class="mb-4 text-muted"><i class="fas fa-university mr-2"></i>Banque & Réseaux Sociaux</h5>
+                                <h5 class="mb-4 text-muted"><i class="fas fa-university mr-2"></i>Banques & Réseaux Sociaux</h5>
 
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="tp_bank" class="font-weight-bold">{{ __('Banque') }}</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-university"></i></span>
-                                            </div>
-                                            <input id="tp_bank" type="text" class="form-control" name="tp_bank" value="{{ old('tp_bank', $entreprise->tp_bank ?? '') }}" placeholder="Nom de la banque">
-                                        </div>
+                                <!-- Section Banques -->
+                                <div class="card mb-3 border">
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                                        <span class="font-weight-bold"><i class="fas fa-university mr-2"></i>Comptes Bancaires</span>
+                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addBanqueModal">
+                                            <i class="fas fa-plus"></i> Ajouter
+                                        </button>
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="tp_account_number" class="font-weight-bold">{{ __('Numéro de Compte') }}</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-file-invoice-dollar"></i></span>
+                                    <div class="card-body p-2">
+                                        @if($banques->count() > 0)
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-hover mb-0">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th>Banque</th>
+                                                            <th>N° Compte</th>
+                                                            <th class="text-center" style="width: 100px;">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($banques as $banque)
+                                                            <tr>
+                                                                <td>
+                                                                    {{ $banque->name }}
+                                                                    @if($banque->is_default)
+                                                                        <span class="badge badge-success ml-1">Par défaut</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{ $banque->account_number ?? '-' }}</td>
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#editBanqueModal{{ $banque->id }}" title="Modifier">
+                                                                        <i class="fas fa-edit"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-xs btn-danger" onclick="confirmDeleteBanque({{ $banque->id }})" title="Supprimer">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                            <input id="tp_account_number" type="text" class="form-control" name="tp_account_number" value="{{ old('tp_account_number', $entreprise->tp_account_number ?? '') }}" placeholder="XXXX-XXXX-XXXX">
-                                        </div>
+                                        @else
+                                            <p class="text-muted text-center mb-0 py-2">
+                                                <i class="fas fa-info-circle mr-1"></i> Aucune banque enregistrée
+                                            </p>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -145,6 +174,117 @@
     </div>
 </div>
 
+<!-- Modal Ajouter Banque -->
+<div class="modal fade" id="addBanqueModal" tabindex="-1" role="dialog" aria-labelledby="addBanqueModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{{ route('entreprises.store_banque') }}" method="POST">
+                @csrf
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="addBanqueModalLabel"><i class="fas fa-university mr-2"></i>Ajouter une Banque</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="banque_name" class="font-weight-bold">Nom de la Banque <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="banque_name" name="name" required placeholder="Ex: BCB, BANCOBU, IBB...">
+                    </div>
+                    <div class="form-group">
+                        <label for="banque_account_number" class="font-weight-bold">Numéro de Compte</label>
+                        <input type="text" class="form-control" id="banque_account_number" name="account_number" placeholder="Ex: 12345678901234">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="banque_swift_code" class="font-weight-bold">Code SWIFT</label>
+                            <input type="text" class="form-control" id="banque_swift_code" name="swift_code" placeholder="Ex: BCBUBIBU">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="banque_iban" class="font-weight-bold">IBAN</label>
+                            <input type="text" class="form-control" id="banque_iban" name="iban" placeholder="Ex: BI00...">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="banque_description" class="font-weight-bold">Description</label>
+                        <textarea class="form-control" id="banque_description" name="description" rows="2" placeholder="Notes supplémentaires..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="banque_is_default" name="is_default">
+                            <label class="custom-control-label" for="banque_is_default">Définir comme banque par défaut</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modals Modifier Banque -->
+@foreach($banques as $banque)
+<div class="modal fade" id="editBanqueModal{{ $banque->id }}" tabindex="-1" role="dialog" aria-labelledby="editBanqueModalLabel{{ $banque->id }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{{ route('entreprises.update_banque', $banque->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="editBanqueModalLabel{{ $banque->id }}"><i class="fas fa-edit mr-2"></i>Modifier la Banque</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="font-weight-bold">Nom de la Banque <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="name" value="{{ $banque->name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Numéro de Compte</label>
+                        <input type="text" class="form-control" name="account_number" value="{{ $banque->account_number }}">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-bold">Code SWIFT</label>
+                            <input type="text" class="form-control" name="swift_code" value="{{ $banque->swift_code }}">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-bold">IBAN</label>
+                            <input type="text" class="form-control" name="iban" value="{{ $banque->iban }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Description</label>
+                        <textarea class="form-control" name="description" rows="2">{{ $banque->description }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="edit_banque_is_default{{ $banque->id }}" name="is_default" {{ $banque->is_default ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="edit_banque_is_default{{ $banque->id }}">Définir comme banque par défaut</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-info"><i class="fas fa-save mr-1"></i> Mettre à jour</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Formulaire caché pour supprimer la banque -->
+<form id="deleteBanqueForm{{ $banque->id }}" action="{{ route('entreprises.destroy_banque', $banque->id) }}" method="POST" style="display: none;">
+    @csrf
+    @method('DELETE')
+</form>
+@endforeach
+
 @section('javascript')
 <script>
     // Custom file input label update
@@ -163,6 +303,13 @@
             document.getElementById('no-logo-text').classList.add('d-none');
         };
         reader.readAsDataURL(event.target.files[0]);
+    }
+
+    // Confirmation de suppression de banque
+    function confirmDeleteBanque(banqueId) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer cette banque ?')) {
+            document.getElementById('deleteBanqueForm' + banqueId).submit();
+        }
     }
 </script>
 @endsection

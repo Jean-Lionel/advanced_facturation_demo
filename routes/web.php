@@ -77,6 +77,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('entreprises', EntrepriseController::class);
     Route::get('entreprises.add_info', [EntrepriseController::class , 'add_info'])->name('entreprises.add_info');
     Route::post('entreprises/store_info', [EntrepriseController::class, 'store_info'])->name('entreprises.store_info');
+    Route::post('entreprises/store_banque', [EntrepriseController::class, 'store_banque'])->name('entreprises.store_banque');
+    Route::put('entreprises/update_banque/{banque}', [EntrepriseController::class, 'update_banque'])->name('entreprises.update_banque');
+    Route::delete('entreprises/destroy_banque/{banque}', [EntrepriseController::class, 'destroy_banque'])->name('entreprises.destroy_banque');
     Route::get('backup_database', [EntrepriseController::class , 'backup_database'])->name('backup_database');
     Route::get('depenses/export/excel', [DepenseController::class, 'exportExcel'])->name('depenses.export.excel');
     Route::get('depenses/export/pdf', [DepenseController::class, 'exportPdf'])->name('depenses.export.pdf');

@@ -14,7 +14,16 @@ class Entreprise extends Model
 
     public static function currentEntreprise()
     {
-        return Entreprise::where('is_actif', 1)->first() ?? Entreprise::latest()->first() ;
+        return Entreprise::where('is_actif', 1)->first() ?? Entreprise::latest()->first();
+    }
 
+    public function banques()
+    {
+        return $this->hasMany(Banque::class);
+    }
+
+    public function defaultBanque()
+    {
+        return $this->hasOne(Banque::class)->where('is_default', true);
     }
 }
