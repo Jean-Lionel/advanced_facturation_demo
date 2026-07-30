@@ -134,6 +134,20 @@
             </select>
             </div>
 
+            @if (filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN))
+                <div>
+                    <label for="banque_id_service">BANQUE</label>
+                    <select wire:model="banqueId" id="banque_id_service">
+                        <option value="">Choisissez ...</option>
+                        @foreach ($banques as $banque)
+                            <option value="{{ $banque->id }}">
+                                {{ $banque->display_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
+
             <div>
                 <label for="">TYPE DE MONNAIE</label>
                 <select wire:model="invoice_currency" name="invoice_currency" id="">

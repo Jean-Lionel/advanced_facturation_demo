@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Ventes;
 
 use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Client;
+use App\Models\Banque;
 use App\Models\Entreprise;
 use App\Models\Order;
 use App\Models\Proformat;
@@ -25,6 +26,7 @@ class ServiceVente extends Component
     public $customer;
     public $errorMessage;
     public $typePaiement;
+    public $banqueId;
     public $invoice_currency = 'BIF';
     public $typeFacture = 'FACTURE';
     public $parClient = 0;
@@ -39,7 +41,13 @@ class ServiceVente extends Component
 
     public function render()
     {
-        return view('livewire.ventes.service-vente');
+        $banques = collect();
+
+        if (filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN)) {
+            $banques = Banque::active()->orderBy('name')->get();
+        }
+
+        return view('livewire.ventes.service-vente', compact('banques'));
     }
 
     protected $rules = [
@@ -65,6 +73,12 @@ class ServiceVente extends Component
         try{
             DB::beginTransaction();
             $products =  $this->extractCart();
+            $banque = null;
+
+            if (filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN) && $this->banqueId) {
+                $banque = Banque::active()->findOrFail($this->banqueId);
+            }
+
             $orderData = [
                 'amount' => array_sum(array_values($this->pricesTVAC)),
                 'total_quantity' => count($this->table_length),
@@ -88,6 +102,12 @@ class ServiceVente extends Component
                 'assurance_id' => $this->assuranceID,
                 'assurance_name' => $this->assuranceName,
             ];
+
+            if ($this->typeFacture == 'FACTURE') {
+                $orderData['banque_id'] = $banque->id ?? null;
+                $orderData['banque'] = $banque ? $banque->toJson() : null;
+            }
+
             $order = null ;
             if($this->typeFacture == 'FACTURE'){
                 $order = Order::create($orderData);
