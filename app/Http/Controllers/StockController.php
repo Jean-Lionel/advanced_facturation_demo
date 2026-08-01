@@ -236,9 +236,30 @@ class StockController extends Controller
             'total_amount_tax' => $orders->sum('amount_tax'),
         ] );
     }
-    public function fiche_stock(){
-        $follow_products = FollowProduct::latest()->get();
-        return view('journals.fiche_stock', compact('follow_products'));
+    public function fiche_stock(Request $request){
+        $start_date = $request->query('start_date') ?? Carbon::now()->startOfMonth()->format('Y-m-d');
+        $end_date = $request->query('end_date') ?? Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        $follow_products = FollowProduct::whereDate('created_at', '>=' , $start_date)
+                                        ->whereDate('created_at','<=', $end_date)
+                                        ->latest()
+                                        ->get();
+
+        $ventes = $follow_products->where('action', 'VENTE');
+        $total_quantite_vendue = $ventes->sum('quantite');
+        $total_pv_vendu = $ventes->sum(function ($product) {
+            $article = json_decode($product->details);
+
+            return floatval($article->price ?? 0) * floatval($product->quantite ?? 0);
+        });
+
+        return view('journals.fiche_stock', compact(
+            'follow_products',
+            'start_date',
+            'end_date',
+            'total_quantite_vendue',
+            'total_pv_vendu'
+        ));
     }
 
     public function journal_history(){
