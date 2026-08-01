@@ -40,6 +40,7 @@
                     <th>CODE</th>
                     <th>@sortablelink('name','Désignation')</th>
                     <th>TVA (%)</th>
+                    <th>Commission (%)</th>
                     <th>@sortablelink('price','P.U.')</th>
                     <th>@sortablelink('quantite','Qté')</th>
                     <th>@sortablelink('unite_mesure','Unité')</th>
@@ -57,6 +58,7 @@
                         <td>{{ $value->code_product }}</td>
                         <td>{{ $value->name }}</td>
                         <td>{{ $value->taux_tva }}</td>
+                        <td>{{ $value->commission }}</td>
                         <td>{{ $value->price }}</td>
                         <td class="{{ $value->quantite >= $value->quantite_alert ? 'bg-success text-white' : 'bg-danger text-white' }}">
                             {{ $value->quantite }}

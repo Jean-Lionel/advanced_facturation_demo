@@ -72,6 +72,18 @@
 
     <div class="col-md-2">
         <div class="form-group">
+            <label for="commission">COMMISSION (%)</label>
+            <input type="number"
+            min="0"
+            step="any"
+            class="form-control {{$errors->has('commission') ? 'is-invalid' : 'is-valid' }}" id="commission" name="commission" value="{{ old('commission') ?? $product->commission?? 0 }}">
+
+            {!! $errors->first('commission', '<small class="help-block invalid-feedback">:message</small>') !!}
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="form-group">
             <label for="price_max">PRIX DE REVIENT  TVAC</label>
             <input type="number"
             step="any"
@@ -175,6 +187,24 @@
        const tva = document.querySelector('#taux_tva');
        const price_tvac  = document.querySelector('#price_tvac');
        const price = document.querySelector('#price');
+       const price_min = document.querySelector('#price_min');
+       const commission = document.querySelector('#commission');
+
+       function normalizeNumber(value) {
+           const number = parseFloat(String(value || '').replace(',', '.'));
+           return isNaN(number) ? 0 : number;
+       }
+
+       function updatePrixVenteDepuisCommission() {
+           const prixAchat = normalizeNumber(price_min.value);
+           const tauxCommission = normalizeNumber(commission.value) / 100;
+
+           price.value = prixVenteAvecCommission(prixAchat, tauxCommission);
+           price_tvac.value = prixVenteTvac(price.value, (tva.value / 100));
+       }
+
+       price_min.addEventListener('input', updatePrixVenteDepuisCommission);
+       commission.addEventListener('input', updatePrixVenteDepuisCommission);
 
        price_tvac.addEventListener('input', function(e){
           price.value = prixVenteHorsTva(price_tvac.value, (tva.value / 100))
@@ -182,7 +212,6 @@
 
        tva.addEventListener('input', function(e){
            price_tvac.value = prixVenteTvac(price.value ,(tva.value / 100))
-           price.value = prixVenteHorsTva(price_tvac.value, (tva.value / 100))
        })
 
        price.addEventListener('input', function(e){
@@ -198,6 +227,11 @@
     function prixVenteTvac(price, taux){
         const res = price * (1 + taux );
         return ARRONDIR_RESULTAT ? res.toFixed(2) : Math.round(price * (1 + taux ));
+    }
+
+    function prixVenteAvecCommission(price, taux){
+        const res = parseFloat(price || 0) + (parseFloat(price || 0) * taux);
+        return ARRONDIR_RESULTAT ? res.toFixed(2) : Math.round(res);
     }
 
 </script>

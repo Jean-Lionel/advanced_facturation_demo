@@ -139,11 +139,15 @@ class ProductController extends Controller
             'unite_mesure' => 'required',
             'taux_tva' => 'required',
             'price_min' => 'nullable',
+            'commission' => 'nullable|numeric|min:0',
             'quantite' => 'numeric|min:0',
             'quantite_alert' => 'numeric|min:0',
         ]);
         if(!$request->price_min){
             $request->merge(['price_min' => 0]);
+        }
+        if(!$request->commission){
+            $request->merge(['commission' => 0]);
         }
         Product::create($request->all());
 
@@ -173,10 +177,14 @@ class ProductController extends Controller
             // 'date_expiration' => 'required|date',
             'quantite' => 'numeric|min:0',
             'price_min' => 'numeric|min:0',
+            'commission' => 'nullable|numeric|min:0',
             'taux_tva' => 'numeric|min:0',
             'quantite_alert' => 'numeric|min:0',
 
         ]);
+        if(!$request->commission){
+            $request->merge(['commission' => 0]);
+        }
         $p = $product->toArray();
         ProductHistory::create([
             'product_id' => $product->id,
