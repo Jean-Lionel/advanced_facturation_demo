@@ -40,7 +40,9 @@
                     <th>CODE</th>
                     <th>@sortablelink('name','Désignation')</th>
                     <th>TVA (%)</th>
-                    <th>Commission (%)</th>
+                    @if (filter_var(env('APP_USE_COMMISSION', false), FILTER_VALIDATE_BOOLEAN))
+                        <th>Commission (%)</th>
+                    @endif
                     <th>@sortablelink('price','P.U.')</th>
                     <th>@sortablelink('quantite','Qté')</th>
                     <th>@sortablelink('unite_mesure','Unité')</th>
@@ -58,7 +60,9 @@
                         <td>{{ $value->code_product }}</td>
                         <td>{{ $value->name }}</td>
                         <td>{{ $value->taux_tva }}</td>
-                        <td>{{ $value->commission }}</td>
+                        @if (filter_var(env('APP_USE_COMMISSION', false), FILTER_VALIDATE_BOOLEAN))
+                            <td>{{ $value->commission }}</td>
+                        @endif
                         <td>{{ $value->price }}</td>
                         <td class="{{ $value->quantite >= $value->quantite_alert ? 'bg-success text-white' : 'bg-danger text-white' }}">
                             {{ $value->quantite }}
