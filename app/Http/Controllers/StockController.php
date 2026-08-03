@@ -242,6 +242,7 @@ class StockController extends Controller
 
         $follow_products = FollowProduct::whereDate('created_at', '>=' , $start_date)
                                         ->whereDate('created_at','<=', $end_date)
+                                        ->where('action', 'VENTE')
                                         ->latest()
                                         ->get();
 
