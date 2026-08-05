@@ -239,27 +239,55 @@ class StockController extends Controller
     public function fiche_stock(Request $request){
         $start_date = $request->query('start_date') ?? Carbon::now()->startOfMonth()->format('Y-m-d');
         $end_date = $request->query('end_date') ?? Carbon::now()->endOfMonth()->format('Y-m-d');
+        $product_name = $request->query('product_name');
 
-        $follow_products = FollowProduct::whereDate('created_at', '>=' , $start_date)
-                                        ->whereDate('created_at','<=', $end_date)
-                                        ->where('action', 'VENTE')
-                                        ->latest()
-                                        ->get();
+        $query = FollowProduct::whereDate('created_at', '>=' , $start_date)
+                                ->whereDate('created_at','<=', $end_date)
+                                ->where('action', 'VENTE');
+
+        if($product_name){
+            $query->where('details', 'like', '%' . $product_name . '%');
+        }
+
+        $follow_products = $query->latest()->get();
 
         $ventes = $follow_products->where('action', 'VENTE');
         $total_quantite_vendue = $ventes->sum('quantite');
+        $total_pa_vendu = $ventes->sum(function ($product) {
+            $article = json_decode($product->details);
+
+            return floatval($article->price_min ?? 0) * floatval($product->quantite ?? 0);
+        });
+        $total_commission_vendue = $ventes->sum(function ($product) {
+            $article = json_decode($product->details);
+            $prixAchat = floatval($article->price_min ?? 0);
+            $commission = floatval($article->commission ?? 0) / 100;
+
+            return $prixAchat * $commission * floatval($product->quantite ?? 0);
+        });
+        $total_tva_vendue = $ventes->sum(function ($product) {
+            $article = json_decode($product->details);
+
+            return floatval($article->price_min ?? 0) * 0.18 * floatval($product->quantite ?? 0);
+        });
         $total_pv_vendu = $ventes->sum(function ($product) {
             $article = json_decode($product->details);
 
             return floatval($article->price ?? 0) * floatval($product->quantite ?? 0);
         });
+        $benefice = $total_pv_vendu - ($total_pa_vendu + $total_commission_vendue + $total_tva_vendue);
 
         return view('journals.fiche_stock', compact(
             'follow_products',
             'start_date',
             'end_date',
+            'product_name',
             'total_quantite_vendue',
-            'total_pv_vendu'
+            'total_pa_vendu',
+            'total_commission_vendue',
+            'total_tva_vendue',
+            'total_pv_vendu',
+            'benefice'
         ));
     }
 
