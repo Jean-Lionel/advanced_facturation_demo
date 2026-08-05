@@ -280,7 +280,9 @@ class StockController extends Controller
             $total_tva_vendue = $ventes->sum(function ($product) {
                 $article = json_decode($product->details);
 
-                return floatval($article->price_min ?? 0) * 0.18 * floatval($product->quantite ?? 0);
+                $commission = floatval($article->commission ?? 0) / 100;
+
+                return floatval($article->price_min ?? 0) * $commission * 0.18 * floatval($product->quantite ?? 0);
             });
             $benefice = $total_pv_vendu - ($total_pa_vendu + $total_commission_vendue + $total_tva_vendue);
         }

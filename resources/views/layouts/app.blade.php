@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="{{ asset('css/css/all.css')  }}" defer="defer">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('datatable/css/datatables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('datatable/css/jquery.dataTables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
     @livewireStyles
     <style>
@@ -247,9 +246,10 @@
                 <script src="{{ asset('js/popper.js') }}"></script>
                 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
                 <script src="{{ asset('js/chart.js.2.9.4_Chart.min.js') }}"></script>
-                <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
                 <script src="{{ asset('datatable/datatables.min.js') }}"></script>
                 <script src="{{ asset('datatable/pdfmake.min.js') }}"></script>
+                <script src="{{ asset('datatable/vfs_fonts.js') }}"></script>
+                <script src="{{ asset('js/datatables-buttons-fix.js') }}"></script>
                 <script src="{{ asset('js/main.js') }}"></script>
                 <script src="{{ asset('js/sweetalert2@11.js') }}" defer></script>
                 <script src="{{asset('js/jquery-ui.js')}}"></script>

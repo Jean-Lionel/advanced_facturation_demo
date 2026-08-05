@@ -101,7 +101,7 @@
 				$prixAchat = floatval($article->price_min ?? 0);
 				$quantiteVendue = floatval($product->quantite ?? 0);
 				$prixCommission = $prixAchat * (floatval($article->commission ?? 0) / 100) * $quantiteVendue;
-				$prixTva = $prixAchat * 0.18 * $quantiteVendue;
+				$prixTva = $prixCommission * 0.18;
 
 				@endphp
 				<tr>
