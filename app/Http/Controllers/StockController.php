@@ -237,9 +237,10 @@ class StockController extends Controller
         ] );
     }
     public function fiche_stock(Request $request){
+        $use_commission = filter_var(env('APP_USE_COMMISSION', false), FILTER_VALIDATE_BOOLEAN);
         $start_date = $request->query('start_date') ?? Carbon::now()->startOfMonth()->format('Y-m-d');
         $end_date = $request->query('end_date') ?? Carbon::now()->endOfMonth()->format('Y-m-d');
-        $product_name = $request->query('product_name');
+        $product_name = $use_commission ? $request->query('product_name') : null;
 
         $query = FollowProduct::whereDate('created_at', '>=' , $start_date)
                                 ->whereDate('created_at','<=', $end_date)
@@ -253,32 +254,40 @@ class StockController extends Controller
 
         $ventes = $follow_products->where('action', 'VENTE');
         $total_quantite_vendue = $ventes->sum('quantite');
-        $total_pa_vendu = $ventes->sum(function ($product) {
-            $article = json_decode($product->details);
-
-            return floatval($article->price_min ?? 0) * floatval($product->quantite ?? 0);
-        });
-        $total_commission_vendue = $ventes->sum(function ($product) {
-            $article = json_decode($product->details);
-            $prixAchat = floatval($article->price_min ?? 0);
-            $commission = floatval($article->commission ?? 0) / 100;
-
-            return $prixAchat * $commission * floatval($product->quantite ?? 0);
-        });
-        $total_tva_vendue = $ventes->sum(function ($product) {
-            $article = json_decode($product->details);
-
-            return floatval($article->price_min ?? 0) * 0.18 * floatval($product->quantite ?? 0);
-        });
         $total_pv_vendu = $ventes->sum(function ($product) {
             $article = json_decode($product->details);
 
             return floatval($article->price ?? 0) * floatval($product->quantite ?? 0);
         });
-        $benefice = $total_pv_vendu - ($total_pa_vendu + $total_commission_vendue + $total_tva_vendue);
+        $total_pa_vendu = 0;
+        $total_commission_vendue = 0;
+        $total_tva_vendue = 0;
+        $benefice = 0;
+
+        if($use_commission){
+            $total_pa_vendu = $ventes->sum(function ($product) {
+                $article = json_decode($product->details);
+
+                return floatval($article->price_min ?? 0) * floatval($product->quantite ?? 0);
+            });
+            $total_commission_vendue = $ventes->sum(function ($product) {
+                $article = json_decode($product->details);
+                $prixAchat = floatval($article->price_min ?? 0);
+                $commission = floatval($article->commission ?? 0) / 100;
+
+                return $prixAchat * $commission * floatval($product->quantite ?? 0);
+            });
+            $total_tva_vendue = $ventes->sum(function ($product) {
+                $article = json_decode($product->details);
+
+                return floatval($article->price_min ?? 0) * 0.18 * floatval($product->quantite ?? 0);
+            });
+            $benefice = $total_pv_vendu - ($total_pa_vendu + $total_commission_vendue + $total_tva_vendue);
+        }
 
         return view('journals.fiche_stock', compact(
             'follow_products',
+            'use_commission',
             'start_date',
             'end_date',
             'product_name',

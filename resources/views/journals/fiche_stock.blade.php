@@ -21,10 +21,12 @@
 			<label for="end_date" class="form-label">Date de fin</label>
 			<input type="date" name="end_date" id="end_date" class="form-control" value="{{ $end_date }}">
 		</div>
-		<div class="col-md-3">
-			<label for="product_name" class="form-label">Nom du produit</label>
-			<input type="text" name="product_name" id="product_name" class="form-control" value="{{ $product_name }}" placeholder="Produit">
-		</div>
+		@if ($use_commission)
+			<div class="col-md-3">
+				<label for="product_name" class="form-label">Nom du produit</label>
+				<input type="text" name="product_name" id="product_name" class="form-control" value="{{ $product_name }}" placeholder="Produit">
+			</div>
+		@endif
 		<div class="col-md-2">
 			<button type="submit" class="btn btn-primary w-100">Filtrer</button>
 		</div>
@@ -41,26 +43,28 @@
 				<strong>Total PV vendu :</strong> {{ getPrice($total_pv_vendu) }}
 			</div>
 		</div>
-		<div class="col-md-2">
-			<div class="">
-				<strong>Total P.A :</strong> {{ getPrice($total_pa_vendu) }}
+		@if ($use_commission)
+			<div class="col-md-2">
+				<div class="">
+					<strong>Total P.A :</strong> {{ getPrice($total_pa_vendu) }}
+				</div>
 			</div>
-		</div>
-		<div class="col-md-2">
-			<div class="">
-				<strong>Total commission :</strong> {{ getPrice($total_commission_vendue) }}
+			<div class="col-md-2">
+				<div class="">
+					<strong>Total commission :</strong> {{ getPrice($total_commission_vendue) }}
+				</div>
 			</div>
-		</div>
-		<div class="col-md-2">
-			<div class="">
-				<strong>Total TVA :</strong> {{ getPrice($total_tva_vendue) }}
+			<div class="col-md-2">
+				<div class="">
+					<strong>Total TVA :</strong> {{ getPrice($total_tva_vendue) }}
+				</div>
 			</div>
-		</div>
-		<div class="col-md-2">
-			<div class="">
-				<strong>Bénéfice :</strong> {{ getPrice($benefice) }}
+			<div class="col-md-2">
+				<div class="">
+					<strong>Bénéfice :</strong> {{ getPrice($benefice) }}
+				</div>
 			</div>
-		</div>
+		@endif
 	</div>
 
 	<table id="fiche_stock" class="display compact" style="width:100%">
@@ -73,8 +77,10 @@
 				<th>Action</th>
 				<th>Qte</th>
 				<th>PV</th>
-				<th>Prix Commission</th>
-				<th>Prix TVA</th>
+				@if ($use_commission)
+					<th>Prix Commission</th>
+					<th>Prix TVA</th>
+				@endif
 				<th>St.Théoriq.</th>
 				<th>Date</th>
 			</tr>
@@ -106,8 +112,10 @@
 				<td>{{ $product->action }}</td>
 				<td>{{ $product->quantite }}</td>
 				<td>{{ getPrice($pv) }}</td>
-				<td>{{ getPrice($prixCommission) }}</td>
-				<td>{{ getPrice($prixTva) }}</td>
+				@if ($use_commission)
+					<td>{{ getPrice($prixCommission) }}</td>
+					<td>{{ getPrice($prixTva) }}</td>
+				@endif
 				<td>{{ $total }}</td>
 				<td>{{ $product->created_at}}</td>
 			</tr>
