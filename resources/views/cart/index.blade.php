@@ -175,6 +175,18 @@
                             </select>
                         </div>
 
+                        <div class="vente-field mb-3">
+                            <label for="bank_account_id">Compte bancaire à afficher sur la facture</label>
+                            <select class="form-control" name="bank_account_id" id="bank_account_id">
+                                <option value="">Aucun compte bancaire</option>
+                                @foreach ($bankAccounts as $bankAccount)
+                                    <option value="{{ $bankAccount->id }}" {{ old('bank_account_id') == $bankAccount->id ? 'selected' : '' }}>
+                                        {{ $bankAccount->bank_name }} — {{ $bankAccount->account_number }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <ul class="vente-meta-list">
                             <li>
                                 <span>Monnaie de paiement</span>

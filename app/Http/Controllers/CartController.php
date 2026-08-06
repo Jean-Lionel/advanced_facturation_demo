@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Entreprise;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -19,8 +20,9 @@ class CartController extends Controller
     {
         //
         $paniers = Cart::content();
+        $bankAccounts = optional(Entreprise::currentEntreprise())->bankAccounts()->orderBy('bank_name')->get() ?? collect();
 
-        return view('cart.index', compact('paniers'));
+        return view('cart.index', compact('paniers', 'bankAccounts'));
     }
 
     public function vente(){

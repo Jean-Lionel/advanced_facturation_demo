@@ -166,6 +166,14 @@ class Order extends Model
         public function commissionaire(){
             return $this->belongsTo(Client::class , 'commissionaire_id');
         }
+
+        public function bankAccount(){
+            return $this->belongsTo(BankAccount::class);
+        }
+
+        public function getBankAccountDetailsAttribute($value){
+            return $value ? json_decode($value) : null;
+        }
         
         private static function updateDatabases(){
             // add a new column invoice_currency on order if it doesn't already exist
@@ -228,4 +236,3 @@ class Order extends Model
             
         }
     }
-    

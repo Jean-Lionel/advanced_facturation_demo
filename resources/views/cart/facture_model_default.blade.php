@@ -37,10 +37,11 @@
             {{-- Entete --}}
             <div id="facture_principal">
             <header class="header-facture">
-                @if (env('APP_USE_LOGO', false))
+                @php($invoiceLogo = $order->company->tp_logo ?? getCurrentLogo())
+                @if ($invoiceLogo)
                 <div>
                     <div >
-                        <img class="img_logo" src="{{asset( getCurrentLogo() )}}" alt="">
+                        <img class="img_logo" src="{{ asset($invoiceLogo) }}" alt="Logo {{ $order->company->tp_name ?? '' }}">
                     </div>
                 </div>
                 @endif
@@ -87,13 +88,13 @@
                         <p>{{ "Secteur d'activité" }} : <b> {{ $order->company->tp_activity_sector }} </b></p>
                         <p>Forme juridique : <b> {{ $order->company->tp_legal_form }} </b></p>
 
-                        @if ($order->entreprise()->tp_bank )
+                        @if ($order->bank_account_details || !empty($order->company->tp_bank))
                         <div>
                             <br>
                             <br>
                             <br>
-                          <p>COMPTE BANCAIRE : <b> {{$order->company->tp_bank ?? $order->entreprise()->tp_bank }} </b></p>
-                          <p>NO : <b> {{$order->company->tp_account_number ?? $order->entreprise()->tp_account_number }} </b></p>
+                          <p>COMPTE BANCAIRE : <b>{{ $order->bank_account_details->bank_name ?? $order->company->tp_bank }}</b></p>
+                          <p>NO : <b>{{ $order->bank_account_details->account_number ?? $order->company->tp_account_number }}</b></p>
                         </div>
                         @endif
                     </div>

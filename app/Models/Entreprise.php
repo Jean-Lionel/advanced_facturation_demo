@@ -17,4 +17,9 @@ class Entreprise extends Model
         return Entreprise::where('is_actif', 1)->first() ?? Entreprise::latest()->first() ;
 
     }
+
+    public function bankAccounts()
+    {
+        return $this->hasMany(BankAccount::class);
+    }
 }

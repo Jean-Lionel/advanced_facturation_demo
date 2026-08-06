@@ -25,6 +25,8 @@ body {
 .header-facture {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
 }
 
 .header-facture h3 {
@@ -87,8 +89,29 @@ footer {
     text-align: center !important;
 }
 .img_logo {
-    width: 100px;
-    height: 100px;
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 150px;
+    max-height: 110px;
+    object-fit: contain;
+}
+
+@media screen and (max-width: 760px) {
+    .main-content {
+        width: auto;
+        max-width: 700px;
+        padding: 0 12px;
+    }
+
+    .header-facture {
+        align-items: center;
+    }
+
+    .img_logo {
+        max-width: min(30vw, 130px);
+        max-height: 90px;
+    }
 }
 body {
     margin: 0;

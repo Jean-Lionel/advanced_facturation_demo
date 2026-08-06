@@ -25,9 +25,11 @@
             <form method="POST" action="{{ route('entreprises.store_info') }}" enctype="multipart/form-data">
                 @csrf
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5 class="mb-3">Identité &amp; contact</h5>
+                <div class="company-settings-grid">
+                    <section class="company-settings-section">
+                        <div class="company-settings-title">
+                            <h3>Identité &amp; contact</h3>
+                        </div>
 
                         <div class="form-group">
                             <label for="tp_logo">Logo de l'entreprise</label>
@@ -94,62 +96,36 @@
                                 placeholder="Adresse physique détaillée"
                             >{{ old('tp_address', $entreprise->tp_address ?? '') }}</textarea>
                         </div>
-                    </div>
+                    </section>
 
-                    <div class="col-md-6">
-                        <h5 class="mb-3">Banque &amp; réseaux sociaux</h5>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="tp_bank">Banque</label>
-                                <input
-                                    id="tp_bank"
-                                    type="text"
-                                    class="form-control"
-                                    name="tp_bank"
-                                    value="{{ old('tp_bank', $entreprise->tp_bank ?? '') }}"
-                                    placeholder="Nom de la banque"
-                                >
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="tp_account_number">Numéro de compte</label>
-                                <input
-                                    id="tp_account_number"
-                                    type="text"
-                                    class="form-control"
-                                    name="tp_account_number"
-                                    value="{{ old('tp_account_number', $entreprise->tp_account_number ?? '') }}"
-                                    placeholder="XXXX-XXXX-XXXX"
-                                >
-                            </div>
+                    <section class="company-settings-section">
+                        <div class="company-settings-title">
+                            <h3>Banque</h3>
                         </div>
 
                         @php
-                            $socials = [
-                                'facebook' => ['icon' => 'fab fa-facebook-f', 'placeholder' => 'Lien Facebook'],
-                                'twitter' => ['icon' => 'fab fa-twitter', 'placeholder' => 'Lien Twitter'],
-                                'instagram' => ['icon' => 'fab fa-instagram', 'placeholder' => 'Lien Instagram'],
-                                'youtube' => ['icon' => 'fab fa-youtube', 'placeholder' => 'Lien YouTube'],
-                                'whatsapp' => ['icon' => 'fab fa-whatsapp', 'placeholder' => 'Numéro WhatsApp'],
-                            ];
+                            $accounts = old('bank_accounts', $entreprise ? $entreprise->bankAccounts->toArray() : []);
                         @endphp
-
-                        @foreach ($socials as $key => $social)
-                            <div class="form-group">
-                                <label for="tp_{{ $key }}">
-                                    <i class="{{ $social['icon'] }} mr-1"></i> {{ ucfirst($key) }}
-                                </label>
-                                <input
-                                    id="tp_{{ $key }}"
-                                    type="text"
-                                    class="form-control form-control-sm"
-                                    name="tp_{{ $key }}"
-                                    value="{{ old('tp_'.$key, $entreprise->{'tp_'.$key} ?? '') }}"
-                                    placeholder="{{ $social['placeholder'] }}"
-                                >
+                        <div class="form-group">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label class="mb-0">Comptes bancaires</label>
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="add-bank-account"><i class="fas fa-plus"></i> Ajouter</button>
                             </div>
-                        @endforeach
-                    </div>
+                            <div id="bank-accounts">
+                                @foreach ($accounts as $index => $account)
+                                    <div class="bank-account-row border rounded p-2 mb-2">
+                                        <input type="hidden" name="bank_accounts[{{ $index }}][id]" value="{{ $account['id'] ?? '' }}">
+                                        <div class="company-bank-row">
+                                            <input class="form-control" name="bank_accounts[{{ $index }}][bank_name]" value="{{ $account['bank_name'] ?? '' }}" placeholder="Nom de la banque" required>
+                                            <input class="form-control" name="bank_accounts[{{ $index }}][account_number]" value="{{ $account['account_number'] ?? '' }}" placeholder="Numéro de compte" required>
+                                            <button type="button" class="btn btn-outline-danger remove-bank-account" title="Supprimer"><i class="fas fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                    </section>
                 </div>
 
                 <div class="app-form-actions">
@@ -164,6 +140,23 @@
 
 @section('javascript')
 <script>
+    let bankAccountIndex = {{ count($accounts) }};
+    document.getElementById('add-bank-account').addEventListener('click', function () {
+        const row = document.createElement('div');
+        row.className = 'bank-account-row border rounded p-2 mb-2';
+        row.innerHTML = `<div class="company-bank-row">
+            <input class="form-control" name="bank_accounts[${bankAccountIndex}][bank_name]" placeholder="Nom de la banque" required>
+            <input class="form-control" name="bank_accounts[${bankAccountIndex}][account_number]" placeholder="Numéro de compte" required>
+            <button type="button" class="btn btn-outline-danger remove-bank-account" title="Supprimer"><i class="fas fa-times"></i></button>
+        </div>`;
+        document.getElementById('bank-accounts').appendChild(row);
+        bankAccountIndex++;
+    });
+    document.getElementById('bank-accounts').addEventListener('click', function (event) {
+        const button = event.target.closest('.remove-bank-account');
+        if (button) button.closest('.bank-account-row').remove();
+    });
+
     $(".custom-file-input").on("change", function () {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);

@@ -8,6 +8,7 @@ use App\Models\Entreprise;
 use App\Http\Requests\StoreEntrepriseRequest;
 use App\Http\Requests\UpdateEntrepriseRequest;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 class EntrepriseController extends Controller
 {
 
@@ -27,10 +28,14 @@ class EntrepriseController extends Controller
     public function store_info(\Illuminate\Http\Request $request){
         $request->validate([
             'tp_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'bank_accounts' => 'nullable|array',
+            'bank_accounts.*.id' => 'nullable|integer',
+            'bank_accounts.*.bank_name' => 'required_with:bank_accounts.*.account_number|string|max:255',
+            'bank_accounts.*.account_number' => 'required_with:bank_accounts.*.bank_name|string|max:255',
         ]);
 
         $entreprise = Entreprise::currentEntreprise();
-        $data = $request->except('_token', 'tp_logo');
+        $data = $request->except('_token', 'tp_logo', 'bank_accounts');
 
         if ($request->hasFile('tp_logo')) {
             $imageName = time().'.'.$request->tp_logo->extension();
@@ -39,7 +44,22 @@ class EntrepriseController extends Controller
         }
 
         if($entreprise){
-            $entreprise->update($data);
+            DB::transaction(function () use ($entreprise, $data, $request) {
+                $entreprise->update($data);
+                $keptIds = [];
+                foreach ($request->input('bank_accounts', []) as $accountData) {
+                    if (empty($accountData['bank_name']) && empty($accountData['account_number'])) {
+                        continue;
+                    }
+                    $values = collect($accountData)->only(['bank_name', 'account_number'])->all();
+                    $account = !empty($accountData['id'])
+                        ? $entreprise->bankAccounts()->findOrFail($accountData['id'])
+                        : $entreprise->bankAccounts()->make();
+                    $account->fill($values)->save();
+                    $keptIds[] = $account->id;
+                }
+                $entreprise->bankAccounts()->whereNotIn('id', $keptIds)->delete();
+            });
         }
 
         return back()->with('success', 'Information updated successfully.');
@@ -131,7 +151,7 @@ class EntrepriseController extends Controller
     */
     public function update(UpdateEntrepriseRequest $request, Entreprise $entreprise)
     {
-        $entreprise->update($request->all());
+        $entreprise->update($request->except(['_token', '_method']));
         return redirect()->route("entreprises.index");
     }
 

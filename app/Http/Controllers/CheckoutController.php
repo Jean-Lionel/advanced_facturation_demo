@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Compte;
+use App\Models\BankAccount;
 use DateTime;
 use Str;
 
@@ -32,6 +33,7 @@ class CheckoutController extends Controller
         $validate =
         [
             'client_id' => 'required|exists:clients,id',
+            'bank_account_id' => 'nullable|exists:bank_accounts,id',
             // 'date_facturation' => 'required',
         ];
         if ($request->customer_TIN) {
@@ -80,6 +82,9 @@ class CheckoutController extends Controller
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
             $oder_signuture = "";
             $company = Entreprise::currentEntreprise();
+            $bankAccount = $request->bank_account_id
+                ? BankAccount::where('entreprise_id', $company->id)->findOrFail($request->bank_account_id)
+                : null;
           //  dd($company);
             $tax = Cart::tax();
 
@@ -107,6 +112,8 @@ class CheckoutController extends Controller
                 'client_id' => $request->client_id,
                 'commissionaire_id' =>  $client->commissionnaire_id ?? null,
                 'company' =>  $company->toJson(),
+                'bank_account_id' => $bankAccount ? $bankAccount->id : null,
+                'bank_account_details' => $bankAccount ? $bankAccount->toJson() : null,
                 'created_at' =>  $currentData,
                 'updated_at' =>  $currentData,
             ]);

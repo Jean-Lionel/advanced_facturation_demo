@@ -918,6 +918,45 @@
     cursor: pointer;
 }
 
+.company-settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.company-settings-section {
+    padding: 16px;
+    border: 1px solid var(--app-line, #e2e8f0);
+    border-radius: 12px;
+    background: #fff;
+}
+
+.company-settings-title {
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--app-line, #e2e8f0);
+}
+
+.company-settings-title h3 { margin: 0; font-size: .95rem; font-weight: 600; }
+
+.company-bank-row {
+    display: grid;
+    grid-template-columns: minmax(120px, .8fr) minmax(180px, 1.2fr) 40px;
+    gap: 8px;
+}
+
+.company-bank-row .btn { width: 40px; padding: 0; justify-content: center; }
+
+@media (max-width: 991.98px) {
+    .company-settings-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 575.98px) {
+    .company-settings-section { padding: 14px; }
+    .company-bank-row { grid-template-columns: 1fr 40px; }
+    .company-bank-row input:first-child { grid-column: 1 / -1; }
+}
+
 /* Align ventes tabs with global naming when needed */
 .vente-tabs.app-tabs,
 .app-page .vente-tabs {
