@@ -23,14 +23,29 @@ body {
 }
 
 .header-facture {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr) 150px;
+    align-items: start;
+    gap: 16px;
+    margin-bottom: 28px;
 }
 
 .header-facture h3 {
     text-align: center;
+}
+
+.header-facture > div:first-child {
+    grid-column: 1;
+}
+
+.header-facture > div:last-child {
+    grid-column: 2;
+    text-align: center;
+    padding-top: 4px;
+}
+
+.header-facture + .text-center {
+    margin-bottom: 8px;
 }
 
 .identification_a {
@@ -105,7 +120,10 @@ footer {
     }
 
     .header-facture {
+        grid-template-columns: minmax(90px, 30vw) minmax(0, 1fr) minmax(90px, 30vw);
         align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
     }
 
     .img_logo {
