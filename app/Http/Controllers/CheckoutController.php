@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Compte;
+use App\Models\Banque;
 use DateTime;
 use Str;
 
@@ -35,6 +36,12 @@ class CheckoutController extends Controller
             'type_paiement' => 'required',
             // 'date_facturation' => 'required',
         ];
+        $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
+
+        if ($useBanque) {
+            $validate['banque_id'] = 'nullable|exists:banques,id';
+        }
+
         if ($request->customer_TIN) {
             // code...
             $validate['customer_TIN'] = 'required|exists:clients';
@@ -99,6 +106,11 @@ class CheckoutController extends Controller
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
             $oder_signuture = "";
             $company = Entreprise::currentEntreprise();
+            $banque = null;
+
+            if ($useBanque && $request->filled('banque_id')) {
+                $banque = Banque::active()->findOrFail($request->banque_id);
+            }
           //  dd($company);
             $tax = Cart::tax();
 
@@ -125,6 +137,8 @@ class CheckoutController extends Controller
                 'user_id' => Auth::user()->id,
                 'client_id' => $request->client_id,
                 'commissionaire_id' =>  $client->commissionnaire_id ?? null,
+                'banque_id' => $banque->id ?? null,
+                'banque' => $banque ? $banque->toJson() : null,
                 'company' =>  $company->toJson(),
                 'created_at' =>  $currentData,
                 'updated_at' =>  $currentData,

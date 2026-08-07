@@ -70,6 +70,20 @@
         </div>
     </div>
 
+    @if (filter_var(env('APP_USE_COMMISSION', false), FILTER_VALIDATE_BOOLEAN))
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="commission">COMMISSION (%)</label>
+                <input type="number"
+                min="0"
+                step="any"
+                class="form-control {{$errors->has('commission') ? 'is-invalid' : 'is-valid' }}" id="commission" name="commission" value="{{ old('commission') ?? $product->commission?? 0 }}">
+
+                {!! $errors->first('commission', '<small class="help-block invalid-feedback">:message</small>') !!}
+            </div>
+        </div>
+    @endif
+
     <div class="col-md-2">
         <div class="form-group">
             <label for="price_max">PRIX DE REVIENT  TVAC</label>

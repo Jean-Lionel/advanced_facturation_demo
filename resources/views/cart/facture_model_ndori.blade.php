@@ -17,9 +17,25 @@
             justify-content: center;
             align-content: center;
         }
+        .header-facture{
+            align-items: center;
+            gap: 12px;
+            min-height: 52px;
+        }
         .img_logo{
-            width: 250px;
-            height: 250px;
+            width: auto;
+            height: 48px;
+            max-width: 120px;
+            object-fit: contain;
+        }
+        .invoice-company-name{
+            font-size: 18px;
+            line-height: 1.2;
+        }
+        .bank-details-line{
+            margin-top: 8px;
+            font-size: 12px;
+            text-align: center;
         }
     </style>
 </head>
@@ -48,7 +64,7 @@
                     @endif
 
                     <div style="width: 100%;">
-                        <h3>{{ $order->company->tp_name ?? "" }} </h3>
+                        <h3 class="invoice-company-name">{{ $order->company->tp_name ?? "" }} </h3>
                         {{-- <h3>{{COMPANY_DESCRIPTION}} </h3>
                         <h3>
                         {{BOITE_POSTAL}}
@@ -97,6 +113,20 @@
                             <p>Centre Fiscal : <b>{{ $order->company->tp_fiscal_center }}</b></p>
                             <p>{{ "Secteur d'activité" }} : <b>{{ $order->company->tp_activity_sector }}</b></p>
                             <p>Forme juridique : <b>{{ $order->company->tp_legal_form }}</b></p>
+
+                            @php
+                                $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
+                                $invoiceBanque = $useBanque ? ($order->banque ?? null) : null;
+                            @endphp
+
+                            @if ($invoiceBanque)
+                            <br>
+                                <p>Banque : <b>{{ $invoiceBanque->name ?? '' }}</b></p>
+                                <p>N° compte : <b>{{ $invoiceBanque->account_number ?? '' }}</b></p>
+                                <p>Devise : <b>{{ $invoiceBanque->currency ?? '' }}</b></p>
+                                <div class="line"></div>
+
+                            @endif
                         </div>
                     </div>
                 </article>
@@ -192,6 +222,8 @@
                     <div class="element-center">
                         {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
                     </div>
+
+
                 </article>
             </div>
         </div>

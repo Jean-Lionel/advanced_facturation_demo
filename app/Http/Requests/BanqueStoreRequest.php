@@ -24,10 +24,13 @@ class BanqueStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
-            'name' => ['required', 'string'],
-            'description' => ['string'],
-            'softdeletes' => ['required'],
+            'name' => ['required', 'string', 'max:255'],
+            'account_name' => ['nullable', 'string', 'max:255'],
+            'account_number' => ['required', 'string', 'max:255'],
+            'account_type' => ['nullable', 'string', 'max:255'],
+            'currency' => ['required', 'string', 'max:10'],
+            'description' => ['nullable', 'string'],
+            'is_active' => ['nullable', 'boolean'],
         ];
     }
 }

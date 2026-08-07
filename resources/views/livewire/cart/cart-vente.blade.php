@@ -27,13 +27,13 @@
                 <div class="d-flex justify-content-between">
                     <div>Qté en stock</div>
                     <div class="d-flex justify-content-between">
-                    
+
                         <button>-</button>
                         <input type="text" style="width:50px;">
                         <button>+</button>
                     </div>
-                    
-                    
+
+
                 </div>
 
                 <div>Ajouter</div>
@@ -46,6 +46,8 @@
                 $oldTypePaiement = old('type_paiement');
                 $oldMontantPaye = old('montant_paye');
                 $oldMontantRestant = old('montant_restant');
+                $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
+                $oldBanqueId = old('banque_id');
 
                 if ($oldMontantPaye === null && $oldMontantRestant !== null) {
                     $oldMontantPaye = max(0, (float) $cartTotal - (float) $oldMontantRestant);
@@ -66,6 +68,20 @@
                     @endforeach
                 </select>
             </div>
+
+            @if ($useBanque)
+                <div class="form-group">
+                    <label for="banque_id_cart_vente">BANQUE</label>
+                    <select  class="form-control" name="banque_id" id="banque_id_cart_vente">
+                        <option value="">Choisissez ...</option>
+                        @foreach ($banques as $banque)
+                            <option value="{{ $banque->id }}" {{ (string) $oldBanqueId === (string) $banque->id ? 'selected' : '' }}>
+                                {{ $banque->display_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
 
             @if ($useCredit)
                 <div id="montant_restant_card_vente_group" style="display: {{ (string) $oldTypePaiement === '3' ? 'block' : 'none' }};">

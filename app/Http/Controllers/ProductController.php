@@ -129,7 +129,9 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
+        $useCommission = filter_var(env('APP_USE_COMMISSION', false), FILTER_VALIDATE_BOOLEAN);
+
+        $rules = [
             'name' => 'required|max:255',
             'price' => 'required|numeric|min:0',
             'price_max' => 'required|max:255',
@@ -141,9 +143,20 @@ class ProductController extends Controller
             'price_min' => 'nullable',
             'quantite' => 'numeric|min:0',
             'quantite_alert' => 'numeric|min:0',
-        ]);
+        ];
+
+        if($useCommission){
+            $rules['commission'] = 'nullable|numeric|min:0';
+        }
+
+        $request->validate($rules);
         if(!$request->price_min){
             $request->merge(['price_min' => 0]);
+        }
+        if($useCommission && !$request->commission){
+            $request->merge(['commission' => 0]);
+        }elseif(!$useCommission){
+            $request->request->remove('commission');
         }
         Product::create($request->all());
 
@@ -165,7 +178,9 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $request->validate([
+        $useCommission = filter_var(env('APP_USE_COMMISSION', false), FILTER_VALIDATE_BOOLEAN);
+
+        $rules = [
             'name' => 'required|max:255',
             'price' => 'required|numeric|min:0',
             'price_max' => 'numeric|required|min:0',
@@ -176,7 +191,18 @@ class ProductController extends Controller
             'taux_tva' => 'numeric|min:0',
             'quantite_alert' => 'numeric|min:0',
 
-        ]);
+        ];
+
+        if($useCommission){
+            $rules['commission'] = 'nullable|numeric|min:0';
+        }
+
+        $request->validate($rules);
+        if($useCommission && !$request->commission){
+            $request->merge(['commission' => 0]);
+        }elseif(!$useCommission){
+            $request->request->remove('commission');
+        }
         $p = $product->toArray();
         ProductHistory::create([
             'product_id' => $product->id,

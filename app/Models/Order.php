@@ -162,6 +162,16 @@ class Order extends Model
         public function getCompanyAttribute($v){
             return json_decode($v) ?  json_decode($v) : Entreprise::currentEntreprise();
         }
+
+        public function getBanqueAttribute($v)
+        {
+            return json_decode($v);
+        }
+
+        public function banqueRecord()
+        {
+            return $this->belongsTo(Banque::class, 'banque_id');
+        }
         
         public function commissionaire(){
             return $this->belongsTo(Client::class , 'commissionaire_id');
@@ -181,6 +191,16 @@ class Order extends Model
                 // Add the 'invoice_currency' column if it doesn't exist
                 Schema::table('orders', function ($table) {
                     $table->string('invoice_type', 10)->nullable();
+                });
+            }
+            if (!Schema::hasColumn('orders', 'banque_id')) {
+                Schema::table('orders', function ($table) {
+                    $table->unsignedBigInteger('banque_id')->nullable();
+                });
+            }
+            if (!Schema::hasColumn('orders', 'banque')) {
+                Schema::table('orders', function ($table) {
+                    $table->text('banque')->nullable();
                 });
             }
             
@@ -228,4 +248,3 @@ class Order extends Model
             
         }
     }
-    

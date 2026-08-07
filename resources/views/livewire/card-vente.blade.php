@@ -121,6 +121,8 @@
             $oldTypePaiement = old('type_paiement');
             $oldMontantPaye = old('montant_paye');
             $oldMontantRestant = old('montant_restant');
+            $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
+            $oldBanqueId = old('banque_id');
 
             if ($oldMontantPaye === null && $oldMontantRestant !== null) {
               $oldMontantPaye = max(0, (float) $cartTotal - (float) $oldMontantRestant);
@@ -136,8 +138,22 @@
              <option value="">Choisissez ...</option>
              <option value="1" {{ in_array($oldTypePaiement, ['1', 'CACHE']) ? 'selected' : '' }}>EN CACHE</option>
              <option value="3" {{ in_array($oldTypePaiement, ['3', 'DETTE']) ? 'selected' : '' }}>CREDIT</option>
+	           </select>
+	         </div>
+
+         @if ($useBanque)
+         <div class="form-group">
+           <label for="banque_id_card_vente">BANQUE</label>
+           <select  class="form-control" name="banque_id" id="banque_id_card_vente">
+             <option value="">Choisissez ...</option>
+             @foreach ($banques as $banque)
+               <option value="{{ $banque->id }}" {{ (string) $oldBanqueId === (string) $banque->id ? 'selected' : '' }}>
+                 {{ $banque->display_name }}
+               </option>
+             @endforeach
            </select>
          </div>
+         @endif
 
          @if ($useCredit)
          <div id="montant_restant_card_vente_group" style="display: {{ in_array($oldTypePaiement, ['3', 'DETTE']) ? 'block' : 'none' }};">
