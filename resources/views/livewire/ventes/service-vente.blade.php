@@ -144,7 +144,7 @@
                     <label for="" >TYPE DE FACTURE</label>
                 <select required="" class="" wire:model="typeFacture" id="">
                     <option value="FACTURE">FACTURE</option>
-                    <option value="PROFORMAT">PROFORMAT</option>
+                    <option value="PROFORMA">PROFORMA</option>
                 </select>
                 </div>
             @endif
