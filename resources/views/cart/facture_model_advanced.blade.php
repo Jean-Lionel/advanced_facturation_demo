@@ -339,14 +339,14 @@
                     <td><strong>Montant Total</strong></td>
                     <td>{{ number_format($order->amount_tax, 2) }}</td>
                 </tr>
-               <!--  <tr>
-                    <td><strong>Tax</strong></td>
+               <tr>
+                    <td><strong>TVA</strong></td>
                     <td>{{ number_format($order->tax, 2) }}</td>
                 </tr>
                 <tr>
                     <td><strong>Montant Total</strong></td>
                     <td>{{ number_format($order->amount, 2) }}</td>
-                </tr> -->
+                </tr> 
             </table>
         </div>
 
