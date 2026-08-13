@@ -21,7 +21,7 @@
 
                 <tbody>
                     @foreach ($logs as $item)
-                    <tr @if($item->status == 0) class="bg-danger text-white" @endif>
+                    <tr @if($item->status == 0) class="bg-danger text-dark" @endif>
                         <td>{{ $item->order_id }}</td>
                         <td class="app-table-cell-signature">
                             <span class="app-table-signature-text">{{ $item->invoice_signature }}</span>
