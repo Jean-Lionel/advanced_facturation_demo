@@ -77,6 +77,9 @@
                     <td>{{ $proformat->created_at }}</td>
                     <td>
                         <div class="d-flex">
+                            <a href="{{ route('proformats.edit', $proformat) }}" class="mr-2 btn btn-sm btn-primary" title="Modifier">
+                                <i class="fa fa-edit"></i>
+                            </a>
                             <a href="{{ route('proformats.show', $proformat) }}" class="mr-2 btn btn-sm btn-success" title="Imprimer">
                                 <i class="fa fa-print"></i>
                             </a>

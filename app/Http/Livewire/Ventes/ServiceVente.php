@@ -28,6 +28,55 @@ class ServiceVente extends Component
     public $invoice_currency = 'BIF';
     public $typeFacture = 'FACTURE';
     public $commentaire;
+    public $proformatId = null;
+    public $isEditMode = false;
+
+    public function mount($proformat = null)
+    {
+        if ($proformat) {
+            $this->proformatId = $proformat->id;
+            $this->isEditMode = true;
+            $this->typeFacture = 'PROFORMA';
+            $this->typePaiement = $proformat->type_paiement;
+            $this->invoice_currency = $proformat->invoice_currency ?? 'BIF';
+            $this->commentaire = $proformat->commentaire;
+
+            // Charger le client
+            if ($proformat->client_id) {
+                $this->customer = Client::find($proformat->client_id);
+                $this->clientNumber = $this->customer->id ?? '';
+            } elseif ($proformat->getRawOriginal('client')) {
+                $clientData = json_decode($proformat->getRawOriginal('client'));
+                if ($clientData && isset($clientData->id)) {
+                    $this->customer = Client::find($clientData->id);
+                    $this->clientNumber = $this->customer->id ?? '';
+                }
+            }
+
+            // Charger les produits/services
+            $products = $proformat->products;
+            if ($products && is_array($products)) {
+                foreach ($products as $index => $product) {
+                    $key = $index + 1;
+                    $this->table_length[] = $key;
+                    $this->description[$key] = $product['name'] ?? '';
+                    $this->quantite[$key] = $product['quantite'] ?? 1;
+                    $this->prices[$key] = $product['price'] ?? 0;
+
+                    // Calculer le taux de TVA à partir des valeurs
+                    $priceHtva = $product['item_price_nvat'] ?? ($product['price'] * $product['quantite']);
+                    $vat = $product['vat'] ?? 0;
+                    $tvaRate = ($priceHtva > 0) ? round(($vat / $priceHtva) * 100) : 0;
+                    $this->taxes[$key] = $tvaRate;
+
+                    $this->pricesHorTva[$key] = $priceHtva;
+                    $this->tvas[$key] = $vat;
+                    $this->pricesTVAC[$key] = $product['item_total_amount'] ?? ($priceHtva + $vat);
+                }
+            }
+        }
+    }
+
     public function render()
     {
         return view('livewire.ventes.service-vente');
@@ -74,6 +123,20 @@ class ServiceVente extends Component
                 'company' =>  $company->toJson(),
              ];
              $order = null ;
+
+             // Mode édition d'un proformat existant
+             if ($this->isEditMode && $this->proformatId) {
+                $order = Proformat::find($this->proformatId);
+                if ($order) {
+                    $order->update($orderData);
+                } else {
+                    throw new \Exception("Proforma non trouvé");
+                }
+                DB::commit();
+                return redirect()->to('proformats/' . $order->id)->with('success', 'Proforma modifié avec succès.');
+             }
+
+             // Mode création
              if($this->typeFacture == 'FACTURE'){
                 $order = Order::create($orderData);
                 $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);

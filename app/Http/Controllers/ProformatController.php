@@ -81,7 +81,7 @@ class ProformatController extends Controller
      */
     public function edit(Proformat $proformat)
     {
-        //
+        return view('proformats.edit', compact('proformat'));
     }
 
     /**

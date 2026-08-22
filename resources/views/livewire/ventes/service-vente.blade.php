@@ -1,7 +1,7 @@
 <div>
     {{-- The whole world belongs to you. --}}
     <div class="card">
-        <h4>Facturation des Services</h4>
+        <h4>{{ $isEditMode ? 'Modification du Proforma' : 'Facturation des Services' }}</h4>
     </div>
 
     @if ( count($errors) )
@@ -139,7 +139,7 @@
 
             </div>
 
-            @if (env('APP_CAN_PRINT_PROFORMAT', false))
+            @if (env('APP_CAN_PRINT_PROFORMAT', false) && !$isEditMode)
                 <div>
                     <label for="" >TYPE DE FACTURE</label>
                 <select required="" class="" wire:model="typeFacture" id="">
@@ -153,8 +153,8 @@
             <button class="ml-4 btn btn-sm btn-primary"
             wire:click="saveValue"
             >
-            <span class="fa fa-file"></span>
-            Valider  </button>
+            <span class="fa fa-{{ $isEditMode ? 'save' : 'file' }}"></span>
+            {{ $isEditMode ? 'Mettre à jour' : 'Valider' }}  </button>
         </div>
         @if ($errorMessage)
         <div class="col-6 text-danger">
