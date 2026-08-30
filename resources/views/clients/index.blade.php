@@ -86,7 +86,7 @@
 
 				<td>{{ $value->created_at }}</td>
 				<td class="d-flex justify-content-around">
-					{{--  <a href="{{ route('clients.edit', $value) }}" class="btn btn-outline-info btn-sm mr-2">Modifier</a>  --}}
+					<a href="{{ route('clients.edit', $value) }}" class="btn btn-outline-info btn-sm mr-2">Modifier</a>
 					<form class="form-delete" action="{{ route('clients.destroy' , $value) }}" style="display: inline;" method="POST">
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}
