@@ -159,6 +159,9 @@
 
 
 						<a href="{{ route('orders.show', $order) }}" class="mr-2 btn btn-sm btn-success" title="imprimer"> <i class="fa fa-print" ></i></a>
+                        @can('is-admin')
+                            
+                  
                         @if ($typePaiement === 3)
                             @if ($montantRestant > 0)
                             <button type="button"
@@ -175,6 +178,8 @@
                             @endif
 
                         @endif
+
+                    @endcan
 
 
 					</td>

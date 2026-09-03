@@ -142,12 +142,14 @@
                         @endif
                     @endcanany
 
-                    {{-- Administration - ADMIN uniquement --}}
-                    @can('is-admin')
-                        @if (env('APP_USE_LOCATION', false))
+                     @if (env('APP_USE_LOCATION', false))
                             <li><a href="{{ route('maison-location.index') }}" class="{{ setActiveRoute('maison-location.*') }}">
                                 <span class="fa fa-cubes"></span> Location</a></li>
                         @endif
+
+                    {{-- Administration - ADMIN uniquement --}}
+                    @can('is-admin')
+                       
 
                         <li><a href="{{ route('entreprises.index') }}" class="{{ setActiveRoute('entreprises.*') }}">
                             <span class="fa fa-building"></span> Entreprise</a></li>
