@@ -40,6 +40,10 @@
 			<span class="fa fa-search"></span>
 			<span>Recherche les factures </span>
 		</a>
+        <a class="mx-4" href="{{ route('canceledInvoince') }}" class="{{ setActiveRoute('canceledInvoince') }}">
+            <span class="fa fa-edit"></span>
+            <span>Factures annulées</span>
+        </a>
 
 	</div>
     <div class="noprint">

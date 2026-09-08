@@ -67,6 +67,10 @@
 					<div id="order_{{$order->id}}">
 						<button onclick="cancelIncome('{{$order->invoice_signature}}',{{$order->id}} )">Annuler</button>
 					</div>
+					@else
+						<a href="{{ route('canceledInvoince.edit', $order) }}" class="btn btn-sm btn-primary">
+							<i class="fa fa-edit"></i> Modifier
+						</a>
 					@endif
                     <a href="{{route('orders.show', $order->id )}}">Afficher</a>
 				</td>
@@ -119,6 +123,9 @@ function getMotif(){
 				console.log(data);
 				$("#order_"+order_id).html(`
 					<span class="bg-warning">${data.msg} </span>
+					<a href="{{ url('canceledInvoince') }}/${order_id}/modifier" class="btn btn-sm btn-primary">
+						<i class="fa fa-edit"></i> Modifier
+					</a>
 					`)
 			}
 		});

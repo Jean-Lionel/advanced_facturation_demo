@@ -78,6 +78,10 @@
                         <div id="button_{{$order->id}}">
                             @if ( ! $order->canceled_or_connection)
                             <button  onclick="cancelIncome('{{$order->invoice_signature}}', {{$order->id}})">Annuler</button>
+                            @else
+                            <a href="{{ route('canceledInvoince.edit', $order) }}" class="btn btn-sm btn-primary">
+                                <i class="fa fa-edit"></i> Modifier
+                            </a>
                             @endif
                         </div>
                     </td>
@@ -148,6 +152,9 @@
                         console.log(data);
                         $("#button_"+order_id).html(`
                     <span class="bg-warning">${data.msg} </span>
+                    <a href="{{ url('canceledInvoince') }}/${order_id}/modifier" class="btn btn-sm btn-primary">
+                        <i class="fa fa-edit"></i> Modifier
+                    </a>
                     `)
                     }
                 });
