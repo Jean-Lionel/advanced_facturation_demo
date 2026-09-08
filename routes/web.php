@@ -108,6 +108,7 @@ Route::group(['middleware' => ['auth']], function () {
     //facture.search
     Route::get('facture.search', [StockController::class , 'facture_search'])->name('facture.search');
     Route::get('canceledInvoince', [StockController::class, 'canceledInvoince'])->name('stockes.journal');
+    Route::get('canceledInvoince/{order}/modifier', [CartController::class, 'editCanceledInvoice'])->name('canceledInvoince.edit');
     Route::delete('cancelFactures/{order_id}', [StockController::class,'cancelFactures'])->name('cancelFactures');
     Route::get('canceledInvoince', [StockController::class, 'canceledInvoince'])->name('canceledInvoince');
     Route::get('journal_history', [StockController::class ,'journal_history'])->name('journal_history');
@@ -220,6 +221,5 @@ Route::resource('env_settings', App\Http\Controllers\EnvSettingController::class
 
 });
 require __DIR__ . '/jetstream.php';
-
 
 

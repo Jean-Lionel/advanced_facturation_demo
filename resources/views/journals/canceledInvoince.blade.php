@@ -44,6 +44,9 @@
 					<td>{{ $order->type_paiement ?? ""}}</td>
 					<td class="d-flex">
 						<a href="{{ route('orders.show', $order) }}" class="btn btn-sm btn-success mr-2" title="imprimer"> <i class="fa fa-print" ></i></a> 
+						<a href="{{ route('canceledInvoince.edit', $order) }}" class="btn btn-sm btn-primary mr-2" title="Modifier la facture annulée">
+							<i class="fa fa-edit"></i>
+						</a>
 						
 
 						<form action="{{ route('cancelFactures', $order) }}" method="post">

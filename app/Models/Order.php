@@ -208,6 +208,10 @@ class Order extends Model
         
         
         private static function checkCanCreateNewRecord(){
+            if (Session::pull('skip_invoice_generation_delay_once', false)) {
+                return true;
+            }
+
             $lastRecord = self::where('user_id', auth()->id())
             ->latest()
             ->first();

@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Client;
 use App\Models\Product;
 use App\Models\DetailOrder;
+use App\Models\RetourProduit;
 use Illuminate\Http\Request;
 use App\Models\FollowProduct;
 use App\Models\PaiementDette;
@@ -34,6 +35,7 @@ class CheckoutController extends Controller
         [
             'client_id' => 'required|exists:clients,id',
             'type_paiement' => 'required',
+            'source_canceled_order_id' => 'nullable|exists:orders,id',
             // 'date_facturation' => 'required',
         ];
         $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
@@ -47,11 +49,23 @@ class CheckoutController extends Controller
             $validate['customer_TIN'] = 'required|exists:clients';
         }
         $request->validate($validate);
+        $sourceCanceledOrder = null;
+
+        if ($request->filled('source_canceled_order_id')) {
+            $sourceCanceledOrder = Order::where('is_cancelled', 1)
+                ->find($request->source_canceled_order_id);
+
+            if (! $sourceCanceledOrder) {
+                Session::flash('error', 'La modification est autorisée seulement pour une facture annulée.');
+                return redirect()->route('panier.index');
+            }
+        }
+
         if (Cart::count() <= 0) {
             Session::flash('error', 'Votre panier est vide.');
             return redirect()->route('panier.index');
         }
-        if ($this->noLongerStock()) {
+        if ($this->noLongerStock($sourceCanceledOrder)) {
             Session::flash('error', 'Un produit de votre panier ne se trouve plus en stock.');
             return redirect()->route('panier.index');
         }
@@ -77,6 +91,11 @@ class CheckoutController extends Controller
         $order = null;
         try {
             DB::beginTransaction();
+
+            if ($sourceCanceledOrder && ! $this->sourceStockWasReturned($sourceCanceledOrder)) {
+                $this->restoreCanceledOrderStock($sourceCanceledOrder);
+            }
+
             $this->stockUpdated();
             $client =  Client::find($request->client_id);
             if(!$client) {
@@ -120,6 +139,10 @@ class CheckoutController extends Controller
                 $client->save();
             }
 
+            if ($sourceCanceledOrder) {
+                Session::put('skip_invoice_generation_delay_once', true);
+            }
+
             $order = Order::create([
                 'amount' => $orderAmount,
                 'total_quantity' => Cart::count(),
@@ -140,6 +163,13 @@ class CheckoutController extends Controller
                 'banque_id' => $banque->id ?? null,
                 'banque' => $banque ? $banque->toJson() : null,
                 'company' =>  $company->toJson(),
+                'update_info' => $sourceCanceledOrder ? json_encode([
+                    'action' => 'MODIFICATION_FACTURE_ANNULEE',
+                    'source_order_id' => $sourceCanceledOrder->id,
+                    'source_invoice_signature' => $sourceCanceledOrder->invoice_signature,
+                    'user_id' => Auth::user()->id,
+                    'created_at' => now()->toDateTimeString(),
+                ]) : null,
                 'created_at' =>  $currentData,
                 'updated_at' =>  $currentData,
             ]);
@@ -174,6 +204,7 @@ class CheckoutController extends Controller
                 ]);
             }
             Cart::destroy();
+            Session::forget('editing_canceled_invoice');
             DB::commit();
 
         } catch (\Exception $e) {
@@ -214,16 +245,73 @@ class CheckoutController extends Controller
         return Session::has('success') ? view('checkout.thankYou') : redirect()->route('products.index');
     }
 
-    private function noLongerStock()
+    private function noLongerStock(?Order $sourceCanceledOrder = null)
     {
+        $sourceProducts = collect($sourceCanceledOrder->products ?? []);
+        $canReuseSourceStock = $sourceCanceledOrder && ! $this->sourceStockWasReturned($sourceCanceledOrder);
+
         foreach (Cart::content() as $item) {
             $product = Product::find($item->model->id);
 
-            if ($item->qty > $product->quantite) {
+            if (! $product) {
+                return true;
+            }
+
+            $availableQuantity = $product->quantite ?? 0;
+
+            if ($canReuseSourceStock) {
+                $availableQuantity += $sourceProducts
+                    ->where('id', $product->id)
+                    ->sum('quantite');
+            }
+
+            if ($item->qty > $availableQuantity) {
                 return true;
             }
         }
         return false;
+    }
+
+    private function sourceStockWasReturned(Order $order)
+    {
+        return RetourProduit::where('order_id', $order->id)->exists()
+            || ObrMouvementStock::where('item_movement_invoice_ref', $order->id)
+            ->where('item_movement_type', 'ER')
+            ->exists();
+    }
+
+    private function restoreCanceledOrderStock(Order $order)
+    {
+        foreach ($order->products as $productItem) {
+            $product = Product::find($productItem['id']);
+
+            if (! $product) {
+                continue;
+            }
+
+            $quantity = $productItem['quantite'] ?? 0;
+
+            RetourProduit::create([
+                'product_id' => $product->id,
+                'item_name' => $product->name,
+                'order_id' => $order->id,
+                'quantite' => $quantity,
+                'description' => 'Retour automatique avant modification de la facture annulée #' . $order->id,
+                'user_id' => auth()->user()->id ?? 1,
+            ]);
+
+            ObrMouvementStock::saveMouvement(
+                $product,
+                'ER',
+                $productItem['price_revient'] ?? 0,
+                $quantity,
+                'Retour automatique avant modification de la facture annulée #' . $order->id,
+                $order->id
+            );
+
+            $product->quantite += $quantity;
+            $product->save();
+        }
     }
 
     private function stockUpdated()

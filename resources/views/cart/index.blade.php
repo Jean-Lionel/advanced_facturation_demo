@@ -1,5 +1,9 @@
 @extends('layouts.app')
 @section('content')
+@php
+    $editingCanceledInvoice = session('editing_canceled_invoice');
+    $editingClient = $editingCanceledInvoice['client'] ?? [];
+@endphp
 <div class="px-4 px-lg-0">
     <!-- For demo purpose -->
     <!-- End -->
@@ -128,7 +132,7 @@
 
                                     {{--  <input type="hidden" name="currentTva" value="{{ $currentTva }}">  --}}
                                     <div class="form-group">
-                                        <input type="text" id="chercherClient" name="chercherClient" placeholder="Recherche Ici" class="border-2 form-control form-control-sm">
+                                        <input type="text" id="chercherClient" name="chercherClient" value="{{ old('chercherClient', $editingClient['name'] ?? '') }}" placeholder="Recherche Ici" class="border-2 form-control form-control-sm">
                                     </div>
                                     <div class="d-flex justify-content-between">
 
@@ -150,27 +154,30 @@
                                     <div>
 
                                         <input type="hidden" id="date_facturation" value="{{ date('Y-m-d') }}"  name="date_facturation">
-                                        <input type="hidden" id="client_id"   name="client_id">
+                                        <input type="hidden" id="client_id" value="{{ old('client_id', $editingClient['id'] ?? '') }}" name="client_id">
                                     </div>
 
                                     @csrf
                                     @method('post')
+                                    @if ($editingCanceledInvoice)
+                                        <input type="hidden" name="source_canceled_order_id" value="{{ $editingCanceledInvoice['order_id'] }}">
+                                    @endif
                                     <div class="row">
                                         <div class="form-group col-md-6">
-                                            <input  disabled type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="border-2 form-control">
+                                            <input  disabled type="text" id="name" name="name" value="{{ old('name', $editingClient['name'] ?? '') }}" placeholder="Entrer le nom ici" aria-describedby="button-addon3" class="border-2 form-control">
                                         </div>
 
                                         <div class="form-group col-md-6">
-                                            <input  disabled name="telephone" id="telephone" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="border-2 form-control">
+                                            <input  disabled name="telephone" id="telephone" value="{{ old('telephone', $editingClient['telephone'] ?? '') }}" placeholder="Numéro du téléphone" aria-describedby="button-addon3" class="border-2 form-control">
                                         </div>
 
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-6">
-                                            <input  disabled id="customer_TIN" name="customer_TIN" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="border-2 form-control">
+                                            <input  disabled id="customer_TIN" name="customer_TIN" value="{{ old('customer_TIN', $editingClient['customer_TIN'] ?? '') }}" placeholder="Numéro nif du client" aria-describedby="button-addon3" class="border-2 form-control">
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <input  disabled id="addresse_client"  placeholder="Adresse du client" aria-describedby="button-addon3" class="border-2 form-control">
+                                            <input  disabled id="addresse_client" value="{{ old('addresse_client', $editingClient['addresse'] ?? '') }}" placeholder="Adresse du client" aria-describedby="button-addon3" class="border-2 form-control">
                                             <span id="search_response"></span>
                                         </div>
                                     </div>
@@ -178,11 +185,11 @@
                                         @php
                                             $useCredit = filter_var(env('APP_USE_CREDIT', false), FILTER_VALIDATE_BOOLEAN);
                                             $cartTotal = Cart::total(0, '.', '');
-                                            $oldTypePaiement = old('type_paiement');
+                                            $oldTypePaiement = old('type_paiement', $editingCanceledInvoice['type_paiement'] ?? null);
                                             $oldMontantPaye = old('montant_paye');
                                             $oldMontantRestant = old('montant_restant');
                                             $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
-                                            $oldBanqueId = old('banque_id');
+                                            $oldBanqueId = old('banque_id', $editingCanceledInvoice['banque_id'] ?? null);
                                             $banques = $useBanque ? \App\Models\Banque::active()->orderBy('name')->get() : collect();
 
                                             if ($oldMontantPaye === null && $oldMontantRestant !== null) {
@@ -239,7 +246,7 @@
                                     @endif
                                     @if (env('APP_USE_ABONEMENT', false))
                                         <div class="form-group">
-                                            <input type="hidden" name="commissionaire_id" id="selectedCommisionnaire">
+                                            <input type="hidden" name="commissionaire_id" id="selectedCommisionnaire" value="{{ old('commissionaire_id', $editingCanceledInvoice['commissionaire_id'] ?? '') }}">
                                             <input type="text" class="form-control" id="commissionaire_id" placeholder="PORTEUR" aria-describedby="button-addon3" class="border-2 ">
                                         </div>
                                     @endif
@@ -263,7 +270,7 @@
                                         <h5 class="font-weight-bold">
                                            <select name="invoice_currency" id="">
                                             @foreach(TYPE_MONNAIE as $currency)
-                                                <option value="{{ $currency }}">{{ $currency }}</option>
+                                                <option value="{{ $currency }}" {{ old('invoice_currency', $editingCanceledInvoice['invoice_currency'] ?? null) === $currency ? 'selected' : '' }}>{{ $currency }}</option>
                                             @endforeach
                                            </select>
                                         </h5>

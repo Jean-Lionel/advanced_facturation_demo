@@ -167,21 +167,14 @@ class SendInvoiceToOBR extends Controller
                 'password' => env('OBR_PASSWORD')
             ]);
             $response = json_decode($req->body());
-            $success = $response->success;
-            $message = $response->msg;
-            $token = "";
-            if ($success) {
+
+            if ($response && ($response->success ?? false) && isset($response->result->token)) {
                 return $response->result->token;
             }
-            return [
-                'succees' => false,
-                'response' => $req->body(),
-                "data" => [
-                    'username' => env('OBR_USERNAME'),
-                    'password' => env('OBR_PASSWORD') ,
-                    'url' => $this->baseUrl
-                ]
-            ];
+
+            $message = $response->msg ?? 'Connexion OBR impossible.';
+
+            throw new \Exception($message . ' URL: ' . $this->baseUrl . ' Username: ' . env('OBR_USERNAME'));
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
@@ -203,5 +196,4 @@ class SendInvoiceToOBR extends Controller
 
 
 }
-
 
