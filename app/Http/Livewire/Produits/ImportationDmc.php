@@ -131,8 +131,6 @@ class ImportationDmc extends Component
                     'quantite_restant' => $item['item_quantity'],
                 ]);
             }
-
-
                 $attributes = [
                     "system_or_device_id" => env('OBR_USERNAME'),
                     "item_code" => $currentProduct->id,
