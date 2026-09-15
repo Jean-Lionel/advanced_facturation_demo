@@ -20,4 +20,8 @@ class PaiementDette extends Model
     public function order(){
     	return $this->belongsTo('App\Models\Order');
     }
+
+    public function details(){
+        return $this->hasMany(DetailPaimentDette::class, 'paiement_dette_id');
+    }
 }

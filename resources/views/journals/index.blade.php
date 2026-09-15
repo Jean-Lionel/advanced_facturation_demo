@@ -150,6 +150,7 @@
                                 </small>
                             </div>
                         @endif
+                        <a href="{{ route('paiements.paiement_dette', $order->id) }}">Voir les paiements</a>
                     </td>
 					<td class="noprint">{{ $order->invoice_type ?? ""}}</td>
                     <td class="numbers">
@@ -190,6 +191,11 @@
 
 			</tbody>
 		</table>
+        @if (method_exists($orders, 'links')) 
+            <div class="d-flex justify-content-center noprint">
+                {{ $orders->appends(request()->query())->links() }} 
+            </div>
+        @endif
 
         @foreach($orders as $order)
             @php

@@ -207,7 +207,7 @@ class StockController extends Controller
     public function journal(){
         $start_date = request()->query('startDate') ?? Carbon::now()->format('Y-m-d');
         $end_date = request()->query('endDate') ?? Carbon::now()->addDays(1)->format('Y-m-d');
-        $orders =  Order::where('is_cancelled','=','0')
+        $query = Order::where('is_cancelled','=','0')
                                 ->where(function($query) use($start_date, $end_date){
                                 if($start_date && $end_date){
                                     $query->whereDate('created_at', '>=' , $start_date)
@@ -221,19 +221,27 @@ class StockController extends Controller
                                     }
                                 }
 
-                            })
-                            ->sortable()
-                            ->latest()
-                            ->get();
+                            });
+
+        $total_tva = (clone $query)->sum('tax');
+        $total_facture = (clone $query)->count();
+        $total_amount = (clone $query)->sum('amount');
+        $total_amount_tax = (clone $query)->sum('amount_tax');
+
+        $orders = $query->with(['client', 'user', 'dette'])
+                        ->sortable()
+                        ->latest()
+                        ->paginate(20)
+                        ->appends(request()->query());
 
         return view('journals.index', [
-            'orders' => $orders, //->paginate(10),
+            'orders' => $orders,
             'startDate' => $start_date,
             'endDate' => $end_date,
-            'total_tva' => $orders->sum('tax'),
-            'total_facture' => $orders->count(),
-            'total_amount' => $orders->sum('amount'),
-            'total_amount_tax' => $orders->sum('amount_tax'),
+            'total_tva' => $total_tva,
+            'total_facture' => $total_facture,
+            'total_amount' => $total_amount,
+            'total_amount_tax' => $total_amount_tax,
         ] );
     }
     public function fiche_stock(Request $request){
@@ -454,7 +462,7 @@ class StockController extends Controller
         if ($startDate && $endDate ) {
             $query->whereBetween('created_at',[$startDate,$endDate]);
         }
-        $orders =  $query->where('is_cancelled','=','0')
+        $baseQuery = $query->where('is_cancelled','=','0')
                             ->where(function ($query) {
                                 $query->whereHas('dette', function ($query) {
                                     $query->where('montant_restant', '>', 0);
@@ -462,20 +470,27 @@ class StockController extends Controller
                                     $query->whereIn('type_paiement', [3, '3', 'DETTE'])
                                         ->whereDoesntHave('dette');
                                 });
-                            })
-                            ->with('dette')
+                            });
+
+        $total_tva = (clone $baseQuery)->sum('tax');
+        $total_facture = (clone $baseQuery)->count();
+        $total_amount = (clone $baseQuery)->sum('amount');
+        $total_amount_tax = (clone $baseQuery)->sum('amount_tax');
+
+        $orders = $baseQuery->with(['client', 'user', 'dette'])
                             ->sortable()
                             ->latest()
-                            ->get();
+                            ->paginate(20)
+                            ->appends(request()->query());
 
         return view('journals.index', [
-            'orders' => $orders, //->paginate(10),
+            'orders' => $orders,
             'startDate' => $startDate,
             'endDate' => $endDate,
-            'total_tva' => $orders->sum('tax'),
-            'total_facture' => $orders->count(),
-            'total_amount' => $orders->sum('amount'),
-            'total_amount_tax' => $orders->sum('amount_tax'),
+            'total_tva' => $total_tva,
+            'total_facture' => $total_facture,
+            'total_amount' => $total_amount,
+            'total_amount_tax' => $total_amount_tax,
         ] );
     }
     public function FacturePayer(Request $request, Order $order)

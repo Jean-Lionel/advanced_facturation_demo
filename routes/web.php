@@ -195,6 +195,8 @@ Route::group(['middleware' => ['auth']], function () {
     // proformat
     Route::resource('proformats', ProformatController::class);
 
+    Route::get("paiements/{order_id}", [PaiementDetteController::class, 'paiementDette'])->name('paiements.paiement_dette');
+
     // Routes pour les types de versement
     Route::resource('versementTypes', App\Http\Controllers\VersementTypeController::class)
         ->names('versementType');
