@@ -102,10 +102,10 @@ N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y à H:i:s') }} </h3>
 <h5>B. Patient</h5>
 <p>Nom et Prénom ou Raison Socail :</p>
 <p>
-<b>{{$order->client->name}}</b>
+<b>{{($order->client->name ?? '')}}</b>
 </p>
-<p>Résident à : <b>{{ $order->client->addresse }}</b></p>
-<p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
+<p>Résident à : <b>{{ ($order->client->addresse ?? '') }}</b></p>
+<p>Assujeti à la TVA : {{($order->client->vat_customer_payer ?? '') ? "OUI" : "NON" }}         </p>
 <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
 
 <p>Doit pour ce qui suit :</p>
@@ -241,10 +241,10 @@ N° {{ $order->id }} du {{ $order->created_at->format('d-m-Y H:i:s') }}</h3>
 
 <h3>B. Patient</h3>
 <p>Nom et Prénom ou Raison Socail :</p>
-<p>{{$order->client->name}}</p>
+<p>{{($order->client->name ?? '')}}</p>
 <br>
 <p>Résident à : {{ $order->addresse_client }}</p>
-<p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
+<p>Assujeti à la TVA : {{($order->client->vat_customer_payer ?? '') ? "OUI" : "NON" }}         </p>
 <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
 <h5>Doit pour ce qui suit : </h5>
 <div>

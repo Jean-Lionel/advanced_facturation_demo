@@ -319,12 +319,12 @@
 
         <div class="client-info">
             <h3>Client</h3>
-            <p>Nom: {{ $order->client->name }}</p>
+            <p>Nom: {{ ($order->client->name ?? '') }}</p>
             <p>Adresse: {{ $order->addresse_client }}</p>
-            <p>Téléphone: {{ $order->client->telephone }}</p>
-            <p>NIF: {{ $order->client->customer_TIN }}</p>
-            @if($order->client->email)
-            <p>Email: {{ $order->client->email }}</p>
+            <p>Téléphone: {{ ($order->client->telephone ?? '') }}</p>
+            <p>NIF: {{ ($order->client->customer_TIN ?? '') }}</p>
+            @if(($order->client->email ?? ''))
+            <p>Email: {{ ($order->client->email ?? '') }}</p>
             @endif
         </div>
         <div> Droit à </div>

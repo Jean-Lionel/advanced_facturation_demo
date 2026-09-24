@@ -43,7 +43,7 @@
             <div class="client">
                 <p>B. Client</p>
                 <p>Personne physique: <input type="checkbox" checked> | Société: <input type="checkbox"></p>
-                <p>Nom: {{$order->client->name}}</p>
+                <p>Nom: {{($order->client->name ?? '')}}</p>
                 <p>NIF:  {{$order->company->tp_TIN ?? ""}}</p>
                 <p>Resident à: rohero</p>
                 <p>Assujetti à la TVA: {{$order->client->customer_TIN ?? ""}}  <input type="checkbox" checked> OUI <input type="checkbox"> NON</p>

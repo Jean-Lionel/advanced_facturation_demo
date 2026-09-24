@@ -137,9 +137,9 @@
                     <div>
                         <h5>B. Client</h5>
                         <p>Nom et Prénom ou Raison Socail :</p>
-                        <p><b>{{$order->client->name}}</b></p>
-                        <p>Résident à : <b>{{ $order->client->addresse }}</b></p>
-                        <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}</p>
+                        <p><b>{{($order->client->name ?? '')}}</b></p>
+                        <p>Résident à : <b>{{ ($order->client->addresse ?? '') }}</b></p>
+                        <p>Assujeti à la TVA : {{($order->client->vat_customer_payer ?? '') ? "OUI" : "NON" }}</p>
                         <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b></p>
                         <p>Doit pour ce qui suit :</p>
                         <br>
@@ -261,10 +261,10 @@
 
                 <h3>B. Client</h3>
                 <p>Nom et Prénom ou Raison Socail :</p>
-                <p>{{$order->client->name}}</p>
+                <p>{{($order->client->name ?? '')}}</p>
                 <br>
                 <p>Résident à : {{ $order->addresse_client }}</p>
-                <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}</p>
+                <p>Assujeti à la TVA : {{($order->client->vat_customer_payer ?? '') ? "OUI" : "NON" }}</p>
                 <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b></p>
                 <h5>Doit pour ce qui suit : </h5>
 

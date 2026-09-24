@@ -95,11 +95,14 @@ class PaymentMensuelForm extends Component
                 'total_payment_mensuel' => $this->maison->montant,
             ]);
 
+            $mainClient = $this->maison->clients->first();
             $client = new Client([
                 'id' => $this->maison->ClientId,
                 'name' => substr($this->maison->clientName ?? '', 0, 100),
                 'addresse' => substr($this->maison->adresse ?? '', 0, 100),
-                'customer_TIN' => $this->maison->customer_TIN,
+                'telephone' => $mainClient->telephone ?? null,
+                'email' => $mainClient->email ?? null,
+                'customer_TIN' => $mainClient->customer_TIN ?? null,
                 'vat_customer_payer' => $this->maison->vatCustomerPayer,
             ]);
 
