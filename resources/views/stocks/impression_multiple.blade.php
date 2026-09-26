@@ -244,37 +244,40 @@ NIF: {{ $order->client->customer_TIN }}
 @endforeach
 
 </div>
+</div>
+</div>
 
 @endsection
 
 @section('javascript')
 
 <script>
-function printMultipleOrders(){
+function printMultipleOrders() {
     const el = document.getElementById('list_reciept');
-    if (!el) return alert('Élément introuvable : ' + 'list_reciept');
+    if (!el) return alert('Élément introuvable : list_reciept');
 
-    const html = `
-    <html>
-      <head>
-        <title>Impression</title>
-        <style>
-          /* Ajoute ici ton CSS pour l'impression si besoin */
-          body { font-family: Arial, sans-serif; margin: 20px; }
-        </style>
-      </head>
-      <body>
-        ${el.outerHTML}
-      </body>
-    </html>`;
+    // Iframe caché : pas de popup bloqué, pas de HTML dans une chaîne JS
+    let frame = document.getElementById('print_frame');
+    if (frame) frame.remove();
+    frame = document.createElement('iframe');
+    frame.id = 'print_frame';
+    frame.style.position = 'fixed';
+    frame.style.width = '0';
+    frame.style.height = '0';
+    frame.style.border = '0';
+    document.body.appendChild(frame);
 
-    const w = window.open('', '_blank', 'width=800,height=600');
-    w.document.open();
-    w.document.write(html);
-    w.document.close();
-    w.focus();
-    // attendre que le contenu soit chargé avant print (compatible la plupart des navigateurs)
-    w.onload = () => { w.print();  };
+    const doc = frame.contentWindow.document;
+    doc.open();
+    doc.close();
+    doc.title = 'Impression';
+    doc.body.style.margin = '0';
+    doc.body.appendChild(doc.importNode(el, true));
+
+    setTimeout(function () {
+        frame.contentWindow.focus();
+        frame.contentWindow.print();
+    }, 300);
 }
 </script>
 
