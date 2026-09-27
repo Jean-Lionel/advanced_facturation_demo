@@ -204,10 +204,8 @@ class StockController extends Controller
         return back();
     }
 
-    public function journal(){
-        $start_date = request()->query('startDate') ?? Carbon::now()->format('Y-m-d');
-        $end_date = request()->query('endDate') ?? Carbon::now()->addDays(1)->format('Y-m-d');
-        $query = Order::where('is_cancelled','=','0')
+    private function journalQuery($start_date, $end_date){
+        return Order::where('is_cancelled','=','0')
                                 ->where(function($query) use($start_date, $end_date){
                                 if($start_date && $end_date){
                                     $query->whereDate('created_at', '>=' , $start_date)
@@ -222,6 +220,12 @@ class StockController extends Controller
                                 }
 
                             });
+    }
+
+    public function journal(){
+        $start_date = request()->query('startDate') ?? Carbon::now()->format('Y-m-d');
+        $end_date = request()->query('endDate') ?? Carbon::now()->addDays(1)->format('Y-m-d');
+        $query = $this->journalQuery($start_date, $end_date);
 
         $total_tva = (clone $query)->sum('tax');
         $total_facture = (clone $query)->count();
@@ -243,6 +247,32 @@ class StockController extends Controller
             'total_amount' => $total_amount,
             'total_amount_tax' => $total_amount_tax,
         ] );
+    }
+
+    public function journal_pdf(){
+        ini_set('memory_limit', '512M');
+        set_time_limit(300);
+
+        $start_date = request()->query('startDate') ?? Carbon::now()->format('Y-m-d');
+        $end_date = request()->query('endDate') ?? Carbon::now()->addDays(1)->format('Y-m-d');
+        $query = $this->journalQuery($start_date, $end_date);
+
+        $orders = (clone $query)->with(['client', 'user', 'dette'])
+                        ->latest()
+                        ->get();
+
+        $pdf = Pdf::loadView('journals.pdf', [
+            'orders' => $orders,
+            'startDate' => $start_date,
+            'endDate' => $end_date,
+            'total_tva' => $orders->sum('tax'),
+            'total_facture' => $orders->count(),
+            'total_amount' => $orders->sum('amount'),
+            'total_amount_tax' => $orders->sum('amount_tax'),
+        ]);
+        $pdf->setPaper('a4', 'landscape');
+
+        return $pdf->download('journal_' . $start_date . '_' . $end_date . '.pdf');
     }
     public function fiche_stock(Request $request){
         $use_commission = filter_var(env('APP_USE_COMMISSION', false), FILTER_VALIDATE_BOOLEAN);
