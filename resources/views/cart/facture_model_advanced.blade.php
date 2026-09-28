@@ -67,29 +67,21 @@
         }
 
         .hr-footer {
-            position: absolute;
-            bottom: 80px;
-            left: 20px;
-            right: 20px;
             border: 3px solid var(--primary-color);
-            margin: 10px 0;
-            width: 95%;
+            margin: 18px 0 12px;
+            width: 100%;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
-
         }
 
         .company-info-footer {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
             display: flex;
             justify-content: space-between;
             gap: 5px;
             margin-top: 10px;
             margin-bottom: 10px;
             font-size: 12px;
+            flex-wrap: wrap;
         }
 
         .action-buttons {
@@ -155,6 +147,8 @@
             margin: 0 auto;
             position: relative;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
@@ -243,12 +237,15 @@
         }
 
         .footer {
-            margin-top: 5px;
+            margin-top: auto;
+            padding-top: 10px;
             font-size: 13px;
+            border-top: 1px solid #ddd;
         }
 
         .payment-info {
             margin-bottom: 30px;
+
         }
 
         .payment-info h4 {
@@ -295,9 +292,12 @@
             </div>
             <div class="invoice-details">
                 <h1>{{ $order->type_facture ?? "FACTURE" }}</h1>
-                <p>N°: {{ getInvoiceNumber($order->id)  }}</p>
-                <p>Date: {{  $order->date_facturation }}</p>
-               <!--  <p>Signature: {{ $order->invoice_signature }}</p> -->
+                <p>N°: {{ getInvoiceNumber($order->id) }}</p>
+                <p>Date: {{ $order->date_facturation }}</p>
+
+                @if(!empty($electronicSignature))
+                    <p>ID OBR / Signature électronique: {{ $electronicSignature }}</p>
+                @endif
             </div>
         </div>
 
@@ -336,23 +336,26 @@
         <div class="totals">
             <table>
                 <tr>
-                    <td><strong>Montant Total</strong></td>
+                    <td><strong>Montant HT</strong></td>
                     <td>{{ number_format($order->amount_tax, 2) }}</td>
                 </tr>
-               <tr>
+                <tr>
                     <td><strong>TVA</strong></td>
                     <td>{{ number_format($order->tax, 2) }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Montant Total</strong></td>
+                    <td><strong>Montant Total TTC</strong></td>
                     <td>{{ number_format($order->amount, 2) }}</td>
-                </tr> 
+                </tr>
             </table>
         </div>
 
         <div class="footer">
             <div class="payment-info">
-                <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount_tax)}} {{ $order->invoice_currency }} </p>
+                <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount) }} {{ $order->invoice_currency }} </p>
+                @if(!empty($order->invoice_signature))
+                    <p class="payment-info-text"><strong>OBR ID:</strong> {{ $order->invoice_signature }}</p>
+                @endif
                 @if($order->commentaire)
                     <div style="margin: 10px 0; padding: 10px; border: 1px dashed #ccc;">
                         <strong>Commentaire :</strong> {{ $order->commentaire }}
@@ -363,7 +366,7 @@
             @if($order->type_facture == "PROFORMAT")
             <div>
             <i>Cette facture proforma est valable pour une période de 30 jours à compter de la date d’émission.</i>
-            
+
             </div>
             @endif
 
