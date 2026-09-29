@@ -354,7 +354,7 @@
             <div class="payment-info">
                 <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount) }} {{ $order->invoice_currency }} </p>
                 @if(!empty($order->invoice_signature))
-                    <p class="payment-info-text"><strong>OBR ID:</strong> {{ $order->invoice_signature }}</p>
+                    <h4><strong>OBR ID:</strong> {{ $order->invoice_signature }}</h4>
                 @endif
                 @if($order->commentaire)
                     <div style="margin: 10px 0; padding: 10px; border: 1px dashed #ccc;">
