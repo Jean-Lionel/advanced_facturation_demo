@@ -12,7 +12,7 @@ function getNumberToWord($number , $language='fr'){
     $numberToWords = new NumberToWords();
     // build a new number transformer using the RFC 3066 language identifier
     $numberTransformer = $numberToWords->getNumberTransformer($language);
-    return  $numberTransformer->toWords($number);
+    return  $numberTransformer->toWords((int) round((float) ($number ?? 0)));
 }
 
 function getInvoiceNumber($invoince_id){

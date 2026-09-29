@@ -148,10 +148,10 @@
             <h5>B. Client</h5>
             <p>Nom et Prénom ou Raison Socail :</p>
             <p>
-                <b>{{$order->client->name}}</b>
+                <b>{{($order->client->name ?? '')}}</b>
             </p>
-            <p>Résident à : <b>{{ $order->client->addresse }}</b></p>
-            <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
+            <p>Résident à : <b>{{ ($order->client->addresse ?? '') }}</b></p>
+            <p>Assujeti à la TVA : {{($order->client->vat_customer_payer ?? '') ? "OUI" : "NON" }}         </p>
             <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
         </div>
         <h5>Doit pour ce qui suit : </h5>

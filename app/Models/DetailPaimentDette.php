@@ -22,4 +22,12 @@ class DetailPaimentDette extends Model
     		$model->user_id = Auth::user()->id;
     	});
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function paiementDette(){
+        return $this->belongsTo(PaiementDette::class, 'paiement_dette_id');
+    }
 }

@@ -10,6 +10,17 @@ use Illuminate\Support\Facades\Session;
 
 class PaiementDetteController extends Controller
 {
+
+
+    public function paiementDette($order_id){
+        $order = \App\Models\Order::with(['client', 'user'])->find($order_id);
+        $dettes = PaiementDette::where('order_id', $order_id)
+            ->with(['order.client', 'details.user'])
+            ->latest()
+            ->get();
+     
+        return view('paiment_dette.dettes', compact('dettes', 'order', 'order_id'));
+    }
     /**
      * Display a listing of the resource.
      *

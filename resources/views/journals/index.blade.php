@@ -36,6 +36,9 @@
                         <button type="submit" class="btn btn-info btn-sm">
                             Ok
                         </button>
+                        <a href="{{ route('journal.pdf', ['startDate' => $startDate, 'endDate' => $endDate]) }}" class="btn btn-danger btn-sm">
+                            <i class="fa fa-file-pdf"></i> Télécharger PDF
+                        </a>
                     </div>
 
                 </div>
@@ -150,6 +153,7 @@
                                 </small>
                             </div>
                         @endif
+                        <a href="{{ route('paiements.paiement_dette', $order->id) }}">Voir les paiements</a>
                     </td>
 					<td class="noprint">{{ $order->invoice_type ?? ""}}</td>
                     <td class="numbers">
@@ -190,6 +194,11 @@
 
 			</tbody>
 		</table>
+        @if (method_exists($orders, 'links')) 
+            <div class="d-flex justify-content-center noprint">
+                {{ $orders->appends(request()->query())->links() }} 
+            </div>
+        @endif
 
         @foreach($orders as $order)
             @php
