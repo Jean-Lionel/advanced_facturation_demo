@@ -26,7 +26,6 @@
             margin: 5mm;
         }
 
-
         .text-center {
             text-align: center;
         }
@@ -68,39 +67,21 @@
         }
 
         .hr-footer {
-            position: absolute;
-            bottom: 80px;
-            left: 20px;
-            right: 20px;
             border: 3px solid var(--primary-color);
-            margin: 10px 0;
-            width: 95%;
+            margin: 18px 0 12px;
+            width: 100%;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
-
-        }
-
-        .invoice_signature{
-            position: absolute;
-            bottom: 115px;
-            text-align: center;
-            left: 20px;
-            right: 20px;
-            font-size: 18px;
-
         }
 
         .company-info-footer {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
             display: flex;
             justify-content: space-between;
             gap: 5px;
             margin-top: 10px;
             margin-bottom: 10px;
             font-size: 12px;
+            flex-wrap: wrap;
         }
 
         .action-buttons {
@@ -166,6 +147,8 @@
             margin: 0 auto;
             position: relative;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
@@ -254,12 +237,15 @@
         }
 
         .footer {
-            margin-top: 5px;
+            margin-top: auto;
+            padding-top: 10px;
             font-size: 13px;
+            border-top: 1px solid #ddd;
         }
 
         .payment-info {
             margin-bottom: 30px;
+
         }
 
         .payment-info h4 {
@@ -293,27 +279,25 @@
     <div class="container">
         <div class="header">
             <div>
-                <img src="{{ asset('img/advanced.jpg') }}" alt="Logo" class="logo">
+                <img src="{{ asset('img/' . env('USE_LOGO_NAME')) }}" alt="Logo" class="logo">
                 <div class="company-info">
                     <h2>{{ $order->company->tp_name }}</h2>
                     <p>NIF: {{ $order->company->tp_TIN }}</p>
                     <p>RC: {{ $order->company->tp_trade_number }}</p>
                     <p>{{ $order->company->tp_address_commune }}, {{ $order->company->tp_address_quartier }}</p>
+                    <p>{{ $order->company->tp_address_avenue }}</p>
+                    <p>{{ $order->company->tp_address_number }}</p>
                     <p>Tél: {{ $order->company->tp_phone_number }}</p>
-
-                    @if (env('OBR_PRODUCTION'))
-                        <p>Centre Fiscal : {{ $order->company->tp_fiscal_center }}</p>
-                        <p>Secteur d'activité : {{ $order->company->tp_activity_sector }}</p>
-                        <p>Forme juridique : {{ $order->company->tp_legal_form }}</p>
-                        <hr>
-                    @endif
                 </div>
             </div>
             <div class="invoice-details">
                 <h1>{{ $order->type_facture ?? "FACTURE" }}</h1>
-                <p>N°: {{ getInvoiceNumber($order->id)  }}</p>
-                <p>Date: {{  $order->date_facturation }}</p>
-               <!--  <p>Signature: {{ $order->invoice_signature }}</p> -->
+                <p>N°: {{ getInvoiceNumber($order->id) }}</p>
+                <p>Date: {{ $order->date_facturation }}</p>
+
+                @if(!empty($electronicSignature))
+                    <p>ID OBR / Signature électronique: {{ $electronicSignature }}</p>
+                @endif
             </div>
         </div>
 
@@ -331,7 +315,6 @@
         <table>
             <thead class="table_header">
                 <tr>
-                    <td>#</td>
                     <th>Description</th>
                     <th>Quantité</th>
                     <th>P.U</th>
@@ -341,7 +324,6 @@
             <tbody>
                 @foreach($order->products as $product)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $product['name'] }}</td>
                     <td>{{ $product['quantite'] }}</td>
                     <td>{{ number_format($product['price'], 2) }}</td>
@@ -354,47 +336,41 @@
         <div class="totals">
             <table>
                 <tr>
-                    <td><strong>Montant Total</strong></td>
+                    <td><strong>Montant HT</strong></td>
                     <td>{{ number_format($order->amount_tax, 2) }}</td>
                 </tr>
-               <tr>
-                    <td><strong>TVA </strong></td>
+                <tr>
+                    <td><strong>TVA</strong></td>
                     <td>{{ number_format($order->tax, 2) }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Montant Total</strong></td>
+                    <td><strong>Montant Total TTC</strong></td>
                     <td>{{ number_format($order->amount, 2) }}</td>
-                </tr> 
+                </tr>
             </table>
         </div>
 
-
         <div class="footer">
             <div class="payment-info">
-                <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount_tax)}}  FBU</p>
+                <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount) }} {{ $order->invoice_currency }} </p>
+                @if(!empty($order->invoice_signature))
+                    <h4><strong>OBR ID:</strong> {{ $order->invoice_signature }}</h4>
+                @endif
+                @if($order->commentaire)
+                    <div style="margin: 10px 0; padding: 10px; border: 1px dashed #ccc;">
+                        <strong>Commentaire :</strong> {{ $order->commentaire }}
+                    </div>
+                @endif
                 <h4 class="text-center payment-info-text">MERCI DE NOUS FAIRE CONFIANCE !!!</h4>
             </div>
             @if($order->type_facture == "PROFORMAT")
             <div>
-            Modalités de paiement <br>
-            - Acompte : 50 % à la signature du contrat <br>
-            - Solde : à la livraison de l’application <br>
-            - Mode de paiement : Virement bancaire / Espèces / Mobile Money <br>
-            - Validité de l’offre <br>
             <i>Cette facture proforma est valable pour une période de 30 jours à compter de la date d’émission.</i>
 
             </div>
             @endif
 
-
-
             <hr class="hr-footer">
-            <div class="invoice_signature">
-                @if (env('OBR_PRODUCTION'))
-                 OBR ID : {{ $order->invoice_signature}}
-                @endif
-
-            </div>
             <div class="company-info-footer">
                <div> Site web : <br> {{ $order->company->tp_website ?? "" }}</div>
                <div> Email : <br> {{ $order->company->tp_email ?? "" }}</div>
