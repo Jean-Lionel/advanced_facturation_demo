@@ -352,12 +352,12 @@
 
         <div class="footer">
             <div class="payment-info">
-                <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount) }} {{ $order->invoice_currency }} </p>
+                <p class="text-centerpayment-info-text">Nous disons {{ getNumberToWord($order->amount) }} {{ $order->invoice_currency }} </p>
                 @if(!empty($order->invoice_signature))
-                    <h2><strong>OBR ID:</strong> {{ $order->invoice_signature }}</h2>
+                    <h2 class="text-center"><strong>OBR ID:</strong> {{ $order->invoice_signature }}</h2>
                 @endif
                 @if($order->commentaire)
-                    <div style="margin: 10px 0; padding: 10px; border: 1px dashed #ccc;">
+                    <div class="text-center" style="margin: 10px 0; padding: 10px; border: 1px dashed #ccc;">
                         <strong>Commentaire :</strong> {{ $order->commentaire }}
                     </div>
                 @endif
