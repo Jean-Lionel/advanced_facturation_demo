@@ -57,16 +57,36 @@ class ObrDeclarationController extends Controller
     public function hostory()
     {
         $order_id = request()->query('order_id');
+        $client_name = trim((string) request()->query('client_name'));
+        $nif = trim((string) request()->query('nif'));
+        $date_debut = request()->query('date_debut');
+        $date_fin = request()->query('date_fin');
+
         $orders = Order::with(['concelInvoice'])->whereNotNull('envoye_obr')
-        ->where( function($query) use ($order_id){
-            if(isset($order_id) ){
-                $query->where('id', $order_id);
-            }
+        ->when($order_id, fn($query) => $query->where('id', $order_id))
+        ->when($client_name, function($query) use ($client_name){
+            $query->where(function($q) use ($client_name){
+                $q->whereHas('client', fn($c) => $c->where('name', 'like', "%{$client_name}%"))
+                  ->orWhere('client', 'like', "%{$client_name}%");
+            });
         })
-        ->latest()->paginate();
+        ->when($nif, function($query) use ($nif){
+            $query->where(function($q) use ($nif){
+                $q->whereHas('client', fn($c) => $c->where('customer_TIN', 'like', "%{$nif}%"))
+                  ->orWhere('client', 'like', "%{$nif}%");
+            });
+        })
+        ->when($date_debut, fn($query) => $query->whereDate('created_at', '>=', $date_debut))
+        ->when($date_fin, fn($query) => $query->whereDate('created_at', '<=', $date_fin))
+        ->latest()->paginate()->withQueryString();
+
         return view('obr_declarations.history', [
             'orders' => $orders,
-            'order_id' => $order_id
+            'order_id' => $order_id,
+            'client_name' => $client_name,
+            'nif' => $nif,
+            'date_debut' => $date_debut,
+            'date_fin' => $date_fin,
         ]);
     }
 

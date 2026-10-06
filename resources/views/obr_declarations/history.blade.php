@@ -6,9 +6,33 @@
 	@include('entreprises.header')
 	<h5>Historique des factures envoyées a OBR</h5>
 
-    <form action="">
-        <input type="text" name="order_id" value="{{$order_id}}">
-        <button>Rechercher</button>
+    <form action="{{ route('obr_declarations_hostory') }}" method="GET" class="mb-3">
+        <div class="form-row align-items-end">
+            <div class="col-md-2">
+                <label class="small mb-0">N° facture</label>
+                <input type="text" name="order_id" value="{{ $order_id ?? '' }}" class="form-control form-control-sm">
+            </div>
+            <div class="col-md-3">
+                <label class="small mb-0">Nom du client</label>
+                <input type="text" name="client_name" value="{{ $client_name ?? '' }}" class="form-control form-control-sm" placeholder="Nom du client">
+            </div>
+            <div class="col-md-2">
+                <label class="small mb-0">NIF</label>
+                <input type="text" name="nif" value="{{ $nif ?? '' }}" class="form-control form-control-sm" placeholder="NIF">
+            </div>
+            <div class="col-md-2">
+                <label class="small mb-0">Date début</label>
+                <input type="date" name="date_debut" value="{{ $date_debut ?? '' }}" class="form-control form-control-sm">
+            </div>
+            <div class="col-md-2">
+                <label class="small mb-0">Date fin</label>
+                <input type="date" name="date_fin" value="{{ $date_fin ?? '' }}" class="form-control form-control-sm">
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-sm btn-primary btn-block">Rechercher</button>
+                <a href="{{ route('obr_declarations_hostory') }}" class="btn btn-sm btn-secondary btn-block">Effacer</a>
+            </div>
+        </div>
     </form>
 	<table class="table table-bordered tab-content table-sm">
 		<thead>

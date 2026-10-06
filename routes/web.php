@@ -26,6 +26,7 @@ use App\Http\Controllers\SyncronizeController;
 use App\Http\Controllers\Tools\ImportDataController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VenteController;
+use App\Http\Controllers\FactureBrouillonController;
 use App\Jobs\ObrSendInvoince;
 use Illuminate\Support\Facades\Route;
 
@@ -72,6 +73,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('products.imports', [ProductController::class, 'imports'])->name('products.imports');
     Route::resource('clients', ClientController::class);
     Route::resource('categories', CategoryController::class);
+    Route::get('ventes/brouillons', [FactureBrouillonController::class, 'index'])->name('brouillons.index');
+    Route::delete('ventes/brouillons/{brouillon}', [FactureBrouillonController::class, 'destroy'])->name('brouillons.destroy');
     Route::resource('ventes', VenteController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('entreprises', EntrepriseController::class);

@@ -6,6 +6,7 @@ use App\Http\Controllers\SendInvoiceToOBR;
 use App\Models\Client;
 use App\Models\Banque;
 use App\Models\Entreprise;
+use App\Models\FactureBrouillon;
 use App\Models\Order;
 use App\Models\Proformat;
 use Livewire\Component;
@@ -36,7 +37,17 @@ class ServiceVente extends Component
     public $assuranceID = 0;
     public $assuranceName = '';
     public $supplement = 0;
+    public $brouillonId;
+    public $showPreview = false;
+    public $successMessage;
     //public $com
+
+    public function mount(){
+        $brouillonId = request()->query('brouillon');
+        if($brouillonId){
+            $this->loadBrouillon($brouillonId);
+        }
+    }
 
 
     public function render()
@@ -118,6 +129,10 @@ class ServiceVente extends Component
                 $order = Proformat::create($orderData);
             }
 
+            if($this->brouillonId){
+                FactureBrouillon::whereKey($this->brouillonId)->delete();
+            }
+
             DB::commit();
 
             return $this->typeFacture == 'FACTURE' ? redirect()->to('orders/' . $order->id) : redirect()->to('proformats/' . $order->id);
@@ -127,6 +142,116 @@ class ServiceVente extends Component
             $this->errorMessage = $e->getMessage();
         }
 
+    }
+
+    public function previewFacture(){
+        $this->successMessage = null;
+        $this->validate($this->rules);
+
+        if(count($this->table_length) == 0){
+            $this->errorMessage = "Ajoutez au moins une ligne à la facture";
+            return;
+        }
+        foreach($this->table_length as $key){
+            if(empty($this->description[$key]) || !is_numeric($this->quantite[$key] ?? null) || !is_numeric($this->prices[$key] ?? null)){
+                $this->errorMessage = "Chaque ligne doit avoir une description, une quantité et un prix";
+                return;
+            }
+        }
+
+        $this->errorMessage = null;
+        $this->updateUI();
+        $this->showPreview = true;
+    }
+
+    public function cancelPreview(){
+        $this->showPreview = false;
+    }
+
+    public function saveBrouillon(){
+        $this->successMessage = null;
+
+        if(count($this->table_length) == 0 && !$this->customer){
+            $this->errorMessage = "Le brouillon est vide";
+            return;
+        }
+
+        $lignes = [];
+        foreach($this->table_length as $key){
+            $lignes[] = [
+                'description' => $this->description[$key] ?? '',
+                'quantite' => $this->quantite[$key] ?? null,
+                'price' => $this->prices[$key] ?? null,
+                'taxe' => $this->taxes[$key] ?? 0,
+            ];
+        }
+
+        $data = [
+            'user_id' => auth()->id(),
+            'client_id' => $this->customer->id ?? null,
+            'client_name' => $this->customer->name ?? null,
+            'client_number' => $this->clientNumber,
+            'type_paiement' => $this->typePaiement,
+            'banque_id' => $this->banqueId ?: null,
+            'invoice_currency' => $this->invoice_currency,
+            'type_facture' => $this->typeFacture,
+            'lignes' => $lignes,
+            'amount' => array_sum(array_values($this->pricesTVAC)),
+            'supplement' => is_numeric($this->supplement) ? $this->supplement : 0,
+            'assurance' => [
+                'id' => $this->assuranceID,
+                'name' => $this->assuranceName,
+                'par_client_pourcentage' => $this->parClientPourcentage,
+                'par_assurance_pourcentage' => $this->parAssurancePourcentage,
+            ],
+        ];
+
+        $brouillon = $this->brouillonId ? FactureBrouillon::find($this->brouillonId) : null;
+        if($brouillon){
+            $brouillon->update($data);
+        }else{
+            $brouillon = FactureBrouillon::create($data);
+            $this->brouillonId = $brouillon->id;
+        }
+
+        $this->errorMessage = null;
+        $this->successMessage = "Brouillon #{$brouillon->id} enregistré";
+    }
+
+    public function loadBrouillon($id){
+        $brouillon = FactureBrouillon::find($id);
+        if(!$brouillon){
+            $this->errorMessage = "Brouillon introuvable";
+            return;
+        }
+
+        $this->brouillonId = $brouillon->id;
+        $this->customer = $brouillon->client_id ? Client::find($brouillon->client_id) : null;
+        $this->clientNumber = $brouillon->client_number;
+        $this->typePaiement = $brouillon->type_paiement;
+        $this->banqueId = $brouillon->banque_id;
+        $this->invoice_currency = $brouillon->invoice_currency ?: 'BIF';
+        $this->typeFacture = $brouillon->type_facture ?: 'FACTURE';
+        $this->supplement = $brouillon->supplement;
+
+        $this->table_length = $this->description = $this->quantite = $this->prices = $this->taxes = [];
+        $this->pricesHorTva = $this->tvas = $this->pricesTVAC = [];
+        foreach(($brouillon->lignes ?? []) as $index => $ligne){
+            $key = $index + 1;
+            $this->table_length[] = $key;
+            $this->description[$key] = $ligne['description'] ?? '';
+            $this->quantite[$key] = $ligne['quantite'] ?? null;
+            $this->prices[$key] = $ligne['price'] ?? null;
+            $this->taxes[$key] = $ligne['taxe'] ?? 0;
+        }
+
+        $assurance = $brouillon->assurance ?? [];
+        $this->assuranceID = $assurance['id'] ?? 0;
+        $this->assuranceName = $assurance['name'] ?? '';
+        $this->parClientPourcentage = $assurance['par_client_pourcentage'] ?? 0;
+        $this->parAssurancePourcentage = $assurance['par_assurance_pourcentage'] ?? 0;
+
+        $this->updateUI();
     }
 
     public function toggleAssurance( $assuranceID ,  $parClient , $parAssureur , $assuranceName){
@@ -188,7 +313,7 @@ class ServiceVente extends Component
     }
 
     public function addColumn(){
-        $this->table_length[] = count($this->table_length )  +1;
+        $this->table_length[] = count($this->table_length) ? max($this->table_length) + 1 : 1;
     }
     public function removeItem($id){
         $this->table_length= array_filter($this->table_length, function($v) use ($id) {

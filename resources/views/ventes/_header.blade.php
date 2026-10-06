@@ -8,6 +8,12 @@
                     Facturation des Services</a>
             </h4>
         </div>
+        <div class="col-md-2 d-flex justify-content-between">
+            <h4 class="text-center {{ request()->routeIs('brouillons.index') ? 'active' : '' }}">
+                <a href="{{ route('brouillons.index') }}">
+                <i class="fas fa-folder-open"></i> Brouillons</a>
+            </h4>
+        </div>
         <div class="col-md-6 d-flex justify-content-between">
             <h4 class="text-center {{ request()->routeIs('facture.avoir') ? 'active' : '' }}">
                 <a href="{{ route('facture.avoir') }}">
