@@ -28,7 +28,8 @@ class MaisonLocationUpdateRequest extends FormRequest
             'name' => ['required', 'string'],
             'description' => ['string'],
             'montant' => ['required', 'numeric'],
-            'softdeletes' => ['required'],
+            'avance' => ['required', 'numeric'],
+
         ];
     }
 }

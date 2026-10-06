@@ -16,7 +16,7 @@
                 <small id="helpId" class="text-muted text-danger">{{ $message }}</small>
                 @enderror
             </div>
-    
+
             <div class="mb-3 col-5">
                 <label for="" class="form-label">Montant</label>
                 <input
@@ -30,7 +30,22 @@
                 @error('montant')
                 <small id="helpId" class="text-muted text-danger">{{ $message }}</small>
                 @enderror
-                
+
+            </div>
+            <div class="mb-3 col-5">
+                <label for="" class="form-label">Avance</label>
+                <input
+                    type="number"
+                    wire:model="avance"
+                    value="{{  $maisonLocation->avance }}"
+                    class="form-control"
+                    placeholder=""
+                    aria-describedby="helpId"
+                />
+                @error('avance')
+                <small id="helpId" class="text-muted text-danger">{{ $message }}</small>
+                @enderror
+
             </div>
             <div class="mb-3 col-5">
                 <label for="" class="form-label">TVA</label>
@@ -48,10 +63,10 @@
                 <textarea  wire:model="description" class="form-control" id="">{{  $maisonLocation->description }}</textarea>
             </div>
         </div>
-    
+
         <div>
             <button wire:click="savePriceClick"  class="btn btn-primary">Modifier</button>
         </div>
-        
-    
+
+
 </div>

@@ -61,7 +61,7 @@
                         <p>B. Client</p>
                         <div>
                             <p>Personne physique: | | OUI |X| NON</p>
-                            <p>Nom: {{$order->client->name}}</p>
+                            <p>Nom: {{($order->client->name ?? '')}}</p>
                             <p>NIF:  {{$order->company->tp_TIN ?? ""}}</p>
                             <p>Resident à: rohero</p>
                             <p>Assujetti à la TVA: {{$order->client->customer_TIN ?? ""}}  | | OUI |X| NON</p>

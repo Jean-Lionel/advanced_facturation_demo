@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Controllers\ObrDeclarationController;
 use App\Http\Controllers\SyncronizeController;
+use App\Models\Order;
 use Illuminate\Console\Command;
 
 class SyncronizeToObr extends Command
@@ -39,24 +40,33 @@ class SyncronizeToObr extends Command
      */
     public function handle()
     {
-       
-        $orderID = $this->argument('orderID');    
-        
-        if($orderID){
-            // send a special command for sending ORDER 
+
+        $orderID = $this->argument('orderID');
+
+       $syncronizeController = new SyncronizeController();
+       $syncronizeController->syncronizeStock();
+
+        if(is_int($orderID)){
+            // send a special command for sending ORDER
             $obr = new ObrDeclarationController();
             $response =   $obr->sendInvoinceToObr( $orderID );
-            var_dump($response);
-        }else{
-            // syncronize all invoices  in the system  (not a single order)
-            $t1 = time();
+            $this->info($response);
+        }
+
+        if($orderID == 'all'){
+            $order_peding_ids = Order::with('obrPointer')->whereNull('envoye_obr')
+            ->get()->map->id;
+            $progressBar = $this->output->createProgressBar(count($order_peding_ids));
+            $progressBar->start();
             $this->info( 'Start ----------------------------------------------------------------');
-            $syncronize = new SyncronizeController();
-            $syncronize->syncronizeInvoices();
-            $syncronize->syncronizeStock();
-           // $this->info( $resp);
-            $t2 = time();
-            $this->info( 'FINSHID ------------------in : '. ($t2 - $t1) .' s ---------------------');
+            foreach ($order_peding_ids as $item) {
+                $obr = new ObrDeclarationController();
+                $response =   $obr->sendInvoinceToObr( $item );
+               var_dump($response);
+                $progressBar->advance(1);
+            }
+            $progressBar->finish();
+            $this->info( 'FINSHID ----------------------------------------------------------------');
         }
       //  dump( $orderID);
 

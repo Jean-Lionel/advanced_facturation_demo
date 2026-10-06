@@ -1,6 +1,9 @@
-<div class="d-flex justify-content-around noprint">
+<div class="d-flex justify-content-around flex-wrap noprint">
     <div>
     <a href="{{ route('products.create') }}" class="{{ setActiveRoute('products.create') }}"><span class="fa fa-seedling"></span> Entré</a>
+    </div>
+    <div>
+    <a href="{{ route('products.imports') }}" class="{{ setActiveRoute('products.imports') }}"><span class="fa fa-seedling"></span> Importation des Marchandises</a>
     </div>
     <div>
     <a href="{{ route('retour_produit') }}" class="{{ setActiveRoute('retour_produit') }}"><span class="fa fa-undo"></span> Retour des marchandises</a>
@@ -53,7 +56,7 @@
     @endif
     <div>
         <a href="{{ route('bar_code') }}" class="{{ setActiveRoute('bar_code') }}">
-            <span class="fa fa-barcode "></span>
+            <span class="fa fa-barcode"></span>
             <span>Bar Code</span>
         </a>
     </div>
@@ -61,6 +64,12 @@
         <a href="{{ route('bon_commande') }}" class="{{ setActiveRoute('bon_commande') }}">
             <span class="fas fa-file-invoice"></span>
             <span>Bon de Commande</span>
+        </a>
+    </div>
+    <div>
+        <a href="{{ route('import_data_show') }}" class="{{ setActiveRoute('import_data_show') }}">
+            <span class="fas fa-file-excel"></span>
+            <span>Import Excel</span>
         </a>
     </div>
 </div>

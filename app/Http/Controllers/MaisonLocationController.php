@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MaisonLocationStoreRequest;
 use App\Http\Requests\MaisonLocationUpdateRequest;
+use App\Models\ClientMaison;
 use App\Models\MaisonLocation;
+use App\Models\PaymentLocationMensuel;
+use App\Models\PeriodePaimentLocation;
 use Illuminate\Http\Request;
 
 class MaisonLocationController extends Controller
@@ -12,24 +15,35 @@ class MaisonLocationController extends Controller
 
     public function index(Request $request)
     {
+
         $search = $request->input('search');
-        $maisonLocations = MaisonLocation::with(['clients'])
-                                    ->whereHas('clients', function($query) use ($search) {
-                                        if($search){
-                                            $query->where('name', 'LIKE', "%{$search}%");
-                                            
-                                        }
-                                    })
+        $maisonLocations = MaisonLocation::with(['clients' => function($query) use ($search) {
+            $query->where('name', 'LIKE', "%{$search}%");
+        }])
                                     ->orWhere(function($query) use ($search) {
                                         if($search){
-                                            $query->where('name', 'LIKE', "%{$search}%");
-                                            
+                                            $query->where('name', '=', $search);
                                         }
                                     })
                                     ->withCount('clients')
-                                    ->latest()->paginate(10);
+                                    ->latest()->get();
+                                    //->paginate(10);
 
-        return view('maisonLocation.index', compact('maisonLocations' , 'search'));
+        $this->ensureCurrentPaymentPeriode();
+
+        $periodes = PeriodePaimentLocation::latest()->take(3)->get();
+
+        $paymentSums = PaymentLocationMensuel::query()
+            ->whereIn('maisonlocation_id', $maisonLocations->pluck('id'))
+            ->whereIn('periode_paiement_id', $periodes->pluck('id'))
+            ->selectRaw('maisonlocation_id, periode_paiement_id, SUM(montant) as total_paid')
+            ->groupBy('maisonlocation_id', 'periode_paiement_id')
+            ->get()
+            ->keyBy(fn ($payment) => $payment->maisonlocation_id . '-' . $payment->periode_paiement_id);
+
+        $maisonLocations = sortMaisonsByUnpaidStatus($maisonLocations, $periodes, $paymentSums);
+
+        return view('maisonLocation.index', compact('maisonLocations', 'search', 'periodes', 'paymentSums'));
     }
 
     public function create(Request $request)
@@ -39,7 +53,10 @@ class MaisonLocationController extends Controller
 
     public function store(MaisonLocationStoreRequest $request)
     {
+
         $maisonLocation = MaisonLocation::create($request->validated());
+
+
         $request->session()->flash('maisonLocation.id', $maisonLocation->id);
 
         return$this->index($request);
@@ -64,7 +81,6 @@ class MaisonLocationController extends Controller
      */
     public function update(MaisonLocationUpdateRequest $request, MaisonLocation $maisonLocation)
     {
-        dd($maisonLocation);
         $maisonLocation->update($request->validated());
 
         $request->session()->flash('maisonLocation.id', $maisonLocation->id);
@@ -82,5 +98,20 @@ class MaisonLocationController extends Controller
         $maisonLocation->delete();
 
         return redirect()->route('maisonLocation.index');
+    }
+
+    private function ensureCurrentPaymentPeriode(): void
+    {
+        $check = PeriodePaimentLocation::where('month', date('m'))
+            ->where('year', date('Y'))
+            ->first();
+
+        if (is_null($check)) {
+            PeriodePaimentLocation::create([
+                'month' => date('m'),
+                'year' => date('Y'),
+                'user_id' => auth()->user()->id,
+            ]);
+        }
     }
 }

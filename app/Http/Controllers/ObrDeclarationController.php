@@ -10,6 +10,7 @@ use App\Models\ObrPointer;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\SendInvoiceToOBR;
+use Illuminate\Support\Facades\DB;
 
 class ObrDeclarationController extends Controller
 {
@@ -39,7 +40,7 @@ class ObrDeclarationController extends Controller
     }
 
     public function factureAvoir(){
-       
+
         return view('obr_declarations.facture_avoir');
     }
     public function remboursementCaution(){
@@ -96,16 +97,36 @@ class ObrDeclarationController extends Controller
     public function hostory()
     {
         $order_id = request()->query('order_id');
+        $client_name = trim((string) request()->query('client_name'));
+        $nif = trim((string) request()->query('nif'));
+        $date_debut = request()->query('date_debut');
+        $date_fin = request()->query('date_fin');
+
         $orders = Order::with(['concelInvoice'])->whereNotNull('envoye_obr')
-        ->where( function($query) use ($order_id){
-            if(isset($order_id) ){
-                $query->where('id', $order_id);
-            }
+        ->when($order_id, fn($query) => $query->where('id', $order_id))
+        ->when($client_name, function($query) use ($client_name){
+            $query->where(function($q) use ($client_name){
+                $q->whereHas('client', fn($c) => $c->where('name', 'like', "%{$client_name}%"))
+                  ->orWhere('client', 'like', "%{$client_name}%");
+            });
         })
-        ->latest()->paginate();
+        ->when($nif, function($query) use ($nif){
+            $query->where(function($q) use ($nif){
+                $q->whereHas('client', fn($c) => $c->where('customer_TIN', 'like', "%{$nif}%"))
+                  ->orWhere('client', 'like', "%{$nif}%");
+            });
+        })
+        ->when($date_debut, fn($query) => $query->whereDate('created_at', '>=', $date_debut))
+        ->when($date_fin, fn($query) => $query->whereDate('created_at', '<=', $date_fin))
+        ->latest()->paginate()->withQueryString();
+
         return view('obr_declarations.history', [
             'orders' => $orders,
-            'order_id' => $order_id
+            'order_id' => $order_id,
+            'client_name' => $client_name,
+            'nif' => $nif,
+            'date_debut' => $date_debut,
+            'date_fin' => $date_fin,
         ]);
     }
 
@@ -119,7 +140,7 @@ class ObrDeclarationController extends Controller
 
     public function cancelInvoice(Request $request)
     {
-
+        //dd($request->all());
         $request->validate([
             'invoice_signature' => 'required',
             'motif' => 'required',
@@ -127,34 +148,46 @@ class ObrDeclarationController extends Controller
         // Change the Status Of the order
         //    dd($request->cancel_amount);
         $order = Order::where('invoice_signature', '=',$request->invoice_signature)->first();
+
         if($request->cancel_amount){
-          //  dd($order->products );
+
             foreach($order->products as $productItem){
-                // dd($product);
+
                 try{
+                    DB::beginTransaction();
+
                     $product = Product::find($productItem['id']);
                     if($product ){
-                        $product->quantite += $productItem['quantite'];
-                        $product->save();
+
                         \App\Models\RetourProduit::create([
                             'product_id' => $product->id,
                             'item_name' => $product->name,
                             'order_id' => $order->id,
                             'quantite' => $productItem['quantite'],
                             'description' => $request->motif,
-                            'user_id' => auth()->user()->id,
+                            'user_id' => auth()->user()->id ?? 1,
                         ]);
                         $current_price = $productItem['price_revient'] ?? 0 ;
+
                         ObrMouvementStock::saveMouvement( $product, 'ER',$current_price, $productItem['quantite'], $request->motif, $order->id);
+
+
+                        $product->quantite += $productItem['quantite'];
+                        $product->save();
+
                     }
 
                     // Enregistres les mouvements de stock correspondant pour la facture
 
                   //  $mouvements_enregistres = ObrMouvementStock
                     //
+                    DB::commit();
                 }catch(\Exception $e){
+                    DB::rollBack();
+                    dump($e);
                     return $e->getMessage();
-                   // dd( $e);
+
+
                 }
             }
         }
@@ -167,7 +200,7 @@ class ObrDeclarationController extends Controller
             'order_id' => $order->id,
         ]);
         if(!isInternetConnection() || !CAN_SYNCRONISE){
-           
+
             $order->canceled_or_connection = 'ANNULEE HORS CONNECTION';
             $order->is_cancelled = true;
             $order->save();
@@ -214,7 +247,7 @@ class ObrDeclarationController extends Controller
         $invoince_id = getInvoiceNumber($invoince_id);
         $invoince = $this->generateInvoince($order, $company, $invoince_id, $invoice_signature, $order->created_at);
         $response = null;
-      
+
 
        // die($invoince);
         try {
@@ -226,7 +259,7 @@ class ObrDeclarationController extends Controller
                 'msg' => $e->getMessage(). ' FILE ' . $e->getFile() . ' LINE ' .$e->getLine()
             ]);
         }
-        
+
         // Si la facture a été envoyé
         if ($response->success) {
             $order->envoye_obr = true;
@@ -335,6 +368,7 @@ class ObrDeclarationController extends Controller
             "customer_address" => $order->client->addresse ?? "",
             "vat_customer_payer" => $order->client->vat_customer_payer ?? "",
             "invoice_type" =>   $order->invoice_type ?? "FN",
+            "cn_motif" =>   $order->cn_motif ?? "",
             "cancelled_invoice_ref" => "",
             "invoice_ref" => $order->invoice_ref ? getInvoiceNumber($order->invoice_ref) : "",
             //yyyyMMddHHmmss

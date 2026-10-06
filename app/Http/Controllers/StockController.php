@@ -10,9 +10,11 @@ use App\Models\Order;
 use App\Models\PaiementDette;
 use App\Models\Product;
 use App\Models\Service;
+use App\Models\StockControl;
 use App\Models\Stocke;
 use App\Models\StockerUser;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -142,6 +144,31 @@ class StockController extends Controller
         return back();
     }
 
+    public function deleteMouvementStoc($id){
+        $mouvement = ObrMouvementStock::find($id);
+        // SI $mouvement->item_movement_type commence par E  c entre Modifier la quantite en stock
+
+        if(str_starts_with($mouvement->item_movement_type, 'E')){
+
+            // rechercher le produits par Item code
+            $product = Product::where('id', $mouvement->item_product_detail_id)->first();
+
+            if($product){
+                $product->quantite -= $mouvement->item_quantity;
+                $product->save();
+            }
+        }
+        if(str_starts_with($mouvement->item_movement_type, 'S')){
+            $product = Product::where('id', $mouvement->item_product_detail_id)->first();
+            if($product){
+                $product->quantite += $mouvement->item_quantity;
+                $product->save();
+            }
+        }
+        $mouvement->delete();
+        return back();
+    }
+
     public function canceledInvoince()
     {
         // code...
@@ -157,10 +184,8 @@ class StockController extends Controller
         return back();
     }
 
-    public function journal(){
-        $start_date = request()->query('startDate') ?? Carbon::now()->format('Y-m-d');
-        $end_date = request()->query('endDate') ?? Carbon::now()->addDays(1)->format('Y-m-d');
-        $orders =  Order::where('is_cancelled','=','0')
+    private function journalQuery($start_date, $end_date){
+        return Order::where('is_cancelled','=','0')
                                 ->where(function($query) use($start_date, $end_date){
                                 if($start_date && $end_date){
                                     $query->whereDate('created_at', '>=' , $start_date)
@@ -174,20 +199,60 @@ class StockController extends Controller
                                     }
                                 }
 
-                            })
-                            ->sortable()
-                            ->latest()
-                            ->get();
+                            });
+    }
+
+    public function journal(){
+        $start_date = request()->query('startDate') ?? Carbon::now()->format('Y-m-d');
+        $end_date = request()->query('endDate') ?? Carbon::now()->addDays(1)->format('Y-m-d');
+        $query = $this->journalQuery($start_date, $end_date);
+
+        $total_tva = (clone $query)->sum('tax');
+        $total_facture = (clone $query)->count();
+        $total_amount = (clone $query)->sum('amount');
+        $total_amount_tax = (clone $query)->sum('amount_tax');
+
+        $orders = $query->with(['client', 'user', 'dette'])
+                        ->sortable()
+                        ->latest()
+                        ->paginate(20)
+                        ->appends(request()->query());
 
         return view('journals.index', [
-            'orders' => $orders, //->paginate(10),
+            'orders' => $orders,
+            'startDate' => $start_date,
+            'endDate' => $end_date,
+            'total_tva' => $total_tva,
+            'total_facture' => $total_facture,
+            'total_amount' => $total_amount,
+            'total_amount_tax' => $total_amount_tax,
+        ] );
+    }
+
+    public function journal_pdf(){
+        ini_set('memory_limit', '512M');
+        set_time_limit(300);
+
+        $start_date = request()->query('startDate') ?? Carbon::now()->format('Y-m-d');
+        $end_date = request()->query('endDate') ?? Carbon::now()->addDays(1)->format('Y-m-d');
+        $query = $this->journalQuery($start_date, $end_date);
+
+        $orders = (clone $query)->with(['client', 'user', 'dette'])
+                        ->latest()
+                        ->get();
+
+        $pdf = Pdf::loadView('journals.pdf', [
+            'orders' => $orders,
             'startDate' => $start_date,
             'endDate' => $end_date,
             'total_tva' => $orders->sum('tax'),
             'total_facture' => $orders->count(),
             'total_amount' => $orders->sum('amount'),
             'total_amount_tax' => $orders->sum('amount_tax'),
-        ] );
+        ]);
+        $pdf->setPaper('a4', 'landscape');
+
+        return $pdf->download('journal_' . $start_date . '_' . $end_date . '.pdf');
     }
     public function fiche_stock(){
         $follow_products = FollowProduct::latest()->take(500)->get();
@@ -347,57 +412,122 @@ class StockController extends Controller
         if ($startDate && $endDate ) {
             $query->whereBetween('created_at',[$startDate,$endDate]);
         }
-        $orders =  $query->where('is_cancelled','=','0')
-                            ->where('type_paiement','=','3')
+        $baseQuery = $query->where('is_cancelled','=','0')
+                            ->where(function ($query) {
+                                $query->whereHas('dette', function ($query) {
+                                    $query->where('montant_restant', '>', 0);
+                                })->orWhere(function ($query) {
+                                    $query->whereIn('type_paiement', [3, '3', 'DETTE'])
+                                        ->whereDoesntHave('dette');
+                                });
+                            });
+
+        $total_tva = (clone $baseQuery)->sum('tax');
+        $total_facture = (clone $baseQuery)->count();
+        $total_amount = (clone $baseQuery)->sum('amount');
+        $total_amount_tax = (clone $baseQuery)->sum('amount_tax');
+
+        $orders = $baseQuery->with(['client', 'user', 'dette'])
                             ->sortable()
                             ->latest()
-                            ->get();
+                            ->paginate(20)
+                            ->appends(request()->query());
 
         return view('journals.index', [
-            'orders' => $orders, //->paginate(10),
+            'orders' => $orders,
             'startDate' => $startDate,
             'endDate' => $endDate,
-            'total_tva' => $orders->sum('tax'),
-            'total_facture' => $orders->count(),
-            'total_amount' => $orders->sum('amount'),
-            'total_amount_tax' => $orders->sum('amount_tax'),
+            'total_tva' => $total_tva,
+            'total_facture' => $total_facture,
+            'total_amount' => $total_amount,
+            'total_amount_tax' => $total_amount_tax,
         ] );
     }
-    public function FacturePayer(Order $order)
+    public function FacturePayer(Request $request, Order $order)
     {
+        $dette = $order->dette;
+        $montantRestant = $dette ? max(0, (float) $dette->montant_restant) : (float) $order->amount;
+
+        if ($montantRestant <= 0) {
+            $this->markOrderAsPaid($order);
+
+            return redirect()->route('facture.credit')
+                ->with('success', 'Cette facture est déjà totalement payée.');
+        }
+
+        $montantPaye = $request->has('payer_tout') ? $montantRestant : $request->montant_paye;
+        $request->merge(['montant_paye' => $montantPaye]);
+        $request->validate([
+            'montant_paye' => 'required|numeric|min:0.01|max:' . $montantRestant,
+        ]);
+
         DB::beginTransaction();
 
         try {
-            $oldValues = $order->getOriginal();
+            $dette = PaiementDette::where('order_id', $order->id)->first();
 
-
-            if ($order->update_info) {
-                $existingUpdates = json_decode($order->update_info, true);
-                $existingUpdates[] = [
-                    'updated_at' => now(),
-                    'old_values' => $oldValues,
-                ];
-                $order->update_info = json_encode($existingUpdates);
-            } else {
-                $order->update_info = json_encode([
-                    [
-                        'updated_at' => now(),
-                        'old_values' => $oldValues,
-                    ]
+            if (!$dette) {
+                $dette = PaiementDette::create([
+                    'montant' => $order->amount,
+                    'montant_restant' => $order->amount,
+                    'order_id' => $order->id,
+                    'status' => 'NON PAYE',
                 ]);
             }
 
-            $order->type_paiement = 1;
-            $order->save();
+            $dette->montant_restant = max(0, (float) $dette->montant_restant - (float) $montantPaye);
+
+            if ($dette->montant_restant <= 0) {
+                $dette->status = 'DEJA PAYE';
+            }
+
+            $dette->save();
+
+            DetailPaimentDette::create([
+                'paiement_dette_id' => $dette->id,
+                'montant' => $montantPaye,
+            ]);
+
+            if ($dette->montant_restant <= 0) {
+                $this->markOrderAsPaid($order);
+            }
 
             DB::commit();
 
-            return redirect()->route('facture.credit');
+            return redirect()->route('facture.credit')->with('success', 'Paiement enregistré avec succès.');
         }catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', $e->getMessage());
         }
 
+    }
+
+    private function markOrderAsPaid(Order $order)
+    {
+        if ((int) $order->type_paiement === 1) {
+            return;
+        }
+
+        $oldValues = $order->getOriginal();
+
+        if ($order->update_info) {
+            $existingUpdates = json_decode($order->update_info, true);
+            $existingUpdates[] = [
+                'updated_at' => now(),
+                'old_values' => $oldValues,
+            ];
+            $order->update_info = json_encode($existingUpdates);
+        } else {
+            $order->update_info = json_encode([
+                [
+                    'updated_at' => now(),
+                    'old_values' => $oldValues,
+                ]
+            ]);
+        }
+
+        $order->type_paiement = 1;
+        $order->save();
     }
 
 

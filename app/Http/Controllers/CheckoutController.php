@@ -10,10 +10,12 @@ use App\Models\Order;
 use App\Models\Client;
 use App\Models\Product;
 use App\Models\DetailOrder;
+use App\Models\RetourProduit;
 use Illuminate\Http\Request;
 use App\Models\FollowProduct;
 use App\Models\PaiementDette;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\SendInvoiceToOBR;
@@ -27,32 +29,73 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->all());
+        $currentData = now()->subDays(env('OBR_RETURN_DAY', 0));
 
         $validate =
         [
             'client_id' => 'required|exists:clients,id',
+            'type_paiement' => 'required',
+            'source_canceled_order_id' => 'nullable|exists:orders,id',
             // 'date_facturation' => 'required',
         ];
+        $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
+
+        if ($useBanque) {
+            $validate['banque_id'] = 'nullable|exists:banques,id';
+        }
+
         if ($request->customer_TIN) {
             // code...
             $validate['customer_TIN'] = 'required|exists:clients';
         }
         $request->validate($validate);
+        $sourceCanceledOrder = null;
+
+        if ($request->filled('source_canceled_order_id')) {
+            $sourceCanceledOrder = Order::where('is_cancelled', 1)
+                ->find($request->source_canceled_order_id);
+
+            if (! $sourceCanceledOrder) {
+                Session::flash('error', 'La modification est autorisée seulement pour une facture annulée.');
+                return redirect()->route('panier.index');
+            }
+        }
+
         if (Cart::count() <= 0) {
             Session::flash('error', 'Votre panier est vide.');
             return redirect()->route('panier.index');
         }
-        if ($this->noLongerStock()) {
+        if ($this->noLongerStock($sourceCanceledOrder)) {
             Session::flash('error', 'Un produit de votre panier ne se trouve plus en stock.');
             return redirect()->route('panier.index');
         }
+
+        $typePaiement = $this->normalizeTypePaiement($request->type_paiement);
+        $orderAmount = round((float) Cart::total(0, '.', ''));
+        $montantRestant = $orderAmount;
+
+        if ((int) $typePaiement === 3) {
+            $request->validate([
+                'montant_paye' => 'nullable|numeric|min:0|max:' . $orderAmount,
+                'montant_restant' => 'nullable|numeric|min:0|max:' . $orderAmount,
+            ]);
+
+            if ($request->filled('montant_paye')) {
+                $montantRestant = max(0, $orderAmount - (float) $request->montant_paye);
+            } elseif ($request->filled('montant_restant')) {
+                $montantRestant = (float) $request->montant_restant;
+            }
+        }
+
         // Do this before
-
-
         $order = null;
         try {
             DB::beginTransaction();
+
+            if ($sourceCanceledOrder && ! $this->sourceStockWasReturned($sourceCanceledOrder)) {
+                $this->restoreCanceledOrderStock($sourceCanceledOrder);
+            }
+
             $this->stockUpdated();
             $client =  Client::find($request->client_id);
             if(!$client) {
@@ -82,6 +125,11 @@ class CheckoutController extends Controller
             $nombre_sac = array_sum(array_column($cartInfo, 'nombre_sac'));
             $oder_signuture = "";
             $company = Entreprise::currentEntreprise();
+            $banque = null;
+
+            if ($useBanque && $request->filled('banque_id')) {
+                $banque = Banque::active()->findOrFail($request->banque_id);
+            }
           //  dd($company);
             $tax = Cart::tax();
 
@@ -91,12 +139,16 @@ class CheckoutController extends Controller
                 $client->save();
             }
 
+            if ($sourceCanceledOrder) {
+                Session::put('skip_invoice_generation_delay_once', true);
+            }
+
             $order = Order::create([
-                'amount' => round( $tax  + Cart::subtotal()),
+                'amount' => $orderAmount,
                 'total_quantity' => Cart::count(),
                 'total_sacs' => $nombre_sac,
                 'tax' => $tax,
-                'type_paiement' => $request->type_paiement,
+                'type_paiement' => $typePaiement,
                 'amount_tax' => round(Cart::subtotal()),
                 'products'=> serialize($cartInfo),
                 'client'=> $client->toJson(),
@@ -105,42 +157,51 @@ class CheckoutController extends Controller
                 'invoice_currency' => $request->invoice_currency,
                 'type_facture' => 'FACTURE',
                 'is_cancelled' => 0,
+                'user_id' => Auth::user()->id,
                 'client_id' => $request->client_id,
                 'commissionaire_id' =>  $client->commissionnaire_id ?? null,
+                'banque_id' => $banque->id ?? null,
+                'banque' => $banque ? $banque->toJson() : null,
                 'company' =>  $company->toJson(),
                 'created_at' => now()->subDay(1),
                 'updated_at' => now()->subDay(1),
             ]);
+
             $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
             $order->invoice_signature = $signature;
             foreach ($cartInfo as $key => $item) {
                 $product = Product::find($item['id']);
-                ObrMouvementStock::saveMouvement(
+              $d =  ObrMouvementStock::saveMouvement(
                     $product,
                     'SN',
                     $product->price_max, // Prix de reviens
                     $item['quantite'],
                     NULL,
                     $order->id,
+                    0,
+                    0
                 );
+               
             }
 
             $order->save();
             $this->storeTodetailOder($order->id);
             // SEND INVOINCES TO OBR
-            if($request->type_paiement == 'DETTE'){
+            if((int) $typePaiement === 3){
                 //Enregistre les infos dans les dettes
                 PaiementDette::create([
-                    'montant' => Cart::total() ,
-                    'montant_restant' =>Cart::total() ,
+                    'montant' => $orderAmount,
+                    'montant_restant' => $montantRestant,
                     'order_id' =>   $order->id ,
-                    'status' => 'NON PAYE'
+                    'status' => $montantRestant <= 0 ? 'DEJA PAYE' : 'NON PAYE'
                 ]);
             }
             Cart::destroy();
+            Session::forget('editing_canceled_invoice');
             DB::commit();
 
         } catch (\Exception $e) {
+          
             DB::rollBack();
             Session::flash('error', $e->getMessage());
             return back();
@@ -148,8 +209,8 @@ class CheckoutController extends Controller
         }
 
         if(isset($order->id)){
-            $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEME');
-            $currentModelFacture = 'cart.facture_model_prothem';
+            $modelFacture = env('OBR_MODEL_FACTURE', 'MODEL_PROTHEM');
+            $currentModelFacture = 'cart.facture_model_default';
             if($modelFacture){
                 $currentModelFacture = 'cart.facture_' . Str::lower($modelFacture) ;
                 }
@@ -159,29 +220,109 @@ class CheckoutController extends Controller
 
     }
 
+    private function normalizeTypePaiement($typePaiement)
+    {
+        if ($typePaiement === 'CACHE') {
+            return 1;
+        }
+
+        if ($typePaiement === 'DETTE') {
+            return 3;
+        }
+
+        return $typePaiement;
+    }
+
     public function thankyou()
     {
         return Session::has('success') ? view('checkout.thankYou') : redirect()->route('products.index');
     }
 
-    private function noLongerStock()
+    private function noLongerStock(?Order $sourceCanceledOrder = null)
     {
+        $sourceProducts = collect($sourceCanceledOrder->products ?? []);
+        $canReuseSourceStock = $sourceCanceledOrder && ! $this->sourceStockWasReturned($sourceCanceledOrder);
+
         foreach (Cart::content() as $item) {
             $product = Product::find($item->model->id);
 
-            if ($item->qty > $product->quantite) {
+            if (! $product) {
+                return true;
+            }
+
+            $availableQuantity = $product->quantite ?? 0;
+
+            if ($canReuseSourceStock) {
+                $availableQuantity += $sourceProducts
+                    ->where('id', $product->id)
+                    ->sum('quantite');
+            }
+
+            if ($item->qty > $availableQuantity) {
                 return true;
             }
         }
         return false;
     }
 
+    private function sourceStockWasReturned(Order $order)
+    {
+        return RetourProduit::where('order_id', $order->id)->exists()
+            || ObrMouvementStock::where('item_movement_invoice_ref', $order->id)
+            ->where('item_movement_type', 'ER')
+            ->exists();
+    }
+
+    private function restoreCanceledOrderStock(Order $order)
+    {
+        foreach ($order->products as $productItem) {
+            $product = Product::find($productItem['id']);
+
+            if (! $product) {
+                continue;
+            }
+
+            $quantity = $productItem['quantite'] ?? 0;
+
+            RetourProduit::create([
+                'product_id' => $product->id,
+                'item_name' => $product->name,
+                'order_id' => $order->id,
+                'quantite' => $quantity,
+                'description' => 'Retour automatique avant modification de la facture annulée #' . $order->id,
+                'user_id' => auth()->user()->id ?? 1,
+            ]);
+
+            ObrMouvementStock::saveMouvement(
+                $product,
+                'ER',
+                $productItem['price_revient'] ?? 0,
+                $quantity,
+                'Retour automatique avant modification de la facture annulée #' . $order->id,
+                $order->id
+            );
+
+            $product->quantite += $quantity;
+            $product->save();
+        }
+    }
+
     private function stockUpdated()
     {
+        $data = [];
         foreach (Cart::content() as $item) {
             $product = Product::find($item->model->id);
-            $product->update(['quantite' => $product->quantite - $item->qty]);
+
+            unset($product->created_at);
+            unset($product->updated_at);
+            unset($product->delete_at);
+            $data[] = [
+                ... $product->toArray(),
+                'quantite' => $product->quantite - $item->qty,
+            ];
+            //$product->update(['quantite' => $product->quantite - $item->qty]);
         }
+        Product::upsert($data, 'id', ['quantite']);
     }
 
     private function storeTodetailOder($order_id){

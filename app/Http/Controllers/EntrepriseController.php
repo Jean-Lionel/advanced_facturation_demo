@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Mail\BackupEmail;
 use App\Mail\TestEmail;
 use App\Models\Entreprise;
+use App\Models\Banque;
 use App\Http\Requests\StoreEntrepriseRequest;
 use App\Http\Requests\UpdateEntrepriseRequest;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 class EntrepriseController extends Controller
 {
 

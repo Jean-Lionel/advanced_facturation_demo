@@ -21,6 +21,10 @@
 </div>
 <div>
 	<div class="row">
+        <div>
+            <a href="{{ route('assurances.index') }}"
+            class="btn btn-primary btn-sm">Assurances</a>
+        </div>
 		<div class="col-12">
 			<h2>Le Nombre total des clients : <b>{{ $nombre_total_clients }}</b></h2>
 		</div>
@@ -50,6 +54,7 @@
 				@if (env('APP_USE_ABONEMENT', false))
                 <th scope="col">Commissionnaire</th>
 				<th scope="col">Fournisseur</th>
+                <th>Porteur</th>
 				<th>Abonnées</th>
 				@endif
 				<th>Date</th>
@@ -81,6 +86,7 @@
 				<td>
 					{{ $value->is_fournisseur}}
 				</td>
+                <td>{{ $value?->commissionaire?->name}}</td>
 				<td>{{ $value->compte->name  ?? "" }}</td>
 				@endif
 
@@ -98,12 +104,12 @@
 						onclick="return confirm('Are you sure you want to delete this client ?')"
 						>Supprimer</button>
 						@if(env('APP_USE_ABONEMENT', false))
-						<a href="{{ route('clients_abones', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Abonée</a>
-						<a href="{{ route('make_commissionnaire', $value->id) }}" class="btn btn-outline-info btn-sm mr-2">Commissionnaire</a>
+						<a href="{{ route('clients_abones', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Abonée</a>
+						<a href="{{ route('make_commissionnaire', $value->id) }}" class="mr-2 btn btn-outline-info btn-sm">Commissionnaire</a>
 
 						@endif
 					</form>
-				</td>
+				</td> --}}
 			</tr>
 			@endforeach
 		</tbody>

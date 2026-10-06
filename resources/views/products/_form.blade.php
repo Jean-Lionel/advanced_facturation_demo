@@ -61,18 +61,33 @@
 
         <div class="form-group">
             <label for="price_min">PRIX D ACHAT</label>
-            <input type="text"
+            <input type="number"
+            min="0"
             step="any"
-            class="form-control " id="price_min" name="price_min" value="{{ old('price_min') ?? $product->price_min?? ' ' }}">
+            class="form-control "  id="price_min" name="price_min" value="{{ old('price_min') ?? $product->price_min?? ' ' }}">
 
             {!! $errors->first('price_min', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
 
+    @if (filter_var(env('APP_USE_COMMISSION', false), FILTER_VALIDATE_BOOLEAN))
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="commission">COMMISSION (%)</label>
+                <input type="number"
+                min="0"
+                step="any"
+                class="form-control {{$errors->has('commission') ? 'is-invalid' : 'is-valid' }}" id="commission" name="commission" value="{{ old('commission') ?? $product->commission?? 0 }}">
+
+                {!! $errors->first('commission', '<small class="help-block invalid-feedback">:message</small>') !!}
+            </div>
+        </div>
+    @endif
+
     <div class="col-md-2">
         <div class="form-group">
             <label for="price_max">PRIX DE REVIENT  TVAC</label>
-            <input type="text"
+            <input type="number"
             step="any"
             class="form-control {{$errors->has('price_max') ? 'is-invalid' : 'is-valid' }}" id="price_max" name="price_max" value="{{ old('price_max') ?? $product->price_max?? ' ' }}">
             {!! $errors->first('price_max', '<small class="help-block invalid-feedback">:message</small>') !!}
@@ -100,14 +115,14 @@
     <div class="col-md-2">
         <div class="form-group">
             <label for="price">PV HTVA </label>
-            <input type="text" step="any" class="form-control {{$errors->has('price') ? 'is-invalid' : 'is-valid' }}" id="price" name="price" value="{{ old('price') ?? $product->price?? ' ' }}">
+            <input type="number" step="any" class="form-control {{$errors->has('price') ? 'is-invalid' : 'is-valid' }}" id="price" name="price" value="{{ old('price') ?? $product->price?? ' ' }}">
             {!! $errors->first('price', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
     <div class="col-md-2">
         <div class="form-group">
             <label for="price_tvac">PV TVAC </label>
-            <input type="text" step="any" class="form-control {{$errors->has('price_tvac') ? 'is-invalid' : 'is-valid' }}" id="price_tvac" name="price_tvac" value="{{ old('price_tvac') ?? $product->price_tvac?? ' ' }}">
+            <input type="number" step="any" class="form-control {{$errors->has('price_tvac') ? 'is-invalid' : 'is-valid' }}" id="price_tvac" name="price_tvac" value="{{ old('price_tvac') ?? $product->price_tvac?? ' ' }}">
             {!! $errors->first('price_tvac', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>

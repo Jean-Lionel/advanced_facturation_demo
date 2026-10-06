@@ -13,13 +13,28 @@ use Illuminate\Support\Facades\Session;
 
 class SyncronizeController extends Controller
 {
+    public function __construct()
+    {
+        if(env('OBR_CAN_SYNCRONISE', false) == false){
+            return response()->json([
+                'success' => false,
+                'data' => null,
+            ]);
+        }
+    }
 
     public function obr_log(){
-        $logs = ObrPointer::latest()->get();
+        $logs = ObrPointer::latest()->paginate(10);
         return view('entreprises.obr_log', compact('logs'));
     }
     //
     public function syncronize(){
+        if(env('OBR_CAN_SYNCRONISE', false) == false){
+            return response()->json([
+                'success' => false,
+                'data' => null,
+            ]);
+        }
 
         if(env('OBR_CAN_SYNCRONISE',false) === false){
             return false;
@@ -34,6 +49,7 @@ class SyncronizeController extends Controller
             }
             if(CAN_SYNCRONISE_INVOICE ){
                 $response =  $this->syncronizeInvoices();
+
 
                return  $response;
             }
@@ -61,14 +77,18 @@ class SyncronizeController extends Controller
     }
 
     public function syncronizeInvoices(){
+        if(!env('OBR_CAN_SYNCRONISE', false) ){
+            return response()->json([
+                'success' => false,
+                'data' => null,
+            ]);
+        }
         $obr = new ObrDeclarationController();
         try{
            // $ws400000333700160
-           //$
-           $excludes_ids = ObrPointer::all()->map->order_id;
-           $order_peding_ids = Order::whereNull('envoye_obr')
-                                        ->whereNotIn('id', $excludes_ids)
-                                        ->get()->map->id;
+           // dd($excludes_ids);
+            $order_peding_ids = Order::with('obrPointer')->whereNull('envoye_obr')
+                                            ->get()->map->id;
             foreach ($order_peding_ids as $item) {
                 try {
                     $response =   $obr->sendInvoinceToObr($item);
@@ -138,21 +158,55 @@ class SyncronizeController extends Controller
         }
     }
 
+
+
+    public function syncronizeImportation(){
+
+        $movements = ObrMouvementStock::where("is_importation",1 )
+        ->whereNull("is_send_to_obr")
+        ->latest()
+        ->take(5)
+        ->get();
+        foreach($movements as $v){
+             $obr = new SendInvoiceToOBR();
+         $response = $obr->addStockMovementImporters($v->toArray());
+
+        }
+    }
+
     public function syncronizeStock(){
+
+        if(!env('OBR_CAN_SYNCRONISE', false) ){
+            return response()->json([
+                'success' => false,
+                'data' => null,
+            ]);
+        }
+        // Faire la sycronisation des importations
+        $this->syncronizeImportation();
+
         $today = Carbon::now();
         $thirtyDaysAgo = $today->subDays(DAY_FOR_STOCK_DATA_SYNCRONIZE);
         $records = ObrStockLog::whereDate('created_at', '>', $thirtyDaysAgo)->get()->map->movement_id;
+
         $items = ObrMouvementStock::whereDate('created_at', '>', $thirtyDaysAgo)
         ->whereNotIn('id', $records)
         ->where('is_send_to_obr', '0')
         ->take(20)->get();
         // dump(ObrMouvementStock::all());
+        //dump('items',$thirtyDaysAgo , $items);
 
         foreach ($items as $key => $movement) {
             # code...
             try {
                 $obr = new SendInvoiceToOBR();
-                $response = $obr->addStockMovement($movement->toArray());
+                $response = null;
+                // Verfier que le mouvement est un importation 
+                if($movement->is_importation){
+                    $response = $obr->addStockMovementImporters($movement->toArray());
+                }else{
+                    $response = $obr->addStockMovement($movement->toArray());
+                }
                 $repo = json_decode($response);
                 if ($repo && $repo->success) {
                     $movement->is_send_to_obr = 1;

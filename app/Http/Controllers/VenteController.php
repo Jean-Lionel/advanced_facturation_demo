@@ -17,11 +17,11 @@ class VenteController extends Controller
     {
         // $order = Order::latest()->first();
         // dump($order );
-        if(env('OBR_CHECKCONNECTIVITY', false)){
-            $obr = new SendInvoiceToOBR();
-            dump($obr->getInvoice('4000004806/wsl400000480600187/20240417143348/000025'));
-            dd($obr->getToken());
-        }
+        // if(env('OBR_CHECKCONNECTIVITY', false)){
+        //     $obr = new SendInvoiceToOBR();
+        //     dump($obr->getInvoice('4000004806/wsl400000480600187/20240417143348/000025'));
+        //     dd($obr->getToken());
+        // }
         // dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
         $search = request()->get('search');
         $products = Product::where('quantite', '>', 0)
@@ -32,7 +32,7 @@ class VenteController extends Controller
                         ->orWhere('code_product', 'like', '%' . $search . '%')
                         ->orWhere('price', 'like', '%' . $search . '%')
                         ->orWhere('unite_mesure', 'like', '%' . $search . '%');
-                    })->latest()->take(10)->get();
+                    })->latest()->take(25)->get();
         // SyncroniseInvoice::dispatch(1);
 
         //dd($products[0]->priceHorsTva);
@@ -53,10 +53,11 @@ class VenteController extends Controller
 
         $body = "";
 
-        foreach ($products as $value){
+        foreach ($products as $key => $value){
+            $key++;
             $body .= <<<EOD
             <tr>
-            <td> $value->id </td>
+            <td>  $key </td>
             <td> $value->code_product </td>
             <td> $value->name [ $value->unite_mesure]</td>
             <td> $value->price </td>

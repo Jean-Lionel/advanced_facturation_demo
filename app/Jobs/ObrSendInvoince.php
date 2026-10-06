@@ -38,6 +38,10 @@ class ObrSendInvoince implements ShouldQueue
         // Recuperer les opérations de mois de 30 jours
         // Recuperer les mouvements dont les ids ne sont pas dans la table des activités en attentes
 
+        if(env('OBR_CAN_SYNCRONISE', false) == false){
+            return;
+        }
+
         $today = Carbon::now();
         $thirtyDaysAgo = $today->subDays(30);
         $records = ObrStockLog::whereDate('created_at', '>', $thirtyDaysAgo)->get()->map->movement_id;

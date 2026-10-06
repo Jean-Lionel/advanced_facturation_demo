@@ -25,9 +25,13 @@ class BanqueFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => $this->faker->name,
+            'name' => $this->faker->company,
+            'account_name' => $this->faker->company,
+            'account_number' => $this->faker->numerify('############'),
+            'account_type' => 'CURRENT ACCOUNT',
+            'currency' => $this->faker->randomElement(['BIF', 'USD', 'EUR']),
             'description' => $this->faker->text,
-            'softdeletes' => $this->faker->word,
+            'is_active' => true,
         ];
     }
 }

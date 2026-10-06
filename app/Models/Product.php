@@ -27,11 +27,11 @@ class Product extends MyModel
 // date_expiration
 // description
 // category_id
-    protected $fillable = ['code_product','name','price','date_expiration','quantite','quantite_alert','category_id','unite_mesure','price_min','price_max','description','marque', 'taux_tva',
+    protected $fillable = ['code_product','name','price','date_expiration','quantite','quantite_alert','category_id','unite_mesure','price_min','price_max','commission','description','marque', 'taux_tva',
     'price_tvac',
 ];
 
-    protected $sortable= ['code_product','name','price','date_expiration','quantite','quantite_alert','category_id','unite_mesure','price_min','price_max','description','marque', 'taux_tva'];
+    protected $sortable= ['code_product','name','price','date_expiration','quantite','quantite_alert','category_id','unite_mesure','price_min','price_max','commission','description','marque', 'taux_tva'];
 
     public static function boot(){
         parent::boot();

@@ -11,7 +11,7 @@
                 <input type="text" class="form-control form-control-sm " wire:change="searchClient" wire:model="clientName">
             </p>
             <p class="col-6">Rechercher le client Assossier </p>
-            
+
         </div>
         <div>
             @if (count($searchableClients) )
@@ -33,7 +33,7 @@
             @endif
         </div>
     </div>
-    
+
     <div>
         @if ($clients)
         <h4 class="text-center">Liste des clients </h4>
@@ -49,16 +49,25 @@
                 <th scope="col">NOM</th>
                 <th scope="col">NIF</th>
                 <th scope="col">TELEPHONE</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            
+
             @foreach ($clients as $item)
             <tr class="">
                 <td>{{ ++$loop->index }}</td>
                 <td scope="row">{{ $item->client?->name }}</td>
                 <td scope="row">{{ $item->client?->customer_TIN }}</td>
                 <td scope="row">{{ $item->client?->telephone }}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" wire:click="removeClientFromMaison({{$item->client?->id  }})"
+
+                    >
+                        <i class="fas fa-trash"></i>
+                        Supprimer
+                    </button>
+                </td>
             </tr>
             @endforeach
 

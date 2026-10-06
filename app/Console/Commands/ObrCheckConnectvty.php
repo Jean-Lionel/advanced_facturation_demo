@@ -40,7 +40,7 @@ class ObrCheckConnectvty extends Command
      */
     public function handle()
     {
-        ObrCofiguration::saveConfiguration();
+        //ObrCofiguration::saveConfiguration();
         $obr = new SendInvoiceToOBR();
         dump($obr->getToken());
         return 0;

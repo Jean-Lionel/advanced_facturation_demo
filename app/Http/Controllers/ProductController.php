@@ -23,11 +23,15 @@ class ProductController extends Controller
 
     public function __construct(){
     }
+
+    public function imports(){
+        return view('products.imports');
+    }
     public function movement_stock($item_id){
         $mouvements = ObrMouvementStock::where('item_code',$item_id)->get();
         return view('products.movements', compact('mouvements', 'item_id'));
     }
-    public function index()
+    public function index(Request $request)
     {
 
         // dd(Gate::allows('is-admin'));
@@ -93,8 +97,7 @@ class ProductController extends Controller
         $category = request()->query('category');
         $occurence = request()->query('occurence') ?? 1;
 
-        $products = Product::where(function($quer) use($search){
-
+        $products = Product::with('category')-> where(function($quer) use($search){
             if($search){
                 $quer->where('name','like', '%'.$search.'%')
                 ->orWhere('code_product','like', '%'.$search.'%')
@@ -120,7 +123,9 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
+        $useCommission = filter_var(env('APP_USE_COMMISSION', false), FILTER_VALIDATE_BOOLEAN);
+
+        $rules = [
             'name' => 'required|max:255',
             'price' => 'required|numeric|min:0',
             'price_max' => 'required|max:255',
@@ -132,9 +137,20 @@ class ProductController extends Controller
             'price_min' => 'nullable',
             'quantite' => 'numeric|min:0',
             'quantite_alert' => 'numeric|min:0',
-        ]);
+        ];
+
+        if($useCommission){
+            $rules['commission'] = 'nullable|numeric|min:0';
+        }
+
+        $request->validate($rules);
         if(!$request->price_min){
             $request->merge(['price_min' => 0]);
+        }
+        if($useCommission && !$request->commission){
+            $request->merge(['commission' => 0]);
+        }elseif(!$useCommission){
+            $request->request->remove('commission');
         }
         Product::create($request->all());
 
@@ -156,7 +172,9 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $request->validate([
+        $useCommission = filter_var(env('APP_USE_COMMISSION', false), FILTER_VALIDATE_BOOLEAN);
+
+        $rules = [
             'name' => 'required|max:255',
             'price' => 'required|numeric|min:0',
             'price_max' => 'numeric|required|min:0',
@@ -167,7 +185,18 @@ class ProductController extends Controller
             'taux_tva' => 'numeric|min:0',
             'quantite_alert' => 'numeric|min:0',
 
-        ]);
+        ];
+
+        if($useCommission){
+            $rules['commission'] = 'nullable|numeric|min:0';
+        }
+
+        $request->validate($rules);
+        if($useCommission && !$request->commission){
+            $request->merge(['commission' => 0]);
+        }elseif(!$useCommission){
+            $request->request->remove('commission');
+        }
         $p = $product->toArray();
         ProductHistory::create([
             'product_id' => $product->id,
@@ -180,7 +209,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return $this->index();
+        return redirect()->route('products.index');
     }
 
     public function add_view(Product $product){

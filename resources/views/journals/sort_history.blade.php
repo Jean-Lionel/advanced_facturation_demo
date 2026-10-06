@@ -36,7 +36,7 @@
 					<th scope="col">#</th>
 					<th scope="col">DATE</th>
 					<th scope="col">No FACTURE</th>
-					<th scope="col">NIF FOURNISSEUR</th>
+					<th scope="col">NIF   </th>
 					<th scope="col">NOM DU CLIENT</th>
 					<th scope="col">NIF DU CLIENT</th>
 					<th scope="col">MHTVA</th>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Entreprise;
+use App\Models\ObrMouvementStock;
 use App\Models\ObrPointer;
 use App\Models\ObrRequestBody;
 use Illuminate\Support\Facades\Http;
@@ -22,6 +24,7 @@ class SendInvoiceToOBR extends Controller
     }
 
     public function addStockMovement($data){
+        //dd($data);
         $token = $this->getToken();
         // Item
         $data = array_merge(
@@ -30,16 +33,27 @@ class SendInvoiceToOBR extends Controller
             ],
             $data
         );
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovement/', $data);
-       // dd();
-        return $req->body();
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovement/', $data);
+        // dd();
+        // Check if Request Body Is Success
+        $repo = $req->body();
+        $repoObj = json_decode($repo);
+
+        if (($repoObj && $repoObj->success) || ($repoObj && $repoObj->msg === "Le mouvement de stock a deja ete enregistre dans le systeme")) {
+            $movement = ObrMouvementStock::find($data['id']);
+            $movement->is_send_to_obr = 1;
+            $movement->is_sent_at = now();
+            $movement->save();
+        }
+
+        return  $repo ;
     }
     public function checkTin(string $tp_TIN)
     {
         $token = $this->getToken();
         // Enlevement des espaces
         $tp_TIN = trim($tp_TIN);
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'checkTIN/', [
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'checkTIN/', [
             'tp_TIN' => $tp_TIN
         ]);
 
@@ -62,7 +76,7 @@ class SendInvoiceToOBR extends Controller
                 "cn_motif" => $motif
             ]),
         ]);
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'cancelInvoice/', [
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'cancelInvoice/', [
             "invoice_identifier" => $invoice_signature,
            "cn_motif" => $motif
         ]);
@@ -89,8 +103,8 @@ class SendInvoiceToOBR extends Controller
         ]);
 
         //dd($order);
-       
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'addInvoice_confirm/', $invoince);
+
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'addInvoice_confirm/', $invoince);
         return json_decode($req->body());
     }
 
@@ -126,7 +140,7 @@ class SendInvoiceToOBR extends Controller
     public function getInvoice($invoice_signature)
     {
         $token = $this->getToken();
-        $req = Http::withToken($token)->acceptJson()->post($this->baseUrl . 'getInvoice/', [
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'getInvoice/', [
             'invoice_signature' => $invoice_signature
         ]);
         $response = json_decode($req->body());
@@ -136,38 +150,50 @@ class SendInvoiceToOBR extends Controller
         return  $response;
     }
 
+
+    public function addStockMovementImporters($data){
+        $token = $this->getToken();
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'AddStockMovementImporters/', $data);
+        // update stock status
+        return json_decode($req->body());
+    }
+
     // Generation du TOken
     public function getToken()
     {
-
         try {
-            $req = Http::acceptJson()->post($this->baseUrl . 'login/', [
+            $req = Http::withoutVerifying()->acceptJson()->post($this->baseUrl . 'login/', [
                 'username' => env('OBR_USERNAME'),
                 'password' => env('OBR_PASSWORD')
             ]);
             $response = json_decode($req->body());
-            $success = $response->success;
-            $message = $response->msg;
-            $token = "";
-            if ($success) {
+
+            if ($response && ($response->success ?? false) && isset($response->result->token)) {
                 return $response->result->token;
             }
-            return [
-                'succees' => false,
-                'response' => $req->body(),
-                "data" => [
-                    'username' => env('OBR_USERNAME'),
-                    'password' => env('OBR_PASSWORD') ,
-                    'url' => $this->baseUrl
-                ]
-            ];
+
+            $message = $response->msg ?? 'Connexion OBR impossible.';
+
+            throw new \Exception($message . ' URL: ' . $this->baseUrl . ' Username: ' . env('OBR_USERNAME'));
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
     }
 
 
+    //https://ebms.obr.gov.bi:9443/ebms_api/getDmcItems
+
+    public function  getDmcItems($reference_dmc){
+        $token = $this->getToken();
+        $req = Http::withoutVerifying()->withToken($token)->acceptJson()->post($this->baseUrl . 'getDmcItems/',
+        [
+            "nif" => env('OBR_NIF'),
+            "reference_dmc" => $reference_dmc
+        ]);
+        return json_decode($req->body());
+    }
+
+
 
 }
-
 

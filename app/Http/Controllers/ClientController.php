@@ -12,16 +12,25 @@ class ClientController extends Controller
 {
     public function index()
     {
-        $model = new Client();
-        $clients =  $model->getPaginateData();
-        $nombre_total_clients = Client::all()->count();
+        $search = request()->get('search');
+        $clients =  Client::with('compte')->latest()->paginate(10);
+        if($search){
+            $clients = Client::with(['compte', 'commissionaire'])
+            ->where(function($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                ->orWhere('telephone', 'like', "%{$search}%")
+                ->orWhere('customer_TIN', 'like', "%{$search}%");
+            })->paginate(10);
+        }
+        $nombre_total_clients = $clients->total();
         return view('clients.index', compact('clients', 'nombre_total_clients'));
     }
 
     public function commissionnaires(){
-        $model = new Client();
-        $additionalCondition = [['column' => 'is_commissionaire', 'operator' => '<>', 'value' => null],];
-        $clients =  $model->getPaginateData($additionalCondition);
+
+        $clients =  Client::with('compte')
+                            ->whereHas('compte')
+                            ->paginate();
         return view('clients.commisionnaire_list', compact('clients'));
     }
 
@@ -96,7 +105,7 @@ class ClientController extends Controller
             "vat_customer_payer" => "required",
             "name" => "required",
             "customer_TIN" => "nullable|unique:clients,customer_TIN",
-            "telephone" => "nullable|unique:clients", // |unique:clients,telephone
+            "telephone" => "nullable", // |unique:clients,telephone
             "addresse" => "nullable"
         ]);
         // Check if Tin does not exist in database

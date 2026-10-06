@@ -1,23 +1,29 @@
 <div>
     <div class="row">
-        
+
         @include('shared.input',[
         'type' => 'text',
         'name' => 'name',
-        'label' => 'Nom',
+        'label' => 'SHOP',
         'class' => 'col-4'
         ])
-        
+
         @include('shared.input',[
         'type' => 'number',
         'name' => 'montant',
         'class' => 'col-2'
         ])
-        
+
         @include('shared.input',[
         'type' => 'text',
         'name' => 'description',
         'class' => 'col-4'
+        ])
+
+        @include('shared.input',[
+        'type' => 'number',
+        'name' => 'avance',
+        'class' => 'col-2'
         ])
 
         <div  class="mb-3 form-group">
@@ -37,8 +43,8 @@
             <label for=""></label>
             <button type="submit" class="btn btn-primary form-control">Enregistrer</button>
         </div>
-        
-        
-        
+
+
+
     </div>
 </div>

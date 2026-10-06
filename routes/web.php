@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\Api\CacheAdvancedController;
@@ -9,6 +8,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\CompteController;
+use App\Http\Controllers\DepenseCategoryController;
 use App\Http\Controllers\DepenseController;
 use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\ObrDeclarationController;
@@ -26,6 +26,7 @@ use App\Http\Controllers\SyncronizeController;
 use App\Http\Controllers\Tools\ImportDataController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VenteController;
+use App\Http\Controllers\FactureBrouillonController;
 use App\Jobs\ObrSendInvoince;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,18 @@ Route::get('send_invoice', function () {
 });
 Route::group(['middleware' => ['auth']], function () {
     //
+
+    Route::post('/logout-clear-cache', function () {
+            //Suppression des caches
+            cache()->flush();
+
+            auth()->logout();
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+
+            return redirect('/');
+        })->name('logout.clear.cache');
+
     Route::get('/', [VenteController::class, 'index']);
     Route::get('product/create', [ProductController::class, 'create'])->name('product.create');
     Route::resource('obr_declarations', ObrDeclarationController::class);
@@ -57,15 +70,22 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('stockes', StockController::class);
     Route::get('bar_code', [ProductController::class, 'bar_code'])->name('bar_code');
     Route::resource('products', ProductController::class);
+    Route::get('products.imports', [ProductController::class, 'imports'])->name('products.imports');
     Route::resource('clients', ClientController::class);
     Route::resource('categories', CategoryController::class);
+    Route::get('ventes/brouillons', [FactureBrouillonController::class, 'index'])->name('brouillons.index');
+    Route::delete('ventes/brouillons/{brouillon}', [FactureBrouillonController::class, 'destroy'])->name('brouillons.destroy');
     Route::resource('ventes', VenteController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('entreprises', EntrepriseController::class);
     Route::get('entreprises.add_info', [EntrepriseController::class , 'add_info'])->name('entreprises.add_info');
     Route::post('entreprises/store_info', [EntrepriseController::class, 'store_info'])->name('entreprises.store_info');
     Route::get('backup_database', [EntrepriseController::class , 'backup_database'])->name('backup_database');
+    Route::get('depenses/export/excel', [DepenseController::class, 'exportExcel'])->name('depenses.export.excel');
+    Route::get('depenses/export/pdf', [DepenseController::class, 'exportPdf'])->name('depenses.export.pdf');
+    Route::get('depenses/print', [DepenseController::class, 'print'])->name('depenses.print');
     Route::resource('depenses', DepenseController::class);
+    Route::resource('depense-categories', DepenseCategoryController::class)->except(['show']);
     Route::resource('users', UserController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('paimenent_dette', PaiementDetteController::class);
@@ -74,6 +94,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('update_quantite', [CartController::class ,'update_quantite'])->name('update_quantite');
     Route::get('update_tva', [CartController::class ,'update_tva'])->name('update_tva');
     Route::get('rapport', [StockController::class , 'rapport'])->name('rapport');
+    Route::get('impression_multiple', [StockController::class , 'impression_multiple'])->name('impression_multiple');
     //Cart ROUTE
     Route::post('panier/ajouter', [CartController::class ,'store'])->name('panier.store');
     Route::get('panier/index', [CartController::class ,'index'])->name('panier.index');
@@ -82,7 +103,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('panier/{id}', [CartController::class ,'destroy'])->name('cart.destroy');
     Route::post('update_panier', [CartController::class ,'updatePanier'])->name('cart.update_panier');
     Route::get('journal', [StockController::class , 'journal'])->name('stockes.journal');
+    Route::get('journal/pdf', [StockController::class , 'journal_pdf'])->name('journal.pdf');
+    Route::get('controls', [StockController::class , 'controls'])->name('stocks.controls');
+    Route::get('rapport_boutique', [StockController::class , 'rapport_boutique'])->name('rapport_boutique');
+    //facture.search
+    Route::get('facture.search', [StockController::class , 'facture_search'])->name('facture.search');
     Route::get('canceledInvoince', [StockController::class, 'canceledInvoince'])->name('stockes.journal');
+    Route::get('canceledInvoince/{order}/modifier', [CartController::class, 'editCanceledInvoice'])->name('canceledInvoince.edit');
     Route::delete('cancelFactures/{order_id}', [StockController::class,'cancelFactures'])->name('cancelFactures');
     Route::get('canceledInvoince', [StockController::class, 'canceledInvoince'])->name('canceledInvoince');
     Route::get('journal_history', [StockController::class ,'journal_history'])->name('journal_history');
@@ -115,11 +142,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('save_import_data', [ImportDataController::class, 'save'])->name('save_import_data');
     Route::get('clients_abones/{id}', [ClientController ::class, 'abonne'] )->name('clients_abones');
     //recharge le compte
-    Route::get('recharge/{compte}', [CompteController::class , 'recharge'] )->name('recharge');
+    Route::get('recharge/{compte}', [CompteController::class , 'recharge'] )->name('compte.recharge');
     //retrait de compte
-    Route::get('retrait/{compte}', [CompteController::class , 'retrait'] )->name('retrait');
+    Route::get('retrait/{compte}', [CompteController::class , 'retrait'] )->name('compte.retrait');
     Route::get('historique/{id}', [CompteController::class , 'historique'])->name('historique');
-    Route::post('updatecompte', [CompteController::class, 'updatecompte'])->name('updatecompte');
+    Route::post('retrait/updatecompte/{compte}', [CompteController::class, 'retraitUpdatecompte'])->name('retrait.updatecompte');
+    Route::post('recharge/updatecompte/{compte}', [CompteController::class, 'rechargeUpdatecompte'])->name('recharge.updatecompte');
+
     Route::resource('bienvenu-historique', BienvenuHistoriqueController::class);
     Route::get('commissionnaires', [ClientController::class, 'commissionnaires'])->name('commissionnaires');
     Route::get('make_commissionnaire/{id}', [ClientController::class, 'make_commissionnaire'])->name('make_commissionnaire');
@@ -132,10 +161,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('hr-commande', App\Http\Controllers\HrCommandeController::class);
     Route::resource('banque', App\Http\Controllers\BanqueController::class);
     Route::resource('maison-location', App\Http\Controllers\MaisonLocationController::class);
+
     Route::resource('client-maison', App\Http\Controllers\ClientMaisonController::class);
+    Route::get('payment-location-mensuel/payer/{maisonLocation}/{periode}', [App\Http\Controllers\PaymentLocationMensuelController::class, 'payer'])
+        ->name('payment-location-mensuel.payer');
     Route::resource('payment-location-mensuel', App\Http\Controllers\PaymentLocationMensuelController::class);
+
     Route::resource('historique-paiement', App\Http\Controllers\HistoriquePaymentController::class);
     Route::resource('non-paiement-location', App\Http\Controllers\NonPaymentLocationController::class);
+    Route::get('document_maison', [App\Http\Controllers\ClientMaisonController::class, 'document_maison'] )->name('document_maison');
+
+    Route::delete("obr_mouvement/{id}", [App\Http\Controllers\StockController::class, 'deleteMouvementStoc'])->name('obr_mouvement.destroy');
     Route::prefix('/LocationMaison')->name('LocationMaison.')->group(function(){
         Route::resource('', App\Http\Controllers\ClientsNonPayeLoyersController::class)
         ->except([ 'edit', 'update', 'destroy','show','create']);
@@ -161,6 +197,31 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('proformats', ProformatController::class);
     Route::get('historique_entre_sortie', [StockController::class , 'historique_entre_sortie'])->name('historique_entre_sortie');
 
+    Route::get("paiements/{order_id}", [PaiementDetteController::class, 'paiementDette'])->name('paiements.paiement_dette');
+
+    // Routes pour les types de versement
+    Route::resource('versementTypes', App\Http\Controllers\VersementTypeController::class)
+        ->names('versementType');
+    Route::resource('typeEmbalage', App\Http\Controllers\TypeEmbalageController::class);
+
+    // rapport.resultats
+    Route::get('rapport.resultats', [RapportController::class, 'rapportResultats'])->name('rapport.resultats');
+
+
+Route::resource('periode-paiment-location', App\Http\Controllers\PeriodePaimentLocationController::class);
+
+Route::resource('versement', App\Http\Controllers\VersementController::class);
+
+Route::resource('embalage', App\Http\Controllers\EmbalageController::class);
+
+Route::resource('embalage-mouvement', App\Http\Controllers\EmbalageMouvementController::class);
+Route::resource('stock-control', App\Http\Controllers\StockControlController::class);
+Route::post('stock-controls/{stockControl}', [App\Http\Controllers\StockControlController::class,'annulerSortie'])->name('stock-controls.annuler');
+
+Route::resource('assurances', App\Http\Controllers\AssuranceController::class);
+Route::resource('assurance_clients', App\Http\Controllers\AssuranceClientController::class);
+Route::post('env_settings/run-migrations', [App\Http\Controllers\EnvSettingController::class, 'runMigrations'])->name('env_settings.run_migrations');
+Route::resource('env_settings', App\Http\Controllers\EnvSettingController::class);
 
 });
 require __DIR__ . '/jetstream.php';

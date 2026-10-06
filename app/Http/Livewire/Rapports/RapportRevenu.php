@@ -18,7 +18,7 @@ class RapportRevenu extends Component
     }
     public function render()
     {
-      
+
         return view('livewire.rapports.rapport-revenu');
     }
 
@@ -27,7 +27,7 @@ class RapportRevenu extends Component
     }
 
    private function searchInteret(){
-        
+
         $intererts = OrderInteret::whereBetween('created_at', [
             $this->startDate, $this->endDate
         ])->get()->map->description ?? [];

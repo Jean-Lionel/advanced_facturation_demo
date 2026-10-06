@@ -17,6 +17,10 @@
             justify-content: center;
             align-content: center;
         }
+        .text-rigth{
+            text-align: right;
+            margin-top: 50px;
+        }
     </style>
 
 </head>
@@ -87,17 +91,13 @@
                         <p>{{ "Secteur d'activité" }} : <b> {{ $order->company->tp_activity_sector }} </b></p>
                         <p>Forme juridique : <b> {{ $order->company->tp_legal_form }} </b></p>
 
-                        @if ($order->company?->tp_bank)
-
+                        @if ($order->entreprise()->tp_bank )
                         <div>
                             <br>
                             <br>
                             <br>
-
-                          <p>COMPTE BANCAIRE : <b> {{ $order->company?->tp_bank }} </b></p>
-                          <p>NO : <b> {{ $order->company?->tp_account_number }} </b></p>
-
-
+                          <p>COMPTE BANCAIRE : <b> {{$order->company->tp_bank ?? $order->entreprise()->tp_bank }} </b></p>
+                          <p>NO : <b> {{$order->company->tp_account_number ?? $order->entreprise()->tp_account_number }} </b></p>
                         </div>
                         @endif
                     </div>
@@ -112,10 +112,10 @@
                     <h5>B. Client</h5>
                     <p>Nom et Prénom ou Raison Socail :</p>
                     <p>
-                        <b>{{$order->client->name}}</b>
+                        <b>{{($order->client->name ?? '')}}</b>
                     </p>
-                    <p>Résident à : <b>{{ $order->client->addresse }}</b></p>
-                    <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
+                    <p>Résident à : <b>{{ ($order->client->addresse ?? '') }}</b></p>
+                    <p>Assujeti à la TVA : {{($order->client->vat_customer_payer ?? '') ? "OUI" : "NON" }}         </p>
                     <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
 
                     <p>Doit pour ce qui suit :</p>
@@ -184,18 +184,18 @@
                     </div>
                    @endif
 
-                    @if($order->commentaire)
-                        <div style="margin-top: 10px; padding: 10px; border: 1px dashed #ccc;">
-                            <b>Commentaire :</b> {{ $order->commentaire }}
-                        </div>
-                    @endif
-
                         <h4 class="text-center"> {{$order->invoice_signature}}</h4>
                         <div class="element-center">
                             {!! DNS2D::getBarcodeHTML("{$order->invoice_signature}", 'QRCODE', 5,5,'black', true) !!}
                         </div>
                     </article>
                 </div>
+
+                <div class="text-rigth">   
+                    <p>Pour la société <b>SIHIRI BARI</b></p>
+                    <p> BARIKUNDA Léonidas</p>
+                    <p>Directeur Général</p>
+                 </div>
             </div>
 
                 <div id="reciept" style="display : none;">
@@ -228,10 +228,10 @@
 
                         <h3>B. Client</h3>
                         <p>Nom et Prénom ou Raison Socail :</p>
-                        <p>{{$order->client->name}}</p>
+                        <p>{{($order->client->name ?? '')}}</p>
                         <br>
                         <p>Résident à : {{ $order->addresse_client }}</p>
-                        <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
+                        <p>Assujeti à la TVA : {{($order->client->vat_customer_payer ?? '') ? "OUI" : "NON" }}         </p>
                         <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
                         <h5>Doit pour ce qui suit : </h5>
                         <div>
@@ -273,12 +273,6 @@
                                     </div>
 
       </div>
-
-      @if($order->commentaire)
-        <div style="margin-top: 5px;">
-            <b>Note:</b> {{ $order->commentaire }}
-        </div>
-      @endif
 
       <div class="line"></div>
 

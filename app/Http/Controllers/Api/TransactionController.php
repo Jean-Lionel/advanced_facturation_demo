@@ -172,7 +172,6 @@ class TransactionController extends Controller
     public function destroy(Request $request, Transaction $transaction)
     {
         $transaction->delete();
-
         return response()->noContent();
     }
 }

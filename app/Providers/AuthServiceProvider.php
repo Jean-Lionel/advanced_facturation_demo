@@ -53,5 +53,8 @@ class AuthServiceProvider extends ServiceProvider
          Gate::define('is-entre-stock', function($user){
                  return $user->isEntreProduit();
         });
+        Gate::define('is-journal', function($user){
+                return $user->isJournal();
+        });
     }
 }

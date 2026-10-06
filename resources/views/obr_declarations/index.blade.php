@@ -38,7 +38,7 @@
             <h5>Facture en attente</h5>
         </div>
     </div>
-    
+
     <table class="table table-bordered tab-content table-sm">
         <thead>
             <tr>
@@ -100,6 +100,10 @@
                         <div id="button_{{$order->id}}">
                             @if ( ! $order->canceled_or_connection)
                             <button  onclick="cancelIncome('{{$order->invoice_signature}}', {{$order->id}})">Annuler</button>
+                            @else
+                            <a href="{{ route('canceledInvoince.edit', $order) }}" class="btn btn-sm btn-primary">
+                                <i class="fa fa-edit"></i> Modifier
+                            </a>
                             @endif
                         </div>
                     </td>
@@ -112,9 +116,9 @@
         </div>
     </div>
     @stop
-    
+
     @section('javascript')
-    
+
     <script>
 
         $('#loader_file').hide();
@@ -145,7 +149,7 @@
             }
             return motif;
         }
-        
+
         function cancelIncome(invoice_signature, order_id){
             let motif = getMotif();
             let cancel_amount = 0;
@@ -153,7 +157,7 @@
                 cancel_amount = confirm('Voulez aussi faire le retour des Marchandises en Stock');
             }
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-            
+
             $("#order_"+order_id).html(`<div class="progress">
                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
             </div>`)
@@ -172,6 +176,9 @@
                         console.log(data);
                         $("#button_"+order_id).html(`
                     <span class="bg-warning">${data.msg} </span>
+                    <a href="{{ url('canceledInvoince') }}/${order_id}/modifier" class="btn btn-sm btn-primary">
+                        <i class="fa fa-edit"></i> Modifier
+                    </a>
                     `)
                     }
                 });
@@ -182,7 +189,7 @@
                 <span class="sr-only">Loading...</span>
             </div>
             `)
-                
+
                 $.ajax({
                     url: 'sendInvoinceToObr/'+invoince_id,
                     type: 'get',
@@ -195,6 +202,5 @@
                 });
             }
         </script>
-        
+
         @stop
-        

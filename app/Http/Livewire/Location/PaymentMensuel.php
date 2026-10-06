@@ -3,192 +3,210 @@
 namespace App\Http\Livewire\Location;
 
 use App\Http\Controllers\SendInvoiceToOBR;
-use App\Models\Client;
-use App\Models\Entreprise;
+use App\Models\CanceledInvoince;
 use App\Models\MaisonLocation;
-use App\Models\Order;
 use App\Models\PaymentLocationMensuel;
 use App\Models\PeriodePaimentLocation;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-
 class PaymentMensuel extends Component
 {
-    public $houseNumber;
-    public $maisonLocations;
-    public $paymentID;
-    public $payementDate;
-    public $montant;
-    public $description;
-    public $maison;
-    public $periodePaymentValue;
-    public $typePaiement;
-    public $displayPayment = false;
+    public $houseNumber = '';
+    public $paymentSums = [];
 
-    protected $rules = [
-        'payementDate' => 'required|date',
-        'montant' => 'required',
-        'typePaiement' => 'required',
-        'periodePaymentValue' => 'required',
-    ];
+    // Annulation de paiement
+    public $cancelMaisonId;
+    public $cancelPeriodeId;
+    public $cancelPaymentId;
+    public $motifAnnulation = '';
 
-    public function mount(){
+    public function mount()
+    {
         $this->canCreatePaymentPeriode();
     }
 
     public function render()
     {
         $periodesPayment = PeriodePaimentLocation::latest()->take(3)->get();
+
         return view('livewire.location.payment-mensuel', [
-            'periodesPayments' => $periodesPayment
+            'periodes' => $periodesPayment,
+            'maisonLocations' => $this->loadMaisonLocations($periodesPayment),
+            'cancelPayments' => $this->getCancelPayments(),
         ]);
     }
 
-    // Check if you can create a new payment periode
-
-    private function canCreatePaymentPeriode(){
+    private function canCreatePaymentPeriode()
+    {
         $check = PeriodePaimentLocation::where('month', date('m'))
-                                        ->where('year', date('Y'))
-                                        ->first();
-        // case null create periode payment
-        if(is_null($check)){
+            ->where('year', date('Y'))
+            ->first();
+
+        if (is_null($check)) {
             PeriodePaimentLocation::create([
                 'month' => date('m'),
                 'year' => date('Y'),
-                'user_id' => auth()->user()->id
-            ]);
-        }
-    }
-
-
-
-    public function updatedHouseNumber(){
-        if(strlen($this->houseNumber)){
-            $this->maisonLocations = MaisonLocation::with('clients')
-            ->whereHas('clients')
-            ->where('name', 'like', '%'. $this->houseNumber .'%')
-            ->orwhere('description', '%'. $this->houseNumber .'%')
-            ->take(20)->get();
-        }else{
-            $this->maisonLocations = collect([]);
-        }
-    }
-
-    public function payMensuel($payement_id){
-        //  dd($payement_id);
-        $this->displayPayment =  true;
-        $this->paymentID = $payement_id;
-        $this->maison =  MaisonLocation::with('clients')->find($payement_id);
-
-
-    }
-
-    public function savePayment(){
-        $this->validate($this->rules);
-        $currentOrderId = 0;
-        try {
-            //code...
-            DB::beginTransaction();
-            // Creating Order
-            // Checking if total amount of the periode has not orleady paid
-           $totalAmount = PaymentLocationMensuel::where('periode_paiement_id', $this->periodePaymentValue)
-                                            ->where('maisonlocation_id', $this->paymentID)
-                                            ->sum('montant');
-            if( $totalAmount >= $this->maison->montant){
-                throw new \Exception('La periode de paiement est deja paye');
-            }
-            if( $totalAmount + $this->montant > $this->maison->montant){
-                throw new \Exception('Montant restant est de '. ($this->maison->montant - $totalAmount));
-            }
-
-             $paiementM =   PaymentLocationMensuel::create([
-                'maisonlocation_id' => $this->paymentID,
-                'description' => $this->description,
-                'montant' => $this->montant,
-                'date_paiement' => $this->payementDate,
                 'user_id' => auth()->user()->id,
-                'periode_paiement_id' => $this->periodePaymentValue,
-                'total_payment_mensuel' => $this->maison->montant
-               // 'client_maison_id' =>   $this->maison->ClientId,
             ]);
+        }
+    }
 
-            $client = new Client([
-                'id' => $this->maison->ClientId,
-                'name' => substr($this->maison->clientName ?? "" , 0,100),
-                'addresse' => substr($this->maison->adresse ?? "" , 0,100),
-                'customer_TIN' => $this->maison->customer_TIN,
-                'vat_customer_payer'=> $this->maison->vatCustomerPayer,
-            ]);
-         //   dd( $client);
-            // Montant Hors TVA
-            //creating order
-            $prixVenteTvac =  prixVenteTvac($this->montant , ($this->maison->tax /100));
-            $order = Order::create([
-                // calculer le prix total tvac
-                'amount' =>  $prixVenteTvac  , // round($this->maison->priceTTC),
-                'total_quantity' =>1,
-                'total_sacs' => 0,
-                // calculer du TVA
-                'tax' =>($prixVenteTvac - $this->montant), // $this->maison->tax, // erreur
-                'type_paiement' => $this->typePaiement,
-                'amount_tax' => $this->montant, // Motant Hors tax
-                'products'=> serialize($this->getProduct()),
-                'client'=> $client->toJson() ,//  substr($this->maison->clientName ?? "" , 0,100) ,
-                'addresse_client'=> substr($this->maison->adresse ?? "" , 0,100) ,// $this->maison->adresse,
-                'date_facturation'=> now(),
-                'is_cancelled' => 0,
-                'client_id' => $this->maison->ClientId,
-                'commissionaire_id' => null,
-                'maison_id' => $paiementM->id,
-                'company' =>  Entreprise::currentEntreprise()->toJson(),
-            ]);
-            $signature = SendInvoiceToOBR::getInvoinceSignature($order->id,$order->created_at);
-            $order->invoice_signature = $signature;
-            $order->save();
+    private function loadMaisonLocations($periodes)
+    {
+        $query = MaisonLocation::with('clients')
+            ->withCount('clients')
+            ->whereHas('clients');
 
-            $paiementM->order_id = $order->id;
-            $paiementM->save();
-            $currentOrderId = $order;
+        if (strlen($this->houseNumber)) {
+            $search = $this->houseNumber;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+            });
+        }
+
+        $maisonLocations = $query->latest()->take(50)->get();
+        $this->loadPaymentSums($maisonLocations->pluck('id'), $periodes->pluck('id'));
+
+        return sortMaisonsByUnpaidStatus($maisonLocations, $periodes, $this->paymentSums);
+    }
+
+    private function loadPaymentSums($maisonIds, $periodeIds): void
+    {
+        if ($maisonIds->isEmpty() || $periodeIds->isEmpty()) {
+            $this->paymentSums = [];
+            return;
+        }
+
+        $this->paymentSums = PaymentLocationMensuel::query()
+            ->whereIn('maisonlocation_id', $maisonIds)
+            ->whereIn('periode_paiement_id', $periodeIds)
+            ->selectRaw('maisonlocation_id, periode_paiement_id, SUM(montant) as total_paid')
+            ->groupBy('maisonlocation_id', 'periode_paiement_id')
+            ->get()
+            ->keyBy(fn ($payment) => $payment->maisonlocation_id . '-' . $payment->periode_paiement_id)
+            ->toArray();
+    }
+
+    public function isPeriodePaid(int $maisonId, int $periodeId, float $montant): bool
+    {
+        $key = $maisonId . '-' . $periodeId;
+        $totalPaid = $this->paymentSums[$key]['total_paid'] ?? 0;
+
+        return $totalPaid >= $montant;
+    }
+
+    public function hasPayments(int $maisonId, int $periodeId): bool
+    {
+        return ($this->paymentSums[$maisonId . '-' . $periodeId]['total_paid'] ?? 0) > 0;
+    }
+
+    public function showCancelPayments(int $maisonId, int $periodeId): void
+    {
+        $this->cancelMaisonId = $maisonId;
+        $this->cancelPeriodeId = $periodeId;
+        $this->cancelPaymentId = null;
+        $this->motifAnnulation = '';
+    }
+
+    public function closeCancelPayments(): void
+    {
+        $this->reset(['cancelMaisonId', 'cancelPeriodeId', 'cancelPaymentId', 'motifAnnulation']);
+    }
+
+    public function selectPaymentToCancel(int $paymentId): void
+    {
+        $this->cancelPaymentId = $paymentId;
+        $this->motifAnnulation = '';
+    }
+
+    public function cancelPayment(): void
+    {
+        $this->validate([
+            'cancelPaymentId' => 'required|integer',
+            'motifAnnulation' => 'required|string|min:3',
+        ]);
+
+        $payment = PaymentLocationMensuel::with('order')
+            ->where('maisonlocation_id', $this->cancelMaisonId)
+            ->where('periode_paiement_id', $this->cancelPeriodeId)
+            ->find($this->cancelPaymentId);
+
+        if (!$payment) {
+            session()->flash('error', 'Paiement introuvable.');
+            return;
+        }
+
+        $order = $payment->order;
+        $cancelInvoice = null;
+
+        try {
+            DB::beginTransaction();
+
+            if ($order && !$order->is_cancelled) {
+                $cancelInvoice = CanceledInvoince::create([
+                    'motif' => $this->motifAnnulation,
+                    'invoice_signature' => $order->invoice_signature,
+                    'created_at' => now(),
+                    'status' => false,
+                    'order_id' => $order->id,
+                ]);
+
+                $order->is_cancelled = true;
+                $order->save();
+            }
+
+            $payment->description = trim(($payment->description ?? '') . ' [ANNULÉ : ' . $this->motifAnnulation . ']');
+            $payment->save();
+            $payment->delete();
 
             DB::commit();
         } catch (\Throwable $th) {
-            //throw $th;
             DB::rollBack();
-
-            dd($th);
+            session()->flash('error', $th->getMessage());
+            return;
         }
 
-        return redirect()->to('orders/'.$currentOrderId->id);
+        $message = 'Le paiement a été annulé.';
+
+        // Envoi de l'annulation à l'OBR ; en cas d'échec, la synchronisation la reprendra
+        if ($cancelInvoice) {
+            if (isInternetConnection() && CAN_SYNCRONISE) {
+                try {
+                    $response = (new SendInvoiceToOBR())->cancelInvoice($order->invoice_signature, $this->motifAnnulation);
+                    if ($response->success ?? false) {
+                        $cancelInvoice->status = true;
+                        $cancelInvoice->save();
+                    } else {
+                        $message .= ' Annulation OBR en attente : ' . ($response->msg ?? 'réponse invalide');
+                    }
+                } catch (\Throwable $th) {
+                    $message .= ' Annulation OBR en attente : ' . $th->getMessage();
+                }
+            } else {
+                $order->canceled_or_connection = 'ANNULEE HORS CONNECTION';
+                $order->save();
+                $message .= ' Annulation OBR en attente de synchronisation.';
+            }
+        }
+
+        session()->flash('success', $message);
+
+        $this->cancelPaymentId = null;
+        $this->motifAnnulation = '';
     }
 
-    protected function getProduct(){
-
-        $periode = PeriodePaimentLocation::find($this->periodePaymentValue);
-
-        $paidTime = "";
-        if( $periode ){
-            $paidTime = $periode->month . '/' . $periode->year;
+    private function getCancelPayments()
+    {
+        if (!$this->cancelMaisonId || !$this->cancelPeriodeId) {
+            return collect();
         }
-        $products[] = [
-            'id' => $this->maison->id,
-            'name' => 'Loyer [ '. $paidTime. '] || '. $this->maison->name. ' || '   . $this->description . '  '  ,
-            'rowId' => "",
-            'price' => $this->maison->montant,
-            'price_revient' =>  $this->maison->montant,
-            'quantite' => 1,
-            'nombre_sac' => 0,
-            'embalage' => 0,
-            'item_ct' => 0,
-            'item_tl' => 0 ,
-            'item_price_nvat' =>  $this->maison->montant,
-            'interet_unitaire' => 0,
-            'interet_total' => 0,
-            'vat' =>  $this->maison->tva,
-            'item_price_wvat' => $this->maison->priceTTC,
-            'item_total_amount' =>  $this->maison->priceTTC
-        ];
 
-        return $products;
+        return PaymentLocationMensuel::with(['order', 'user', 'periode', 'maisonlocation'])
+            ->where('maisonlocation_id', $this->cancelMaisonId)
+            ->where('periode_paiement_id', $this->cancelPeriodeId)
+            ->latest()
+            ->get();
     }
 }

@@ -119,7 +119,7 @@
             <a href="{{ URL::previous() }}">Retour</a>
             <button onclick="window.print()" class="btn">Imprimer</button>
         </div>
-        <img src="{{ asset('img/logo_dukorane.jpg') }}" width="200" height="100"/>
+        <img src="{{ asset('img/dukorane.jpeg') }}" width="200" height="100"/>
         <h2>Facture no {{ $order->id }} du {{ $order->created_at->format('d/m/Y') }}</h2>
         <div class="header">
             <div class="left">
@@ -140,7 +140,7 @@
                 <p>Forme juridique : <b> {{ $order->company->tp_legal_form }} </b></p>
                 <hr>
                 <p>Bank : KCB Bank </p>
-                <p>Beneficiary: dukorane, SPR</p>
+                <p>Beneficiary: Mugisha Traval SPRL, SPR</p>
                 <p>Account Number: 6690449521</p>
             </div>
         </div>
@@ -148,10 +148,10 @@
             <h5>B. Client</h5>
             <p>Nom et Prénom ou Raison Socail :</p>
             <p>
-                <b>{{$order->client->name}}</b>
+                <b>{{($order->client->name ?? '')}}</b>
             </p>
-            <p>Résident à : <b>{{ $order->client->addresse }}</b></p>
-            <p>Assujeti à la TVA : {{$order->client->vat_customer_payer ? "OUI" : "NON" }}         </p>
+            <p>Résident à : <b>{{ ($order->client->addresse ?? '') }}</b></p>
+            <p>Assujeti à la TVA : {{($order->client->vat_customer_payer ?? '') ? "OUI" : "NON" }}         </p>
             <p>NIF : <b>{{$order->client->customer_TIN ?? ""}}</b> </p>
         </div>
         <h5>Doit pour ce qui suit : </h5>

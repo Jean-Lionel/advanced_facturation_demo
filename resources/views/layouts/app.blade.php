@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="{{ asset('css/css/all.css')  }}" defer="defer">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('datatable/css/datatables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('datatable/css/jquery.dataTables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
     @livewireStyles
     <style>
@@ -114,9 +113,7 @@
                     </li> --}}
                     @endcan
                     @can('is-admin')
-                    <li>
-                        <a href="{{ route('products.index') }}" class="{{ setActiveRoute('products.*') }}" ><span class="fa fa-sticky-note"></span> Stock</a>
-                    </li>
+                       
 
                     @if (env('APP_USE_LOCATION', false))
                     <li>
@@ -155,10 +152,12 @@
                     </ul>
                     <div id="status" class="status"></div>
                     @endcan
-                    <div class="footer">
 
-                    </div>
-                </nav>
+                </ul>
+
+                <div id="status" class="status"></div>
+                <div class="footer"></div>
+            </nav>
 
                 <!-- Page Content  -->
                 <div id="content" class="p-0 p-md-6">
@@ -194,13 +193,12 @@
                                         </a>
                                     </li>
                                     <li class="ml-2 nav-item">
-                                        <form action="{{ route('logout') }}" method="post">
+                                       <form action="{{ route('logout.clear.cache') }}" method="post">
                                             @csrf
-                                            @method('POST')
                                             <button type="submit" class="btn btn-dark btn-sm rounded-bottom">
                                                 <i class="fa fa-power-off fa-2x" aria-hidden="true" title=" Se deconnecter"></i>
-
-                                            </form>
+                                            </button>
+                                        </form>
                                         </li>
 
                                         {{--  <li class="nav-item">
@@ -245,9 +243,10 @@
                 <script src="{{ asset('js/popper.js') }}"></script>
                 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
                 <script src="{{ asset('js/chart.js.2.9.4_Chart.min.js') }}"></script>
-                <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
                 <script src="{{ asset('datatable/datatables.min.js') }}"></script>
                 <script src="{{ asset('datatable/pdfmake.min.js') }}"></script>
+                <script src="{{ asset('datatable/vfs_fonts.js') }}"></script>
+                <script src="{{ asset('js/datatables-buttons-fix.js') }}"></script>
                 <script src="{{ asset('js/main.js') }}"></script>
                 <script src="{{ asset('js/sweetalert2@11.js') }}" defer></script>
                 <script src="{{asset('js/jquery-ui.js')}}"></script>
@@ -258,12 +257,24 @@
                     const canSyncronize = @json( CAN_SYNCRONISE );
                     const timeSyncronisation = @json( TIME_OUT_SYNCRONISATION );
                     const cancel_syncronize = "{{ session('cancel_syncronize') }}";
-                    //alert(cancel_syncronize);
+                    let lastOnlineStatus = localStorage.getItem("lastOnlineStatus") === null ? null : JSON.parse(localStorage.getItem("lastOnlineStatus"));
+                    let lastOnlineStatusUpdate = localStorage.getItem("lastOnlineStatusUpdate") === null ? 0 : JSON.parse(localStorage.getItem("lastOnlineStatusUpdate"));
                     const checkOnlineStatus = async () => {
+                        const now = Date.now();
+                        if (now - lastOnlineStatusUpdate < 300000) {
+                            return lastOnlineStatus;
+                        }
                         try {
                             const online = await fetch("https://jsonplaceholder.typicode.com/todos/1");
-                            return online.status >= 200 && online.status < 300; // either true or false
+                            const result = online.status >= 200 && online.status < 300;
+                            localStorage.setItem("lastOnlineStatus", JSON.stringify(result));
+                            localStorage.setItem("lastOnlineStatusUpdate", JSON.stringify(now));
+                            lastOnlineStatus = result;
+                            lastOnlineStatusUpdate = now;
+                            return result;
                         } catch (err) {
+                            localStorage.setItem("lastOnlineStatus", JSON.stringify(false));
+                            localStorage.setItem("lastOnlineStatusUpdate", JSON.stringify(now));
                             return false; // definitely offline
                         }
                     };
@@ -282,10 +293,9 @@
                     }
 
                     if(canSyncronize && !cancel_syncronize){
-
                         let  limitedInterval =  setInterval(async () => {
                             const result = await updateInternetStatus();
-                            console.log(result);
+                                console.log(result);
                             if(result){
                                 // window.location.reload();
                                 clearInterval(limitedInterval);

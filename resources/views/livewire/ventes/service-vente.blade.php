@@ -4,6 +4,10 @@
         <h4>{{ $isEditMode ? 'Modification du Proforma' : 'Facturation des Services' }}</h4>
     </div>
 
+    @if ($successMessage)
+    <div class="alert alert-success">{{ $successMessage }}</div>
+    @endif
+
     @if ( count($errors) )
     <div
         class="alert alert-danger alert-dismissible fade show"
@@ -25,7 +29,7 @@
         });
     </script>
 
-
+    @if (!$showPreview)
 
     <table class="table">
         <thead>
@@ -129,6 +133,20 @@
             </select>
             </div>
 
+            @if (filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN))
+                <div>
+                    <label for="banque_id_service">BANQUE</label>
+                    <select wire:model="banqueId" id="banque_id_service">
+                        <option value="">Choisissez ...</option>
+                        @foreach ($banques as $banque)
+                            <option value="{{ $banque->id }}">
+                                {{ $banque->display_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
+
             <div>
                 <label for="">TYPE DE MONNAIE</label>
                 <select wire:model="invoice_currency" name="invoice_currency" id="">
@@ -161,7 +179,8 @@
             {{ $errorMessage }}
         </div>
         @endif
-        @if ($customer)
+       <div class="row">
+         @if ($customer)
         <div class="col-6">
             {{-- {{ $customer }} --}}
             <i class="fa fa-list-ul" aria-hidden="true"></i>
@@ -192,8 +211,140 @@
                 </li>
             </ul>
         </div>
+
         @endif
+
+        @if ($customer &&  env('APP_USE_ASSURANCE', false) &&  $customer->assuranceClients)
+
+        <div class="col-6">
+
+        <table class="table py-3 table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>NOM</th>
+                    <th> CLIENT</th>
+                    <th> ASSUREUR</th>
+                    <th>DATE D'EXPIRATION</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($customer->assuranceClients as $key => $assuranceClient)
+                <tr>
+                    <td>{{$assuranceClient?->assurance?->name}}</td>
+                    <td>{{$assuranceClient->par_client}}%</td>
+                    <td>{{$assuranceClient->par_assurance}}%</td>
+                    <td>{{$assuranceClient->expire_date?->format('Y-m-d')}}</td>
+                    <td>
+                        <input type="checkbox" wire:click="toggleAssurance({{ $assuranceClient->id}}, {{ $assuranceClient->par_client }}, {{ $assuranceClient->par_assurance }} , '{{ $assuranceClient?->assurance?->name }}')" value="{{$assuranceClient->id}}" class="form-check-input" style="cursor: pointer;">
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+        </table>
+        </div>
+        @endif
+       </div>
 
 
     </div>
+    @else
+
+    @php
+        $typesPaiement = ['1' => 'en espèce', '2' => 'banque', '3' => 'à crédit', '4' => 'autres'];
+        $banqueChoisie = $banqueId ? $banques->firstWhere('id', $banqueId) : null;
+    @endphp
+
+    <div class="card p-3">
+        <h5 class="text-center">
+            <i class="fa fa-eye"></i> Aperçu de la {{ $typeFacture == 'FACTURE' ? 'facture' : 'proforma' }}
+        </h5>
+        <p class="text-center text-muted small mb-3">
+            Vérifiez les informations avant de confirmer.
+            @if ($typeFacture == 'FACTURE')
+                Une fois confirmée, la facture sera signée et ne pourra plus être modifiée.
+            @endif
+        </p>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">CLIENT <b>{{ $customer->name ?? '' }}</b></li>
+                    <li class="list-group-item d-flex justify-content-between">TELEPHONE <b>{{ $customer->telephone ?? '' }}</b></li>
+                    <li class="list-group-item d-flex justify-content-between">ADRESSE <b>{{ $customer->addresse ?? '' }}</b></li>
+                    <li class="list-group-item d-flex justify-content-between">NIF <b>{{ $customer->customer_TIN ?? '' }}</b></li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">TYPE DE FACTURE <b>{{ $typeFacture }}</b></li>
+                    <li class="list-group-item d-flex justify-content-between">TYPE DE PAIEMENT <b>{{ $typesPaiement[$typePaiement] ?? $typePaiement }}</b></li>
+                    @if ($banqueChoisie)
+                    <li class="list-group-item d-flex justify-content-between">BANQUE <b>{{ $banqueChoisie->display_name }}</b></li>
+                    @endif
+                    <li class="list-group-item d-flex justify-content-between">MONNAIE <b>{{ $invoice_currency }}</b></li>
+                </ul>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Déscription</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire</th>
+                    <th>TVA %</th>
+                    <th>TVA</th>
+                    <th>Prix HTVA</th>
+                    <th>Prix Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($table_length as $key)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $description[$key] ?? '' }}</td>
+                    <td>{{ $quantite[$key] ?? 0 }}</td>
+                    <td>{{ number_format(floatval($prices[$key] ?? 0)) }}</td>
+                    <td>{{ $taxes[$key] ?? 0 }} %</td>
+                    <td>{{ number_format($tvas[$key] ?? 0) }}</td>
+                    <td>{{ number_format($pricesHorTva[$key] ?? 0) }}</td>
+                    <td>{{ number_format($pricesTVAC[$key] ?? 0) }}</td>
+                </tr>
+                @endforeach
+                <tr>
+                    <th colspan="5">TOTAL</th>
+                    <th>{{ number_format(array_sum(array_values($tvas))) }}</th>
+                    <th>{{ number_format(array_sum(array_values($pricesHorTva))) }}</th>
+                    <th>{{ number_format(array_sum(array_values($pricesTVAC))) }} {{ $invoice_currency }}</th>
+                </tr>
+            </tbody>
+        </table>
+
+        @if (env('APP_USE_ASSURANCE', false) && $assuranceID)
+        <div class="row mb-3">
+            <div class="col-6"><b>PATIENT :</b> {{ number_format($parClient) }}</div>
+            <div class="col-6"><b>ASSURANCE [{{ $assuranceName }}] :</b> {{ number_format($parAssurance) }}</div>
+        </div>
+        @endif
+
+        @if ($errorMessage)
+        <div class="text-danger mb-2">{{ $errorMessage }}</div>
+        @endif
+
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-sm btn-outline-secondary mr-2" wire:click="cancelPreview">
+                <span class="fa fa-arrow-left"></span> Modifier
+            </button>
+            <button class="btn btn-sm btn-secondary mr-2" wire:click="saveBrouillon">
+                <span class="fa fa-save"></span> Enregistrer brouillon
+            </button>
+            <button class="btn btn-sm btn-success" wire:click="saveValue" wire:loading.attr="disabled" wire:target="saveValue">
+                <span class="fa fa-check"></span> Confirmer et créer la {{ $typeFacture == 'FACTURE' ? 'facture' : 'proforma' }}
+            </button>
+        </div>
+    </div>
+
+    @endif
 </div>

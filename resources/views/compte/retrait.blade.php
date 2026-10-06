@@ -3,10 +3,11 @@
 @section('content')
 <div>
     <center>
-        <form action="{{ route('updatecompte')}}" method="POST">
+        <form action="{{ route('retrait.updatecompte',$compte)}}" method="POST">
             @csrf
             <div class="col-md-4">
                 <!-- Information du Client -->
+                <h3>Retrait sur le compte</h3>
                 <div class="form-group">
                     <label for="name">Nom du Client</label>
                     <input type="text" class="form-control form-control-sm" id="name" name="name" disabled

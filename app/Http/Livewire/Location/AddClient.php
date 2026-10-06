@@ -12,8 +12,8 @@ class AddClient extends Component
     public $maison;
     public $clientName;
     public $searchableClients = [];
-    
-    
+
+
     public function mount($maison_id){
         $this->maison = $maison_id;
     }
@@ -26,10 +26,10 @@ class AddClient extends Component
             'clients' => $clients
         ]);
     }
-    
+
     public function updatedClientName(){
         $search = $this->clientName;
-        if(strlen($search) > 0){ 
+        if(strlen($search) > 0){
             $c = new Client();
             $columns = Schema::getColumnListing($c->getTable());
             $query = Client::query();
@@ -43,23 +43,34 @@ class AddClient extends Component
             $this->searchableClients = [];
         }
     }
-    
+
     public function searchClient(){
         //dd("Searching for");
     }
-    
-    public function addClientToMaison($clientID){
-        
+
+    public function removeClientFromMaison($clientID){
         $check = ClientMaison::where('client_id', $clientID)
         ->where('maisonlocation_id', $this->maison)
         ->first();
-        
+        if($check){
+            $check->delete();
+        }
+    }
+
+    public function addClientToMaison($clientID){
+
+        $check = ClientMaison::where('client_id', $clientID)
+        ->where('maisonlocation_id', $this->maison)
+        ->first();
+
+        // client_maisons
+
         if( !$check ){
             ClientMaison::create([
                 'client_id' => $clientID,
                 'maisonlocation_id' => $this->maison,
             ]);
         }
-        
+
     }
 }

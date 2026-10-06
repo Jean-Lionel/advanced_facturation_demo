@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-    
+
         //$this->authorize('is-admin');
 
     }
@@ -126,6 +126,7 @@ class UserController extends Controller
 
 
         $user->save();
+        cache()->flush();
 
         return $this->index();
 

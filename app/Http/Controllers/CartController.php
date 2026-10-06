@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
+use App\Models\Order;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
@@ -26,6 +28,72 @@ class CartController extends Controller
     public function vente(){
 
         return view('cart.vente');
+    }
+
+    public function editCanceledInvoice(Order $order)
+    {
+        if (! $order->is_cancelled) {
+            return redirect()->route('canceledInvoince')
+                ->with('error', 'La modification est autorisée seulement pour une facture annulée.');
+        }
+
+        Cart::destroy();
+        $missingProducts = 0;
+
+        foreach ($order->products ?? [] as $item) {
+            $product = Product::find($item['id'] ?? null);
+
+            if (! $product) {
+                $missingProducts++;
+                continue;
+            }
+
+            $taxRate = $product->taux_tva ?? 0;
+
+            Cart::add(
+                $product->id,
+                $product->name,
+                $item['quantite'] ?? 1,
+                $item['price'] ?? $product->price,
+                [
+                    'embalage' => $item['embalage'] ?? BASE_UNITE_EMBALLAGE,
+                    'taxRate' => $taxRate,
+                ]
+            )->associate(Product::class)
+                ->setTaxRate($taxRate);
+        }
+
+        if (Cart::count() <= 0) {
+            return redirect()->route('canceledInvoince')
+                ->with('error', 'Impossible de préparer la modification : aucun produit de cette facture n’a été retrouvé.');
+        }
+
+        $client = Client::find($order->client_id);
+        $clientFromInvoice = $order->client ? (array) $order->client : [];
+
+        Session::put('editing_canceled_invoice', [
+            'order_id' => $order->id,
+            'invoice_signature' => $order->invoice_signature,
+            'type_paiement' => $order->type_paiement,
+            'invoice_currency' => $order->invoice_currency,
+            'banque_id' => $order->banque_id,
+            'commissionaire_id' => $order->commissionaire_id,
+            'client' => [
+                'id' => $order->client_id,
+                'name' => $client->name ?? ($clientFromInvoice['name'] ?? ''),
+                'telephone' => $client->telephone ?? ($clientFromInvoice['telephone'] ?? ''),
+                'customer_TIN' => $client->customer_TIN ?? ($clientFromInvoice['customer_TIN'] ?? ''),
+                'addresse' => $client->addresse ?? ($clientFromInvoice['addresse'] ?? ''),
+            ],
+        ]);
+
+        $message = 'La facture annulée #' . $order->id . ' est prête à être modifiée. Validez pour créer une nouvelle facture.';
+
+        if ($missingProducts > 0) {
+            $message .= ' Attention : ' . $missingProducts . ' produit(s) introuvable(s) n’ont pas été ajoutés.';
+        }
+
+        return redirect()->route('panier.index')->with('success', $message);
     }
 
     public function update_product_price(){
