@@ -339,20 +339,23 @@
                     <td><strong>Montant HT</strong></td>
                     <td>{{ number_format($order->amount_tax, 2) }}</td>
                 </tr>
-               <tr>
+                <tr>
                     <td><strong>TVA</strong></td>
                     <td>{{ number_format($order->tax, 2) }}</td>
                 </tr>
                 <tr>
                     <td><strong>Montant Total TTC</strong></td>
                     <td>{{ number_format($order->amount, 2) }}</td>
-                </tr> 
+                </tr>
             </table>
         </div>
 
         <div class="footer">
             <div class="payment-info">
-                <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount_tax)}} {{ $order->invoice_currency }} </p>
+                <p class="payment-info-text">Nous disons {{ getNumberToWord($order->amount) }} {{ $order->invoice_currency }} </p>
+                @if(!empty($order->invoice_signature))
+                    <h4><strong>OBR ID:</strong> {{ $order->invoice_signature }}</h4>
+                @endif
                 @if($order->commentaire)
                     <div style="margin: 10px 0; padding: 10px; border: 1px dashed #ccc;">
                         <strong>Commentaire :</strong> {{ $order->commentaire }}
@@ -363,7 +366,7 @@
             @if($order->type_facture == "PROFORMAT")
             <div>
             <i>Cette facture proforma est valable pour une période de 30 jours à compter de la date d’émission.</i>
-            
+
             </div>
             @endif
 

@@ -19,8 +19,9 @@ class SendInvoiceToOBR extends Controller
 
     public function __construct()
     {
-        $this->baseUrl = env('OBR_PRODUCTION', false) == true ? '
-        ' : 'https://ebms.obr.gov.bi:9443/ebms_api/';
+        $this->baseUrl = env('OBR_PRODUCTION', false) == true
+            ? 'https://ebms.obr.gov.bi:8443/ebms_api/'
+            : 'https://ebms.obr.gov.bi:9443/ebms_api/';
     }
 
     public function addStockMovement($data){
@@ -159,24 +160,30 @@ class SendInvoiceToOBR extends Controller
     }
 
     // Generation du TOken
-    public function getToken()
+    public function getToken(): string
     {
         try {
             $req = Http::withoutVerifying()->acceptJson()->post($this->baseUrl . 'login/', [
                 'username' => env('OBR_USERNAME'),
                 'password' => env('OBR_PASSWORD')
             ]);
-            $response = json_decode($req->body());
 
-            if ($response && ($response->success ?? false) && isset($response->result->token)) {
-                return $response->result->token;
+            $response = json_decode($req->body());
+            $success = $response->success ?? false;
+
+            if (!$success) {
+                $message = $response->msg ?? 'OBR authentication failed.';
+                throw new \RuntimeException($message);
             }
 
-            $message = $response->msg ?? 'Connexion OBR impossible.';
+            $token = $response->result->token ?? null;
+            if (!is_string($token) || trim($token) === '') {
+                throw new \RuntimeException('OBR authentication succeeded but the token was empty.');
+            }
 
-            throw new \Exception($message . ' URL: ' . $this->baseUrl . ' Username: ' . env('OBR_USERNAME'));
+            return $token;
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage(), $e->getCode());
+            throw new \RuntimeException('Unable to authenticate with OBR: ' . $e->getMessage(), 0, $e);
         }
     }
 

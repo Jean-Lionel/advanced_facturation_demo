@@ -15,14 +15,9 @@ class VenteController extends Controller
 
     public function index(Request $request)
     {
-        // $order = Order::latest()->first();
-        // dump($order );
-        // if(env('OBR_CHECKCONNECTIVITY', false)){
-        //     $obr = new SendInvoiceToOBR();
-        //     dump($obr->getInvoice('4000004806/wsl400000480600187/20240417143348/000025'));
-        //     dd($obr->getToken());
-        // }
-        // dd($obr->getInvoice('4000604456/ws400060445600690/20240327160753/000012'));
+        // The OBR connectivity probe must not run on every homepage request.
+        // It was left here as a debug check and caused HTTP calls to run during normal app usage.
+        // If needed, enable it explicitly in a dedicated maintenance/debug route only.
         $search = request()->get('search');
         $products = Product::where('quantite', '>', 0)
                     ->where('price', '>', 0)

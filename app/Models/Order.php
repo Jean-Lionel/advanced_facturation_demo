@@ -149,7 +149,7 @@ class Order extends Model
         }
         
         public function obrPointer(){
-            return $this->belongsTo(ObrPointer::class, 'id','order_id');
+            return $this->hasOne(ObrPointer::class, 'order_id');
         }
         //products
         public function getProductsAttribute($v)
