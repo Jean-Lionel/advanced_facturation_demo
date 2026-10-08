@@ -54,7 +54,7 @@ class ServiceVente extends Component
     {
         $banques = collect();
 
-        if (filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN)) {
+        if (filter_var(env('APP_USE_BANQUE', true), FILTER_VALIDATE_BOOLEAN)) {
             $banques = Banque::active()->orderBy('name')->get();
         }
 
@@ -86,7 +86,7 @@ class ServiceVente extends Component
             $products =  $this->extractCart();
             $banque = null;
 
-            if (filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN) && $this->banqueId) {
+            if (filter_var(env('APP_USE_BANQUE', true), FILTER_VALIDATE_BOOLEAN) && $this->banqueId) {
                 $banque = Banque::active()->findOrFail($this->banqueId);
             }
 

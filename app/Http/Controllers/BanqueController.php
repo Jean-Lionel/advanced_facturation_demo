@@ -12,7 +12,7 @@ class BanqueController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            abort_unless(filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN), 404);
+            abort_unless(filter_var(env('APP_USE_BANQUE', true), FILTER_VALIDATE_BOOLEAN), 404);
 
             return $next($request);
         });

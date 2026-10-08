@@ -188,7 +188,7 @@
                                             $oldTypePaiement = old('type_paiement', $editingCanceledInvoice['type_paiement'] ?? null);
                                             $oldMontantPaye = old('montant_paye');
                                             $oldMontantRestant = old('montant_restant');
-                                            $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
+                                            $useBanque = filter_var(env('APP_USE_BANQUE', true), FILTER_VALIDATE_BOOLEAN);
                                             $oldBanqueId = old('banque_id', $editingCanceledInvoice['banque_id'] ?? null);
                                             $banques = $useBanque ? \App\Models\Banque::active()->orderBy('name')->get() : collect();
 

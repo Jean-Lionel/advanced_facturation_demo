@@ -121,7 +121,7 @@
             $oldTypePaiement = old('type_paiement');
             $oldMontantPaye = old('montant_paye');
             $oldMontantRestant = old('montant_restant');
-            $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
+            $useBanque = filter_var(env('APP_USE_BANQUE', true), FILTER_VALIDATE_BOOLEAN);
             $oldBanqueId = old('banque_id');
 
             if ($oldMontantPaye === null && $oldMontantRestant !== null) {

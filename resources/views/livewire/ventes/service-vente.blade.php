@@ -146,7 +146,7 @@
             </select>
             </div>
 
-            @if (filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN))
+            @if (filter_var(env('APP_USE_BANQUE', true), FILTER_VALIDATE_BOOLEAN))
                 <div>
                     <label for="banque_id_service">BANQUE</label>
                     <select wire:model="banqueId" id="banque_id_service">

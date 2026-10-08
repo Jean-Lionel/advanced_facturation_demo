@@ -38,7 +38,7 @@ class CheckoutController extends Controller
             'source_canceled_order_id' => 'nullable|exists:orders,id',
             // 'date_facturation' => 'required',
         ];
-        $useBanque = filter_var(env('APP_USE_BANQUE', false), FILTER_VALIDATE_BOOLEAN);
+        $useBanque = filter_var(env('APP_USE_BANQUE', true), FILTER_VALIDATE_BOOLEAN);
 
         if ($useBanque) {
             $validate['banque_id'] = 'nullable|exists:banques,id';
