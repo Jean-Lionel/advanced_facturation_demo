@@ -1,3 +1,11 @@
+@if (session()->get('message'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>{{ session()->get('message') }}</strong>
+</div>
+@endif
 @if (session()->get('obr_response'))
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -40,7 +48,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="name">NOM</label>
-            <input type="text" class="form-control {{$errors->has('name') ? 'is-invalid' : 'is-valid' }} form-control-sm" id="name" name="name" value="{{ old('name') ?? $client->name?? ' ' }}">
+            <input type="text" class="form-control {{$errors->has('name') ? 'is-invalid' : 'is-valid' }} form-control-sm" id="name" name="name" value="{{ old('name') ?? $client->name?? '' }}">
             {!! $errors->first('name', '<small class="help-block invalid-feedback">:message</small>') !!}
 
         </div>
@@ -48,21 +56,21 @@
     <div class="col-md-4" id="customer_TIN">
         <div class="form-group">
             <label for="customer_TIN">NIF DU CLIENT</label>
-            <input type="text" id="currentTIn" class="form-control {{$errors->has('customer_TIN') ? 'is-invalid' : 'is-valid' }} form-control-sm"  name="customer_TIN" value="{{ old('customer_TIN') ?? $client->customer_TIN?? ' ' }}">
+            <input type="text" id="currentTIn" class="form-control {{$errors->has('customer_TIN') ? 'is-invalid' : 'is-valid' }} form-control-sm"  name="customer_TIN" value="{{ old('customer_TIN') ?? $client->customer_TIN?? '' }}">
             {!! $errors->first('customer_TIN', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
-            <label for="telephone">TELEPHONE</label>
-            <input type="text" class="form-control {{$errors->has('telephone') ? 'is-invalid' : 'is-valid' }} form-control-sm" id="telephone" name="telephone" value="{{ old('telephone') ?? $client->telephone?? ' ' }}">
+            <label for="telephone">TELEPHONE <small class="text-muted">(facultatif)</small></label>
+            <input type="text" class="form-control {{$errors->has('telephone') ? 'is-invalid' : '' }} form-control-sm" id="telephone" name="telephone" value="{{ old('telephone') ?? $client->telephone?? '' }}">
             {!! $errors->first('telephone', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             <label for="addresse">ADRESSE</label>
-            <input type="text" class="form-control {{$errors->has('addresse') ? 'is-invalid' : 'is-valid' }} form-control-sm" id="addresse" name="addresse" value="{{ old('addresse') ?? $client->addresse?? ' ' }}">
+            <input type="text" class="form-control {{$errors->has('addresse') ? 'is-invalid' : 'is-valid' }} form-control-sm" id="addresse" name="addresse" value="{{ old('addresse') ?? $client->addresse?? '' }}">
             {!! $errors->first('addresse', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>
     </div>
@@ -80,7 +88,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="description">Description</label>
-            <textarea class="form-control form-control-sm"  row="15" {{$errors->has('description') ? 'is-invalid' : 'is-valid'}} name="description">{{ old('description') ?? $client->description?? ' ' }}
+            <textarea class="form-control form-control-sm"  row="15" {{$errors->has('description') ? 'is-invalid' : 'is-valid'}} name="description">{{ old('description') ?? $client->description?? '' }}
             </textarea>
             {!! $errors->first('description', '<small class="help-block invalid-feedback">:message</small>') !!}
         </div>

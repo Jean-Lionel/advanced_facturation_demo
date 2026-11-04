@@ -1,9 +1,9 @@
 @extends('layouts.advanced')
 
 @section('content')
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+<div class="container-fluid px-lg-4 mt-4">
+    <div class="row">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h4>Nouveau Document</h4>
@@ -22,7 +22,8 @@
                     <form action="{{ route('advanced.documents.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
-                        <div class="mb-3">
+                        <div class="row">
+                        <div class="mb-3 col-lg-6">
                             <label for="document_type" class="form-label">Type de document</label>
                             <select name="document_type" id="document_type" class="form-control @error('document_type') is-invalid @enderror">
                                 @foreach(TYPE_DOCUMENTS as $key => $value)
@@ -34,7 +35,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-lg-6">
                             <label for="member_id" class="form-label">Membre</label>
                             <select name="member_id" id="member_id" class="form-control @error('member_id') is-invalid @enderror">
                                 <option value="">Sélectionnez un membre</option>
@@ -49,7 +50,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-lg-6">
                             <label for="client_id" class="form-label">Client</label>
                             <select name="client_id" id="client_id" class="form-control @error('client_id') is-invalid @enderror">
                                 <option value="">Sélectionnez un client</option>
@@ -64,7 +65,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-12">
                             <label for="description" class="form-label">Description</label>
                             <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
                             @error('description')
@@ -72,7 +73,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-12">
                             <label class="form-label">Fichiers <span class="badge bg-primary-subtle text-primary ms-1"><i class="fas fa-layer-group"></i> Plusieurs fichiers possibles</span></label>
                             <label for="files" id="dropzone" class="dropzone d-block text-center rounded-3 p-4 @error('files') is-invalid @enderror @error('files.*') is-invalid @enderror">
                                 <input type="file" name="files[]" id="files" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.jpg,.jpeg,.png,.gif,.webp" class="dropzone-input" required>
@@ -120,6 +121,8 @@
                         </div>
 
                         <div id="files-preview" class="mb-3"></div>
+
+                        </div>
 
                         <div class="d-flex justify-content-end">
                             <a href="{{ route('advanced.documents.index') }}" class="btn btn-secondary me-2">Annuler</a>
@@ -215,7 +218,7 @@
             }
 
             const col = document.createElement('div');
-            col.className = 'col-md-6';
+            col.className = 'col-md-4 col-xl-3';
             col.innerHTML = `
                 <div class="card h-100">
                     ${media}

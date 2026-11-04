@@ -74,7 +74,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
-<div class="container">
+<div class="container-fluid px-lg-4">
 <a class="navbar-brand fw-bold" href="{{ url('/') }}">
 Advanced IT
 </a>
@@ -136,14 +136,15 @@ onclick="event.preventDefault(); document.getElementById('logout-form').submit()
 
 <!-- Page Content -->
 <div class="container-fluid">
+<div class="px-lg-4">
+@include('layouts._flash')
+</div>
 @yield('content')
 </div>
 
 <!-- Bootstrap JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('js/jquery-3.5.min.js') }}"></script>
-<script src="{{ asset('js/popper.js') }}"></script>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
 <!-- Chart.js moderne -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>

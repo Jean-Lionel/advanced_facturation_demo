@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class MemberUpdateRequest extends FormRequest
 {
@@ -26,14 +27,14 @@ class MemberUpdateRequest extends FormRequest
         return [
             'firstname' => ['string', 'max:100'],
             'last_name' => ['required', 'string', 'max:100'],
-            'email' => ['required', 'email', 'max:100', 'unique:members,email'],
+            'email' => ['required', 'email', 'max:100', Rule::unique('members', 'email')->ignore($this->route('member'))],
             'title' => ['required', 'string', 'max:50'],
-            'profile_image' => ['string', 'max:255'],
-            'phone' => ['string', 'max:30'],
-            'address' => ['string'],
-            'description' => ['string'],
-            'is_active' => ['required'],
-            'organisation_id' => ['integer', 'exists:organisations,id'],
+            'profile_image' => ['nullable', 'image', 'max:2048'],
+            'phone' => ['nullable', 'string', 'max:30'],
+            'address' => ['nullable', 'string'],
+            'description' => ['nullable', 'string'],
+            'is_active' => ['nullable'],
+            'organisation_id' => ['nullable', 'integer', 'exists:organisations,id'],
             'user_id' => ['integer', 'exists:users,id'],
         ];
     }

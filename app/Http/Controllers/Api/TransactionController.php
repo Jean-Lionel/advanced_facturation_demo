@@ -92,7 +92,7 @@ class TransactionController extends Controller
             return new TransactionResource($transaction);
         }
 
-        return redirect()->route('advanced.transactions.index')->with('success', 'Transaction created successfully');
+        return redirect()->route('advanced.transactions.index')->with('success', 'Transaction créée avec succès');
     }
 
     /**
@@ -172,6 +172,11 @@ class TransactionController extends Controller
     public function destroy(Request $request, Transaction $transaction)
     {
         $transaction->delete();
-        return response()->noContent();
+
+        if ($request->wantsJson()) {
+            return response()->noContent();
+        }
+
+        return redirect()->route('advanced.transactions.index')->with('success', 'Transaction supprimée avec succès');
     }
 }

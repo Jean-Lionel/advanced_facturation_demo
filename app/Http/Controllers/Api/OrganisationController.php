@@ -56,9 +56,8 @@ class OrganisationController extends Controller
             return new OrganisationResource($organisation);
         }
 
-        return view('organisations.show', [
-            'organisation' => $organisation
-        ]);
+        return redirect()->route('advanced.organisations.show', $organisation)
+            ->with('success', 'Organisation créée avec succès');
     }
 
     /**
@@ -90,9 +89,8 @@ class OrganisationController extends Controller
             return new OrganisationResource($organisation);
         }
 
-        return view('organisations.show', [
-            'organisation' => $organisation
-        ]);
+        return redirect()->route('advanced.organisations.show', $organisation)
+            ->with('success', 'Organisation mise à jour avec succès');
     }
 
     /**
@@ -108,6 +106,6 @@ class OrganisationController extends Controller
             return response()->noContent();
         }
 
-        return redirect()->route('organisations.index');
+        return redirect()->route('advanced.organisations.index');
     }
 }

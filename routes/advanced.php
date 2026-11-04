@@ -13,7 +13,8 @@ Route::group([
     'as' => 'advanced.',
     'middleware' => 'auth'
 ], function () {
-    Route::get('index', [AdvancedController::class, 'index'])->name('index');
+    Route::get('/', [AdvancedController::class, 'index'])->name('index');
+    Route::redirect('index', '/advanced');
     Route::resource('organisations', OrganisationController::class);
     Route::resource('members', MemberController::class);
     Route::resource('transaction_types', TransactionTypeController::class);

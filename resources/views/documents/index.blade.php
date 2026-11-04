@@ -1,7 +1,7 @@
 @extends('layouts.advanced')
 
 @section('content')
-<div class="container mt-4">
+<div class="container-fluid px-lg-4 mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Documents</h1>
         <a href="{{ route('advanced.documents.create') }}" class="btn btn-primary">

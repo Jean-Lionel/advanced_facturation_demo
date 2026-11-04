@@ -1,7 +1,7 @@
 @extends('layouts.advanced')
 
 @section('content')
-<div class="container mt-4">
+<div class="container-fluid px-lg-4 mt-4">
     <div class="mb-4 d-flex justify-content-between align-items-center">
         <h1>Types de Transactions</h1>
         <a href="{{ route('advanced.transaction_types.create') }}" class="btn btn-primary">

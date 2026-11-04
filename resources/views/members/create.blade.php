@@ -1,9 +1,9 @@
 @extends('layouts.advanced')
 
 @section('content')
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+<div class="container-fluid px-lg-4 mt-4">
+    <div class="row">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h4>Nouveau Membre</h4>
@@ -12,7 +12,8 @@
                     <form action="{{ route('advanced.members.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
-                        <div class="mb-3">
+                        <div class="row">
+                        <div class="mb-3 col-lg-6">
                             <label for="firstname" class="form-label">Prénom</label>
                             <input type="text" name="firstname" id="firstname" class="form-control @error('firstname') is-invalid @enderror" value="{{ old('firstname') }}">
                             @error('firstname')
@@ -20,7 +21,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-lg-6">
                             <label for="last_name" class="form-label">Nom</label>
                             <input type="text" name="last_name" id="last_name" class="form-control @error('last_name') is-invalid @enderror" value="{{ old('last_name') }}" required>
                             @error('last_name')
@@ -28,7 +29,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-lg-6">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required>
                             @error('email')
@@ -36,7 +37,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-lg-6">
                             <label for="title" class="form-label">Titre</label>
                             <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}" required>
                             @error('title')
@@ -44,7 +45,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-lg-6">
                             <label for="phone" class="form-label">Téléphone</label>
                             <input type="tel" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}">
                             @error('phone')
@@ -52,7 +53,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-12">
                             <label for="address" class="form-label">Adresse</label>
                             <textarea name="address" id="address" class="form-control @error('address') is-invalid @enderror">{{ old('address') }}</textarea>
                             @error('address')
@@ -60,7 +61,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-12">
                             <label for="description" class="form-label">Description</label>
                             <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
                             @error('description')
@@ -68,7 +69,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-lg-6">
                             <label for="organisation_id" class="form-label">Organisation</label>
                             <select name="organisation_id" id="organisation_id" class="form-control @error('organisation_id') is-invalid @enderror">
                                 <option value="">Sélectionnez une organisation</option>
@@ -81,7 +82,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-12">
                             <label for="profile_image" class="form-label">Photo de profil</label>
                             <input type="file" name="profile_image" id="profile_image" class="form-control @error('profile_image') is-invalid @enderror">
                             @error('profile_image')
@@ -89,11 +90,13 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-12">
                             <div class="form-check">
                                 <input type="checkbox" name="is_active" id="is_active" class="form-check-input" checked>
                                 <label class="form-check-label" for="is_active">Actif</label>
                             </div>
+                        </div>
+
                         </div>
 
                         <div class="d-flex justify-content-end">

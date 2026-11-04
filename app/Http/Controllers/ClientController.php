@@ -13,16 +13,17 @@ class ClientController extends Controller
     public function index()
     {
         $search = request()->get('search');
-        $clients =  Client::with('compte')->latest()->paginate(10);
+        $query = Client::with(['compte', 'commissionaire'])->latest()->orderByDesc('id');
         if($search){
-            $clients = Client::with(['compte', 'commissionaire'])
-            ->where(function($query) use ($search) {
+            $query->where(function($query) use ($search) {
                 $query->where('name', 'like', "%{$search}%")
                 ->orWhere('telephone', 'like', "%{$search}%")
                 ->orWhere('customer_TIN', 'like', "%{$search}%");
-            })->paginate(10);
+            });
         }
-        $nombre_total_clients = $clients->total();
+        // keep the search when changing page
+        $clients = $query->paginate(10)->withQueryString();
+        $nombre_total_clients = Client::count();
         return view('clients.index', compact('clients', 'nombre_total_clients'));
     }
 
@@ -105,8 +106,12 @@ class ClientController extends Controller
             "vat_customer_payer" => "required",
             "name" => "required",
             "customer_TIN" => "nullable|unique:clients,customer_TIN",
-            "telephone" => "nullable", // |unique:clients,telephone
+            // the phone is optional; when given it must not belong to another client
+            "telephone" => "nullable|unique:clients,telephone",
             "addresse" => "nullable"
+        ], [
+            "telephone.unique" => "Ce numéro de téléphone est déjà utilisé par un autre client.",
+            "customer_TIN.unique" => "Ce NIF est déjà utilisé par un autre client.",
         ]);
         // Check if Tin does not exist in database
         if($request->client_type === 'PERSONNE MORAL' && $request->customer_TIN =="" && env('OBR_REQUIRE_SYNC')){
@@ -143,8 +148,8 @@ class ClientController extends Controller
                     'name' => $customer_OBR
                 ]);
             }
-            Client::create( $data );
-            return $this->index();
+            $client = Client::create( $data );
+            return redirect()->route('clients.index')->with('success', 'Client « ' . $client->name . ' » enregistré avec succès');
         }
         /**
         * Display the specified resource.
@@ -168,12 +173,15 @@ class ClientController extends Controller
                 "client_type" => "required",
                 "vat_customer_payer" => "required",
                 "name" => "required",
-                "customer_TIN" => "nullable",
-                "telephone" => "nullable",
+                "customer_TIN" => "nullable|unique:clients,customer_TIN," . $client->id,
+                "telephone" => "nullable|unique:clients,telephone," . $client->id,
                 "addresse" => "nullable"
+            ], [
+                "telephone.unique" => "Ce numéro de téléphone est déjà utilisé par un autre client.",
+                "customer_TIN.unique" => "Ce NIF est déjà utilisé par un autre client.",
             ]);
             $client->update($request->all());
-            return $this->index();
+            return redirect()->route('clients.index')->with('success', 'Client « ' . $client->name . ' » mis à jour avec succès');
         }
 
         public function destroy(Client $client)

@@ -72,7 +72,8 @@ class MemberController extends Controller
      */
     public function edit(Request $request, Member $member)
     {
-        return view('members.edit', compact('member'));
+        $organisations = Organisation::orderBy('name')->get();
+        return view('members.edit', compact('member', 'organisations'));
     }
 
     /**
@@ -102,7 +103,7 @@ class MemberController extends Controller
             return new MemberResource($member);
         }
 
-        return redirect()->route('advanced.members.index');
+        return redirect()->route('advanced.members.index')->with('success', 'Membre créé avec succès');
     }
 
     /**
@@ -126,13 +127,25 @@ class MemberController extends Controller
      */
     public function update(MemberUpdateRequest $request, Member $member)
     {
-        $member->update($request->validated());
+        $data = collect($request->validated())->except('profile_image')->all();
+        if (!$request->wantsJson() || $request->has('is_active')) {
+            // an unchecked checkbox is not sent by the form
+            $data['is_active'] = in_array($request->is_active, ['on', '1', 1, true], true);
+        }
+        $member->update($data);
+
+        if ($request->hasFile('profile_image')) {
+            $profile_image = $request->file('profile_image');
+            $image_name = time() . "." . $profile_image->getClientOriginalExtension();
+            $member->profile_image = $profile_image->move('img/profile_images', $image_name);
+            $member->save();
+        }
 
         if ($request->wantsJson()) {
             return new MemberResource($member);
         }
 
-        return redirect()->route('advanced.members.index');
+        return redirect()->route('advanced.members.show', $member)->with('success', 'Membre mis à jour avec succès');
     }
 
     /**
@@ -148,6 +161,6 @@ class MemberController extends Controller
             return response()->noContent();
         }
 
-        return redirect()->route('advanced.members.index');
+        return redirect()->route('advanced.members.index')->with('success', 'Membre supprimé avec succès');
     }
 }

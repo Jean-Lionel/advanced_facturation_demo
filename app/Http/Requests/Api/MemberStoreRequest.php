@@ -31,7 +31,7 @@ class MemberStoreRequest extends FormRequest
             'phone' => ['string', 'max:30'],
             'address' => ['string'],
             'description' => ['string'],
-            'is_active' => ['required'],
+            'is_active' => ['nullable'],
             'organisation_id' => ['integer', 'exists:organisations,id'],
             'user_id' => ['integer', 'exists:users,id'],
         ];

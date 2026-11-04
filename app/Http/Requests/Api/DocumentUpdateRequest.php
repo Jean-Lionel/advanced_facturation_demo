@@ -24,13 +24,13 @@ class DocumentUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
-            'member_id' => ['integer', 'exists:members,id'],
-            'client_id' => ['integer', 'exists:clients,id'],
-            'document_type' => ['string'],
-            'transaction_file_id' => ['integer', 'exists:transaction_files,id'],
+            'member_id' => ['nullable', 'integer', 'exists:members,id'],
+            'client_id' => ['nullable', 'integer', 'exists:clients,id'],
+            'document_type' => ['nullable', 'string'],
+            'transaction_file_id' => ['nullable', 'integer', 'exists:transaction_files,id'],
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['string'],
+            'description' => ['nullable', 'string'],
+            'file' => ['nullable', 'file', 'mimes:pdf,doc,docx,xls,xlsx,csv,txt,jpg,jpeg,png,gif,webp'],
         ];
     }
 }

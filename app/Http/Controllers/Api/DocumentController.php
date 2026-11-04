@@ -77,6 +77,13 @@ class DocumentController extends Controller
         $clients = Client::orderBy('name')->get();
         return view('documents.create', compact('members', 'clients'));
     }
+
+    public function edit(Document $document)
+    {
+        $members = Member::orderBy('firstname')->get();
+        $clients = Client::orderBy('name')->get();
+        return view('documents.edit', compact('document', 'members', 'clients'));
+    }
     /**
      * @param \App\Http\Requests\Api\DocumentStoreRequest $request
      * @return \App\Http\Resources\Api\DocumentResource
@@ -101,7 +108,7 @@ class DocumentController extends Controller
                 $document->save();
             }
 
-            return redirect()->route('advanced.documents.index')->with('success', count($request->file('files')) . ' document(s) created successfully');
+            return redirect()->route('advanced.documents.index')->with('success', count($request->file('files')) . ' document(s) ajouté(s) avec succès');
         }
 
         $document = Document::create($data);
@@ -111,7 +118,7 @@ class DocumentController extends Controller
             $document->save();
         }
 
-        return redirect()->route('advanced.documents.index')->with('success', 'Document created successfully');
+        return redirect()->route('advanced.documents.index')->with('success', 'Document ajouté avec succès');
     }
 
     /**
@@ -160,25 +167,18 @@ class DocumentController extends Controller
      */
     public function update(DocumentUpdateRequest $request, Document $document)
     {
-        $document->update($request->validated());
+        $document->update($request->safe()->except('file'));
+
+        if ($request->hasFile('file')) {
+            $document->document_file = $this->storeFile($request->file('file'));
+            $document->save();
+        }
+
         if ($request->wantsJson()) {
             return new DocumentResource($document);
         }
 
-        // other documents with the same description, listed on the right for navigation
-        $siblings = collect();
-        if (trim((string) $document->description) !== '') {
-            $siblings = Document::whereRaw('LOWER(TRIM(description)) = LOWER(TRIM(?))', [$document->description])
-                ->latest()
-                ->orderByDesc('id')
-                ->get();
-        }
-
-        $position = $siblings->search(fn ($sibling) => $sibling->id === $document->id);
-        $previous = $position !== false ? $siblings->get($position - 1) : null;
-        $next = $position !== false ? $siblings->get($position + 1) : null;
-
-        return view('documents.show', compact('document', 'siblings', 'previous', 'next'));
+        return redirect()->route('advanced.documents.show', $document)->with('success', 'Document mis à jour avec succès');
     }
 
     /**
@@ -190,6 +190,10 @@ class DocumentController extends Controller
     {
         $document->delete();
 
-        return redirect()->route('document.index')->with('success', 'Document deleted successfully');
+        if ($request->wantsJson()) {
+            return response()->noContent();
+        }
+
+        return redirect()->route('advanced.documents.index')->with('success', 'Document supprimé avec succès');
     }
 }

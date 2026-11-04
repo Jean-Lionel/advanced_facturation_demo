@@ -101,10 +101,10 @@ class CheckoutController extends Controller
             if(!$client) {
                 $client =  Client::create([
                     'name' => $request->name,
-                    'telephone' => $request->telephone ?? "0000",
+                    'telephone' => $request->telephone ?: null,
                     'description' =>  "",
                     'addresse' => $request->addresse_client ?? "",
-                    'customer_TIN' => $request->customer_TIN ?? "",
+                    'customer_TIN' => $request->customer_TIN ?: null,
                     'vat_customer_payer' => $request->vat_customer_payer ? 1 : 0,
                 ]);
             }

@@ -24,9 +24,8 @@ class OrganisationUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
             'name' => ['required', 'string', 'max:100'],
-            'description' => ['string'],
+            'description' => ['nullable', 'string'],
         ];
     }
 }

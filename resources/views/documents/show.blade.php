@@ -1,9 +1,9 @@
 @extends('layouts.advanced')
 
 @section('content')
-<div class="container{{ $siblings->count() > 1 ? '-fluid px-4' : '' }} mt-4">
+<div class="container-fluid px-lg-4 mt-4">
     <div class="row justify-content-center">
-        <div class="{{ $siblings->count() > 1 ? 'col-lg-8' : 'col-md-8' }}">
+        <div class="{{ $siblings->count() > 1 ? 'col-lg-9' : 'col-12' }}">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
                     <h4 class="mb-0 me-auto">{{ $document->name }}</h4>
@@ -23,31 +23,6 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <strong>Type de document:</strong>
-                        <p>{{ $document->document_type }}</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <strong>Membre:</strong>
-                        <p>{{ $document->member ? $document->member->firstname . ' ' . $document->member->last_name : '-' }}</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <strong>Client:</strong>
-                        <p>{{ $document->client ? $document->client->name : '-' }}</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <strong>Description:</strong>
-                        <p>{{ $document->description }}</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <strong>Date de création:</strong>
-                        <p>{{ $document->created_at ? $document->created_at->format('d/m/Y H:i') : '-' }}</p>
-                    </div>
-
-                    <div class="mb-3">
                         <strong>Fichier:</strong>
                         <div class="mt-2">
                             @if($document->document_file)
@@ -66,16 +41,16 @@
                                     @switch($document->file_kind)
                                         @case('image')
                                             <div class="text-center p-2">
-                                                <img src="{{ $document->file_url }}" class="img-fluid" style="max-height:600px" alt="{{ $document->name }}">
+                                                <img src="{{ $document->file_url }}" class="img-fluid" style="max-height:80vh" alt="{{ $document->name }}">
                                             </div>
                                             @break
                                         @case('pdf')
-                                            <iframe src="{{ $document->file_url }}" width="100%" height="600px" class="d-block border-0"></iframe>
+                                            <iframe src="{{ $document->file_url }}" width="100%" style="height:80vh" class="d-block border-0"></iframe>
                                             @break
                                         @case('word')
                                         @case('excel')
                                         @case('text')
-                                            <div id="file-viewer" class="bg-white overflow-auto p-2" style="max-height:600px"
+                                            <div id="file-viewer" class="bg-white overflow-auto p-2" style="max-height:80vh"
                                                  data-url="{{ $document->file_url }}" data-kind="{{ $document->file_kind }}" data-extension="{{ $document->file_extension }}">
                                                 <div class="text-center text-muted p-4"><i class="fas fa-spinner fa-spin"></i> Chargement de l'aperçu...</div>
                                             </div>
@@ -97,6 +72,31 @@
                         </div>
                     </div>
 
+                    <div class="border-top pt-3 mb-3">
+                        <div class="row g-3">
+                            <div class="col-sm-6 col-lg-3">
+                                <small class="text-muted d-block">Type de document</small>
+                                <span>{{ $document->document_type ?: '-' }}</span>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <small class="text-muted d-block">Membre</small>
+                                <span>{{ $document->member ? $document->member->firstname . ' ' . $document->member->last_name : '-' }}</span>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <small class="text-muted d-block">Client</small>
+                                <span>{{ $document->client ? $document->client->name : '-' }}</span>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <small class="text-muted d-block">Date de création</small>
+                                <span>{{ $document->created_at ? $document->created_at->format('d/m/Y H:i') : '-' }}</span>
+                            </div>
+                            <div class="col-12">
+                                <small class="text-muted d-block">Description</small>
+                                <p class="mb-0" style="white-space:pre-line">{{ $document->description ?: '-' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="mb-3">
                         <strong>Membres associés:</strong>
                         <ul class="list-group">
@@ -112,7 +112,7 @@
         </div>
 
         @if($siblings->count() > 1)
-            <div class="col-lg-4 mt-3 mt-lg-0">
+            <div class="col-lg-3 mt-3 mt-lg-0">
                 <div class="card sticky-top" style="top:1rem">
                     <div class="card-header">
                         <strong>{{ $siblings->count() }} documents</strong>

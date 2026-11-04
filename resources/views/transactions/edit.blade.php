@@ -1,9 +1,9 @@
 @extends('layouts.advanced')
 
 @section('content')
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+<div class="container-fluid px-lg-4 mt-4">
+    <div class="row">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h4>Modifier Transaction</h4>
@@ -22,7 +22,8 @@
                             </div>
                         @endif
 
-                        <div class="mb-3">
+                        <div class="row">
+                        <div class="mb-3 col-lg-6">
                             <label for="date_transaction" class="form-label">Date de la transaction</label>
                             <input type="date" name="date_transaction" id="date_transaction" class="form-control @error('date_transaction') is-invalid @enderror" value="{{ old('date_transaction', $transaction->date_transaction) }}" required>
                             @error('date_transaction')
@@ -30,7 +31,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-lg-6">
                             <label for="montant" class="form-label">Montant</label>
                             <div class="input-group">
                                 <span class="input-group-text">BIF</span>
@@ -41,7 +42,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-lg-6">
                             <label for="transaction_type_id" class="form-label">Type de transaction</label>
                             <select name="transaction_type_id" id="transaction_type_id" class="form-control @error('transaction_type_id') is-invalid @enderror" required>
                                 <option value="">Sélectionnez un type</option>
@@ -56,7 +57,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-lg-6">
                             <label for="member_id" class="form-label">Membre</label>
                             <select name="member_id" id="member_id" class="form-control @error('member_id') is-invalid @enderror" required>
                                 <option value="">Sélectionnez un membre</option>
@@ -71,7 +72,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-12">
                             <label for="description" class="form-label">Description</label>
                             <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror">{{ old('description', $transaction->description) }}</textarea>
                             @error('description')
@@ -103,13 +104,15 @@
                             </div>
                         @endif
 
-                        <div class="mb-3">
+                        <div class="mb-3 col-12">
                             <label for="file_item" class="form-label">Nouveau fichier (optionnel)</label>
                             <input type="file" name="file_item" id="file_item" class="form-control @error('file_item') is-invalid @enderror">
                             @error('file_item')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                             <small class="form-text text-muted">Laissez vide si vous ne souhaitez pas ajouter de nouveau fichier</small>
+                        </div>
+
                         </div>
 
                         <div class="d-flex justify-content-end">
