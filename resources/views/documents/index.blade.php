@@ -51,56 +51,113 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th>Aperçu</th>
                             <th>Nom</th>
                             <th>Type</th>
                             <th>Membre</th>
                             <th>Client</th>
                             <th>Description</th>
-                            <th>Fichier</th>
+                            <th>Date de création</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($documents as $document)
-                            <tr>
-                                <td>{{ $document->name }}</td>
-                                <td>{{ $document->document_type }}</td>
-                                <td>{{ $document->member ? $document->member->firstname . ' ' . $document->member->last_name : '-' }}</td>
-                                <td>{{ $document->client ? $document->client->name : '-' }}</td>
-                                <td>{{ $document->description }}</td>
-                                <td>
-                                    @if($document->transactionFile)
-                                        <a href="{{ asset($document->transactionFile->file_url) }}" class="btn btn-sm btn-primary" target="_blank">
-                                            <i class="fas fa-download"></i> Télécharger
-                                        </a>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('advanced.documents.show', $document) }}" class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a href="{{ route('advanced.documents.edit', $document) }}" class="btn btn-sm btn-warning">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form action="{{ route('advanced.documents.destroy', $document) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce document ?')">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
+                        @foreach($groups as $group)
+                            @php($items = $documents->get($group->group_key, collect()))
+                            @if($items->count() > 1)
+                                @php($first = $items->first())
+                                <tr class="table-light group-toggle" role="button" data-bs-toggle="collapse" data-bs-target=".group-{{ $loop->index }}" aria-expanded="false">
+                                    <td>
+                                        <div class="d-flex">
+                                            @foreach($items->take(3) as $item)
+                                                <div style="margin-left:{{ $loop->first ? 0 : -28 }}px">@include('documents._thumbnail', ['document' => $item])</div>
+                                            @endforeach
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <i class="fas fa-chevron-right group-chevron me-1"></i>
+                                        <strong>{{ $items->count() }} documents</strong>
+                                        <small class="d-block text-muted">Même description · cliquez pour afficher</small>
+                                    </td>
+                                    <td>{{ $items->pluck('document_type')->unique()->count() > 1 ? 'Plusieurs' : $first->document_type }}</td>
+                                    <td>
+                                        @if($items->pluck('member_id')->unique()->count() > 1)
+                                            Plusieurs
+                                        @else
+                                            {{ $first->member ? $first->member->firstname . ' ' . $first->member->last_name : '-' }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($items->pluck('client_id')->unique()->count() > 1)
+                                            Plusieurs
+                                        @else
+                                            {{ $first->client ? $first->client->name : '-' }}
+                                        @endif
+                                    </td>
+                                    <td><strong>{{ $first->description }}</strong></td>
+                                    <td>{{ $first->created_at ? $first->created_at->format('d/m/Y H:i') : '-' }}</td>
+                                    <td><span class="badge bg-secondary">{{ $items->count() }} fichiers</span></td>
+                                </tr>
+                                @foreach($items as $document)
+                                    @include('documents._row', ['document' => $document, 'rowClass' => 'collapse group-' . $loop->parent->index . ' group-item'])
+                                @endforeach
+                            @else
+                                @foreach($items as $document)
+                                    @include('documents._row', ['document' => $document])
+                                @endforeach
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
         <div class="card-footer">
-            {{ $documents->links() }}
+            {{ $groups->links() }}
         </div>
     </div>
 </div>
 @endsection
+
+@push('styles')
+<style>
+    .group-item > td:first-child { padding-left: 2rem; }
+    .group-item { border-left: 3px solid var(--bs-primary); }
+    .group-chevron { transition: transform .2s; }
+    .group-toggle[aria-expanded="true"] .group-chevron { transform: rotate(90deg); }
+</style>
+@endpush
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script>
+    (function () {
+        const canvases = document.querySelectorAll('canvas.pdf-thumbnail');
+        if (!canvases.length || !window.pdfjsLib) return;
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+
+        // render the first page of each PDF only when it becomes visible
+        function renderThumbnail(canvas) {
+            pdfjsLib.getDocument(canvas.dataset.url).promise
+                .then(pdf => pdf.getPage(1))
+                .then(page => {
+                    const viewport = page.getViewport({ scale: 1 });
+                    const scaled = page.getViewport({ scale: 112 / Math.max(viewport.width, viewport.height) });
+                    canvas.width = scaled.width;
+                    canvas.height = scaled.height;
+                    return page.render({ canvasContext: canvas.getContext('2d'), viewport: scaled }).promise;
+                })
+                .then(() => canvas.nextElementSibling?.remove())
+                .catch(() => canvas.remove());
+        }
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                observer.unobserve(entry.target);
+                renderThumbnail(entry.target);
+            });
+        });
+        canvases.forEach(canvas => observer.observe(canvas));
+    })();
+</script>
+@endpush

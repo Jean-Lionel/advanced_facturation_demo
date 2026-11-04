@@ -12,6 +12,7 @@ use App\Models\Document;
 use App\Models\Member;
 use App\Models\TransactionFile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DocumentController extends Controller
 {
@@ -43,15 +44,31 @@ class DocumentController extends Controller
             $query->where('document_type', $request->input('category'));
         }
 
-        $documents = $query->latest()->paginate()->withQueryString();
+        if ($request->wantsJson()) {
+            return $query->latest()->paginate()->withQueryString();
+        }
+
+        // documents with the same description are shown together: paginate on groups, not on documents
+        $groupKey = "CASE WHEN TRIM(COALESCE(description, '')) = '' THEN CONCAT('doc-', id) ELSE CONCAT('desc:', LOWER(TRIM(description))) END";
+        $groups = (clone $query)
+            ->selectRaw("{$groupKey} as group_key, MAX(created_at) as last_created_at")
+            ->groupBy('group_key')
+            ->orderByDesc('last_created_at')
+            ->paginate(15)
+            ->withQueryString();
+
+        $documents = (clone $query)
+            ->select('documents.*')
+            ->selectRaw("{$groupKey} as group_key")
+            ->with(['member', 'client', 'transactionFile'])
+            ->whereIn(DB::raw($groupKey), $groups->pluck('group_key'))
+            ->latest()
+            ->get()
+            ->groupBy('group_key');
 
         $categories = Document::select('document_type')->distinct()->whereNotNull('document_type')->pluck('document_type');
 
-        if ($request->wantsJson()) {
-            return $documents;
-        }
-
-        return view('documents.index', compact('documents', 'categories'));
+        return view('documents.index', compact('groups', 'documents', 'categories'));
     }
 
     public function create()
@@ -67,22 +84,46 @@ class DocumentController extends Controller
     public function store(DocumentStoreRequest $request)
     {
 
-        $document = Document::create(
-            [
-                ...$request->all(),
-                'user_id' => auth()->user()->id,
-            ]
-        );
+        $data = [
+            ...$request->except(['file', 'files', 'names']),
+            'user_id' => auth()->user()->id,
+        ];
+
+        //multiple files: one document per file
+        if ($request->hasFile('files')) {
+            $names = $request->input('names', []);
+            foreach ($request->file('files') as $index => $file) {
+                $document = Document::create([
+                    ...$data,
+                    'name' => $names[$index] ?? pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                ]);
+                $document->document_file = $this->storeFile($file);
+                $document->save();
+            }
+
+            return redirect()->route('advanced.documents.index')->with('success', count($request->file('files')) . ' document(s) created successfully');
+        }
+
+        $document = Document::create($data);
         //file
         if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $file_name = time() . '_' . $file->getClientOriginalName();
-            $pathFile =  $file->move('documents', $file_name);
-            $document->document_file = $pathFile->getBasename();
+            $document->document_file = $this->storeFile($request->file('file'));
             $document->save();
         }
 
-        return redirect()->route('document.index')->with('success', 'Document created successfully');
+        return redirect()->route('advanced.documents.index')->with('success', 'Document created successfully');
+    }
+
+    /**
+     * @param \Illuminate\Http\UploadedFile $file
+     * @return string
+     */
+    private function storeFile($file)
+    {
+        $file_name = time() . '_' . uniqid() . '_' . $file->getClientOriginalName();
+        $pathFile = $file->move('documents', $file_name);
+
+        return $pathFile->getBasename();
     }
 
     /**
@@ -95,7 +136,21 @@ class DocumentController extends Controller
         if ($request->wantsJson()) {
             return new DocumentResource($document);
         }
-        return view('documents.show', compact('document'));
+
+        // other documents with the same description, listed on the right for navigation
+        $siblings = collect();
+        if (trim((string) $document->description) !== '') {
+            $siblings = Document::whereRaw('LOWER(TRIM(description)) = LOWER(TRIM(?))', [$document->description])
+                ->latest()
+                ->orderByDesc('id')
+                ->get();
+        }
+
+        $position = $siblings->search(fn ($sibling) => $sibling->id === $document->id);
+        $previous = $position !== false ? $siblings->get($position - 1) : null;
+        $next = $position !== false ? $siblings->get($position + 1) : null;
+
+        return view('documents.show', compact('document', 'siblings', 'previous', 'next'));
     }
 
     /**
@@ -109,7 +164,21 @@ class DocumentController extends Controller
         if ($request->wantsJson()) {
             return new DocumentResource($document);
         }
-        return view('documents.show', compact('document'));
+
+        // other documents with the same description, listed on the right for navigation
+        $siblings = collect();
+        if (trim((string) $document->description) !== '') {
+            $siblings = Document::whereRaw('LOWER(TRIM(description)) = LOWER(TRIM(?))', [$document->description])
+                ->latest()
+                ->orderByDesc('id')
+                ->get();
+        }
+
+        $position = $siblings->search(fn ($sibling) => $sibling->id === $document->id);
+        $previous = $position !== false ? $siblings->get($position - 1) : null;
+        $next = $position !== false ? $siblings->get($position + 1) : null;
+
+        return view('documents.show', compact('document', 'siblings', 'previous', 'next'));
     }
 
     /**

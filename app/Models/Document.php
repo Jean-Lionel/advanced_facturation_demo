@@ -84,6 +84,64 @@ class Document extends Model
     }
 
     /**
+     * @return string|null
+     */
+    public function getFileUrlAttribute()
+    {
+        return $this->document_file ? asset('documents/' . $this->document_file) : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileExtensionAttribute()
+    {
+        return strtolower(pathinfo((string) $this->document_file, PATHINFO_EXTENSION));
+    }
+
+    /**
+     * Preview family of the file: image, pdf, word, excel, text or other
+     *
+     * @return string|null
+     */
+    public function getFileKindAttribute()
+    {
+        if (!$this->document_file) {
+            return null;
+        }
+
+        $kinds = [
+            'image' => ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+            'pdf' => ['pdf'],
+            'word' => ['doc', 'docx'],
+            'excel' => ['xls', 'xlsx', 'csv'],
+            'text' => ['txt'],
+        ];
+
+        foreach ($kinds as $kind => $extensions) {
+            if (in_array($this->file_extension, $extensions)) {
+                return $kind;
+            }
+        }
+
+        return 'other';
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileIconAttribute()
+    {
+        return [
+            'image' => 'fa-file-image text-success',
+            'pdf' => 'fa-file-pdf text-danger',
+            'word' => 'fa-file-word text-primary',
+            'excel' => 'fa-file-excel text-success',
+            'text' => 'fa-file-alt text-secondary',
+        ][$this->file_kind] ?? 'fa-file text-muted';
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function members()
