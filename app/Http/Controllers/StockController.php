@@ -298,7 +298,9 @@ class StockController extends Controller
             $total_tva_vendue = $ventes->sum(function ($product) {
                 $article = json_decode($product->details);
 
-                return floatval($article->price_min ?? 0) * 0.18 * floatval($product->quantite ?? 0);
+                $commission = floatval($article->commission ?? 0) / 100;
+
+                return floatval($article->price_min ?? 0) * $commission * 0.18 * floatval($product->quantite ?? 0);
             });
             $benefice = $total_pv_vendu - ($total_pa_vendu + $total_commission_vendue + $total_tva_vendue);
         }
@@ -316,6 +318,57 @@ class StockController extends Controller
             'total_pv_vendu',
             'benefice'
         ));
+    }
+
+    public function controls(){
+        return view('stocks.controls');
+    }
+
+    public function facture_search(){
+        $facture_number = request()->query('facture_number');
+        $search = request()->query('search');
+        $start_date = request()->query('start_date');
+        $end_date = request()->query('end_date');
+        $orders = Order::where('is_cancelled', '=',0)
+        ->where(function($query) use($facture_number, $search, $start_date, $end_date){
+            if($facture_number){
+                $query->where('id', '=', $facture_number);
+            }
+            if($search){
+                $query->where('client', 'like', "%{$search}%")
+                ->orWhere('products', 'like', "%{$search}%");
+            }
+            if($start_date and $end_date){
+                $query->whereBetween('created_at', [$start_date, $end_date]);
+            }
+        })
+        ->sortable()
+        ->latest()
+        ->take(20)
+        ->get();
+        return view('stocks.facture_search', compact('orders', 'facture_number', 'search', 'start_date', 'end_date'));
+    }
+
+    public function impression_multiple(){
+
+        $dateDebut = request()->query('dateDebut');
+        $dateFin = request()->query('dateFin');
+
+        $orders = Order::where('is_cancelled', '=',0)
+                    ->whereBetween('created_at', [$dateDebut, $dateFin])
+                    ->sortable()
+                    ->latest()
+                    ->take(10)
+                    ->get();
+
+
+        return view('stocks.impression_multiple', compact('orders') );
+
+    }
+
+    public function rapport_boutique(){
+       // $ventes = StockControl::all();
+        return view('stocks.rapport_boutique');
     }
 
     public function journal_history(){
